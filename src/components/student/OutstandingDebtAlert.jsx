@@ -3,11 +3,12 @@ import { AlertCircle, CreditCard, ArrowRight, Banknote, Trash2, Loader2, Info } 
 import { useNavigate } from 'react-router-dom';
 import { apiFetch } from '../../interceptors/api';
 import toast from 'react-hot-toast';
-import Swal from 'sweetalert2';
+import ConfirmModal from '../shared/ConfirmModal';
 
 const OutstandingDebtAlert = ({ pendingPayment, onRefresh, onPay }) => {
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState(false);
+  const [confirmCancelOpen, setConfirmCancelOpen] = useState(false);
 
   // 🧮 CÁLCULO DE SALDOS DINÁMICOS
   const stats = useMemo(() => {
@@ -48,27 +49,21 @@ const OutstandingDebtAlert = ({ pendingPayment, onRefresh, onPay }) => {
     }
   };
 
-  const handleCancelPackage = async () => {
-    const result = await Swal.fire({
-      title: '<span class="italic font-black uppercase text-[#1e3a8a]">¿CANCELAR RESERVA?</span>',
-      html: `<p class="text-sm font-bold text-slate-600">Se anulará la deuda de S/ ${stats.montoTotal.toFixed(2)}</p>`,
-      showCancelButton: true,
-      confirmButtonColor: '#ef4444',
-      confirmButtonText: 'SÍ, CANCELAR',
-      customClass: { popup: 'rounded-[3rem] p-8' }
-    });
+  const handleCancelPackage = () => {
+    setConfirmCancelOpen(true);
+  };
 
-    if (result.isConfirmed) {
-      setIsDeleting(true);
-      try {
-        const response = await apiFetch.delete(`/inscripciones/paquete/${pendingPayment.id}`);
-        if (response.ok) {
-          toast.success("Reserva eliminada");
-          if (onRefresh) await onRefresh(); 
-        }
-      } catch (e) { toast.error("Error de conexión"); } 
-      finally { setIsDeleting(false); }
-    }
+  const executeCancelPackage = async () => {
+    setConfirmCancelOpen(false);
+    setIsDeleting(true);
+    try {
+      const response = await apiFetch.delete(`/inscripciones/paquete/${pendingPayment.id}`);
+      if (response.ok) {
+        toast.success("Reserva eliminada");
+        if (onRefresh) await onRefresh();
+      }
+    } catch (e) { toast.error("Error de conexión"); }
+    finally { setIsDeleting(false); }
   };
 
   return (
@@ -150,6 +145,16 @@ const OutstandingDebtAlert = ({ pendingPayment, onRefresh, onPay }) => {
           )}
         </div>
       </div>
+
+      <ConfirmModal
+        isOpen={confirmCancelOpen}
+        onClose={() => setConfirmCancelOpen(false)}
+        onConfirm={executeCancelPackage}
+        title="¿Cancelar reserva?"
+        message={`Se anulará la deuda de S/ ${stats.montoTotal.toFixed(2)}`}
+        iconType="danger"
+        confirmText="Sí, cancelar"
+      />
     </div>
   );
 };

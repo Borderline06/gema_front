@@ -9,14 +9,14 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message, iconType = '
         <AnimatePresence>
             <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
                 {/* Backdrop con desenfoque */}
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                     onClick={onClose}
                     className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
                 />
-                
+
                 {/* Tarjeta del Modal */}
-                <motion.div 
+                <motion.div
                     initial={{ scale: 0.9, opacity: 0, y: 20 }}
                     animate={{ scale: 1, opacity: 1, y: 0 }}
                     exit={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -37,13 +37,13 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message, iconType = '
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-3">
-                            <button 
+                            <button
                                 onClick={onClose}
                                 className="flex-1 px-6 py-4 rounded-2xl bg-slate-100 text-slate-500 font-black text-[10px] uppercase tracking-widest hover:bg-slate-200 transition-colors order-2 sm:order-1"
                             >
                                 Cancelar
                             </button>
-                            <button 
+                            <button
                                 onClick={onConfirm}
                                 className={`flex-[2] px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest text-white shadow-lg transition-all active:scale-95 order-1 sm:order-2 ${
                                     iconType === 'danger' ? 'bg-red-600 shadow-red-200' : 'bg-[#1e3a8a] shadow-blue-200'

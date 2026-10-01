@@ -1,34 +1,33 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Search, Loader2, Tag, Edit3, Filter } from 'lucide-react'; // Quitamos Plus de los imports
+import React, { useState, useMemo } from 'react';
+import { Tag, Edit3, Filter } from 'lucide-react'; // Quitamos Plus de los imports
 import { apiFetch } from '../../interceptors/api';
 import AdminCatalog from './AdminCatalog';
-import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../constants/apiRoutes';
+import { useFetch } from '../../hooks/useFetch';
+import SearchInput from '../../components/shared/SearchInput';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import EmptyState from '../../components/shared/EmptyState';
 
 const AdminCatalogManager = () => {
     const [view, setView] = useState('list');
-    const [loading, setLoading] = useState(true);
-    const [conceptos, setConceptos] = useState([]);
     const [selectedItem, setSelectedItem] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [vigenciaFilter, setVigenciaFilter] = useState('VIGENTE');
 
-    const fetchCatalog = async () => {
-        try {
-            setLoading(true);
+    const {
+        data: conceptos,
+        loading,
+        refetch: fetchCatalog,
+    } = useFetch(
+        async () => {
             const response = await apiFetch.get(API_ROUTES.CATALOGO.BASE);
             const result = await response.json();
-            if (response.ok) {
-                setConceptos(result.data || []);
-            }
-        } catch (error) {
-            toast.error("Error al cargar el catálogo");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => { fetchCatalog(); }, []);
+            if (!response.ok) throw new Error(result.message || "Error al obtener el catálogo");
+            return result.data || [];
+        },
+        [],
+        { initialData: [], errorMessage: "Error al cargar el catálogo" }
+    );
 
     const filteredData = useMemo(() => {
         return conceptos.filter(c => {
@@ -81,15 +80,12 @@ const AdminCatalogManager = () => {
 
             {/* Barra de Búsqueda y Filtro de Vigencia */}
             <div className="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-4">
-                <div className="flex-1 relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                    <input
-                        type="text"
-                        placeholder="BUSCAR NOMBRE O CÓDIGO..."
-                        className="w-full bg-slate-50 border-none rounded-xl pl-12 pr-4 py-2.5 text-[10px] font-black uppercase outline-none focus:ring-2 focus:ring-blue-500/20"
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                </div>
+                <SearchInput
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="BUSCAR NOMBRE O CÓDIGO..."
+                    wrapperClassName="flex-1 relative"
+                    className="w-full bg-slate-50 border-none rounded-xl pl-12 pr-4 py-2.5 text-[10px] font-black uppercase outline-none focus:ring-2 focus:ring-blue-500/20"
+                />
 
                 <div className="flex items-center gap-2 bg-slate-50 px-4 py-2 rounded-xl border border-slate-100">
                     <Filter size={14} className="text-[#1e3a8a]" />
@@ -107,7 +103,7 @@ const AdminCatalogManager = () => {
 
             {/* Grid de Tarjetas Compactas */}
             {loading ? (
-                <div className="flex justify-center py-20"><Loader2 className="animate-spin text-[#1e3a8a]" size={40} /></div>
+                <LoadingSpinner />
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     {filteredData.map((item) => (
@@ -158,9 +154,10 @@ const AdminCatalogManager = () => {
             )}
 
             {filteredData.length === 0 && !loading && (
-                <div className="py-20 text-center text-slate-400 font-bold italic uppercase text-xs">
-                    No se encontraron conceptos con estos criterios.
-                </div>
+                <EmptyState
+                    message="No se encontraron conceptos con estos criterios."
+                    className="py-20 text-center text-slate-400 font-bold italic uppercase text-xs"
+                />
             )}
         </div>
     );

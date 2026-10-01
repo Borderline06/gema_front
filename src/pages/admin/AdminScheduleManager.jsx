@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Plus, Search, Clock, User, MapPin, Edit3, Trash2, Loader2, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Clock, User, MapPin, Edit3, Trash2, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
 import AdminSchedule from './AdminSchedule';
 import { apiFetch } from '../../interceptors/api';
 import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../constants/apiRoutes';
+import ConfirmModal from '../../components/shared/ConfirmModal';
+import SearchInput from '../../components/shared/SearchInput';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
 
 const AdminSchedulesManager = () => {
     const [view, setView] = useState('list');
     const [horarios, setHorarios] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [deleteTargetId, setDeleteTargetId] = useState(null);
 
     // --- ESTADOS DE FILTRO ---
     const [filterDia, setFilterDia] = useState('');
@@ -44,57 +48,26 @@ const AdminSchedulesManager = () => {
         }
     };
     const handleDelete = (id) => {
-        // Usamos toast personalizado en lugar de window.confirm
-        toast((t) => (
-            <div className={`${t.visible ? 'animate-enter' : 'animate-leave'} max-w-sm w-full bg-white shadow-2xl rounded-3xl pointer-events-auto flex flex-col ring-1 ring-black/5 overflow-hidden`}>
+        setDeleteTargetId(id);
+    };
 
-                {/* Contenido del Modal */}
-                <div className="p-6 text-center space-y-3">
-                    <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mx-auto mb-2 transform -rotate-3">
-                        <Trash2 size={32} className="text-red-500" />
-                    </div>
-                    <h3 className="text-xl font-black text-slate-800 uppercase italic tracking-tight">¿Eliminar Horario?</h3>
-                    <p className="text-xs font-bold text-slate-400">Esta acción no se puede deshacer y liberará la cancha en ese horario.</p>
-                </div>
+    const executeDelete = async () => {
+        const id = deleteTargetId;
+        setDeleteTargetId(null);
+        const loadingToast = toast.loading("Eliminando horario...");
 
-                {/* Botones de Acción */}
-                <div className="flex border-t border-slate-100 bg-slate-50">
-                    <button
-                        onClick={() => toast.dismiss(t.id)}
-                        className="flex-1 px-4 py-4 text-xs font-bold text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-colors uppercase tracking-widest border-r border-slate-100"
-                    >
-                        Cancelar
-                    </button>
-                    <button
-                        onClick={async () => {
-                            toast.dismiss(t.id); // Cerramos el modal
-
-                            // Ponemos un toast de carga mientras procesa
-                            const loadingToast = toast.loading("Eliminando horario...");
-
-                            try {
-                                const res = await apiFetch.delete(`${API_ROUTES.HORARIOS.BASE}/${id}`);
-                                if (res.ok) {
-                                    toast.success("Horario eliminado correctamente", { id: loadingToast });
-                                    fetchHorarios(); // Recargamos la lista
-                                } else {
-                                    const err = await res.json();
-                                    toast.error(err.message || "No se pudo eliminar", { id: loadingToast });
-                                }
-                            } catch (error) {
-                                toast.error("Error de conexión al eliminar", { id: loadingToast });
-                            }
-                        }}
-                        className="flex-1 px-4 py-4 text-xs font-black text-red-500 hover:bg-red-50 hover:text-red-600 transition-colors uppercase tracking-widest"
-                    >
-                        Sí, Eliminar
-                    </button>
-                </div>
-            </div>
-        ), {
-            duration: Infinity, // Hace que el modal no se cierre solo hasta que elijas una opción
-            id: `delete-modal-${id}` // Evita que se abran múltiples modales iguales
-        });
+        try {
+            const res = await apiFetch.delete(`${API_ROUTES.HORARIOS.BASE}/${id}`);
+            if (res.ok) {
+                toast.success("Horario eliminado correctamente", { id: loadingToast });
+                fetchHorarios(); // Recargamos la lista
+            } else {
+                const err = await res.json();
+                toast.error(err.message || "No se pudo eliminar", { id: loadingToast });
+            }
+        } catch (error) {
+            toast.error("Error de conexión al eliminar", { id: loadingToast });
+        }
     };
 
     useEffect(() => {
@@ -147,16 +120,14 @@ const AdminSchedulesManager = () => {
 
             {/* --- BARRA DE FILTROS --- */}
             <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                    <input
-                        type="text"
-                        placeholder="Buscar..."
-                        className="w-full pl-10 pr-4 py-2 bg-slate-50 border-none rounded-2xl text-xs font-bold outline-none focus:ring-2 focus:ring-blue-500/20"
-                        value={searchTerm}
-                        onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
-                    />
-                </div>
+                <SearchInput
+                    value={searchTerm}
+                    onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
+                    placeholder="Buscar..."
+                    iconClassName="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                    iconSize={16}
+                    className="w-full pl-10 pr-4 py-2 bg-slate-50 border-none rounded-2xl text-xs font-bold outline-none focus:ring-2 focus:ring-blue-500/20"
+                />
                 <select
                     className="bg-slate-50 border-none rounded-2xl px-4 py-2 text-xs font-bold outline-none"
                     value={filterDia}
@@ -187,7 +158,7 @@ const AdminSchedulesManager = () => {
             </div>
 
             {loading ? (
-                <div className="flex justify-center p-20"><Loader2 className="animate-spin text-[#1e3a8a]" size={40} /></div>
+                <LoadingSpinner className="flex justify-center p-20" />
             ) : (
                 <>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
@@ -278,6 +249,16 @@ const AdminSchedulesManager = () => {
                     )}
                 </>
             )}
+
+            <ConfirmModal
+                isOpen={!!deleteTargetId}
+                onClose={() => setDeleteTargetId(null)}
+                onConfirm={executeDelete}
+                title="¿Eliminar Horario?"
+                message="Esta acción no se puede deshacer y liberará la cancha en ese horario."
+                iconType="danger"
+                confirmText="Sí, Eliminar"
+            />
         </div>
     );
 };

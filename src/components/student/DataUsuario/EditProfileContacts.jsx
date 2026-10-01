@@ -3,6 +3,7 @@ import { Phone, Plus, Star, Trash2, Pencil, Loader2, X, Check } from 'lucide-rea
 import apiFetch from '../../../interceptors/api.js';
 import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../../constants/apiRoutes.js';
+import ConfirmModal from '../../shared/ConfirmModal';
 
 const CONTACTO_VACIO = { nombre_completo: '', relacion: '', telefono: '', es_principal: false };
 
@@ -14,6 +15,7 @@ const EditProfileContacts = () => {
   const [guardando, setGuardando] = useState(false);
   const [editandoId, setEditandoId] = useState(null); // null = no editando, 'new' = creando
   const [formContacto, setFormContacto] = useState(CONTACTO_VACIO);
+  const [deleteTargetId, setDeleteTargetId] = useState(null);
 
   const cargarContactos = async () => {
     setLoading(true);
@@ -76,8 +78,13 @@ const EditProfileContacts = () => {
     }
   };
 
-  const eliminarContacto = async (id) => {
-    if (!window.confirm('¿Eliminar este contacto de emergencia?')) return;
+  const eliminarContacto = (id) => {
+    setDeleteTargetId(id);
+  };
+
+  const executeEliminarContacto = async () => {
+    const id = deleteTargetId;
+    setDeleteTargetId(null);
 
     try {
       const response = await apiFetch.delete(API_ROUTES.ALUMNOS.CONTACTOS.BY_ID(id));
@@ -161,6 +168,16 @@ const EditProfileContacts = () => {
           )}
         </div>
       )}
+
+      <ConfirmModal
+        isOpen={!!deleteTargetId}
+        onClose={() => setDeleteTargetId(null)}
+        onConfirm={executeEliminarContacto}
+        title="¿Eliminar contacto?"
+        message="Se eliminará este contacto de emergencia."
+        iconType="danger"
+        confirmText="Eliminar"
+      />
     </div>
   );
 };

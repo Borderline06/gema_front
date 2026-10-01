@@ -1,5 +1,6 @@
 import apiFetch from '../interceptors/api';
 import { API_ROUTES } from '../constants/apiRoutes';
+import { parseJsonResponse } from './httpHelpers';
 
 export const sedeService = {
     // Obtener todas las sedes con filtros
@@ -12,12 +13,7 @@ export const sedeService = {
     // Crear una nueva sede
     create: async (sedeData) => {
         const response = await apiFetch.post(API_ROUTES.SEDES.BASE, sedeData);
-
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.message || 'Error al crear sede');
-        }
-        return await response.json();
+        return await parseJsonResponse(response, 'Error al crear sede');
     },
 
     delete: async (id) => {
@@ -33,12 +29,6 @@ export const sedeService = {
 
     update: async (id, sedeData) => {
         const response = await apiFetch.put(`${API_ROUTES.SEDES.BASE}/${id}`, sedeData);
-
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.message || 'Error al actualizar la sede');
-        }
-
-        return await response.json();
+        return await parseJsonResponse(response, 'Error al actualizar la sede');
     }
 };

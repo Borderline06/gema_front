@@ -1,67 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, MapPin, Building2, ChevronRight, Search, Edit3, Trash2, ArrowLeft } from 'lucide-react';
+import React, { useState } from 'react';
+import { Plus, MapPin, Building2, ChevronRight, Edit3, Trash2, ArrowLeft } from 'lucide-react';
 import AdminLocations from './AdminLocations';
 import { sedeService } from '../../services/sede.service';
-import toast from 'react-hot-toast'; 
+import { useFetch } from '../../hooks/useFetch';
+import ConfirmModal from '../../components/shared/ConfirmModal';
+import SearchInput from '../../components/shared/SearchInput';
+import toast from 'react-hot-toast';
 
 const AdminLocationsManager = () => {
     const [view, setView] = useState('list');
-    const [sedes, setSedes] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedSede, setSelectedSede] = useState(null);
+    const [deleteTarget, setDeleteTarget] = useState(null);
+
+    const {
+        data: sedes,
+        loading,
+        refetch: fetchSedes,
+    } = useFetch(
+        () => sedeService.getAll().then((response) => response.data),
+        [],
+        { initialData: [], errorMessage: "Error al cargar las sedes" }
+    );
 
     const handleEdit = (sede) => {
         setSelectedSede(sede);
         setView('edit');
     };
 
-    const fetchSedes = async () => {
-        setLoading(true);
-        try {
-            const response = await sedeService.getAll();
-            setSedes(response.data);
-        } catch (error) {
-            toast.error("Error al cargar las sedes");
-        } finally {
-            setLoading(false);
-        }
+    const handleDelete = (id, nombre) => {
+        setDeleteTarget({ id, nombre });
     };
 
-    useEffect(() => {
-        fetchSedes();
-    }, []);
-
-    const handleDelete = async (id, nombre) => {
-        toast((t) => (
-            <div className="flex flex-col gap-3">
-                <p className="text-sm font-medium text-slate-700">
-                    ¿Estás seguro de eliminar la sede <span className="font-bold text-red-600">{nombre}</span>?
-                    <br />
-                    <span className="text-[10px] text-slate-400">Esta acción borrará canchas y direcciones asociadas.</span>
-                </p>
-                <div className="flex justify-end gap-2">
-                    <button
-                        onClick={() => toast.dismiss(t.id)}
-                        className="px-3 py-1.5 text-xs font-bold text-slate-500 hover:bg-slate-100 rounded-lg transition-all"
-                    >
-                        CANCELAR
-                    </button>
-                    <button
-                        onClick={async () => {
-                            toast.dismiss(t.id);
-                            executeDelete(id);
-                        }}
-                        className="px-3 py-1.5 text-xs font-bold bg-red-600 text-white hover:bg-red-700 rounded-lg shadow-sm transition-all"
-                    >
-                        ELIMINAR
-                    </button>
-                </div>
-            </div>
-        ), { duration: 5000, position: 'top-center' });
-    };
-
-    const executeDelete = async (id) => {
+    const executeDelete = async () => {
+        const { id } = deleteTarget;
+        setDeleteTarget(null);
         const loadId = toast.loading("Eliminando sede...");
         try {
             await sedeService.delete(id);
@@ -118,16 +91,14 @@ const AdminLocationsManager = () => {
             </div>
 
             {/* Buscador */}
-            <div className="relative group">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#1e3a8a] transition-colors" size={18} />
-                <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="BUSCAR SEDE POR NOMBRE O DISTRITO..."
-                    className="w-full bg-white border border-slate-200 rounded-2xl pl-12 pr-4 py-3 text-xs font-bold uppercase tracking-widest outline-none focus:ring-2 focus:ring-blue-500/20 transition-all shadow-sm"
-                />
-            </div>
+            <SearchInput
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="BUSCAR SEDE POR NOMBRE O DISTRITO..."
+                wrapperClassName="relative group"
+                iconClassName="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#1e3a8a] transition-colors"
+                className="w-full bg-white border border-slate-200 rounded-2xl pl-12 pr-4 py-3 text-xs font-bold uppercase tracking-widest outline-none focus:ring-2 focus:ring-blue-500/20 transition-all shadow-sm"
+            />
 
             {/* Listado */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -195,6 +166,16 @@ const AdminLocationsManager = () => {
                     <span className="text-xs font-black text-slate-400 uppercase tracking-widest group-hover:text-[#1e3a8a]">Nueva Sede</span>
                 </div>
             </div>
+
+            <ConfirmModal
+                isOpen={!!deleteTarget}
+                onClose={() => setDeleteTarget(null)}
+                onConfirm={executeDelete}
+                title="¿Eliminar sede?"
+                message={deleteTarget ? `Esta acción borrará canchas y direcciones asociadas a "${deleteTarget.nombre}".` : ''}
+                iconType="danger"
+                confirmText="Eliminar"
+            />
         </div>
     );
 };

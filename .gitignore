@@ -25,3 +25,8 @@ dist-ssr
 
 .env
 .env.local
+# Added by code-review-graph
+.code-review-graph/
+.claude/
+.mcp.json
+CLAUDE.md

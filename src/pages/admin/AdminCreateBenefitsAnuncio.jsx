@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Loader2, RefreshCcw, Users, HeartPulse, Gift, Sparkles, Zap, Star, Trophy, Power, PowerOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { apiFetch } from '../../interceptors/api';
-import Swal from 'sweetalert2';
+import ConfirmModal from '../../components/shared/ConfirmModal';
 
 // 🎨 Mapeo de Iconos Disponibles
 const IconOptions = {
@@ -23,6 +23,7 @@ const AdminCreateBenefitsAnuncio = () => {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [deleteTargetId, setDeleteTargetId] = useState(null);
 
   const formInicial = {
     id: null,
@@ -112,30 +113,23 @@ const AdminCreateBenefitsAnuncio = () => {
   };
 
   // 3. ELIMINAR
-  const handleDelete = async (id) => {
-    const result = await Swal.fire({
-      title: '¿Eliminar Anuncio?',
-      text: "Esta acción no se puede deshacer.",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#1e3a8a',
-      confirmButtonText: 'Sí, eliminar',
-      customClass: { popup: 'rounded-[2rem]' }
-    });
+  const handleDelete = (id) => {
+    setDeleteTargetId(id);
+  };
 
-    if (result.isConfirmed) {
-      try {
-        const response = await apiFetch.delete(`/anuncios-beneficios/${id}`);
-        if (response.ok) {
-          toast.success('Anuncio eliminado');
-          fetchAnuncios();
-        } else {
-          toast.error('Error al eliminar');
-        }
-      } catch (error) {
-        toast.error('Error de conexión');
+  const executeDelete = async () => {
+    const id = deleteTargetId;
+    setDeleteTargetId(null);
+    try {
+      const response = await apiFetch.delete(`/anuncios-beneficios/${id}`);
+      if (response.ok) {
+        toast.success('Anuncio eliminado');
+        fetchAnuncios();
+      } else {
+        toast.error('Error al eliminar');
       }
+    } catch (error) {
+      toast.error('Error de conexión');
     }
   };
 
@@ -317,6 +311,16 @@ const AdminCreateBenefitsAnuncio = () => {
           </div>
         </div>
       )}
+
+      <ConfirmModal
+        isOpen={!!deleteTargetId}
+        onClose={() => setDeleteTargetId(null)}
+        onConfirm={executeDelete}
+        title="¿Eliminar Anuncio?"
+        message="Esta acción no se puede deshacer."
+        iconType="danger"
+        confirmText="Sí, eliminar"
+      />
     </div>
   );
 };

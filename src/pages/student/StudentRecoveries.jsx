@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, RefreshCw, AlertCircle, CalendarPlus, History, Activity, ShieldPlus, Filter } from 'lucide-react';
+import { ArrowLeft, RefreshCw, AlertCircle, Filter } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
+import ConfirmModal from '../../components/shared/ConfirmModal';
 
 // Servicios y Utils
 import recuperacionService from '../../services/recuperacion.service';
 import horarioService from '../../services/horario.service';
-import { generarClasesDisponibles } from '../../utils/schedulerUtils';
+import { calcularSlotsDisponibles } from './recoveries/slotFiltering';
 
 // Componentes
 import RecoveryTicketList from '../../components/student/Recoveries/RecoveryTicketList';
 import AvailableSlotsGrid from '../../components/student/Recoveries/AvailableSlotsGrid';
 import RecoveryHistoryList from '../../components/student/Recoveries/RecoveryHistoryList';
+import RecoveryStatsCards from './recoveries/RecoveryStatsCards';
+import RecoveryTabs from './recoveries/RecoveryTabs';
+import RecoveryConfirmToast from './recoveries/RecoveryConfirmToast';
 
 const StudentRecoveries = () => {
     const { userId } = useAuth();
@@ -36,6 +40,7 @@ const StudentRecoveries = () => {
     const [availableSlots, setAvailableSlots] = useState([]);
 
     const [filtroSede, setFiltroSede] = useState('');
+    const [cancelTargetId, setCancelTargetId] = useState(null);
 
     // 1. Cargar datos iniciales
     const loadData = async () => {
@@ -84,32 +89,7 @@ const StudentRecoveries = () => {
     useEffect(() => {
         setFiltroSede('');
         if (selectedTicket && horariosPatron.length > 0) {
-            // Generamos clases para las próximas 3 semanas
-            const rawSlots = generarClasesDisponibles(horariosPatron, 4);
-
-            // Filtramos para quitar las que ya tiene ocupadas
-            const slotsLimpios = rawSlots.filter(slot => {
-                const fechaSlotTexto = slot.fecha.split('T')[0];
-                const slotDate = new Date(slot.fecha);
-
-                // Buscamos si el alumno ya tiene algo agendado ('PROGRAMADA') en este mismo día y a esta misma hora
-                const yaLoTieneOcupado = historial.some(ticket => {
-                    if (ticket.estado !== 'PROGRAMADA') return false;
-
-                    const fechaTicketTexto = ticket.fecha_programada.split('T')[0];
-                    const mismaFecha = fechaTicketTexto === fechaSlotTexto;
-                    const mismoHorario = ticket.horario_destino_id === slot.horarioData.id;
-
-                    return mismaFecha && mismoHorario;
-                });
-
-                let esHorarioRegularProtegido = false;
-
-                esHorarioRegularProtegido = stats.fechas_clases_regulares.some(f => f.fecha_clase === slot.fecha && f.id_horario === slot.horarioData.id)
-
-                return !yaLoTieneOcupado && !esHorarioRegularProtegido;
-            });
-
+            const slotsLimpios = calcularSlotsDisponibles(horariosPatron, historial, stats);
             setAvailableSlots(slotsLimpios);
             toast.success("Horarios disponibles cargados 👇", { id: 'slots-loaded' });
         } else {
@@ -119,32 +99,7 @@ const StudentRecoveries = () => {
 
     const confirmarRecuperacion = (slot) => {
         toast((t) => (
-            <div className="flex flex-col gap-4 p-1">
-                <div className="flex flex-col">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Confirmación de Reserva</span>
-                    <p className="text-sm font-bold text-[#1e3a8a] leading-tight mt-1">
-                        ¿Confirmas recuperar tu clase el <span className="text-orange-500">{new Date(slot.fecha).toLocaleDateString()}</span> a las <span className="text-orange-500">{slot.horarioData.hora_inicio.substring(0, 5)}</span>?
-                    </p>
-                </div>
-
-                <div className="flex gap-2">
-                    <button
-                        onClick={() => {
-                            toast.dismiss(t.id);
-                            ejecutarReserva(slot);
-                        }}
-                        className="flex-1 bg-orange-500 text-white text-[10px] font-black uppercase py-2.5 rounded-xl hover:bg-orange-600 transition-colors shadow-lg shadow-orange-200"
-                    >
-                        Confirmar
-                    </button>
-                    <button
-                        onClick={() => toast.dismiss(t.id)}
-                        className="flex-1 bg-slate-100 text-slate-500 text-[10px] font-black uppercase py-2.5 rounded-xl hover:bg-slate-200 transition-colors"
-                    >
-                        Cancelar
-                    </button>
-                </div>
-            </div>
+            <RecoveryConfirmToast t={t} slot={slot} onConfirm={() => ejecutarReserva(slot)} />
         ), {
             duration: 6000,
             position: 'bottom-center',
@@ -185,10 +140,13 @@ const StudentRecoveries = () => {
         confirmarRecuperacion(slot);
     };
 
-    const handleCancelRecovery = async (recuperacionId) => {
-        if (!window.confirm("¿Estás seguro de cancelar esta recuperación? El ticket volverá a tus pendientes.")) {
-            return;
-        }
+    const handleCancelRecovery = (recuperacionId) => {
+        setCancelTargetId(recuperacionId);
+    };
+
+    const executeCancelRecovery = async () => {
+        const recuperacionId = cancelTargetId;
+        setCancelTargetId(null);
 
         try {
             const promise = recuperacionService.cancelar(recuperacionId);
@@ -234,60 +192,9 @@ const StudentRecoveries = () => {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                <div className={`p-5 rounded-3xl border flex items-center justify-between ${alLimite ? 'bg-orange-50 border-orange-200' : 'bg-white border-gray-200 shadow-sm'}`}>
-                    <div className="flex items-center gap-4">
-                        <div className={`p-3 rounded-2xl ${alLimite ? 'bg-orange-100 text-orange-600' : 'bg-blue-50 text-blue-600'}`}>
-                            <Activity size={24} />
-                        </div>
-                        <div>
-                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Recuperaciones Normales</p>
-                            <div className="flex items-baseline gap-2">
-                                <span className={`text-2xl font-black ${alLimite ? 'text-orange-600' : 'text-slate-800'}`}>
-                                    {stats.recuperacion_usadas || 0}
-                                </span>
-                                <span className="text-sm font-bold text-slate-400">/ {stats.limite_permitido || 2} usadas</span>
-                            </div>
-                        </div>
-                    </div>
-                    {alLimite && (
-                        <span className="text-[10px] font-bold bg-orange-200 text-orange-700 px-3 py-1 rounded-full uppercase">Límite Alcanzado</span>
-                    )}
-                </div>
+            <RecoveryStatsCards stats={stats} alLimite={alLimite} />
 
-                <div className="bg-white border border-gray-200 shadow-sm p-5 rounded-3xl flex items-center gap-4">
-                    <div className="p-3 rounded-2xl bg-emerald-50 text-emerald-600">
-                        <ShieldPlus size={24} />
-                    </div>
-                    <div>
-                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Recuperaciones por Lesión</p>
-                        <div className="flex items-baseline gap-2">
-                            <span className="text-sm font-bold text-emerald-500 uppercase text-[10px]">Sin límite</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="flex gap-4 mb-8 border-b border-gray-200 pb-px">
-                <button
-                    onClick={() => setActiveTab('agendar')}
-                    className={`pb-4 px-2 text-sm font-bold uppercase tracking-widest transition-all border-b-2 flex items-center gap-2 ${activeTab === 'agendar'
-                        ? 'border-[#1e3a8a] text-[#1e3a8a]'
-                        : 'border-transparent text-gray-400 hover:text-gray-600'
-                        }`}
-                >
-                    <CalendarPlus size={18} /> Agendar Clase
-                </button>
-                <button
-                    onClick={() => setActiveTab('historial')}
-                    className={`pb-4 px-2 text-sm font-bold uppercase tracking-widest transition-all border-b-2 flex items-center gap-2 ${activeTab === 'historial'
-                        ? 'border-[#1e3a8a] text-[#1e3a8a]'
-                        : 'border-transparent text-gray-400 hover:text-gray-600'
-                        }`}
-                >
-                    <History size={18} /> Mi Historial
-                </button>
-            </div>
+            <RecoveryTabs activeTab={activeTab} onChange={setActiveTab} />
 
             {activeTab === 'agendar' ? (
                 <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -366,6 +273,16 @@ const StudentRecoveries = () => {
                     />
                 </div>
             )}
+
+            <ConfirmModal
+                isOpen={!!cancelTargetId}
+                onClose={() => setCancelTargetId(null)}
+                onConfirm={executeCancelRecovery}
+                title="¿Cancelar recuperación?"
+                message="El ticket volverá a tus pendientes."
+                iconType="danger"
+                confirmText="Sí, cancelar"
+            />
         </div>
     );
 };

@@ -3,12 +3,14 @@ import { X, Calendar as CalendarIcon, Trash2, Plus, Loader2, AlertCircle } from 
 import { feriadoService } from '../../services/feriado.service';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import ConfirmModal from '../shared/ConfirmModal';
 
 const FeriadoHistory = ({ onClose }) => {
     const [feriados, setFeriados] = useState([]);
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [newFeriado, setNewFeriado] = useState({ fecha: '', descripcion: '' });
+    const [deleteTargetId, setDeleteTargetId] = useState(null);
 
     // 🛠️ FUNCIÓN CLAVE: Corrige el desfase de zona horaria (UTC vs Local)
     const parseLocalDate = (dateString) => {
@@ -55,8 +57,13 @@ const FeriadoHistory = ({ onClose }) => {
         }
     };
 
-    const handleEliminar = async (id) => {
-        if (!window.confirm("¿Eliminar este feriado?")) return;
+    const handleEliminar = (id) => {
+        setDeleteTargetId(id);
+    };
+
+    const executeEliminar = async () => {
+        const id = deleteTargetId;
+        setDeleteTargetId(null);
         try {
             await feriadoService.eliminar(id);
             setFeriados(prev => prev.filter(f => f.id !== id));
@@ -161,6 +168,16 @@ const FeriadoHistory = ({ onClose }) => {
                     )}
                 </div>
             </div>
+
+            <ConfirmModal
+                isOpen={!!deleteTargetId}
+                onClose={() => setDeleteTargetId(null)}
+                onConfirm={executeEliminar}
+                title="¿Eliminar este feriado?"
+                message="Esta acción no se puede deshacer."
+                iconType="danger"
+                confirmText="Eliminar"
+            />
         </div>
     );
 };

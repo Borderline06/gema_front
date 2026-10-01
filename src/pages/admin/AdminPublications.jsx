@@ -7,6 +7,8 @@ import apiFetch from '../../interceptors/api'; // Interceptor que maneja FormDat
 import { useAuth } from '../../context/AuthContext'; // Contexto para el ID del Admin
 import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../constants/apiRoutes';
+import ConfirmModal from '../../components/shared/ConfirmModal';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
 
 const AdminPublications = () => {
     const { userId } = useAuth(); // ID del administrador logueado
@@ -14,6 +16,7 @@ const AdminPublications = () => {
     const [publicaciones, setPublicaciones] = useState([]);
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
+    const [deleteTargetId, setDeleteTargetId] = useState(null);
 
     // Estados del Formulario de Creación
     const [titulo, setTitulo] = useState('');
@@ -91,8 +94,13 @@ const AdminPublications = () => {
         }
     };
 
-    const handleDelete = async (id) => {
-        if (!window.confirm("¿Estás seguro de eliminar esta noticia?")) return;
+    const handleDelete = (id) => {
+        setDeleteTargetId(id);
+    };
+
+    const executeDelete = async () => {
+        const id = deleteTargetId;
+        setDeleteTargetId(null);
         try {
             const response = await apiFetch.delete(API_ROUTES.PUBLICACIONES.BY_ID(id));
             if (response.ok) {
@@ -198,7 +206,7 @@ const AdminPublications = () => {
             </div>
 
             {loading ? (
-                <div className="flex justify-center py-20"><Loader2 className="animate-spin text-[#1e3a8a]" size={40} /></div>
+                <LoadingSpinner />
             ) : publicaciones.length === 0 ? (
                 <div className="bg-white rounded-3xl border border-slate-200 p-16 text-center">
                     <Megaphone className="mx-auto text-slate-200 mb-4" size={60} />
@@ -231,6 +239,16 @@ const AdminPublications = () => {
                     ))}
                 </div>
             )}
+
+            <ConfirmModal
+                isOpen={!!deleteTargetId}
+                onClose={() => setDeleteTargetId(null)}
+                onConfirm={executeDelete}
+                title="¿Eliminar noticia?"
+                message="Esta acción no se puede deshacer."
+                iconType="danger"
+                confirmText="Eliminar"
+            />
         </div>
     );
 };

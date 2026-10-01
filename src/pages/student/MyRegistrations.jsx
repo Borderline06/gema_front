@@ -8,7 +8,7 @@ import {
 import apiFetch from '../../interceptors/api.js';
 import { API_ROUTES } from '../../constants/apiRoutes';
 import toast from 'react-hot-toast';
-import Swal from 'sweetalert2';
+import ConfirmModal from '../../components/shared/ConfirmModal';
 import { useAuth } from '../../context/AuthContext';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
@@ -67,6 +67,7 @@ const MyRegistrations = () => {
   const [isPayModalOpen, setIsPayModalOpen] = useState(false);
   const [selectedDebtForPay, setSelectedDebtForPay] = useState(null);
   const [renovacionModal, setRenovacionModal] = useState({ open: false, pkgId: null, fechasSugeridas: null });
+  const [actionTarget, setActionTarget] = useState(null); // reg pendiente de confirmar borrado/finalización
 
   const formatTimeSafe = useCallback((timeStr) => {
     if (!timeStr) return "--:--";
@@ -124,23 +125,19 @@ const MyRegistrations = () => {
     } catch (error) { toast.error("Error de red"); } finally { toast.dismiss(toastId); }
   };
 
-  const handleAction = async (reg) => {
+  const handleAction = (reg) => {
+    setActionTarget(reg);
+  };
+
+  const executeAction = async () => {
+    const reg = actionTarget;
+    setActionTarget(null);
     const isPending = reg.estado === 'PENDIENTE_PAGO';
-    const result = await Swal.fire({
-      title: `<span class="italic font-black uppercase text-[#1e3a8a] text-sm">${isPending ? '¿BORRAR RESERVA?' : '¿FINALIZAR HORARIO?'}</span>`,
-      text: 'Se liberará el cupo en este horario.',
-      showCancelButton: true,
-      confirmButtonColor: '#1e3a8a',
-      confirmButtonText: 'CONFIRMAR',
-      customClass: { popup: 'rounded-[2rem]' }
-    });
-    if (result.isConfirmed) {
-      try {
-        const endpoint = isPending ? `/inscripciones/${reg.id}/cancelar-reserva` : `/inscripciones/${reg.id}/separar-finalizar`;
-        const res = await apiFetch.patch(endpoint);
-        if (res.ok) { toast.success("Actualizado"); fetchInitialData(); }
-      } catch (error) { toast.error("Error"); }
-    }
+    try {
+      const endpoint = isPending ? `/inscripciones/${reg.id}/cancelar-reserva` : `/inscripciones/${reg.id}/separar-finalizar`;
+      const res = await apiFetch.patch(endpoint);
+      if (res.ok) { toast.success("Actualizado"); fetchInitialData(); }
+    } catch (error) { toast.error("Error"); }
   };
 
   const { currentPackages, historyItems } = useMemo(() => {
@@ -338,6 +335,16 @@ const MyRegistrations = () => {
         </div>
       )}
       <RenovacionModal isOpen={renovacionModal.open} fechasSugeridas={renovacionModal.fechasSugeridas} onClose={() => setRenovacionModal({ open: false, pkgId: null, fechasSugeridas: null })} onConfirm={confirmarRenovacionMasiva} />
+
+      <ConfirmModal
+        isOpen={!!actionTarget}
+        onClose={() => setActionTarget(null)}
+        onConfirm={executeAction}
+        title={actionTarget ? (actionTarget.estado === 'PENDIENTE_PAGO' ? '¿Borrar reserva?' : '¿Finalizar horario?') : ''}
+        message="Se liberará el cupo en este horario."
+        iconType="danger"
+        confirmText="Confirmar"
+      />
     </div>
   );
 };

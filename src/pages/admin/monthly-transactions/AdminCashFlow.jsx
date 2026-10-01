@@ -6,50 +6,14 @@ import { apiFetch } from '../../../interceptors/api';
 import { API_ROUTES } from '../../../constants/apiRoutes';
 
 import { MonthAccordion } from '../../../components/Admin/Components-monthly-transactions/MonthAccordion';
-import Swal from 'sweetalert2';
+import ConfirmModal from '../../../components/shared/ConfirmModal';
+import { formatLocalToUTC, formatUTCtoLocalInput, consolidarDatosMes, construirFilasExcel } from './cashFlowUtils';
 
-// Utilidades
 const currentYear = new Date().getFullYear();
 const MESES = [
     "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
     "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
 ];
-
-// ✅ ORDEN FIJO DE NIVELES: ajusta/agrega aquí si tienes más niveles.
-// Cualquier nivel que NO esté en esta lista se ubicará al final (antes de PLAN INDIVIDUAL),
-// ordenado alfabéticamente, para que nunca "desaparezca" un nivel nuevo silenciosamente.
-const ORDEN_NIVELES = ['BÁSICO', 'PRE INTERMEDIO', 'INTERMEDIO', 'AVANZADO'];
-
-// Ordena los niveles de una sede: sigue ORDEN_NIVELES y deja PLAN INDIVIDUAL siempre al final.
-const ordenarNiveles = (detalles) => {
-    return [...detalles].sort((a, b) => {
-        // PLAN INDIVIDUAL (esIndividual: true) siempre al final
-        if (a.esIndividual && !b.esIndividual) return 1;
-        if (!a.esIndividual && b.esIndividual) return -1;
-        if (a.esIndividual && b.esIndividual) return 0;
-
-        const idxA = ORDEN_NIVELES.indexOf((a.nivel || '').toUpperCase());
-        const idxB = ORDEN_NIVELES.indexOf((b.nivel || '').toUpperCase());
-        const posA = idxA === -1 ? ORDEN_NIVELES.length : idxA;
-        const posB = idxB === -1 ? ORDEN_NIVELES.length : idxB;
-
-        if (posA !== posB) return posA - posB;
-        // Si ambos son "desconocidos" (no están en ORDEN_NIVELES), orden alfabético
-        return (a.nivel || '').localeCompare(b.nivel || '');
-    });
-};
-
-const formatLocalToUTC = (fechaStr) => {
-    if (!fechaStr) return new Date().toISOString();
-    const [yyyy, mm, dd] = fechaStr.split('-');
-    return new Date(yyyy, mm - 1, dd, 12, 0, 0).toISOString();
-};
-
-const formatUTCtoLocalInput = (fechaISO) => {
-    if (!fechaISO) return '';
-    const d = new Date(fechaISO);
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-};
 
 const AdminCashFlow = () => {
     const [datosPorMes, setDatosPorMes] = useState({});
@@ -66,6 +30,7 @@ const AdminCashFlow = () => {
     const [addingType, setAddingType] = useState(null);
     const [newData, setNewData] = useState({ concepto: '', monto: '', fecha: '', sede_id: '' });
     const [submitting, setSubmitting] = useState(false);
+    const [deleteTarget, setDeleteTarget] = useState(null); // movimiento pendiente de eliminar
 
     // 1. Cargar las sedes al iniciar
     useEffect(() => {
@@ -83,7 +48,7 @@ const AdminCashFlow = () => {
         fetchSedes();
     }, []);
 
-    // 2. Fetch Mes y lógica de consolidación
+    // 2. Fetch de un mes: la consolidación de la respuesta cruda vive en cashFlowUtils.js
     const fetchMes = async (mesNum, anio, mostrarError = true) => {
         try {
             setLoadingMeses(prev => ({ ...prev, [mesNum]: true }));
@@ -93,133 +58,9 @@ const AdminCashFlow = () => {
             const data = await response.json();
 
             if (response.ok && data.success && data.data) {
-                let ingresosConsolidadosObj = {};
-                let ingresosManualesFlats = [];
-                let egresosFlats = [];
-
-                // Iterar sobre la nueva estructura: Sede -> niveles -> ingresos / egresos
-                Object.entries(data.data).forEach(([sedeNombre, sedeData]) => {
-
-                    // 🚀 NUEVA AGRUPACIÓN: SOLO POR SEDE
-                    if (sedeData.niveles) {
-                        const groupKey = sedeNombre;
-
-                        if (!ingresosConsolidadosObj[groupKey]) {
-                            ingresosConsolidadosObj[groupKey] = {
-                                id: `auto-${groupKey}`,
-                                sede: sedeNombre,
-                                monto: 0,
-                                cantidad: 0,
-                                fteTotal: 0,
-                                detallesNiveles: []
-                            };
-                        }
-
-                        // ✨ NUEVO: Contadores globales para agrupar TODOS los planes individuales de esta sede
-                        let cantidadSedeIndividual = 0;
-                        let montoSedeIndividual = 0;
-                        let fteSedeIndividual = 0;
-
-                        Object.entries(sedeData.niveles).forEach(([nivelNombre, nivelData]) => {
-                            const ingresosDelNivel = Array.isArray(nivelData.ingresos) ? nivelData.ingresos : [];
-                            let cantidadNivel = 0;
-                            let fteNivel = 0;
-                            let montoNivel = 0;
-
-                            ingresosDelNivel.forEach(ing => {
-                                const montoIngreso = parseFloat(ing.monto || 0);
-
-                                // Sumar al gran total de la sede (Esto se mantiene igual)
-                                ingresosConsolidadosObj[groupKey].monto += montoIngreso;
-                                ingresosConsolidadosObj[groupKey].cantidad += 1;
-
-                                const matchFte = ing.concepto?.match(/([\d.]+)\s*FTE/i);
-                                const currentFte = matchFte ? parseFloat(matchFte[1]) : (ing.es_plan_individual ? 0 : 0.5);
-
-                                ingresosConsolidadosObj[groupKey].fteTotal += currentFte;
-
-                                // ✨ SEPARACIÓN CLAVE: Si es individual, suma al contador "Individual", si no, al del "Nivel Normal"
-                                if (ing.es_plan_individual) {
-                                    cantidadSedeIndividual += 1;
-                                    montoSedeIndividual += montoIngreso;
-                                    fteSedeIndividual += currentFte; // (Aunque sea 0, lo sumamos por si acaso)
-                                } else {
-                                    cantidadNivel += 1;
-                                    montoNivel += montoIngreso;
-                                    fteNivel += currentFte;
-                                }
-                            });
-
-                            // Agregamos el nivel normal (Solo si tuvo pagos que NO son individuales)
-                            if (cantidadNivel > 0) {
-                                ingresosConsolidadosObj[groupKey].detallesNiveles.push({
-                                    nivel: nivelNombre,
-                                    fte: fteNivel,
-                                    cantidad: cantidadNivel,
-                                    monto: montoNivel,
-                                    esIndividual: false // 👈 Flag para la tabla
-                                });
-                            }
-                        });
-
-                        // ✨ CREACIÓN DEL "FALSO NIVEL": Agregamos la fila de PLAN INDIVIDUAL al final
-                        if (cantidadSedeIndividual > 0) {
-                            ingresosConsolidadosObj[groupKey].detallesNiveles.push({
-                                nivel: 'PLAN INDIVIDUAL',
-                                fte: fteSedeIndividual,
-                                cantidad: cantidadSedeIndividual,
-                                monto: montoSedeIndividual,
-                                esIndividual: true // 👈 Flag que usaremos en IncomeTable para pintarlo de otro color
-                            });
-                        }
-
-                        // ✅ FIX: forzar orden fijo de niveles (BÁSICO, PRE INTERMEDIO, INTERMEDIO...)
-                        // y dejar PLAN INDIVIDUAL siempre al final, sin importar el orden en que
-                        // vinieron las niveles desde el backend.
-                        ingresosConsolidadosObj[groupKey].detallesNiveles = ordenarNiveles(
-                            ingresosConsolidadosObj[groupKey].detallesNiveles
-                        );
-                    }
-
-                    // Procesar Egresos de la sede
-                    if (sedeData.egresos) {
-                        sedeData.egresos.forEach(egr => {
-                            egresosFlats.push({ ...egr, sede: sedeNombre, tipo: 'EGRESO' });
-                        });
-                    }
-
-                    // Procesar ingresos manuales (Si existen)
-                    if (sedeData.ingresosManuales) {
-                        sedeData.ingresosManuales.forEach(ing => {
-                            ingresosManualesFlats.push({ ...ing, sede: sedeNombre, tipo: 'INGRESO' });
-                        });
-                    }
-                });
-
-                // 🚀 INYECTAR EL TEXTO MULTILÍNEA
-                const ingresosConsolidadosArray = Object.values(ingresosConsolidadosObj).map(item => {
-                    // Línea principal (Ej: INGRESOS ACUMULADOS | 7.5 FTE (15 PAGOS))
-                    let conceptoStr = `INGRESOS ACUMULADOS | ${item.fteTotal} FTE (${item.cantidad} PAGO${item.cantidad !== 1 ? 'S' : ''})`;
-
-                    // Agregar una línea por cada nivel (Ej: ↳ BÁSICO: 2 FTE (4 PAGOS))
-                    item.detallesNiveles.forEach(det => {
-                        conceptoStr += `\n  ↳ ${det.nivel}: ${det.fte} FTE (${det.cantidad} PAGO${det.cantidad !== 1 ? 'S' : ''})`;
-                    });
-
-                    return {
-                        ...item,
-                        concepto: conceptoStr,
-                        detallesRender: item.detallesNiveles // Lo dejamos por si a futuro quieres mapearlo con React
-                    };
-                });
-
                 setDatosPorMes(prev => ({
                     ...prev,
-                    [mesNum]: {
-                        ingresosConsolidados: ingresosConsolidadosArray,
-                        ingresosManuales: ingresosManualesFlats,
-                        egresos: egresosFlats
-                    }
+                    [mesNum]: consolidarDatosMes(data.data)
                 }));
             } else {
                 if (mostrarError) toast.error(data.message || `Error al cargar mes ${mesNum}`);
@@ -325,15 +166,13 @@ const AdminCashFlow = () => {
         }
     };
 
-    const movimientoDelete = async (movimiento) => {
-        const result = await Swal.fire({
-            title: `<span class="italic font-black uppercase text-[#1e3a8a]">¿Eliminar ${movimiento.tipo}?</span>`,
-            showCancelButton: true,
-            confirmButtonColor: '#ef4444',
-            confirmButtonText: 'SÍ, ELIMINAR',
-            customClass: { popup: 'rounded-[3rem] p-8' }
-        });
-        if (!result.isConfirmed) return;
+    const movimientoDelete = (movimiento) => {
+        setDeleteTarget(movimiento);
+    };
+
+    const executeMovimientoDelete = async () => {
+        const movimiento = deleteTarget;
+        setDeleteTarget(null);
         try {
             const response = await apiFetch.delete(`/caja/${movimiento.id}`);
             if (response.ok) {
@@ -348,84 +187,9 @@ const AdminCashFlow = () => {
         }
     }
 
-    // 5. Excel 
+    // 5. Excel: el aplanado de filas vive en cashFlowUtils.js
     const exportToExcel = () => {
-        let dataToExport = [];
-
-        // Iteramos por cada mes que tengamos cargado en el estado
-        Object.entries(datosPorMes).forEach(([mesNum, dataMes]) => {
-            const nombreMes = MESES[parseInt(mesNum) - 1];
-
-            // 1. Procesar Ingresos Automáticos (Estructura: Sede -> Niveles)
-            // Como 'data.data' del endpoint viene estructurado como:
-            // { Sede: { niveles: { Nivel: { ingresos: [...] } } } }
-            // Vamos a reconstruir el detalle desde el objeto original de la respuesta
-            // (Nota: Si tu `datosPorMes` ya está procesado, ajustaremos para leer eso)
-
-            // Si usas el estado 'datosPorMes', accedemos a la estructura que ya procesaste:
-            if (dataMes.ingresosConsolidados) {
-                dataMes.ingresosConsolidados.forEach(item => {
-                    // Fila principal de la Sede
-                    dataToExport.push({
-                        "AÑO": filtroAnio,
-                        "MES": nombreMes,
-                        "SEDE": item.sede,
-                        "NIVEL": "TOTAL SEDE",
-                        "CONCEPTO": "TOTAL ACUMULADO",
-                        "CANTIDAD PAGOS": item.cantidad,
-                        "TOTAL FTE": item.fteTotal,
-                        "MONTO (S/)": parseFloat(item.monto)
-                    });
-
-                    // Filas detalladas por nivel (dentro de la misma sede)
-                    if (item.detallesRender) {
-                        item.detallesRender.forEach(det => {
-                            dataToExport.push({
-                                "AÑO": filtroAnio,
-                                "MES": nombreMes,
-                                "SEDE": item.sede,
-                                "NIVEL": det.nivel,
-                                "CONCEPTO": `DESGLOSE: ${det.nivel}`,
-                                "CANTIDAD PAGOS": det.cantidad,
-                                "TOTAL FTE": det.fte,
-                                "MONTO (S/)": "" // El monto total ya está arriba
-                            });
-                        });
-                    }
-                });
-            }
-
-            // 2. Ingresos Manuales y Egresos (Mantenemos tu lógica existente)
-            if (dataMes.ingresosManuales) {
-                dataMes.ingresosManuales.forEach(ing => {
-                    dataToExport.push({
-                        "AÑO": filtroAnio,
-                        "MES": nombreMes,
-                        "SEDE": ing.sede,
-                        "NIVEL": "N/A",
-                        "CONCEPTO": ing.concepto,
-                        "CANTIDAD PAGOS": 1,
-                        "TOTAL FTE": 0,
-                        "MONTO (S/)": parseFloat(ing.monto)
-                    });
-                });
-            }
-
-            if (dataMes.egresos) {
-                dataMes.egresos.forEach(egr => {
-                    dataToExport.push({
-                        "AÑO": filtroAnio,
-                        "MES": nombreMes,
-                        "SEDE": egr.sede,
-                        "NIVEL": "N/A",
-                        "CONCEPTO": egr.concepto,
-                        "CANTIDAD PAGOS": 1,
-                        "TOTAL FTE": 0,
-                        "MONTO (S/)": -Math.abs(parseFloat(egr.monto))
-                    });
-                });
-            }
-        });
+        const dataToExport = construirFilasExcel(datosPorMes, filtroAnio, MESES);
 
         if (dataToExport.length === 0) return toast.error("No hay datos para exportar.");
 
@@ -494,6 +258,16 @@ const AdminCashFlow = () => {
                     />
                 ))}
             </div>
+
+            <ConfirmModal
+                isOpen={!!deleteTarget}
+                onClose={() => setDeleteTarget(null)}
+                onConfirm={executeMovimientoDelete}
+                title={deleteTarget ? `¿Eliminar ${deleteTarget.tipo}?` : ''}
+                message="Esta acción no se puede deshacer."
+                iconType="danger"
+                confirmText="Sí, eliminar"
+            />
         </div>
     );
 };

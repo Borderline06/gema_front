@@ -10,6 +10,7 @@ import {
   isTokenFallbackEnabled,
 } from '../utils/authTokens';
 import apiFetch from '../interceptors/api';
+import { parseJsonResponse } from './httpHelpers';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -36,8 +37,7 @@ export const loginService = async (identifier, password) => {
     credentials: 'include',
   });
 
-  const result = await response.json();
-  if (!response.ok) throw new Error(result.message || 'Error en el servidor');
+  const result = await parseJsonResponse(response, 'Error en el servidor');
 
   if (result.data) {
     const { accessToken, refreshToken, user } = result.data;
@@ -117,13 +117,7 @@ export const registerService = async (userData) => {
     body: JSON.stringify(userData),
   });
 
-  const result = await response.json();
-
-  if (!response.ok) {
-    throw new Error(result.message || 'Error al registrar el usuario');
-  }
-
-  return result;
+  return await parseJsonResponse(response, 'Error al registrar el usuario');
 };
 
 export const completarEmailService = async (nuevoEmail) => {
@@ -134,21 +128,12 @@ export const completarEmailService = async (nuevoEmail) => {
     credentials: 'include',
   });
 
-  const result = await response.json();
-
-  if (!response.ok) {
-    throw new Error(result.message || 'Error al actualizar el correo');
-  }
-
+  const result = await parseJsonResponse(response, 'Error al actualizar el correo');
   return result.data;
 };
 
 export const resetPasswordByAdmin = async (data) => {
   console.log(API_URL)
   const response = await apiFetch.post(`/auth/reset-password-admin`, data);
-  const result = await response.json();
-  if (!response.ok) {
-    throw new Error(result.message || 'Error al actualizar contraseña del usuario');
-  }
-  return result;
+  return await parseJsonResponse(response, 'Error al actualizar contraseña del usuario');
 }

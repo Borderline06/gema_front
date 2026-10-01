@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { 
-    Trash2, Search, User, Calendar, AlertTriangle, 
-    Loader2, Filter, History, MapPin, ChevronDown, Stethoscope, ChevronRight
+import {
+    Trash2, User, Calendar, AlertTriangle,
+    Filter, History, MapPin, ChevronDown, Stethoscope, ChevronRight
 } from 'lucide-react';
 import { apiFetch } from "../../interceptors/api";
 import { API_ROUTES } from "../../constants/apiRoutes";
 import toast from 'react-hot-toast';
-import { format, addMinutes } from 'date-fns'; 
+import { format, addMinutes } from 'date-fns';
+import ConfirmModal from '../../components/shared/ConfirmModal';
+import SearchInput from '../../components/shared/SearchInput';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
 
 const AdminDeleteMakeups = () => {
     const [recuperaciones, setRecuperaciones] = useState([]);
@@ -14,6 +17,7 @@ const AdminDeleteMakeups = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [openSections, setOpenSections] = useState({}); // Para Sedes
     const [openAlumnos, setOpenAlumnos] = useState({});   // Para Alumnos
+    const [deleteTarget, setDeleteTarget] = useState(null); // { id, nombre }
 
     useEffect(() => { fetchRecuperaciones(); }, []);
 
@@ -37,8 +41,13 @@ const AdminDeleteMakeups = () => {
         return format(adjustedDate, 'dd/MM/yyyy');
     };
 
-    const handleDelete = async (id, nombre) => {
-        if (!window.confirm(`¿Eliminar registro de ${nombre}?`)) return;
+    const handleDelete = (id, nombre) => {
+        setDeleteTarget({ id, nombre });
+    };
+
+    const executeDelete = async () => {
+        const { id } = deleteTarget;
+        setDeleteTarget(null);
         try {
             await apiFetch.delete(API_ROUTES.RECUPERACIONES.ELIMINAR(id));
             toast.success("Eliminado");
@@ -79,9 +88,7 @@ const AdminDeleteMakeups = () => {
     }, [recuperaciones, searchTerm]);
 
     if (loading) return (
-        <div className="flex h-96 items-center justify-center">
-            <Loader2 className="animate-spin text-blue-600" size={40} />
-        </div>
+        <LoadingSpinner className="flex h-96 items-center justify-center" colorClassName="text-blue-600" />
     );
 
     return (
@@ -97,16 +104,15 @@ const AdminDeleteMakeups = () => {
                         <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-1">Gema Academy • Control de Registros</p>
                     </div>
                 </div>
-                <div className="relative w-full md:w-80">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
-                    <input 
-                        type="text" 
-                        placeholder="Buscar alumno..." 
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-xs font-bold text-white outline-none focus:ring-2 focus:ring-orange-500 transition-all"
-                    />
-                </div>
+                <SearchInput
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Buscar alumno..."
+                    wrapperClassName="relative w-full md:w-80"
+                    iconClassName="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
+                    iconSize={16}
+                    className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-xs font-bold text-white outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                />
             </div>
 
             {/* Listado */}
@@ -216,6 +222,16 @@ const AdminDeleteMakeups = () => {
                     </div>
                 ))}
             </div>
+
+            <ConfirmModal
+                isOpen={!!deleteTarget}
+                onClose={() => setDeleteTarget(null)}
+                onConfirm={executeDelete}
+                title="¿Eliminar registro?"
+                message={deleteTarget ? `Se eliminará el registro de recuperación de ${deleteTarget.nombre}.` : ''}
+                iconType="danger"
+                confirmText="Eliminar"
+            />
         </div>
     );
 };

@@ -1,89 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Search, Trophy, Edit3, Trash2, ChevronRight, Loader2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Plus, Trophy, Edit3, Trash2, ChevronRight } from 'lucide-react';
 import AdminLevels from './AdminLevels';
 import { apiFetch } from '../../interceptors/api';
 import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../constants/apiRoutes';
+import ConfirmModal from '../../components/shared/ConfirmModal';
+import SearchInput from '../../components/shared/SearchInput';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import EmptyState from '../../components/shared/EmptyState';
+import { useFetch } from '../../hooks/useFetch';
 
 const AdminLevelsManager = () => {
     const [view, setView] = useState('list');
-    const [niveles, setNiveles] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [selectedNivel, setSelectedNivel] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const [deleteTargetId, setDeleteTargetId] = useState(null);
 
-    const fetchNiveles = async () => {
-        try {
-            setLoading(true);
+    const {
+        data: niveles,
+        loading,
+        refetch: fetchNiveles,
+    } = useFetch(
+        async () => {
             const response = await apiFetch.get(API_ROUTES.NIVELES.BASE);
             const result = await response.json();
-            if (response.ok) {
-                setNiveles(result.data || []);
-            }
-        } catch (error) {
-            toast.error("No se pudieron cargar los niveles");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        if (view === 'list') fetchNiveles();
-    }, [view]);
+            if (!response.ok) throw new Error(result.message || "Error al obtener niveles");
+            return result.data || [];
+        },
+        [],
+        { initialData: [], errorMessage: "No se pudieron cargar los niveles" }
+    );
 
     const handleDelete = (id) => {
-        toast((t) => (
-            <div className="flex flex-col gap-3">
-                <div className="flex flex-col gap-1">
-                    <p className="text-sm font-black text-slate-800 uppercase tracking-tight">
-                        ¿Confirmas la eliminación?
-                    </p>
-                    <p className="text-[10px] text-slate-500 font-bold uppercase">
-                        Esta acción no se puede deshacer.
-                    </p>
-                </div>
-                <div className="flex gap-2 justify-end">
-                    <button
-                        onClick={() => toast.dismiss(t.id)}
-                        className="px-3 py-1.5 text-[10px] font-black text-slate-400 uppercase hover:text-slate-600 transition-colors"
-                    >
-                        Cancelar
-                    </button>
-                    <button
-                        onClick={async () => {
-                            toast.dismiss(t.id);
+        setDeleteTargetId(id);
+    };
 
-                            const deletePromise = async () => {
-                                const response = await apiFetch.delete(API_ROUTES.NIVELES.BY_ID(id));
-                                const result = await response.json();
-                                if (!response.ok) throw new Error(result.message || "Error al eliminar");
-                                fetchNiveles();
-                                return result.message || "Nivel eliminado correctamente";
-                            };
+    const executeDelete = async () => {
+        const id = deleteTargetId;
+        setDeleteTargetId(null);
 
-                            toast.promise(deletePromise(), {
-                                loading: 'Procesando eliminación...',
-                                success: (msg) => <b>{msg}</b>,
-                                error: (err) => <b>{err.message}</b>,
-                            });
-                        }}
-                        className="px-4 py-1.5 bg-red-500 text-white text-[10px] font-black rounded-lg uppercase shadow-lg shadow-red-200 hover:bg-red-600 transition-all"
-                    >
-                        Eliminar Nivel
-                    </button>
-                </div>
-            </div>
-        ), {
-            duration: 5000,
-            position: 'top-center',
-            style: {
-                borderRadius: '20px',
-                background: '#fff',
-                color: '#333',
-                border: '1px solid #e2e8f0',
-                padding: '16px',
-                boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)'
-            },
+        const deletePromise = async () => {
+            const response = await apiFetch.delete(API_ROUTES.NIVELES.BY_ID(id));
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.message || "Error al eliminar");
+            fetchNiveles();
+            return result.message || "Nivel eliminado correctamente";
+        };
+
+        toast.promise(deletePromise(), {
+            loading: 'Procesando eliminación...',
+            success: (msg) => <b>{msg}</b>,
+            error: (err) => <b>{err.message}</b>,
         });
     };
 
@@ -98,7 +65,11 @@ const AdminLevelsManager = () => {
 
     if (view === 'create' || view === 'edit') {
         return <AdminLevels
-            onBack={() => { setView('list'); setSelectedNivel(null); }}
+            onBack={() => {
+                setView('list');
+                setSelectedNivel(null);
+                fetchNiveles();
+            }}
             initialData={selectedNivel}
         />;
     }
@@ -120,19 +91,16 @@ const AdminLevelsManager = () => {
             </div>
 
             {/* Buscador */}
-            <div className="relative group">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                <input
-                    type="text"
-                    placeholder="BUSCAR NIVEL..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full bg-white border border-slate-200 rounded-2xl pl-12 pr-4 py-3 text-xs font-bold uppercase outline-none focus:ring-2 focus:ring-blue-500/20"
-                />
-            </div>
+            <SearchInput
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="BUSCAR NIVEL..."
+                wrapperClassName="relative group"
+                className="w-full bg-white border border-slate-200 rounded-2xl pl-12 pr-4 py-3 text-xs font-bold uppercase outline-none focus:ring-2 focus:ring-blue-500/20"
+            />
 
             {loading ? (
-                <div className="flex justify-center p-20"><Loader2 className="animate-spin text-[#1e3a8a]" size={40} /></div>
+                <LoadingSpinner className="flex justify-center p-20" />
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredNiveles.map((nivel) => (
@@ -171,10 +139,18 @@ const AdminLevelsManager = () => {
             )}
 
             {filteredNiveles.length === 0 && !loading && (
-                <div className="py-20 text-center text-slate-400 font-bold italic uppercase text-xs tracking-widest">
-                    No se encontraron niveles registrados
-                </div>
+                <EmptyState message="No se encontraron niveles registrados" />
             )}
+
+            <ConfirmModal
+                isOpen={!!deleteTargetId}
+                onClose={() => setDeleteTargetId(null)}
+                onConfirm={executeDelete}
+                title="¿Confirmas la eliminación?"
+                message="Esta acción no se puede deshacer."
+                iconType="danger"
+                confirmText="Eliminar Nivel"
+            />
         </div>
     );
 };
