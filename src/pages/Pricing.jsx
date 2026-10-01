@@ -32,7 +32,7 @@ const Pricing = () => {
             if (index === 1) { // El del medio por defecto
               config.badge = "Más Versátil";
               config.icon = <MapPin className="text-blue-600" size={26} />;
-              config.color = "border-blue-200 shadow-[0_20px_50px_rgba(249,115,22,0.1)] scale-105 bg-brand-surface";
+              config.color = "border-blue-200 shadow-accent-card scale-105 bg-brand-surface";
               config.btnStyle = "bg-brand-primary text-white hover:bg-[#162a63] shadow-lg shadow-brand-primary/20";
             }
 
@@ -40,7 +40,7 @@ const Pricing = () => {
               config.badge = "Elite";
               config.recommended = true;
               config.icon = <Star className="text-brand-accent" size={26} />;
-              config.color = "border-brand-accent shadow-[0_20px_50px_rgba(249,115,22,0.1)] scale-105 bg-brand-surface z-10";
+              config.color = "border-brand-accent shadow-accent-card scale-105 bg-brand-surface z-10";
               config.btnStyle = "bg-brand-accent text-white hover:bg-[#ea580c] shadow-xl shadow-brand-accent/30";
             }
 

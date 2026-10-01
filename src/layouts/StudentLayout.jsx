@@ -12,7 +12,7 @@ const StudentLayout = () => {
   if (!user) return <Navigate to="/login" replace />;
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-bg">
       <StudentSidebar />
       <div className="w-full md:pl-64 flex-1 relative min-h-screen">
         <Outlet />

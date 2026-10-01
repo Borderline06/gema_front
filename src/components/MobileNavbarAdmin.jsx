@@ -15,7 +15,7 @@ const MobileNavbarAdmin = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const bottomNavClass = ({ isActive }) =>
-        `flex flex-col items-center gap-1.5 w-full transition-all ${isActive ? 'text-orange-500' : 'text-blue-100/50'}`;
+        `flex flex-col items-center gap-1.5 w-full transition-all ${isActive ? 'text-brand-accent' : 'text-blue-100/50'}`;
     const bottomNavLabelClass = "text-[8px] uppercase font-black italic tracking-widest";
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -39,7 +39,7 @@ const MobileNavbarAdmin = () => {
                     onClick={toggleMenu}
                 ></div>
 
-                <div className={`absolute right-0 top-0 h-full w-[280px] bg-gradient-to-b from-[#1e3a8a] to-[#0f172a] shadow-2xl transition-transform duration-500 transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+                <div className={`absolute right-0 top-0 h-full w-[280px] bg-gradient-to-b from-brand-primary to-brand-primary-dark shadow-2xl transition-transform duration-500 transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
                     <div className="flex flex-col h-full border-l border-white/10">
 
                         {/* HEADER DEL MENÚ */}
@@ -47,13 +47,13 @@ const MobileNavbarAdmin = () => {
                             <button onClick={toggleMenu} className="absolute top-4 right-4 text-white/50 hover:text-white bg-white/5 p-2 rounded-full">
                                 <X size={20} />
                             </button>
-                            <div className="relative z-10 w-[100px] aspect-square bg-white rounded-full p-2 shadow-2xl flex items-center justify-center border-[4px] border-white/10 overflow-hidden mb-3">
+                            <div className="relative z-10 w-[100px] aspect-square bg-brand-surface rounded-full p-2 shadow-2xl flex items-center justify-center border-[4px] border-white/10 overflow-hidden mb-3">
                                 <Link to="/" onClick={toggleMenu}>
                                     <img src="/Logo con borde blanco.png" alt="Logo Club Gema" className="w-full h-full object-cover" />
                                 </Link>
                             </div>
                             <span className="font-black text-lg tracking-tighter uppercase italic text-white">
-                                Gema<span className="text-orange-500">Admin</span>
+                                Gema<span className="text-brand-accent">Admin</span>
                             </span>
                         </div>
 
@@ -103,7 +103,7 @@ const MobileNavbarAdmin = () => {
             </div>
 
             {/* 🚀 NAVBAR INFERIOR (Las 4 acciones vitales) */}
-            <nav className="fixed bottom-0 left-0 w-full bg-[#0f172a] border-t border-white/10 shadow-[0_-10px_30px_rgba(0,0,0,0.5)] z-50 md:hidden pb-safe transition-all">
+            <nav className="fixed bottom-0 left-0 w-full bg-brand-primary-dark border-t border-white/10 shadow-[0_-10px_30px_rgba(0,0,0,0.5)] z-50 md:hidden pb-safe transition-all">
                 <div className="flex justify-around items-end h-[72px] px-2 pb-2">
 
                     <NavLink to="/dashboard/admin" end className={bottomNavClass}>

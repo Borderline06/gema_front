@@ -31,11 +31,11 @@ const MobileNavbarTeacher = () => {
                     onClick={toggleMenu}
                 ></div>
 
-                <div className={`absolute right-0 top-0 h-full w-[80%] max-w-sm bg-gradient-to-b from-[#1e3a8a] to-[#0f172a] shadow-2xl transition-transform duration-500 transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+                <div className={`absolute right-0 top-0 h-full w-[80%] max-w-sm bg-gradient-to-b from-brand-primary to-brand-primary-dark shadow-2xl transition-transform duration-500 transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
                     <div className="flex flex-col h-full border-l border-white/10">
                         <div className="p-6 flex justify-between items-center border-b border-white/10 bg-white/5">
                             <span className="font-black text-sm tracking-widest uppercase italic text-white flex gap-1">
-                                Gema<span className="text-orange-500">Coordinador</span>
+                                Gema<span className="text-brand-accent">Coordinador</span>
                             </span>
                             <button onClick={toggleMenu} className="p-2 bg-white/5 rounded-lg text-white/50">
                                 <X size={20} />
@@ -61,11 +61,11 @@ const MobileNavbarTeacher = () => {
             </div>
 
             {/* BARRA INFERIOR */}
-            <nav className="fixed bottom-0 left-0 w-full bg-[#0f172a] border-t border-white/10 shadow-[0_-10px_30px_rgba(0,0,0,0.5)] z-50 md:hidden h-20">
+            <nav className="fixed bottom-0 left-0 w-full bg-brand-primary-dark border-t border-white/10 shadow-[0_-10px_30px_rgba(0,0,0,0.5)] z-50 md:hidden h-20">
                 <div className="flex justify-around items-center h-full max-w-sm mx-auto px-4">
 
                     {/* INICIO */}
-                    <NavLink to="/dashboard/teacher" end className={({ isActive }) => `flex flex-col items-center justify-center gap-1 w-full h-full transition-all ${isActive ? 'text-orange-500 scale-110' : 'text-blue-100/40 hover:text-blue-100/70'}`}>
+                    <NavLink to="/dashboard/teacher" end className={({ isActive }) => `flex flex-col items-center justify-center gap-1 w-full h-full transition-all ${isActive ? 'text-brand-accent scale-110' : 'text-blue-100/40 hover:text-blue-100/70'}`}>
                         {({ isActive }) => (
                             <>
                                 <ClipboardList size={isActive ? 24 : 22} />
@@ -74,7 +74,7 @@ const MobileNavbarTeacher = () => {
                         )}
                     </NavLink>
 
-                    <NavLink to="/dashboard/teacher/profile" className={({ isActive }) => `flex flex-col items-center justify-center gap-1 w-full h-full transition-all ${isActive ? 'text-orange-500 scale-110' : 'text-blue-100/40 hover:text-blue-100/70'}`}>
+                    <NavLink to="/dashboard/teacher/profile" className={({ isActive }) => `flex flex-col items-center justify-center gap-1 w-full h-full transition-all ${isActive ? 'text-brand-accent scale-110' : 'text-blue-100/40 hover:text-blue-100/70'}`}>
                         {({ isActive }) => (
                             <>
                                 <User size={isActive ? 24 : 22} />

@@ -115,7 +115,7 @@ const Blog = () => {
       {/* --- GRID DE NOTICIAS --- */}
       <section className="max-w-7xl mx-auto px-6 py-32">
         <div className="flex items-center gap-4 mb-20">
-          <div className="h-12 w-3 bg-brand-accent rounded-full shadow-[0_0_15px_rgba(249,115,22,0.4)]"></div>
+          <div className="h-12 w-3 bg-brand-accent rounded-full shadow-accent-bar"></div>
           <h2 className="text-5xl font-black text-brand-primary uppercase italic tracking-tighter">Muro de Campeones</h2>
         </div>
 

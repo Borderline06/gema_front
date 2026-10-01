@@ -46,7 +46,7 @@ const TeacherSidebar = ({ isOpen, onClose }) => {
             <span className="block font-black text-xl tracking-tighter uppercase italic text-white leading-none">
               Gema<span className="text-brand-accent font-black">Coordinador</span>
             </span>
-            <div className="h-1 w-8 bg-brand-accent mx-auto mt-2 rounded-full shadow-[0_0_8px_rgba(249,115,22,0.5)]"></div>
+            <div className="h-1 w-8 bg-brand-accent mx-auto mt-2 rounded-full shadow-accent-bar-sm"></div>
           </div>
         </div>
 

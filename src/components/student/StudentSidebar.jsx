@@ -110,7 +110,7 @@ const StudentSidebar = () => {
         <div className="px-5 pb-8 pt-4 border-b border-white/10 relative z-20"> {/* pb-8 pt-4 para bajarlo */}
           <Link
             to="/dashboard/student/enrollment"
-            className="group relative w-full flex items-center justify-center gap-3 py-4 bg-gradient-to-r from-brand-accent to-brand-accent-dark text-white rounded-2xl shadow-[0_0_20px_rgba(249,115,22,0.4)] hover:shadow-[0_0_30px_rgba(249,115,22,0.6)] transition-all duration-300 active:scale-95 overflow-hidden"
+            className="group relative w-full flex items-center justify-center gap-3 py-4 bg-gradient-to-r from-brand-accent to-brand-accent-dark text-white rounded-2xl shadow-accent-glow hover:shadow-accent-glow-hover transition-all duration-300 active:scale-95 overflow-hidden"
           >
             {/* Efecto de brillo interior */}
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
@@ -145,7 +145,7 @@ const StudentSidebar = () => {
                   {group.hasAlert && (
                     <div className="relative flex h-2.5 w-2.5">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-accent shadow-[0_0_10px_rgba(249,115,22,0.8)]"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-accent shadow-accent-dot"></span>
                     </div>
                   )}
                 </Link>

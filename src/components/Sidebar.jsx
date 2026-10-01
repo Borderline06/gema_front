@@ -90,7 +90,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         <>
             <aside className={`
                 fixed inset-y-0 left-0 z-40 w-64 h-screen 
-                bg-gradient-to-b from-[#1e3a8a] to-[#0f172a] text-white 
+                bg-gradient-to-b from-brand-primary to-brand-primary-dark text-white 
                 transform transition-transform duration-300 ease-in-out
                 ${isOpen ? 'translate-x-0' : '-translate-x-full'}
                 md:sticky md:top-0 md:translate-x-0 border-r border-white/10
@@ -99,14 +99,14 @@ const Sidebar = ({ isOpen, onClose }) => {
 
                 {/* 🌟 LOGO CIRCULAR (Estilo Premium) */}
                 <div className="flex-none pt-8 pb-6 px-4 flex flex-col items-center bg-white/5 relative">
-                    <div className="relative z-10 w-[140px] aspect-square bg-white rounded-full p-2.5 shadow-2xl flex items-center justify-center border-[4px] border-white/10 overflow-hidden mb-3 hover:border-orange-500/30 transition-colors">
+                    <div className="relative z-10 w-[140px] aspect-square bg-brand-surface rounded-full p-2.5 shadow-2xl flex items-center justify-center border-[4px] border-white/10 overflow-hidden mb-3 hover:border-brand-accent/30 transition-colors">
                         <Link to="/" className="relative z-10 hover:scale-105 transition-transform duration-300">
                             <img src="/Logo con borde blanco.png" alt="Logo Club Gema" className="w-full h-full object-cover" />
                         </Link>
                     </div>
                     <div className="text-center">
                         <span className="block font-black text-xl tracking-tighter uppercase italic text-white leading-none">
-                            Gema<span className="text-orange-500">Admin</span>
+                            Gema<span className="text-brand-accent">Admin</span>
                         </span>
                     </div>
                 </div>
@@ -115,7 +115,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <div className="px-5 pb-6 pt-4 border-b border-white/10 relative z-20">
                     <Link
                         to="/dashboard/admin/payment-validation"
-                        className="group relative w-full flex items-center justify-center gap-3 py-3.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl shadow-[0_0_20px_rgba(249,115,22,0.4)] hover:shadow-[0_0_30px_rgba(249,115,22,0.6)] transition-all duration-300 active:scale-95 overflow-hidden"
+                        className="group relative w-full flex items-center justify-center gap-3 py-3.5 bg-gradient-to-r from-brand-accent to-brand-accent-dark text-white rounded-xl shadow-accent-glow hover:shadow-accent-glow-hover transition-all duration-300 active:scale-95 overflow-hidden"
                     >
                         <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
                         <CheckCircle size={18} className="relative z-10 group-hover:scale-110 transition-transform" />
@@ -184,7 +184,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             </aside>
 
             {/* Overlay Móvil */}
-            {isOpen && <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-30 md:hidden" onClick={onClose}></div>}
+            {isOpen && <div className="fixed inset-0 bg-brand-primary-dark/60 backdrop-blur-sm z-30 md:hidden" onClick={onClose}></div>}
         </>
     );
 };

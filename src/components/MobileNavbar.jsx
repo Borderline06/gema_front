@@ -80,7 +80,7 @@ const MobileNavbar = () => {
               <Link 
                 to="/dashboard/student/enrollment" 
                 onClick={toggleMenu}
-                className="w-full flex items-center justify-center gap-3 py-3.5 bg-gradient-to-r from-brand-accent to-brand-accent-dark text-white rounded-xl shadow-[0_0_20px_rgba(249,115,22,0.4)] active:scale-95 transition-transform"
+                className="w-full flex items-center justify-center gap-3 py-3.5 bg-gradient-to-r from-brand-accent to-brand-accent-dark text-white rounded-xl shadow-accent-glow active:scale-95 transition-transform"
               >
                 <UserPlus size={18} />
                 <span className="text-[12px] font-black uppercase tracking-widest italic">Nueva Matrícula</span>
@@ -105,7 +105,7 @@ const MobileNavbar = () => {
                   {hasNewNews && (
                     <div className="relative flex h-2.5 w-2.5">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-accent shadow-[0_0_10px_rgba(249,115,22,0.8)]"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-accent shadow-accent-dot"></span>
                     </div>
                   )}
                 </NavLink>

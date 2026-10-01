@@ -51,14 +51,14 @@ const Filters = ({ activeDay, setActiveDay, activeCategory, setActiveCategory, c
       <div className="flex flex-col gap-4 md:gap-5">
         <div className="flex items-center justify-between px-1">
           <div className="flex items-center gap-2">
-            <div className="p-1.5 md:p-2 bg-blue-50 rounded-lg">
-              <CalendarDays className="text-[#1e3a8a] w-4 h-4 md:w-5 md:h-5" />
+            <div className="p-1.5 md:p-2 bg-brand-primary-soft rounded-lg">
+              <CalendarDays className="text-brand-primary w-4 h-4 md:w-5 md:h-5" />
             </div>
-            <h2 className="text-[11px] md:text-sm font-black text-[#1e3a8a] uppercase tracking-widest italic">
-              Calendario de <span className="text-orange-500">Clases</span>
+            <h2 className="text-[11px] md:text-sm font-black text-brand-primary uppercase tracking-widest italic">
+              Calendario de <span className="text-brand-accent">Clases</span>
             </h2>
           </div>
-          <div className="flex items-center gap-1 text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-tight">
+          <div className="flex items-center gap-1 text-[9px] md:text-[10px] font-bold text-brand-muted uppercase tracking-tight">
             Desliza <ChevronRight size={10} className="md:w-3 md:h-3" />
           </div>
         </div>
@@ -71,17 +71,17 @@ const Filters = ({ activeDay, setActiveDay, activeCategory, setActiveCategory, c
                 key={day.index}
                 onClick={() => setActiveDay(day.index)}
                 className={`min-w-[80px] md:min-w-[110px] flex-1 flex flex-col items-center border-2 rounded-xl md:rounded-2xl p-3 md:p-4 transition-all duration-300 snap-center relative overflow-hidden group ${isActive
-                  ? 'border-orange-500 bg-white shadow-lg shadow-orange-100 scale-[0.98] md:scale-100'
-                  : 'border-slate-100 bg-slate-50 text-slate-400 hover:border-blue-200'
+                  ? 'border-brand-accent bg-brand-surface shadow-lg shadow-orange-100 scale-[0.98] md:scale-100'
+                  : 'border-brand-border-soft bg-brand-bg text-brand-muted hover:border-blue-200'
                   }`}
               >
-                {isActive && <div className="absolute top-0 left-0 w-full h-1 bg-orange-500"></div>}
+                {isActive && <div className="absolute top-0 left-0 w-full h-1 bg-brand-accent"></div>}
 
-                <span className={`text-[9px] md:text-[10px] font-black uppercase tracking-widest mb-1 transition-colors ${isActive ? 'text-orange-500' : 'text-slate-400'
+                <span className={`text-[9px] md:text-[10px] font-black uppercase tracking-widest mb-1 transition-colors ${isActive ? 'text-brand-accent' : 'text-brand-muted'
                   }`}>
                   {day.name}
                 </span>
-                <span className={`text-sm md:text-lg font-black tracking-tighter transition-colors ${isActive ? 'text-[#1e3a8a]' : 'text-slate-500 group-hover:text-[#1e3a8a]'
+                <span className={`text-sm md:text-lg font-black tracking-tighter transition-colors ${isActive ? 'text-brand-primary' : 'text-slate-500 group-hover:text-brand-primary'
                   }`}>
                   {day.date}
                 </span>
@@ -94,8 +94,8 @@ const Filters = ({ activeDay, setActiveDay, activeCategory, setActiveCategory, c
       {/* --- SECTOR CATEGORÍAS --- */}
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2 md:gap-3 overflow-x-auto pb-2 scrollbar-hide touch-pan-x">
-          <div className="sticky left-0 bg-white/80 backdrop-blur-sm z-10 pr-2 border-r border-slate-200 self-center py-1">
-            <Filter size={14} className="text-[#1e3a8a]" />
+          <div className="sticky left-0 bg-white/80 backdrop-blur-sm z-10 pr-2 border-r border-brand-border self-center py-1">
+            <Filter size={14} className="text-brand-primary" />
           </div>
 
           <div className="flex gap-2">
@@ -106,8 +106,8 @@ const Filters = ({ activeDay, setActiveDay, activeCategory, setActiveCategory, c
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
                   className={`px-4 md:px-5 py-1.5 md:py-2 rounded-lg md:rounded-xl text-[10px] md:text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all duration-300 border-2 ${isActive
-                    ? 'bg-[#1e3a8a] border-[#1e3a8a] text-white shadow-md shadow-blue-900/20'
-                    : 'bg-white border-slate-100 text-slate-500 hover:border-orange-200 hover:text-orange-500'
+                    ? 'bg-brand-primary border-brand-primary text-white shadow-md shadow-brand-primary/20'
+                    : 'bg-brand-surface border-brand-border-soft text-slate-500 hover:border-orange-200 hover:text-brand-accent'
                     }`}
                 >
                   {cat}

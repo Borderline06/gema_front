@@ -238,7 +238,7 @@ const DashboardEstudiante = () => {
                         {notifications.filter(n => !n.leido).map((n) => (
                           <div key={n.id} className="p-4 border-b border-slate-50 bg-brand-surface" onClick={() => handleMarkAsRead(n.id)}>
                             <div className="flex items-start gap-3">
-                              <div className="w-2 h-2 rounded-full mt-1 shrink-0 bg-brand-accent animate-pulse shadow-[0_0_8px_rgba(249,115,22,0.6)]" />
+                              <div className="w-2 h-2 rounded-full mt-1 shrink-0 bg-brand-accent animate-pulse shadow-accent-dot-sm" />
                               <div>
                                 <h4 className="font-black text-brand-primary text-[11px] uppercase tracking-tight leading-none mb-1">{n.titulo}</h4>
                                 <p className="text-[10px] text-slate-600 font-medium leading-snug">{n.mensaje}</p>

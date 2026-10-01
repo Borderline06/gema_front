@@ -77,7 +77,7 @@ export const ForgotPassword = () => {
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className={`w-full bg-brand-accent hover:bg-brand-accent-dark text-white font-black py-4 rounded-2xl transition-all shadow-[0_10px_20px_-5px_rgba(249,115,22,0.4)] active:scale-[0.97] uppercase tracking-widest text-sm ${isLoading ? 'opacity-70 cursor-not-allowed' : ''
+                                className={`w-full bg-brand-accent hover:bg-brand-accent-dark text-white font-black py-4 rounded-2xl transition-all shadow-accent-lift active:scale-[0.97] uppercase tracking-widest text-sm ${isLoading ? 'opacity-70 cursor-not-allowed' : ''
                                     }`}
                             >
                                 {isLoading ? (

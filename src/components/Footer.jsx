@@ -10,24 +10,24 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-[#0f172a] pt-24 pb-12 px-6 border-t border-white/5">
+    <footer className="bg-brand-primary-dark pt-24 pb-12 px-6 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-16 mb-20">
           <div className="space-y-8">
-            <div className="w-24 h-24 bg-white rounded-3xl p-3 shadow-2xl border-4 border-orange-500/20">
+            <div className="w-24 h-24 bg-brand-surface rounded-3xl p-3 shadow-2xl border-4 border-brand-accent/20">
               <img src="/Logo con borde blanco.png" className="w-full h-full object-contain" alt="Logo" />
             </div>
             <h3 className="text-4xl font-black text-white uppercase italic tracking-tighter leading-none">
-              GEMA <span className="text-orange-500">CLUB</span>
+              GEMA <span className="text-brand-accent">CLUB</span>
             </h3>
-            <p className="text-slate-400 font-medium italic leading-relaxed">
+            <p className="text-brand-muted font-medium italic leading-relaxed">
               Formando apasionados del voleibol desde 2015. Nuestra metodología se basa en la disciplina y la excelencia del juego profesional.            
               </p>
           </div>
 
           <div className="space-y-8">
-            <h4 className="text-orange-500 font-black uppercase italic tracking-widest text-sm flex items-center gap-2">
-              <div className="w-4 h-1 bg-orange-500 rounded-full"></div> Enlaces Rápidos
+            <h4 className="text-brand-accent font-black uppercase italic tracking-widest text-sm flex items-center gap-2">
+              <div className="w-4 h-1 bg-brand-accent rounded-full"></div> Enlaces Rápidos
             </h4>
             <ul className="space-y-4 text-white/60 font-black uppercase italic text-xs tracking-widest">
               <li><Link to="/login" className="hover:text-white transition-colors">Acceso Alumnos</Link></li>
@@ -37,8 +37,8 @@ const Footer = () => {
           </div>
 
           <div className="space-y-8">
-            <h4 className="text-orange-500 font-black uppercase italic tracking-widest text-sm flex items-center gap-2">
-              <div className="w-4 h-1 bg-orange-500 rounded-full"></div> Contáctanos
+            <h4 className="text-brand-accent font-black uppercase italic tracking-widest text-sm flex items-center gap-2">
+              <div className="w-4 h-1 bg-brand-accent rounded-full"></div> Contáctanos
             </h4>
             <ul className="space-y-4 text-white/60 font-black uppercase italic text-xs tracking-widest">
               <li className="flex items-center gap-3 italic underline decoration-orange-500/50">Sede San Martín de Porres, Lima</li>
