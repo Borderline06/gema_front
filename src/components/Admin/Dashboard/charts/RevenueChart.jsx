@@ -2,6 +2,7 @@ import React from 'react';
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
 import InfoTip from '../../../shared/InfoTip';
 import { CHART_COLORS } from './chartColors';
+import { BRAND_COLORS } from "../../../../config/themeColors.js";
 
 const RevenueChart = ({ metodosPago }) => (
     <div className="lg:col-span-3 bg-brand-surface rounded-[2.5rem] border border-brand-border-soft shadow-[0_20px_60px_rgba(0,0,0,0.03)] p-5 md:p-8 flex flex-col mt-6">
@@ -20,13 +21,13 @@ const RevenueChart = ({ metodosPago }) => (
             {metodosPago.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%" minWidth={1}>
                     <BarChart data={metodosPago} margin={{ top: 10, right: 10, left: -10, bottom: 20 }}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={BRAND_COLORS['border-soft']} />
                         <XAxis dataKey="nombre" axisLine={false} tickLine={false} tick={{ fontSize: 9, fill: '#64748b', fontWeight: 'bold' }} dy={15} angle={-15} textAnchor="end" />
-                        <YAxis axisLine={false} tickLine={false} width={80} tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 'bold' }} tickFormatter={(val) => val === 0 ? 'S/ 0' : `S/ ${val.toLocaleString()}`} />
-                        <Tooltip cursor={{ fill: '#f8fafc' }} contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 25px -5px rgb(0 0 0 / 0.1)' }} formatter={(value) => [`S/ ${value.toLocaleString()}`, 'Total Recaudado']} />
+                        <YAxis axisLine={false} tickLine={false} width={80} tick={{ fontSize: 10, fill: BRAND_COLORS.muted, fontWeight: 'bold' }} tickFormatter={(val) => val === 0 ? 'S/ 0' : `S/ ${val.toLocaleString()}`} />
+                        <Tooltip cursor={{ fill: BRAND_COLORS.bg }} contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 25px -5px rgb(0 0 0 / 0.1)' }} formatter={(value) => [`S/ ${value.toLocaleString()}`, 'Total Recaudado']} />
                         <Bar dataKey="monto" radius={[8, 8, 0, 0]} barSize={50}>
                             {metodosPago.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={index === 0 ? '#1e3a8a' : index === 1 ? '#f97316' : CHART_COLORS[index % CHART_COLORS.length]} />
+                                <Cell key={`cell-${index}`} fill={index === 0 ? BRAND_COLORS.primary : index === 1 ? BRAND_COLORS.accent : CHART_COLORS[index % CHART_COLORS.length]} />
                             ))}
                         </Bar>
                     </BarChart>

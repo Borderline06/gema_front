@@ -7,6 +7,7 @@ import CurrentScheduleCard from './schedule-change/CurrentScheduleCard';
 import AvailableScheduleCard from './schedule-change/AvailableScheduleCard';
 import ScheduleFilters from './schedule-change/ScheduleFilters';
 import ChangeScheduleConfirmToast from './schedule-change/ChangeScheduleConfirmToast';
+import { BRAND_COLORS } from "../../../config/themeColors.js";
 
 const ChangeLevelStudent = ({ alumno, onBack }) => {
     const [horariosActuales, setHorariosActuales] = useState([]);
@@ -123,7 +124,7 @@ const ChangeLevelStudent = ({ alumno, onBack }) => {
             style: {
                 minWidth: '340px',
                 borderRadius: '16px',
-                border: '1px solid #e2e8f0',
+                border: `1px solid ${BRAND_COLORS.border}`,
                 padding: '16px',
                 boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'
             },

@@ -1,6 +1,7 @@
 import React from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import InfoTip from '../../../shared/InfoTip';
+import { BRAND_COLORS } from "../../../../config/themeColors.js";
 
 const GenderChart = ({ alumnosGenero }) => (
     <div className="lg:col-span-1 bg-brand-surface rounded-[2.5rem] border border-brand-border-soft shadow-[0_20px_60px_rgba(0,0,0,0.03)] p-5 md:p-8 flex flex-col mt-6">
@@ -18,7 +19,7 @@ const GenderChart = ({ alumnosGenero }) => (
                 <PieChart>
                     <Pie data={alumnosGenero} cx="50%" cy="50%" innerRadius={55} outerRadius={75} paddingAngle={5} dataKey="valor" nameKey="nombre" stroke="none">
                         {alumnosGenero.map((entry, idx) => {
-                            const sliceColor = entry.nombre === 'Sin Especificar' ? '#94a3b8' : entry.color;
+                            const sliceColor = entry.nombre === 'Sin Especificar' ? BRAND_COLORS.muted : entry.color;
                             return <Cell key={idx} fill={sliceColor} />;
                         })}
                     </Pie>
@@ -42,7 +43,7 @@ const GenderChart = ({ alumnosGenero }) => (
             {alumnosGenero.map((g, idx) => (
                 <div key={idx} className="flex justify-between items-center text-xs">
                     <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: g.nombre === 'Sin Especificar' ? '#94a3b8' : g.color }}></div>
+                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: g.nombre === 'Sin Especificar' ? BRAND_COLORS.muted : g.color }}></div>
                         <span className="text-slate-600 font-bold uppercase tracking-tight">{g.nombre}</span>
                     </div>
                     <div className="flex items-center gap-2">

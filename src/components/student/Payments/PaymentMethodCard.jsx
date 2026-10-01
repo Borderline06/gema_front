@@ -2,13 +2,14 @@ import React from 'react';
 import { Copy, ShieldCheck } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { THEME_ASSETS } from "../../../config/themeAssets.js";
+import { BRAND_COLORS } from "../../../config/themeColors.js";
 
 const PaymentMethodCard = ({ phoneNumber = "902585995", owner = "Club Gema S.A.C." }) => {
   
   const copyToClipboard = () => {
     navigator.clipboard.writeText(phoneNumber);
     toast.success('Número copiado al portapapeles', {
-      style: { borderRadius: '15px', background: '#1e3a8a', color: '#fff', fontSize: '12px' }
+      style: { borderRadius: '15px', background: BRAND_COLORS.primary, color: '#fff', fontSize: '12px' }
     });
   };
 

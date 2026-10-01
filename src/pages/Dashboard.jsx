@@ -10,6 +10,7 @@ import StatCard from '../components/Admin/Dashboard/StatCard';
 import DashboardHeader from '../components/Admin/Dashboard/DashboardHeader';
 import DashboardCharts from '../components/Admin/Dashboard/DashboardCharts';
 import DashboardOperations from '../components/Admin/Dashboard/DashboardOperations';
+import { BRAND_COLORS } from "../config/themeColors.js";
 
 const Dashboard = ({ role = 'student' }) => {
     const data = roleData[role];
@@ -93,9 +94,9 @@ const Dashboard = ({ role = 'student' }) => {
                     const genderFte = statsData.alumnosGenero?.activoFte || {};
 
                     const genderData = [
-                        { nombre: 'Femenino', valor: genderFisico.F || 0, fte: genderFte.F || 0, color: '#f97316' },
-                        { nombre: 'Masculino', valor: genderFisico.M || 0, fte: genderFte.M || 0, color: '#1e3a8a' },
-                        { nombre: 'Sin Especificar', valor: genderFisico.NOCONF || 0, fte: genderFte.NOCONF || 0, color: '#94a3b8' }
+                        { nombre: 'Femenino', valor: genderFisico.F || 0, fte: genderFte.F || 0, color: BRAND_COLORS.accent },
+                        { nombre: 'Masculino', valor: genderFisico.M || 0, fte: genderFte.M || 0, color: BRAND_COLORS.primary },
+                        { nombre: 'Sin Especificar', valor: genderFisico.NOCONF || 0, fte: genderFte.NOCONF || 0, color: BRAND_COLORS.muted }
                     ].filter(g => g.valor > 0 || g.fte > 0);
 
                     // 🔥 2. OCUPACIÓN BASADA EN CABEZAS FÍSICAS (Dejamos el FTE como extra)

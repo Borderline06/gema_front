@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, BarChart, Bar } from 'recharts';
 import InfoTip from '../../../shared/InfoTip';
 import { CHART_COLORS } from './chartColors';
+import { BRAND_COLORS } from "../../../../config/themeColors.js";
 
 const LevelsBySedeChart = ({ vigentesPorSedeNivel }) => {
     const [sedeSeleccionada, setSedeSeleccionada] = useState([]);
@@ -98,15 +99,15 @@ const LevelsBySedeChart = ({ vigentesPorSedeNivel }) => {
                             data={sedeSeleccionada.length > 0 ? vigentesPorSedeNivel.filter(s => sedeSeleccionada.includes(s.sede)) : vigentesPorSedeNivel}
                             margin={{ top: 10, right: 10, left: -20, bottom: 10 }}
                         >
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={BRAND_COLORS['border-soft']} />
                             <XAxis dataKey="sede" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#64748b', fontWeight: 'bold' }} angle={-45} textAnchor="end" interval={0} dx={-5} dy={5} height={90} />
-                            <YAxis axisLine={false} tickLine={false} width={40} tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 'bold' }} />
+                            <YAxis axisLine={false} tickLine={false} width={40} tick={{ fontSize: 10, fill: BRAND_COLORS.muted, fontWeight: 'bold' }} />
                             <Tooltip
                                 formatter={(value, name, props) => {
                                     const fisicos = props.payload[`${name}_Fisicos`];
                                     return fisicos !== undefined ? [`${value} FTE (${fisicos} alumnos)`, name] : [`${value} FTE`, name];
                                 }}
-                                cursor={{ fill: '#f8fafc' }}
+                                cursor={{ fill: BRAND_COLORS.bg }}
                                 contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 25px -5px rgb(0 0 0 / 0.1)' }}
                             />
                             <Legend iconType="circle" verticalAlign="bottom" wrapperStyle={{ fontSize: '11px', fontWeight: 'bold', paddingTop: '10px' }} />

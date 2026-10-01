@@ -1,5 +1,6 @@
 import React from 'react';
 import { Clock, CalendarDays, MapPin } from 'lucide-react';
+import { BRAND_COLORS } from "../../config/themeColors.js";
 
 const WeeklyTimelineEnrollment = ({ agendaSeleccionada = [] }) => {
   const diasSemana = [
@@ -38,7 +39,7 @@ const WeeklyTimelineEnrollment = ({ agendaSeleccionada = [] }) => {
           height: 6px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-          background: #f1f5f9;
+          background: ${BRAND_COLORS['border-soft']};
           border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
@@ -47,7 +48,7 @@ const WeeklyTimelineEnrollment = ({ agendaSeleccionada = [] }) => {
           transition: all 0.3s;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #f97316;
+          background: ${BRAND_COLORS.accent};
         }
       `}} />
 

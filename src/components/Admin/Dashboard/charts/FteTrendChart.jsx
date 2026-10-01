@@ -4,6 +4,7 @@ import {
     XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, LineChart, Line
 } from 'recharts';
 import InfoTip from '../../../shared/InfoTip';
+import { BRAND_COLORS } from "../../../../config/themeColors.js";
 
 const FteTrendChart = ({ activosPorMes, selectedYear, setSelectedYear, availableYears }) => {
     const tendenciaCombinada = useMemo(() => {
@@ -79,9 +80,9 @@ const FteTrendChart = ({ activosPorMes, selectedYear, setSelectedYear, available
             <div style={{ width: '100%', height: 320 }}>
                 <ResponsiveContainer width="100%" height="100%" minWidth={1}>
                     <LineChart data={tendenciaCombinada} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                        <XAxis dataKey="mes" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 'bold' }} dy={10} />
-                        <YAxis axisLine={false} tickLine={false} width={60} tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 'bold' }} />
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={BRAND_COLORS['border-soft']} />
+                        <XAxis dataKey="mes" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: BRAND_COLORS.muted, fontWeight: 'bold' }} dy={10} />
+                        <YAxis axisLine={false} tickLine={false} width={60} tick={{ fontSize: 10, fill: BRAND_COLORS.muted, fontWeight: 'bold' }} />
 
                         <Tooltip content={<CustomFteTooltip />} cursor={{ stroke: '#cbd5e1', strokeWidth: 1, strokeDasharray: '3 3' }} />
                         <Legend iconType="circle" wrapperStyle={{ fontSize: '11px', fontWeight: 'bold', paddingTop: '15px' }} />

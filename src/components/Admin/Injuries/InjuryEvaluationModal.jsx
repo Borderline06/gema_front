@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Check, AlertTriangle, ClipboardList } from 'lucide-react';
 import toast from 'react-hot-toast';
 import lesionService from '../../../services/lesion.service';
+import { BRAND_COLORS } from "../../../config/themeColors.js";
 
 const InjuryEvaluationModal = ({ isOpen, onClose, solicitud, onEvaluateSuccess }) => {
     const [evalData, setEvalData] = useState({
@@ -161,11 +162,11 @@ const InjuryEvaluationModal = ({ isOpen, onClose, solicitud, onEvaluateSuccess }
                     width: 5px;
                 }
                 .custom-scrollbar::-webkit-scrollbar-track {
-                    background: #f8fafc;
+                    background: ${BRAND_COLORS.bg};
                     border-radius: 10px;
                 }
                 .custom-scrollbar::-webkit-scrollbar-thumb {
-                    background: #e2e8f0;
+                    background: ${BRAND_COLORS.border};
                     border-radius: 10px;
                 }
             `}</style>

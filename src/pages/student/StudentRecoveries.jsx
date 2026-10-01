@@ -17,6 +17,7 @@ import RecoveryHistoryList from '../../components/student/Recoveries/RecoveryHis
 import RecoveryStatsCards from './recoveries/RecoveryStatsCards';
 import RecoveryTabs from './recoveries/RecoveryTabs';
 import RecoveryConfirmToast from './recoveries/RecoveryConfirmToast';
+import { BRAND_COLORS } from "../../config/themeColors.js";
 
 const StudentRecoveries = () => {
     const { userId } = useAuth();
@@ -106,7 +107,7 @@ const StudentRecoveries = () => {
             style: {
                 minWidth: '320px',
                 borderRadius: '24px',
-                border: '1px solid #f1f5f9',
+                border: `1px solid ${BRAND_COLORS['border-soft']}`,
                 padding: '16px',
                 boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)'
             },
