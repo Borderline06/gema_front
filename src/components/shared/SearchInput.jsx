@@ -8,7 +8,7 @@ const SearchInput = ({
   onChange,
   placeholder = 'Buscar...',
   className = '',
-  iconClassName = 'absolute left-4 top-1/2 -translate-y-1/2 text-slate-400',
+  iconClassName = 'absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted',
   iconSize = 18,
   wrapperClassName = 'relative',
 }) => (

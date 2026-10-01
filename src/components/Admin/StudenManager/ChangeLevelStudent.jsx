@@ -133,7 +133,7 @@ const ChangeLevelStudent = ({ alumno, onBack }) => {
     if (loadingActuales || loadingDisponibles) {
         return (
             <div className="flex flex-col items-center justify-center h-64 text-slate-500 gap-3">
-                <Loader2 className="animate-spin text-[#1e3a8a]" size={40} />
+                <Loader2 className="animate-spin text-brand-primary" size={40} />
                 <p className="font-bold italic animate-pulse">Sincronizando información de horarios...</p>
             </div>
         );
@@ -146,19 +146,19 @@ const ChangeLevelStudent = ({ alumno, onBack }) => {
                 <div className="flex items-center gap-3">
                     <button
                         onClick={onBack}
-                        className="group flex items-center justify-center w-10 h-10 bg-white border border-slate-200 rounded-xl hover:border-[#1e3a8a] transition-all shadow-sm"
+                        className="group flex items-center justify-center w-10 h-10 bg-brand-surface border border-brand-border rounded-xl hover:border-brand-primary transition-all shadow-sm"
                     >
-                        <ArrowLeft size={20} className="text-slate-600 group-hover:text-[#1e3a8a]" />
+                        <ArrowLeft size={20} className="text-slate-600 group-hover:text-brand-primary" />
                     </button>
                     <div>
                         <div className="flex items-center gap-2 mb-0.5">
-                            <div className="h-5 w-1 bg-orange-500 rounded-full"></div>
-                            <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
-                                Cambio de <span className="text-[#1e3a8a]">Horario</span>
+                            <div className="h-5 w-1 bg-brand-accent rounded-full"></div>
+                            <h1 className="text-2xl font-black text-brand-heading uppercase tracking-tight">
+                                Cambio de <span className="text-brand-primary">Horario</span>
                             </h1>
                         </div>
                         <p className="text-slate-500 text-[11px] font-bold uppercase tracking-wide ml-3">
-                            Reasignación para: <span className="text-orange-500">{alumno.nombres} {alumno.apellidos}</span>
+                            Reasignación para: <span className="text-brand-accent">{alumno.nombres} {alumno.apellidos}</span>
                         </p>
                     </div>
                 </div>
@@ -166,7 +166,7 @@ const ChangeLevelStudent = ({ alumno, onBack }) => {
                 <button
                     onClick={confirmarRecuperacion}
                     disabled={!selectedHorarioActual || !selectedHorarioNuevo || saving}
-                    className="hidden sm:flex items-center gap-2 bg-[#1e3a8a] hover:bg-blue-900 text-white px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-lg shadow-blue-900/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="hidden sm:flex items-center gap-2 bg-brand-primary hover:bg-brand-primary text-white px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-lg shadow-brand-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
                     Confirmar Cambio
@@ -175,19 +175,19 @@ const ChangeLevelStudent = ({ alumno, onBack }) => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Horarios Actuales del Alumno */}
-                <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden p-6">
+                <div className="bg-brand-surface rounded-3xl border border-brand-border shadow-sm overflow-hidden p-6">
                     <div className="flex items-center gap-3 mb-6">
-                        <div className="w-8 h-8 rounded-full bg-orange-100 text-orange-500 flex items-center justify-center font-black">1</div>
+                        <div className="w-8 h-8 rounded-full bg-orange-100 text-brand-accent flex items-center justify-center font-black">1</div>
                         <div>
                             <h2 className="text-sm font-black uppercase italic tracking-tighter text-slate-800">
                                 Horarios del Alumno
                             </h2>
-                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Seleccione el horario a cambiar</p>
+                            <p className="text-[10px] text-brand-muted font-bold uppercase tracking-widest">Seleccione el horario a cambiar</p>
                         </div>
                     </div>
 
                     {horariosActuales.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center p-8 bg-slate-50 rounded-2xl border border-slate-100 border-dashed">
+                        <div className="flex flex-col items-center justify-center p-8 bg-brand-bg rounded-2xl border border-brand-border-soft border-dashed">
                             <AlertCircle size={32} className="text-slate-300 mb-3" />
                             <p className="text-slate-500 font-bold uppercase text-xs text-center tracking-wide">El alumno no tiene horarios activos</p>
                         </div>
@@ -206,7 +206,7 @@ const ChangeLevelStudent = ({ alumno, onBack }) => {
                 </div>
 
                 {/* Horarios Disponibles */}
-                <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden p-6 relative">
+                <div className="bg-brand-surface rounded-3xl border border-brand-border shadow-sm overflow-hidden p-6 relative">
                     {!selectedHorarioActual && (
                         <div className="absolute inset-0 z-10 bg-white/60 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center">
                             <ArrowRightLeft size={40} className="text-slate-300 mb-4" />
@@ -215,12 +215,12 @@ const ChangeLevelStudent = ({ alumno, onBack }) => {
                     )}
 
                     <div className="flex items-center gap-3 mb-6">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black ${selectedHorarioActual ? 'bg-[#1e3a8a] text-white' : 'bg-slate-100 text-slate-400'}`}>2</div>
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black ${selectedHorarioActual ? 'bg-brand-primary text-white' : 'bg-brand-surface-alt text-brand-muted'}`}>2</div>
                         <div>
-                            <h2 className={`text-sm font-black uppercase italic tracking-tighter ${selectedHorarioActual ? 'text-[#1e3a8a]' : 'text-slate-400'}`}>
+                            <h2 className={`text-sm font-black uppercase italic tracking-tighter ${selectedHorarioActual ? 'text-brand-primary' : 'text-brand-muted'}`}>
                                 Horarios Disponibles
                             </h2>
-                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Seleccione el nuevo horario</p>
+                            <p className="text-[10px] text-brand-muted font-bold uppercase tracking-widest">Seleccione el nuevo horario</p>
                         </div>
                     </div>
 
@@ -234,12 +234,12 @@ const ChangeLevelStudent = ({ alumno, onBack }) => {
                     />
 
                     {horariosDisponibles.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center flex-1 p-8 bg-slate-50 rounded-2xl border border-slate-100 border-dashed">
+                        <div className="flex flex-col items-center justify-center flex-1 p-8 bg-brand-bg rounded-2xl border border-brand-border-soft border-dashed">
                             <AlertCircle size={32} className="text-slate-300 mb-3" />
                             <p className="text-slate-500 font-bold uppercase text-xs text-center tracking-wide">No hay horarios disponibles</p>
                         </div>
                     ) : horariosFiltrados.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center flex-1 p-8 bg-slate-50 rounded-2xl border border-slate-100 border-dashed">
+                        <div className="flex flex-col items-center justify-center flex-1 p-8 bg-brand-bg rounded-2xl border border-brand-border-soft border-dashed">
                             <Filter size={32} className="text-slate-300 mb-3" />
                             <p className="text-slate-500 font-bold uppercase text-xs text-center tracking-wide">No hay resultados para estos filtros</p>
                         </div>
@@ -264,7 +264,7 @@ const ChangeLevelStudent = ({ alumno, onBack }) => {
                 <button
                     onClick={confirmarRecuperacion}
                     disabled={!selectedHorarioActual || !selectedHorarioNuevo || saving}
-                    className="w-full flex justify-center items-center gap-2 bg-[#1e3a8a] hover:bg-blue-900 text-white px-6 py-4 rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-lg shadow-blue-900/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full flex justify-center items-center gap-2 bg-brand-primary hover:bg-brand-primary text-white px-6 py-4 rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-lg shadow-brand-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
                     Confirmar Cambio

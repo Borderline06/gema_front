@@ -5,9 +5,9 @@ import CicloSinRegistrosCard from '../ciclos/CicloSinRegistrosCard';
 import { formatearFecha, obtenerRangoCiclo, getEstadoPagoBadge, getEstadoInscripcionBadge } from '../ciclos/cicloHelpers';
 
 const CicloHistoryPanel = ({ ciclos, loadingCiclos, onSelectIndividual }) => (
-    <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden flex flex-col">
-        <div className="px-6 py-5 bg-orange-50/50 border-b border-orange-100 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center shrink-0">
+    <div className="bg-brand-surface rounded-[2.5rem] border border-brand-border-soft shadow-sm overflow-hidden flex flex-col">
+        <div className="px-6 py-5 bg-brand-accent-soft/50 border-b border-orange-100 flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-orange-100 text-brand-accent-dark flex items-center justify-center shrink-0">
                 <CalendarClock size={16} />
             </div>
             <h3 className="text-xs font-black text-slate-800 uppercase italic tracking-widest leading-tight">
@@ -15,11 +15,11 @@ const CicloHistoryPanel = ({ ciclos, loadingCiclos, onSelectIndividual }) => (
             </h3>
         </div>
 
-        <div className="p-4 sm:p-5 overflow-y-auto overflow-x-hidden custom-scrollbar max-h-[500px] space-y-3 bg-slate-50/30">
+        <div className="p-4 sm:p-5 overflow-y-auto overflow-x-hidden custom-scrollbar max-h-[500px] space-y-3 bg-brand-bg/30">
             {loadingCiclos ? (
                 <div className="flex flex-col justify-center items-center py-10 gap-2">
-                    <Loader2 className="animate-spin text-orange-500" size={24} />
-                    <span className="text-[9px] text-slate-400 uppercase font-bold tracking-widest">Cargando ciclos...</span>
+                    <Loader2 className="animate-spin text-brand-accent" size={24} />
+                    <span className="text-[9px] text-brand-muted uppercase font-bold tracking-widest">Cargando ciclos...</span>
                 </div>
             ) : ciclos.length > 0 ? (
                 ciclos.map((ciclo) => {
@@ -45,11 +45,11 @@ const CicloHistoryPanel = ({ ciclos, loadingCiclos, onSelectIndividual }) => (
                     }
 
                     return (
-                        <div key={ciclo.cuenta_id} className="bg-white border border-slate-200 rounded-2xl p-4 flex flex-col gap-3 shadow-sm relative transition-all hover:border-orange-200 hover:shadow-md overflow-hidden">
+                        <div key={ciclo.cuenta_id} className="bg-brand-surface border border-brand-border rounded-2xl p-4 flex flex-col gap-3 shadow-sm relative transition-all hover:border-orange-200 hover:shadow-md overflow-hidden">
                             <div className="flex justify-between items-start gap-2">
                                 <div className="min-w-0 flex-1">
                                     <div className="flex items-center gap-1.5 flex-wrap">
-                                        <span className="text-[10px] font-black text-[#1e3a8a] uppercase tracking-widest bg-blue-50 px-2 py-1 rounded-md">
+                                        <span className="text-[10px] font-black text-brand-primary uppercase tracking-widest bg-brand-primary-soft px-2 py-1 rounded-md">
                                             {obtenerRangoCiclo(ciclo.fecha_inicio_real, ciclo.fecha_fin_real)}
                                         </span>
 
@@ -61,11 +61,11 @@ const CicloHistoryPanel = ({ ciclos, loadingCiclos, onSelectIndividual }) => (
                                     </div>
 
                                     <div className="text-[9px] font-bold text-slate-500 flex items-center gap-1.5 mt-2 min-w-0">
-                                        <MapPin size={10} className="text-orange-500 shrink-0" />
+                                        <MapPin size={10} className="text-brand-accent shrink-0" />
                                         <span className="truncate">{ciclo.inscripciones?.[0]?.sede || 'S/D'}</span>
                                     </div>
-                                    <div className="text-[9px] font-bold text-slate-400 flex items-center gap-1.5 mt-1 min-w-0">
-                                        <User size={10} className="text-slate-400 shrink-0" />
+                                    <div className="text-[9px] font-bold text-brand-muted flex items-center gap-1.5 mt-1 min-w-0">
+                                        <User size={10} className="text-brand-muted shrink-0" />
                                         <span className="truncate">
                                             {ciclo.inscripciones?.[0]?.nivel || 'S/D'}
                                             {ciclo.inscripciones?.[0]?.profesor ? ` · ${ciclo.inscripciones[0].profesor}` : ''}
@@ -73,8 +73,8 @@ const CicloHistoryPanel = ({ ciclos, loadingCiclos, onSelectIndividual }) => (
                                     </div>
 
                                     {ciclo.horarios?.length > 0 && (
-                                        <div className="text-[9px] font-bold text-slate-400 flex items-start gap-1.5 mt-1 min-w-0">
-                                            <Clock size={10} className="text-slate-400 shrink-0 mt-0.5" />
+                                        <div className="text-[9px] font-bold text-brand-muted flex items-start gap-1.5 mt-1 min-w-0">
+                                            <Clock size={10} className="text-brand-muted shrink-0 mt-0.5" />
                                             <span className="break-words">
                                                 {ciclo.horarios.map(h => `${h.dia.slice(0, 3)} ${h.hora_inicio}-${h.hora_fin}`).join(' · ')}
                                             </span>
@@ -94,20 +94,20 @@ const CicloHistoryPanel = ({ ciclos, loadingCiclos, onSelectIndividual }) => (
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-x-2 gap-y-2 pt-3 border-t border-slate-100">
+                            <div className="grid grid-cols-2 gap-x-2 gap-y-2 pt-3 border-t border-brand-border-soft">
                                 <div className="flex flex-col min-w-0">
-                                    <span className="text-[8px] text-slate-400 uppercase font-black tracking-widest">Inicio</span>
-                                    <span className="text-[10px] font-black text-slate-700 truncate">{formatearFecha(ciclo.fecha_inicio_real)}</span>
+                                    <span className="text-[8px] text-brand-muted uppercase font-black tracking-widest">Inicio</span>
+                                    <span className="text-[10px] font-black text-brand-body truncate">{formatearFecha(ciclo.fecha_inicio_real)}</span>
                                 </div>
                                 <div className="flex flex-col min-w-0">
-                                    <span className="text-[8px] text-slate-400 uppercase font-black tracking-widest">Fin real</span>
-                                    <span className="text-[10px] font-black text-slate-700 truncate">
+                                    <span className="text-[8px] text-brand-muted uppercase font-black tracking-widest">Fin real</span>
+                                    <span className="text-[10px] font-black text-brand-body truncate">
                                         {ciclo.fecha_fin_real ? formatearFecha(ciclo.fecha_fin_real) : 'EN CURSO'}
                                     </span>
                                 </div>
                                 {ciclo.monto_final > 0 && (
                                     <div className="flex flex-col min-w-0 col-span-2">
-                                        <span className="text-[8px] text-slate-400 uppercase font-black tracking-widest">Monto</span>
+                                        <span className="text-[8px] text-brand-muted uppercase font-black tracking-widest">Monto</span>
                                         <span className="text-[11px] font-black text-emerald-600 flex items-center gap-0.5">
                                             <DollarSign size={10} className="shrink-0" />{Number(ciclo.monto_final).toFixed(2)}
                                         </span>
@@ -116,9 +116,9 @@ const CicloHistoryPanel = ({ ciclos, loadingCiclos, onSelectIndividual }) => (
                             </div>
 
                             {ciclo.fecha_vencimiento_pago && (
-                                <div className="flex items-start gap-1.5 pt-2 border-t border-dashed border-slate-100" title="Fecha límite administrativa para pagar esta cuenta, no representa el fin de las clases">
+                                <div className="flex items-start gap-1.5 pt-2 border-t border-dashed border-brand-border-soft" title="Fecha límite administrativa para pagar esta cuenta, no representa el fin de las clases">
                                     <Info size={10} className="text-slate-300 shrink-0 mt-0.5" />
-                                    <span className="text-[8px] text-slate-400 font-bold uppercase tracking-widest break-words">
+                                    <span className="text-[8px] text-brand-muted font-bold uppercase tracking-widest break-words">
                                         Plazo de pago: {formatearFecha(ciclo.fecha_vencimiento_pago)}
                                     </span>
                                 </div>
@@ -129,7 +129,7 @@ const CicloHistoryPanel = ({ ciclos, loadingCiclos, onSelectIndividual }) => (
             ) : (
                 <div className="text-center py-10 flex flex-col items-center justify-center opacity-60">
                     <CalendarClock size={32} className="text-slate-300 mb-2" />
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sin registros de ciclos</span>
+                    <span className="text-[10px] font-bold text-brand-muted uppercase tracking-widest">Sin registros de ciclos</span>
                 </div>
             )}
         </div>

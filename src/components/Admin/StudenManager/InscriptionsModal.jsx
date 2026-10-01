@@ -56,20 +56,20 @@ const InscriptionsModal = ({ isOpen, data, onClose }) => {
     const ciclosSinRegistros = ciclos.filter(c => c.sin_registros);
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-fade-in">
-            <div className="bg-white rounded-[2rem] w-full max-w-lg shadow-2xl border border-slate-100 overflow-hidden animate-fade-in-up">
-                <div className="bg-slate-50 p-6 border-b border-slate-100 flex justify-between items-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-brand-primary-dark/40 backdrop-blur-sm animate-fade-in">
+            <div className="bg-brand-surface rounded-[2rem] w-full max-w-lg shadow-2xl border border-brand-border-soft overflow-hidden animate-fade-in-up">
+                <div className="bg-brand-bg p-6 border-b border-brand-border-soft flex justify-between items-center">
                     <div>
                         <h3 className="text-xl font-black text-slate-800 uppercase italic tracking-tighter leading-none">
-                            Detalle de <span className="text-[#1e3a8a]">Inscripciones</span>
+                            Detalle de <span className="text-brand-primary">Inscripciones</span>
                         </h3>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase mt-1">
+                        <p className="text-[10px] font-bold text-brand-muted uppercase mt-1">
                             {data.full_name}
                         </p>
                     </div>
                     <button
                         onClick={onClose}
-                        className="w-10 h-10 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-400 hover:bg-red-50 hover:text-red-500 transition-all"
+                        className="w-10 h-10 bg-brand-surface border border-brand-border rounded-xl flex items-center justify-center text-brand-muted hover:bg-red-50 hover:text-red-500 transition-all"
                     >
                         ✕
                     </button>
@@ -78,11 +78,11 @@ const InscriptionsModal = ({ isOpen, data, onClose }) => {
                 <div className="p-6 space-y-4 max-h-[60vh] overflow-y-auto">
                     {loadingCiclos ? (
                         <div className="flex flex-col justify-center items-center py-10 gap-2">
-                            <Loader2 className="animate-spin text-orange-500" size={24} />
-                            <span className="text-[9px] text-slate-400 uppercase font-bold tracking-widest">Cargando inscripciones...</span>
+                            <Loader2 className="animate-spin text-brand-accent" size={24} />
+                            <span className="text-[9px] text-brand-muted uppercase font-bold tracking-widest">Cargando inscripciones...</span>
                         </div>
                     ) : ciclos.length === 0 ? (
-                        <p className="text-center text-sm font-bold text-slate-400 py-8">No hay registros de inscripciones.</p>
+                        <p className="text-center text-sm font-bold text-brand-muted py-8">No hay registros de inscripciones.</p>
                     ) : (
                         <>
                             {/* TARJETAS REGULARES (paquetes) — con TODO el detalle: monto, profesor, plazo de pago */}

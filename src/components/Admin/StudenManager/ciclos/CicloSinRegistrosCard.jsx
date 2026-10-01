@@ -3,7 +3,7 @@ import { CircleAlert } from 'lucide-react';
 import { getEstadoPagoBadge } from './cicloHelpers';
 
 const CicloSinRegistrosCard = ({ ciclo }) => (
-    <div className="bg-slate-50 border border-dashed border-slate-300 rounded-2xl p-4 flex flex-col gap-2 opacity-80">
+    <div className="bg-brand-bg border border-dashed border-slate-300 rounded-2xl p-4 flex flex-col gap-2 opacity-80">
         <div className="flex justify-between items-start gap-2">
             <div className="flex items-center gap-1.5 text-slate-500 min-w-0">
                 <CircleAlert size={14} className="shrink-0" />
@@ -13,7 +13,7 @@ const CicloSinRegistrosCard = ({ ciclo }) => (
                 {ciclo.estado_pago}
             </span>
         </div>
-        <p className="text-[9px] text-slate-400 font-bold italic leading-relaxed">
+        <p className="text-[9px] text-brand-muted font-bold italic leading-relaxed">
             Cuenta #{ciclo.cuenta_id} · {ciclo.concepto} · S/ {Number(ciclo.monto_final).toFixed(2)}
         </p>
     </div>

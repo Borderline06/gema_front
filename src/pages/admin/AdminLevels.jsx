@@ -51,39 +51,39 @@ const AdminLevels = ({ onBack, initialData }) => {
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div className="flex items-center gap-3">
-                    <button onClick={onBack} className="w-10 h-10 bg-white border border-slate-200 rounded-xl flex items-center justify-center hover:text-orange-500 transition-all shadow-sm">
+                    <button onClick={onBack} className="w-10 h-10 bg-brand-surface border border-brand-border rounded-xl flex items-center justify-center hover:text-brand-accent transition-all shadow-sm">
                         <ArrowLeft size={20} />
                     </button>
-                    <h1 className="text-2xl font-black text-slate-900 uppercase">
-                        {isEdit ? 'Modificar' : 'Nuevo'} <span className="text-[#1e3a8a]">Nivel</span>
+                    <h1 className="text-2xl font-black text-brand-heading uppercase">
+                        {isEdit ? 'Modificar' : 'Nuevo'} <span className="text-brand-primary">Nivel</span>
                     </h1>
                 </div>
 
                 <button
                     onClick={handleSubmit}
                     disabled={loading}
-                    className="bg-[#0f172a] text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg disabled:opacity-50"
+                    className="bg-brand-primary-dark text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg disabled:opacity-50"
                 >
                     {loading ? <Loader2 className="animate-spin" size={20} /> : <Save size={20} />}
                     {isEdit ? 'ACTUALIZAR' : 'REGISTRAR'}
                 </button>
             </div>
 
-            <div className="max-w-xl mx-auto bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
-                <div className="p-6 border-b border-slate-100 bg-[#f8fafc] flex items-center gap-3">
-                    <Trophy className="text-[#1e3a8a]" size={20} />
+            <div className="max-w-xl mx-auto bg-brand-surface rounded-3xl border border-brand-border overflow-hidden shadow-sm">
+                <div className="p-6 border-b border-brand-border-soft bg-brand-bg flex items-center gap-3">
+                    <Trophy className="text-brand-primary" size={20} />
                     <span className="font-black text-slate-800 text-xs uppercase">Configuración de Nivel</span>
                 </div>
                 <div className="p-8">
                     <div className="space-y-1">
-                        <label className="text-[10px] font-black text-slate-400 uppercase">Nombre del Nivel</label>
+                        <label className="text-[10px] font-black text-brand-muted uppercase">Nombre del Nivel</label>
                         <input
                             value={formData.nombre}
                             onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500/20"
+                            className="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500/20"
                             placeholder="Ej: ALTA COMPETENCIA"
                         />
-                        <p className="text-[9px] text-slate-400 italic mt-2">
+                        <p className="text-[9px] text-brand-muted italic mt-2">
                             * El precio de este nivel se gestiona automáticamente desde el Catálogo de Servicios.
                         </p>
                     </div>

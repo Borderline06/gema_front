@@ -53,7 +53,7 @@ const MobileNavbar = () => {
         ></div>
         
         {/* Contenedor del Menú */}
-        <div className={`absolute right-0 top-0 h-full w-[280px] bg-gradient-to-b from-[#1e3a8a] to-[#0f172a] shadow-2xl transition-transform duration-300 transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className={`absolute right-0 top-0 h-full w-[280px] bg-gradient-to-b from-brand-primary to-brand-primary-dark shadow-2xl transition-transform duration-300 transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
           <div className="flex flex-col h-full">
             
             {/* Botón Cerrar (X) */}
@@ -63,14 +63,14 @@ const MobileNavbar = () => {
 
             {/* HEADER CON LOGO CIRCULAR */}
             <div className="flex-none pt-12 pb-6 px-4 flex flex-col items-center border-b border-white/10 bg-white/5">
-              <div className="relative z-10 w-[120px] aspect-square bg-white rounded-full p-2.5 shadow-2xl flex items-center justify-center border-[4px] border-white/10 overflow-hidden mb-3">
+              <div className="relative z-10 w-[120px] aspect-square bg-brand-surface rounded-full p-2.5 shadow-2xl flex items-center justify-center border-[4px] border-white/10 overflow-hidden mb-3">
                 <Link to="/" onClick={toggleMenu}>
                   <img src="/Logo con borde blanco.png" alt="Logo Club Gema" className="w-full h-full object-cover" />
                 </Link>
               </div>
               <div className="text-center">
                 <span className="block font-black text-xl tracking-tighter uppercase italic text-white leading-none">
-                  Gema<span className="text-orange-500">Student</span>
+                  Gema<span className="text-brand-accent">Student</span>
                 </span>
               </div>
             </div>
@@ -80,7 +80,7 @@ const MobileNavbar = () => {
               <Link 
                 to="/dashboard/student/enrollment" 
                 onClick={toggleMenu}
-                className="w-full flex items-center justify-center gap-3 py-3.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl shadow-[0_0_20px_rgba(249,115,22,0.4)] active:scale-95 transition-transform"
+                className="w-full flex items-center justify-center gap-3 py-3.5 bg-gradient-to-r from-brand-accent to-brand-accent-dark text-white rounded-xl shadow-[0_0_20px_rgba(249,115,22,0.4)] active:scale-95 transition-transform"
               >
                 <UserPlus size={18} />
                 <span className="text-[12px] font-black uppercase tracking-widest italic">Nueva Matrícula</span>
@@ -105,7 +105,7 @@ const MobileNavbar = () => {
                   {hasNewNews && (
                     <div className="relative flex h-2.5 w-2.5">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.8)]"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-accent shadow-[0_0_10px_rgba(249,115,22,0.8)]"></span>
                     </div>
                   )}
                 </NavLink>
@@ -145,10 +145,10 @@ const MobileNavbar = () => {
       </div>
 
       {/* 🚀 NAVBAR INFERIOR (Las 4 acciones definitivas) */}
-      <nav className="fixed bottom-0 left-0 w-full bg-[#0f172a] border-t border-white/10 shadow-[0_-10px_30px_rgba(0,0,0,0.5)] z-50 md:hidden transition-all pb-safe">
+      <nav className="fixed bottom-0 left-0 w-full bg-brand-primary-dark border-t border-white/10 shadow-[0_-10px_30px_rgba(0,0,0,0.5)] z-50 md:hidden transition-all pb-safe">
         <div className="flex justify-around items-end h-[72px] px-2 pb-2">
           
-          <NavLink to="/dashboard/student" end className={({ isActive }) => `flex flex-col items-center gap-1.5 w-full transition-all ${isActive ? 'text-orange-500' : 'text-blue-100/50'}`}>
+          <NavLink to="/dashboard/student" end className={({ isActive }) => `flex flex-col items-center gap-1.5 w-full transition-all ${isActive ? 'text-brand-accent' : 'text-blue-100/50'}`}>
             <LayoutDashboard size={20} className={location.pathname === '/dashboard/student' ? 'animate-bounce-short' : ''} />
             <span className="text-[8px] uppercase font-black italic tracking-widest">Inicio</span>
           </NavLink>
@@ -160,18 +160,18 @@ const MobileNavbar = () => {
           </NavLink>
 
           {/* 🌟 ACCIÓN CLAVE 2: NUEVA COMPRA (DESTACADO EN EL CENTRO) */}
-          <NavLink to="/dashboard/student/enrollment" className={({ isActive }) => `flex flex-col items-center gap-1.5 w-full transition-all relative top-[-8px] ${isActive ? 'text-orange-400' : 'text-orange-500'}`}>
-            <div className={`p-3 rounded-full shadow-lg ${location.pathname === '/dashboard/student/enrollment' ? 'bg-orange-600 shadow-orange-500/50' : 'bg-orange-500 shadow-orange-500/30'}`}>
+          <NavLink to="/dashboard/student/enrollment" className={({ isActive }) => `flex flex-col items-center gap-1.5 w-full transition-all relative top-[-8px] ${isActive ? 'text-orange-400' : 'text-brand-accent'}`}>
+            <div className={`p-3 rounded-full shadow-lg ${location.pathname === '/dashboard/student/enrollment' ? 'bg-brand-accent-dark shadow-brand-accent/50' : 'bg-brand-accent shadow-brand-accent/30'}`}>
                <UserPlus size={22} className="text-white" />
             </div>
-            <span className="text-[8px] text-orange-500 uppercase font-black italic tracking-widest">Matricular</span>
+            <span className="text-[8px] text-brand-accent uppercase font-black italic tracking-widest">Matricular</span>
           </NavLink>
 
           <button onClick={toggleMenu} className="flex flex-col items-center gap-1.5 w-full text-blue-100/50 relative">
             <Menu size={20} />
             <span className="text-[8px] uppercase font-black italic tracking-widest">Menú</span>
             {hasNewNews && (
-              <span className="absolute top-0 right-1/4 flex h-2 w-2 rounded-full bg-orange-500 border border-[#0f172a]"></span>
+              <span className="absolute top-0 right-1/4 flex h-2 w-2 rounded-full bg-brand-accent border border-brand-primary-dark"></span>
             )}
           </button>
 

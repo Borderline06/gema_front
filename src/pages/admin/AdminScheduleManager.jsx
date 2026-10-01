@@ -109,27 +109,27 @@ const AdminSchedulesManager = () => {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                     <div className="flex items-center gap-2 mb-1">
-                        <div className="h-6 w-1 bg-orange-500 rounded-full"></div>
-                        <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">Panel de <span className="text-[#1e3a8a]">Horarios</span></h1>
+                        <div className="h-6 w-1 bg-brand-accent rounded-full"></div>
+                        <h1 className="text-2xl font-black text-brand-heading uppercase tracking-tight">Panel de <span className="text-brand-primary">Horarios</span></h1>
                     </div>
                 </div>
-                <button onClick={() => setView('create')} className="bg-[#1e3a8a] text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:bg-orange-500 transition-all group">
+                <button onClick={() => setView('create')} className="bg-brand-primary text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:bg-brand-accent transition-all group">
                     <Plus size={20} className="group-hover:rotate-90 transition-transform" /> Programar Clase
                 </button>
             </div>
 
             {/* --- BARRA DE FILTROS --- */}
-            <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="bg-brand-surface p-4 rounded-3xl border border-brand-border shadow-sm grid grid-cols-1 md:grid-cols-4 gap-4">
                 <SearchInput
                     value={searchTerm}
                     onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
                     placeholder="Buscar..."
-                    iconClassName="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                    iconClassName="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted"
                     iconSize={16}
-                    className="w-full pl-10 pr-4 py-2 bg-slate-50 border-none rounded-2xl text-xs font-bold outline-none focus:ring-2 focus:ring-blue-500/20"
+                    className="w-full pl-10 pr-4 py-2 bg-brand-bg border-none rounded-2xl text-xs font-bold outline-none focus:ring-2 focus:ring-blue-500/20"
                 />
                 <select
-                    className="bg-slate-50 border-none rounded-2xl px-4 py-2 text-xs font-bold outline-none"
+                    className="bg-brand-bg border-none rounded-2xl px-4 py-2 text-xs font-bold outline-none"
                     value={filterDia}
                     onChange={(e) => { setFilterDia(e.target.value); setCurrentPage(1); }}
                 >
@@ -140,7 +140,7 @@ const AdminSchedulesManager = () => {
                     <option value="7">Domingo</option>
                 </select>
                 <select
-                    className="bg-slate-50 border-none rounded-2xl px-4 py-2 text-xs font-bold outline-none"
+                    className="bg-brand-bg border-none rounded-2xl px-4 py-2 text-xs font-bold outline-none"
                     value={filterSede}
                     onChange={(e) => { setFilterSede(e.target.value); setCurrentPage(1); }}
                 >
@@ -148,7 +148,7 @@ const AdminSchedulesManager = () => {
                     {uniqueSedes.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
                 <select
-                    className="bg-slate-50 border-none rounded-2xl px-4 py-2 text-xs font-bold outline-none"
+                    className="bg-brand-bg border-none rounded-2xl px-4 py-2 text-xs font-bold outline-none"
                     value={filterCoordinador}
                     onChange={(e) => { setFilterCoordinador(e.target.value); setCurrentPage(1); }}
                 >
@@ -164,23 +164,23 @@ const AdminSchedulesManager = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
                         {currentData.length > 0 ? (
                             currentData.map((h) => (
-                                <div key={h.id} className="bg-white rounded-3xl border border-slate-200 p-5 md:p-6 hover:shadow-xl transition-all group flex flex-col justify-between">
+                                <div key={h.id} className="bg-brand-surface rounded-3xl border border-brand-border p-5 md:p-6 hover:shadow-xl transition-all group flex flex-col justify-between">
                                     <div>
                                         <div className="flex justify-between items-start mb-4">
-                                            <span className="px-2 py-1 bg-orange-100 text-orange-600 text-[9px] font-black rounded-lg uppercase tracking-wider">
+                                            <span className="px-2 py-1 bg-orange-100 text-brand-accent-dark text-[9px] font-black rounded-lg uppercase tracking-wider">
                                                 {mapDiaSemana(h.dia_semana)}
                                             </span>
                                             {/* Botones de acción siempre visibles en móvil, hover en desktop */}
                                             <div className="flex gap-1 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                                                 <button
                                                     onClick={() => handleEdit(h)}
-                                                    className="p-2 text-slate-400 hover:text-[#1e3a8a] bg-slate-50 md:bg-transparent rounded-lg transition-colors"
+                                                    className="p-2 text-brand-muted hover:text-brand-primary bg-brand-bg md:bg-transparent rounded-lg transition-colors"
                                                 >
                                                     <Edit3 size={15} />
                                                 </button>
                                                 <button
                                                     onClick={() => handleDelete(h.id)}
-                                                    className="p-2 text-slate-400 hover:text-red-500 bg-slate-50 md:bg-transparent rounded-lg transition-colors"
+                                                    className="p-2 text-brand-muted hover:text-red-500 bg-brand-bg md:bg-transparent rounded-lg transition-colors"
                                                 >
                                                     <Trash2 size={15} />
                                                 </button>
@@ -188,14 +188,14 @@ const AdminSchedulesManager = () => {
                                         </div>
 
                                         <div className="flex items-center gap-3 mb-4">
-                                            <div className="shrink-0 p-3 bg-blue-50 text-[#1e3a8a] rounded-2xl group-hover:bg-[#1e3a8a] group-hover:text-white transition-all duration-300">
+                                            <div className="shrink-0 p-3 bg-brand-primary-soft text-brand-primary rounded-2xl group-hover:bg-brand-primary group-hover:text-white transition-all duration-300">
                                                 <Clock size={20} />
                                             </div>
                                             <div className="min-w-0">
                                                 <h3 className="font-black text-slate-800 text-base md:text-lg italic leading-tight truncate">
                                                     {h.hora_inicio} - {h.hora_fin}
                                                 </h3>
-                                                <p className="text-[#1e3a8a] text-[10px] font-black uppercase tracking-widest truncate">
+                                                <p className="text-brand-primary text-[10px] font-black uppercase tracking-widest truncate">
                                                     {h.nivel.nombre}
                                                 </p>
                                             </div>
@@ -204,23 +204,23 @@ const AdminSchedulesManager = () => {
 
                                     <div className="space-y-2.5 pt-4 border-t border-slate-50">
                                         <div className="flex items-center gap-2 text-slate-500">
-                                            <User size={14} className="shrink-0 text-orange-500" />
+                                            <User size={14} className="shrink-0 text-brand-accent" />
                                             <span className="text-[11px] font-bold uppercase truncate">
                                                 {h.coordinador.nombre_completo}
                                             </span>
                                         </div>
                                         <div className="flex items-center gap-2 text-slate-500">
-                                            <MapPin size={14} className="shrink-0 text-orange-500" />
+                                            <MapPin size={14} className="shrink-0 text-brand-accent" />
                                             <span className="text-[11px] font-bold uppercase truncate" title={`${h.cancha.nombre} (${h.cancha.sede.nombre})`}>
-                                                {h.cancha.nombre} <span className="text-[10px] text-slate-400 font-medium">({h.cancha.sede.nombre})</span>
+                                                {h.cancha.nombre} <span className="text-[10px] text-brand-muted font-medium">({h.cancha.sede.nombre})</span>
                                             </span>
                                         </div>
                                     </div>
                                 </div>
                             ))
                         ) : (
-                            <div className="col-span-full py-20 text-center bg-slate-50 rounded-3xl border border-dashed border-slate-200">
-                                <p className="text-slate-400 font-bold italic">No se encontraron horarios con esos filtros.</p>
+                            <div className="col-span-full py-20 text-center bg-brand-bg rounded-3xl border border-dashed border-brand-border">
+                                <p className="text-brand-muted font-bold italic">No se encontraron horarios con esos filtros.</p>
                             </div>
                         )}
                     </div>
@@ -231,7 +231,7 @@ const AdminSchedulesManager = () => {
                             <button
                                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                                 disabled={currentPage === 1}
-                                className="p-2 bg-white border border-slate-200 rounded-xl disabled:opacity-30 hover:bg-slate-50 transition-all"
+                                className="p-2 bg-brand-surface border border-brand-border rounded-xl disabled:opacity-30 hover:bg-brand-bg transition-all"
                             >
                                 <ChevronLeft size={20} />
                             </button>
@@ -241,7 +241,7 @@ const AdminSchedulesManager = () => {
                             <button
                                 onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                                 disabled={currentPage === totalPages}
-                                className="p-2 bg-white border border-slate-200 rounded-xl disabled:opacity-30 hover:bg-slate-50 transition-all"
+                                className="p-2 bg-brand-surface border border-brand-border rounded-xl disabled:opacity-30 hover:bg-brand-bg transition-all"
                             >
                                 <ChevronRight size={20} />
                             </button>

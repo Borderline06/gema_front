@@ -275,14 +275,14 @@ const AdminGuestPasses = () => {
       {/* HEADER */}
       <div className="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 bg-gradient-to-br from-[#1e3a8a] to-[#0f172a] rounded-2xl flex items-center justify-center text-white shadow-xl transform -rotate-3 shrink-0">
+          <div className="w-16 h-16 bg-gradient-to-br from-brand-primary to-brand-primary-dark rounded-2xl flex items-center justify-center text-white shadow-xl transform -rotate-3 shrink-0">
             <Ticket size={32} />
           </div>
           <div>
-            <h1 className="text-4xl font-black text-[#1e3a8a] uppercase tracking-tighter italic leading-none">
-              Inscripción <span className="text-orange-500">Individual</span>
+            <h1 className="text-4xl font-black text-brand-primary uppercase tracking-tighter italic leading-none">
+              Inscripción <span className="text-brand-accent">Individual</span>
             </h1>
-            <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mt-1">
+            <p className="text-sm font-bold text-brand-muted uppercase tracking-widest mt-1">
               Registro de Clases Únicas al Alumno
             </p>
           </div>
@@ -302,10 +302,10 @@ const AdminGuestPasses = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
           <div className="lg:col-span-2">
-            <div className={`bg-white p-8 rounded-[2.5rem] shadow-2xl border-4 border-white transition-opacity`}>
+            <div className={`bg-brand-surface p-8 rounded-[2.5rem] shadow-2xl border-4 border-white transition-opacity`}>
 
               <div className="flex items-center justify-between mb-8">
-                <h2 className="font-black text-[#1e3a8a] uppercase italic text-2xl">Formulario de Registro</h2>
+                <h2 className="font-black text-brand-primary uppercase italic text-2xl">Formulario de Registro</h2>
               </div>
 
               <div className="space-y-6">
@@ -352,7 +352,7 @@ const AdminGuestPasses = () => {
                 <button
                   type="button"
                   onClick={addInscInd}
-                  className="w-full bg-[#1e3a8a] hover:bg-[#0f172a] text-white py-5 rounded-2xl font-black uppercase italic tracking-widest text-sm flex items-center justify-center gap-3 transition-all shadow-xl hover:shadow-blue-900/30 group mt-4"
+                  className="w-full bg-brand-primary hover:bg-brand-primary-dark text-white py-5 rounded-2xl font-black uppercase italic tracking-widest text-sm flex items-center justify-center gap-3 transition-all shadow-xl hover:shadow-brand-primary/30 group mt-4"
                 >
                   {<Plus size={20} className="group-hover:translate-x-1 transition-transform" />}
                   Agregar Clase Única

@@ -3,15 +3,15 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import InfoTip from '../../../shared/InfoTip';
 
 const GenderChart = ({ alumnosGenero }) => (
-    <div className="lg:col-span-1 bg-white rounded-[2.5rem] border border-slate-100 shadow-[0_20px_60px_rgba(0,0,0,0.03)] p-5 md:p-8 flex flex-col mt-6">
+    <div className="lg:col-span-1 bg-brand-surface rounded-[2.5rem] border border-brand-border-soft shadow-[0_20px_60px_rgba(0,0,0,0.03)] p-5 md:p-8 flex flex-col mt-6">
         <div className="mb-6">
-            <h2 className="font-black text-[#1e3a8a] uppercase tracking-tight text-xl italic mb-1 flex items-center gap-2">
+            <h2 className="font-black text-brand-primary uppercase tracking-tight text-xl italic mb-1 flex items-center gap-2">
                 <div className="w-1.5 h-6 bg-blue-600 rounded-full"></div> Alumnado Activo
                 <InfoTip
                     text="A diferencia del gráfico de Rangos de Edad, aquí SOLO se cuentan alumnos activos hoy (con clases vigentes). El número entre paréntesis es su equivalente en FTE."
                 />
             </h2>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest ml-3.5">Segmentación por Género (Activos Hoy)</p>
+            <p className="text-[10px] text-brand-muted font-bold uppercase tracking-widest ml-3.5">Segmentación por Género (Activos Hoy)</p>
         </div>
         <div style={{ width: '100%', height: 180, position: 'relative' }}>
             <ResponsiveContainer width="100%" height="100%" minWidth={1}>
@@ -34,8 +34,8 @@ const GenderChart = ({ alumnosGenero }) => (
                 </PieChart>
             </ResponsiveContainer>
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                <span className="text-3xl font-black text-[#1e3a8a] italic leading-none">{alumnosGenero.reduce((acc, curr) => acc + curr.valor, 0)}</span>
-                <span className="text-[10px] font-bold text-slate-400 uppercase">Alumnos Totales</span>
+                <span className="text-3xl font-black text-brand-primary italic leading-none">{alumnosGenero.reduce((acc, curr) => acc + curr.valor, 0)}</span>
+                <span className="text-[10px] font-bold text-brand-muted uppercase">Alumnos Totales</span>
             </div>
         </div>
         <div className="mt-8 space-y-4">
@@ -46,8 +46,8 @@ const GenderChart = ({ alumnosGenero }) => (
                         <span className="text-slate-600 font-bold uppercase tracking-tight">{g.nombre}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-bold text-slate-400">({g.fte} FTE)</span>
-                        <span className="font-black text-[#1e3a8a] bg-blue-50 px-3 py-1 rounded-lg shrink-0">{g.valor}</span>
+                        <span className="text-[10px] font-bold text-brand-muted">({g.fte} FTE)</span>
+                        <span className="font-black text-brand-primary bg-brand-primary-soft px-3 py-1 rounded-lg shrink-0">{g.valor}</span>
                     </div>
                 </div>
             ))}

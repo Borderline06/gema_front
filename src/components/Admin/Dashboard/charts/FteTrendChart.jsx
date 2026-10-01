@@ -26,8 +26,8 @@ const FteTrendChart = ({ activosPorMes, selectedYear, setSelectedYear, available
             const fisicos = payload[0].payload.fisicos || 0;
             const esParcial = label === mesActualLabel;
             return (
-                <div className="bg-white p-3 rounded-2xl shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] border border-slate-100 max-w-[220px]">
-                    <p className="font-bold text-slate-600 mb-2 border-b border-slate-100 pb-1">
+                <div className="bg-brand-surface p-3 rounded-2xl shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] border border-brand-border-soft max-w-[220px]">
+                    <p className="font-bold text-slate-600 mb-2 border-b border-brand-border-soft pb-1">
                         {label} {selectedYear}
                         {fisicos > 0 && <span className="ml-2 text-indigo-500 font-black text-[10px]">({fisicos} alumnos)</span>}
                     </p>
@@ -37,7 +37,7 @@ const FteTrendChart = ({ activosPorMes, selectedYear, setSelectedYear, available
                         <span className="font-black text-slate-800">{payload[0].value}</span>
                     </div>
                     {esParcial && (
-                        <p className="text-[10px] text-orange-500 font-bold mt-1.5 leading-snug">
+                        <p className="text-[10px] text-brand-accent font-bold mt-1.5 leading-snug">
                             Mes en curso: incluye a todo alumno activo en algún día de {label}, aunque hoy ya no lo esté.
                         </p>
                     )}
@@ -48,22 +48,22 @@ const FteTrendChart = ({ activosPorMes, selectedYear, setSelectedYear, available
     };
 
     return (
-        <div className="lg:col-span-2 bg-white rounded-[2.5rem] border border-slate-100 shadow-[0_20px_60px_rgba(0,0,0,0.03)] p-5 md:p-8 flex flex-col relative z-20">
+        <div className="lg:col-span-2 bg-brand-surface rounded-[2.5rem] border border-brand-border-soft shadow-[0_20px_60px_rgba(0,0,0,0.03)] p-5 md:p-8 flex flex-col relative z-20">
             <div className="mb-6 flex justify-between items-start">
                 <div>
-                    <h2 className="font-black text-[#1e3a8a] uppercase tracking-tight text-xl italic mb-1 flex items-center gap-2">
+                    <h2 className="font-black text-brand-primary uppercase tracking-tight text-xl italic mb-1 flex items-center gap-2">
                         <div className="w-1.5 h-6 bg-indigo-500 rounded-full"></div> Volumen Activo (FTE)
                         <InfoTip
                             width="w-72"
                             text="FTE = Full-Time Equivalent. Cada horario semanal de un alumno equivale a 0.5 FTE (2 horarios = 1.0 FTE). El mes en curso es parcial: cuenta a quien estuvo activo en cualquier día del mes, aunque hoy ya no lo esté — por eso puede diferir un poco del contador de 'Alumnos Activos' de arriba, que es la foto de hoy."
                         />
                     </h2>
-                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest ml-3.5">Evolución de Full-Time Equivalents (1 Horario = 0.5 FTE)</p>
+                    <p className="text-[10px] text-brand-muted font-bold uppercase tracking-widest ml-3.5">Evolución de Full-Time Equivalents (1 Horario = 0.5 FTE)</p>
                 </div>
-                <div className="flex items-center bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 cursor-pointer shadow-sm relative">
-                    <CalendarDays size={16} className="text-[#1e3a8a] mr-2" />
+                <div className="flex items-center bg-brand-bg border border-brand-border-soft rounded-xl px-3 py-2 cursor-pointer shadow-sm relative">
+                    <CalendarDays size={16} className="text-brand-primary mr-2" />
                     <select
-                        className="bg-transparent text-sm font-black text-[#1e3a8a] outline-none cursor-pointer appearance-none pr-4"
+                        className="bg-transparent text-sm font-black text-brand-primary outline-none cursor-pointer appearance-none pr-4"
                         value={selectedYear}
                         onChange={(e) => setSelectedYear(Number(e.target.value))}
                     >
@@ -72,7 +72,7 @@ const FteTrendChart = ({ activosPorMes, selectedYear, setSelectedYear, available
                 </div>
             </div>
             {mesActualLabel && (
-                <p className="text-[10px] text-orange-500 font-bold uppercase tracking-wide mb-3 -mt-3 ml-3.5">
+                <p className="text-[10px] text-brand-accent font-bold uppercase tracking-wide mb-3 -mt-3 ml-3.5">
                     * {mesActualLabel} es mes en curso — dato parcial, puede variar hasta fin de mes.
                 </p>
             )}

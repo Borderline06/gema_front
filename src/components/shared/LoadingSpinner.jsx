@@ -5,7 +5,7 @@ import { Loader2 } from 'lucide-react';
 const LoadingSpinner = ({
   size = 40,
   className = 'flex justify-center py-20',
-  colorClassName = 'text-[#1e3a8a]',
+  colorClassName = 'text-brand-primary',
 }) => (
   <div className={className}>
     <Loader2 className={`animate-spin ${colorClassName}`} size={size} />

@@ -4,26 +4,26 @@ import { diasSemana } from './scheduleLabels';
 
 const ChangeScheduleConfirmToast = ({ t, selectedHorarioActual, selectedHorarioNuevo, onConfirm }) => (
     <div className="flex flex-col gap-4 p-2 w-full">
-        <div className="text-center pb-2 border-b border-slate-100">
+        <div className="text-center pb-2 border-b border-brand-border-soft">
             <span className="text-xs font-black uppercase tracking-widest text-slate-500">Confirmar Cambio de Horario</span>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 divide-x divide-slate-200">
+        <div className="grid grid-cols-2 gap-4 divide-x divide-brand-border">
 
             <div className="flex flex-col gap-2 pr-2">
-                <span className="text-[10px] font-black text-[#1e3a8a] uppercase tracking-widest">Horario Actual</span>
+                <span className="text-[10px] font-black text-brand-primary uppercase tracking-widest">Horario Actual</span>
                 <div className="flex flex-col gap-1.5 text-xs">
                     <p className="flex flex-col">
-                        <span className="text-[9px] text-[#1e3a8a] uppercase">Sede</span>
-                        <span className="font-bold text-slate-700">{selectedHorarioActual.horarios_clases?.canchas?.sedes?.nombre}</span>
+                        <span className="text-[9px] text-brand-primary uppercase">Sede</span>
+                        <span className="font-bold text-brand-body">{selectedHorarioActual.horarios_clases?.canchas?.sedes?.nombre}</span>
                     </p>
                     <p className="flex flex-col">
-                        <span className="text-[9px] text-[#1e3a8a] uppercase">Nivel</span>
-                        <span className="font-bold text-slate-700">{selectedHorarioActual.horarios_clases?.niveles_entrenamiento?.nombre}</span>
+                        <span className="text-[9px] text-brand-primary uppercase">Nivel</span>
+                        <span className="font-bold text-brand-body">{selectedHorarioActual.horarios_clases?.niveles_entrenamiento?.nombre}</span>
                     </p>
                     <p className="flex flex-col">
-                        <span className="text-[9px] text-[#1e3a8a] uppercase">Día y Hora</span>
-                        <span className="font-bold text-slate-700">
+                        <span className="text-[9px] text-brand-primary uppercase">Día y Hora</span>
+                        <span className="font-bold text-brand-body">
                             {diasSemana(selectedHorarioActual.horarios_clases?.dia_semana)} <br />
                             <span className="font-normal text-slate-800">{selectedHorarioActual.horarios_clases?.hora_inicio.slice(11, 16)} - {selectedHorarioActual.horarios_clases?.hora_fin.slice(11, 16)}</span>
                         </span>
@@ -32,18 +32,18 @@ const ChangeScheduleConfirmToast = ({ t, selectedHorarioActual, selectedHorarioN
             </div>
 
             <div className="flex flex-col gap-2 pl-4">
-                <span className="text-[10px] font-black text-orange-600 uppercase tracking-widest">Horario Destino</span>
+                <span className="text-[10px] font-black text-brand-accent-dark uppercase tracking-widest">Horario Destino</span>
                 <div className="flex flex-col gap-1.5 text-xs">
                     <p className="flex flex-col">
-                        <span className="text-[9px] text-orange-600 uppercase">Sede</span>
+                        <span className="text-[9px] text-brand-accent-dark uppercase">Sede</span>
                         <span className="font-bold text-slate-800">{selectedHorarioNuevo.cancha?.sede?.nombre}</span>
                     </p>
                     <p className="flex flex-col">
-                        <span className="text-[9px] text-orange-600 uppercase">Nivel</span>
+                        <span className="text-[9px] text-brand-accent-dark uppercase">Nivel</span>
                         <span className="font-bold text-slate-800">{selectedHorarioNuevo.nivel?.nombre}</span>
                     </p>
                     <p className="flex flex-col">
-                        <span className="text-[9px] text-orange-600 uppercase">Día y Hora</span>
+                        <span className="text-[9px] text-brand-accent-dark uppercase">Día y Hora</span>
                         <span className="font-bold text-slate-800">
                             {diasSemana(selectedHorarioNuevo.dia_semana)} <br />
                             <span className="font-normal text-slate-800">{selectedHorarioNuevo.hora_inicio} - {selectedHorarioNuevo.hora_fin}</span>
@@ -54,19 +54,19 @@ const ChangeScheduleConfirmToast = ({ t, selectedHorarioActual, selectedHorarioN
 
         </div>
 
-        <div className="flex gap-2 mt-2 pt-3 border-t border-slate-100">
+        <div className="flex gap-2 mt-2 pt-3 border-t border-brand-border-soft">
             <button
                 onClick={() => {
                     toast.dismiss(t.id);
                     onConfirm();
                 }}
-                className="flex-1 bg-orange-500 text-white text-[10px] font-black uppercase py-2.5 rounded-xl hover:bg-orange-600 transition-colors shadow-sm"
+                className="flex-1 bg-brand-accent text-white text-[10px] font-black uppercase py-2.5 rounded-xl hover:bg-brand-accent-dark transition-colors shadow-sm"
             >
                 Confirmar
             </button>
             <button
                 onClick={() => toast.dismiss(t.id)}
-                className="flex-1 bg-slate-100 text-slate-500 text-[10px] font-black uppercase py-2.5 rounded-xl hover:bg-slate-200 transition-colors"
+                className="flex-1 bg-brand-surface-alt text-slate-500 text-[10px] font-black uppercase py-2.5 rounded-xl hover:bg-slate-200 transition-colors"
             >
                 Cancelar
             </button>

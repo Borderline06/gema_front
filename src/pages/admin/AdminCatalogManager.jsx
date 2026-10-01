@@ -67,9 +67,9 @@ const AdminCatalogManager = () => {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                     <div className="flex items-center gap-2 mb-1">
-                        <div className="h-6 w-1 bg-orange-500 rounded-full"></div>
-                        <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight italic">
-                            Catálogo de <span className="text-[#1e3a8a]">Precios</span>
+                        <div className="h-6 w-1 bg-brand-accent rounded-full"></div>
+                        <h1 className="text-2xl font-black text-brand-heading uppercase tracking-tight italic">
+                            Catálogo de <span className="text-brand-primary">Precios</span>
                         </h1>
                     </div>
                     <p className="text-slate-500 text-[11px] font-bold uppercase tracking-wider">
@@ -79,16 +79,16 @@ const AdminCatalogManager = () => {
             </div>
 
             {/* Barra de Búsqueda y Filtro de Vigencia */}
-            <div className="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-4">
+            <div className="bg-brand-surface p-3 rounded-2xl border border-brand-border shadow-sm flex flex-col md:flex-row gap-4">
                 <SearchInput
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="BUSCAR NOMBRE O CÓDIGO..."
                     wrapperClassName="flex-1 relative"
-                    className="w-full bg-slate-50 border-none rounded-xl pl-12 pr-4 py-2.5 text-[10px] font-black uppercase outline-none focus:ring-2 focus:ring-blue-500/20"
+                    className="w-full bg-brand-bg border-none rounded-xl pl-12 pr-4 py-2.5 text-[10px] font-black uppercase outline-none focus:ring-2 focus:ring-blue-500/20"
                 />
 
-                <div className="flex items-center gap-2 bg-slate-50 px-4 py-2 rounded-xl border border-slate-100">
-                    <Filter size={14} className="text-[#1e3a8a]" />
+                <div className="flex items-center gap-2 bg-brand-bg px-4 py-2 rounded-xl border border-brand-border-soft">
+                    <Filter size={14} className="text-brand-primary" />
                     <select
                         className="bg-transparent border-none text-[10px] font-black uppercase outline-none cursor-pointer text-slate-600"
                         value={vigenciaFilter}
@@ -107,20 +107,20 @@ const AdminCatalogManager = () => {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     {filteredData.map((item) => (
-                        <div key={item.id} className={`bg-white rounded-2xl border border-slate-200 p-4 hover:shadow-lg transition-all group relative flex flex-col justify-between ${!item.es_vigente && 'bg-slate-50/50'}`}>
+                        <div key={item.id} className={`bg-brand-surface rounded-2xl border border-brand-border p-4 hover:shadow-lg transition-all group relative flex flex-col justify-between ${!item.es_vigente && 'bg-brand-bg/50'}`}>
                             <div>
                                 <div className="flex justify-between items-start mb-3">
-                                    <div className={`p-2 rounded-xl ${item.es_vigente ? 'bg-orange-50 text-orange-600' : 'bg-slate-200 text-slate-500'}`}>
+                                    <div className={`p-2 rounded-xl ${item.es_vigente ? 'bg-brand-accent-soft text-brand-accent-dark' : 'bg-slate-200 text-slate-500'}`}>
                                         <Tag size={18} />
                                     </div>
-                                    <button onClick={() => handleEdit(item)} className="p-1.5 text-slate-300 hover:text-[#1e3a8a] transition-colors">
+                                    <button onClick={() => handleEdit(item)} className="p-1.5 text-slate-300 hover:text-brand-primary transition-colors">
                                         <Edit3 size={16} />
                                     </button>
                                 </div>
 
                                 <div className="space-y-1 mb-3">
                                     <div className="flex flex-wrap gap-1">
-                                        <span className="text-[8px] font-black text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded uppercase">
+                                        <span className="text-[8px] font-black text-blue-600 bg-brand-primary-soft px-1.5 py-0.5 rounded uppercase">
                                             {item.codigo_interno}
                                         </span>
                                         {!item.es_vigente && (
@@ -132,7 +132,7 @@ const AdminCatalogManager = () => {
                                     <h3 className="font-black text-slate-800 text-sm uppercase italic leading-tight min-h-[2.5rem] flex items-center">
                                         {item.nombre}
                                     </h3>
-                                    <p className="text-[9px] text-slate-400 font-medium line-clamp-2 leading-relaxed italic">
+                                    <p className="text-[9px] text-brand-muted font-medium line-clamp-2 leading-relaxed italic">
                                         Lógica interna vinculada a {item.cantidad_clases_semanal} clases por semana.
                                     </p>
                                 </div>
@@ -140,11 +140,11 @@ const AdminCatalogManager = () => {
 
                             <div className="flex items-center justify-between pt-3 border-t border-slate-50">
                                 <div>
-                                    <span className="text-[8px] font-black text-slate-400 uppercase block tracking-tighter">Precio</span>
+                                    <span className="text-[8px] font-black text-brand-muted uppercase block tracking-tighter">Precio</span>
                                     <span className="text-sm font-black text-green-600 italic">S/ {parseFloat(item.precio_base).toFixed(2)}</span>
                                 </div>
                                 <div className="text-right">
-                                    <span className="text-[8px] font-black text-slate-400 uppercase block tracking-tighter">Frecuencia</span>
+                                    <span className="text-[8px] font-black text-brand-muted uppercase block tracking-tighter">Frecuencia</span>
                                     <span className="text-[9px] font-bold text-slate-600 uppercase">{item.cantidad_clases_semanal} cl/sem</span>
                                 </div>
                             </div>
@@ -156,7 +156,7 @@ const AdminCatalogManager = () => {
             {filteredData.length === 0 && !loading && (
                 <EmptyState
                     message="No se encontraron conceptos con estos criterios."
-                    className="py-20 text-center text-slate-400 font-bold italic uppercase text-xs"
+                    className="py-20 text-center text-brand-muted font-bold italic uppercase text-xs"
                 />
             )}
         </div>

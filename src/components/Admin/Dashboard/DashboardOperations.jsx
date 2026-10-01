@@ -96,13 +96,13 @@ const DashboardOperations = ({ reporte = [], handleExportExcel, isExporting, set
 
     return (
         <div className="pt-10 mt-10">
-            <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-8">
+            <div className="bg-brand-surface rounded-[2rem] border border-brand-border-soft shadow-sm p-8">
                 <div className="flex justify-between items-start mb-6">
                     <div>
-                        <h2 className="font-black text-[#1e3a8a] text-xl uppercase italic">Reporte Maestro</h2>
+                        <h2 className="font-black text-brand-primary text-xl uppercase italic">Reporte Maestro</h2>
                         <div className="flex flex-wrap gap-2 mt-3">
                             {Object.entries(filterState).map(([key, val]) => val && (
-                                <span key={key} className="bg-blue-50 text-[#1e3a8a] text-[9px] font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                                <span key={key} className="bg-brand-primary-soft text-brand-primary text-[9px] font-bold px-3 py-1 rounded-full flex items-center gap-1">
                                     {key === 'Boleta/Factura' ? (val === 'true' ? 'Enviado' : 'Pendiente') : val}
                                     <X size={10} className="cursor-pointer ml-1" onClick={() => setFilterState({...filterState, [key]: ''})} />
                                 </span>
@@ -110,7 +110,7 @@ const DashboardOperations = ({ reporte = [], handleExportExcel, isExporting, set
                         </div>
                     </div>
                     <div className="flex gap-3">
-                        <button onClick={() => setFilterState({})} className="text-[10px] font-black text-slate-400 hover:text-red-500 uppercase flex items-center gap-1">
+                        <button onClick={() => setFilterState({})} className="text-[10px] font-black text-brand-muted hover:text-red-500 uppercase flex items-center gap-1">
                             <RotateCcw size={12} /> Limpiar
                         </button>
                         <button onClick={handleExportExcel} disabled={isExporting} className="bg-emerald-600 text-white px-6 py-2 rounded-xl font-black uppercase text-[10px] hover:bg-emerald-700 transition-colors">
@@ -122,23 +122,23 @@ const DashboardOperations = ({ reporte = [], handleExportExcel, isExporting, set
                 <div className="border rounded-2xl">
                     <div className="overflow-x-auto min-h-[350px] pb-10">
                         <table className="w-full text-left min-w-[1000px]">
-                            <thead className="bg-slate-50">
-                                <tr className="text-[10px] uppercase font-black text-slate-400">
+                            <thead className="bg-brand-bg">
+                                <tr className="text-[10px] uppercase font-black text-brand-muted">
                                     {/* CAMBIO: Usamos localReporte[0] para generar los headers */}
                                     {localReporte.length > 0 && Object.keys(localReporte[0]).filter(k => k !== 'id').map((key) => (
                                         <th key={key} className="p-4 relative overflow-visible whitespace-nowrap">
                                             <div className="flex items-center gap-2">{key} 
-                                                <Filter size={10} className="cursor-pointer hover:text-[#1e3a8a] transition-colors" onClick={() => setActiveCol(activeCol === key ? null : key)} />
+                                                <Filter size={10} className="cursor-pointer hover:text-brand-primary transition-colors" onClick={() => setActiveCol(activeCol === key ? null : key)} />
                                             </div>
                                             {activeCol === key && (
-                                                <div ref={popoverRef} className="absolute top-12 left-0 w-64 bg-white p-4 shadow-2xl rounded-2xl border z-[9999] font-normal text-slate-600">
-                                                    <p className="text-[10px] font-bold mb-3 text-slate-400 uppercase">FILTRAR POR {key}</p>
+                                                <div ref={popoverRef} className="absolute top-12 left-0 w-64 bg-brand-surface p-4 shadow-2xl rounded-2xl border z-[9999] font-normal text-slate-600">
+                                                    <p className="text-[10px] font-bold mb-3 text-brand-muted uppercase">FILTRAR POR {key}</p>
                                                     
                                                     {selectFilterCols.includes(key) ? (
                                                         <div className="flex flex-col gap-1 max-h-48 overflow-y-auto">
                                                             {/* CAMBIO: Usamos localReporte */}
                                                             {[...new Set(localReporte.map(item => item[key]))].filter(Boolean).map(opt => (
-                                                                <button key={opt} onClick={() => setFilterState({...filterState, [key]: opt})} className={`flex justify-between items-center px-3 py-2 text-xs rounded-lg transition-colors ${filterState[key] === opt ? 'bg-blue-600 text-white' : 'hover:bg-slate-100'}`}>
+                                                                <button key={opt} onClick={() => setFilterState({...filterState, [key]: opt})} className={`flex justify-between items-center px-3 py-2 text-xs rounded-lg transition-colors ${filterState[key] === opt ? 'bg-blue-600 text-white' : 'hover:bg-brand-surface-alt'}`}>
                                                                     {opt} {filterState[key] === opt && <Check size={12} />}
                                                                 </button>
                                                             ))}
@@ -146,19 +146,19 @@ const DashboardOperations = ({ reporte = [], handleExportExcel, isExporting, set
                                                     ) : key.includes('Fecha') ? (
                                                         <div className="grid grid-cols-2 gap-1">
                                                             {meses.map(m => (
-                                                                <button key={m} onClick={() => setFilterState({...filterState, [key]: m})} className={`p-2 text-[10px] rounded-lg border transition-colors ${filterState[key] === m ? 'bg-[#1e3a8a] text-white border-[#1e3a8a]' : 'hover:bg-slate-50'}`}>
+                                                                <button key={m} onClick={() => setFilterState({...filterState, [key]: m})} className={`p-2 text-[10px] rounded-lg border transition-colors ${filterState[key] === m ? 'bg-brand-primary text-white border-brand-primary' : 'hover:bg-brand-bg'}`}>
                                                                     {m}
                                                                 </button>
                                                             ))}
                                                         </div>
                                                     ) : key === 'Monto' ? (
                                                         <div className="flex gap-2">
-                                                            <input type="number" placeholder="Min" className="w-1/2 p-2 border rounded-lg text-xs outline-none focus:border-[#1e3a8a]" onChange={(e) => setFilterState({...filterState, [key]: `${e.target.value}-${filterState[key]?.split('-')[1] || ''}`})} />
-                                                            <input type="number" placeholder="Max" className="w-1/2 p-2 border rounded-lg text-xs outline-none focus:border-[#1e3a8a]" onChange={(e) => setFilterState({...filterState, [key]: `${filterState[key]?.split('-')[0] || ''}-${e.target.value}`})} />
+                                                            <input type="number" placeholder="Min" className="w-1/2 p-2 border rounded-lg text-xs outline-none focus:border-brand-primary" onChange={(e) => setFilterState({...filterState, [key]: `${e.target.value}-${filterState[key]?.split('-')[1] || ''}`})} />
+                                                            <input type="number" placeholder="Max" className="w-1/2 p-2 border rounded-lg text-xs outline-none focus:border-brand-primary" onChange={(e) => setFilterState({...filterState, [key]: `${filterState[key]?.split('-')[0] || ''}-${e.target.value}`})} />
                                                         </div>
                                                     ) : key === 'Boleta/Factura' ? (
                                                         <select
-                                                            className="w-full p-2 border rounded-lg text-xs outline-none focus:border-[#1e3a8a] text-slate-600 cursor-pointer"
+                                                            className="w-full p-2 border rounded-lg text-xs outline-none focus:border-brand-primary text-slate-600 cursor-pointer"
                                                             value={filterState[key] || ''}
                                                             onChange={(e) => setFilterState({...filterState, [key]: e.target.value})}
                                                         >
@@ -167,7 +167,7 @@ const DashboardOperations = ({ reporte = [], handleExportExcel, isExporting, set
                                                             <option value="false">Pendiente</option>
                                                         </select>
                                                     ) : (
-                                                        <input className="w-full p-2 border rounded-lg text-xs outline-none focus:border-[#1e3a8a]" placeholder="Escribir..." value={filterState[key] || ''} onChange={(e) => setFilterState({...filterState, [key]: e.target.value})} />
+                                                        <input className="w-full p-2 border rounded-lg text-xs outline-none focus:border-brand-primary" placeholder="Escribir..." value={filterState[key] || ''} onChange={(e) => setFilterState({...filterState, [key]: e.target.value})} />
                                                     )}
                                                 </div>
                                             )}
@@ -177,7 +177,7 @@ const DashboardOperations = ({ reporte = [], handleExportExcel, isExporting, set
                             </thead>
                             <tbody className="text-xs text-slate-600 font-bold">
                                 {paginatedData.length > 0 ? paginatedData.map((item, idx) => (
-                                    <tr key={item.id || idx} className="border-b hover:bg-slate-50 transition-colors">
+                                    <tr key={item.id || idx} className="border-b hover:bg-brand-bg transition-colors">
                                         {Object.entries(item).filter(([k]) => k !== 'id').map(([key, val], i) => {
                                             
                                             // CHECKBOX BOOLETA/FACTURA
@@ -197,12 +197,12 @@ const DashboardOperations = ({ reporte = [], handleExportExcel, isExporting, set
                                                             <div className={`w-4 h-4 rounded shadow-sm border flex items-center justify-center transition-all duration-200 ${
                                                                 isChecked 
                                                                 ? 'bg-emerald-500 border-emerald-500 text-white' 
-                                                                : 'bg-white border-slate-300 text-transparent hover:border-emerald-400'
+                                                                : 'bg-brand-surface border-slate-300 text-transparent hover:border-emerald-400'
                                                             }`}>
                                                                 <Check size={12} strokeWidth={4} />
                                                             </div>
                                                             <span className={`text-[10px] uppercase font-black tracking-wide ${
-                                                                isChecked ? 'text-emerald-600' : 'text-slate-400'
+                                                                isChecked ? 'text-emerald-600' : 'text-brand-muted'
                                                             }`}>
                                                                 {isChecked ? 'Enviado' : 'Pendiente'}
                                                             </span>
@@ -219,7 +219,7 @@ const DashboardOperations = ({ reporte = [], handleExportExcel, isExporting, set
                                                             type="text" 
                                                             value={String(val || '')} // CAMBIADO: A 'value' en lugar de 'defaultValue'
                                                             placeholder="Añadir comentario..."
-                                                            className="w-full p-2 border border-transparent hover:border-slate-300 focus:border-blue-500 rounded bg-transparent focus:bg-white outline-none transition-all font-medium text-slate-600"
+                                                            className="w-full p-2 border border-transparent hover:border-slate-300 focus:border-blue-500 rounded bg-transparent focus:bg-brand-surface outline-none transition-all font-medium text-slate-600"
                                                             onChange={(e) => { // NUEVO: Para actualizar al tipear
                                                                 setLocalReporte(prev => prev.map(row => 
                                                                     row.id === item.id ? { ...row, [key]: e.target.value } : row
@@ -240,7 +240,7 @@ const DashboardOperations = ({ reporte = [], handleExportExcel, isExporting, set
                                         })}
                                     </tr>
                                 )) : (
-                                    <tr><td colSpan="100%" className="p-10 text-center text-slate-400">No se encontraron registros.</td></tr>
+                                    <tr><td colSpan="100%" className="p-10 text-center text-brand-muted">No se encontraron registros.</td></tr>
                                 )}
                             </tbody>
                         </table>
@@ -249,10 +249,10 @@ const DashboardOperations = ({ reporte = [], handleExportExcel, isExporting, set
 
                 {totalPages > 1 && (
                     <div className="flex justify-between items-center mt-4">
-                        <span className="text-[10px] text-slate-400 font-bold uppercase">Página {currentPage} de {totalPages}</span>
+                        <span className="text-[10px] text-brand-muted font-bold uppercase">Página {currentPage} de {totalPages}</span>
                         <div className="flex gap-2">
-                            <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)} className="p-2 border rounded-lg hover:bg-slate-100 disabled:opacity-50 transition-colors"><ChevronLeft size={14} /></button>
-                            <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)} className="p-2 border rounded-lg hover:bg-slate-100 disabled:opacity-50 transition-colors"><ChevronRight size={14} /></button>
+                            <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)} className="p-2 border rounded-lg hover:bg-brand-surface-alt disabled:opacity-50 transition-colors"><ChevronLeft size={14} /></button>
+                            <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)} className="p-2 border rounded-lg hover:bg-brand-surface-alt disabled:opacity-50 transition-colors"><ChevronRight size={14} /></button>
                         </div>
                     </div>
                 )}

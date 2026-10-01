@@ -46,19 +46,19 @@ const AdminTeacherEdit = ({ teacherData, onBack, onSuccess }) => {
     return (
         <div className="space-y-6 animate-fade-in-up">
             {/* Header de Edición */}
-            <div className="flex justify-between items-center bg-white p-4 rounded-3xl border border-slate-200 shadow-sm">
+            <div className="flex justify-between items-center bg-brand-surface p-4 rounded-3xl border border-brand-border shadow-sm">
                 <div className="flex items-center gap-3">
-                    <button onClick={onBack} className="p-2 hover:bg-slate-50 rounded-xl transition-all">
-                        <ArrowLeft size={20} className="text-slate-400" />
+                    <button onClick={onBack} className="p-2 hover:bg-brand-bg rounded-xl transition-all">
+                        <ArrowLeft size={20} className="text-brand-muted" />
                     </button>
-                    <h1 className="text-lg font-black text-slate-900 uppercase italic">
-                        Editar <span className="text-orange-500">Expediente</span>
+                    <h1 className="text-lg font-black text-brand-heading uppercase italic">
+                        Editar <span className="text-brand-accent">Expediente</span>
                     </h1>
                 </div>
                 <button
                     onClick={handleUpdate}
                     disabled={loading}
-                    className="bg-[#1e3a8a] text-white px-6 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest flex items-center gap-2 hover:bg-orange-500 transition-all shadow-lg"
+                    className="bg-brand-primary text-white px-6 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest flex items-center gap-2 hover:bg-brand-accent transition-all shadow-lg"
                 >
                     {loading ? <Loader2 className="animate-spin" size={16} /> : <Save size={16} />}
                     Guardar Cambios
@@ -68,27 +68,27 @@ const AdminTeacherEdit = ({ teacherData, onBack, onSuccess }) => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2 space-y-6">
                     {/* Datos Básicos */}
-                    <div className="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm">
+                    <div className="bg-brand-surface rounded-3xl border border-brand-border p-8 shadow-sm">
                         <div className="flex items-center gap-3 mb-8 border-b border-slate-50 pb-4">
-                            <User className="text-[#1e3a8a]" size={18} />
-                            <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Información Personal</span>
+                            <User className="text-brand-primary" size={18} />
+                            <span className="text-[10px] font-black uppercase text-brand-muted tracking-widest">Información Personal</span>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-1">
-                                <label className="text-[9px] font-black text-slate-400 uppercase ml-1">Nombres</label>
-                                <input name="nombres" value={formData.nombres} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500/10" />
+                                <label className="text-[9px] font-black text-brand-muted uppercase ml-1">Nombres</label>
+                                <input name="nombres" value={formData.nombres} onChange={handleChange} className="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500/10" />
                             </div>
                             <div className="space-y-1">
-                                <label className="text-[9px] font-black text-slate-400 uppercase ml-1">Apellidos</label>
-                                <input name="apellidos" value={formData.apellidos} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500/10" />
+                                <label className="text-[9px] font-black text-brand-muted uppercase ml-1">Apellidos</label>
+                                <input name="apellidos" value={formData.apellidos} onChange={handleChange} className="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500/10" />
                             </div>
                             <div className="space-y-1">
-                                <label className="text-[9px] font-black text-slate-400 uppercase ml-1">Email</label>
-                                <input name="email" value={formData.email} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-bold outline-none" />
+                                <label className="text-[9px] font-black text-brand-muted uppercase ml-1">Email</label>
+                                <input name="email" value={formData.email} onChange={handleChange} className="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-sm font-bold outline-none" />
                             </div>
                             <div className="space-y-1">
-                                <label className="text-[9px] font-black text-slate-400 uppercase ml-1">Teléfono</label>
-                                <input name="telefono_personal" value={formData.telefono_personal} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-bold outline-none" />
+                                <label className="text-[9px] font-black text-brand-muted uppercase ml-1">Teléfono</label>
+                                <input name="telefono_personal" value={formData.telefono_personal} onChange={handleChange} className="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-sm font-bold outline-none" />
                             </div>
                         </div>
                     </div>
@@ -96,24 +96,24 @@ const AdminTeacherEdit = ({ teacherData, onBack, onSuccess }) => {
 
                 {/* Especialización */}
                 <div className="space-y-6">
-                    <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+                    <div className="bg-brand-surface rounded-3xl border border-brand-border p-6 shadow-sm">
                         <div className="flex items-center gap-3 mb-4">
-                            <GraduationCap className="text-orange-500" size={20} />
-                            <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Área Técnica</span>
+                            <GraduationCap className="text-brand-accent" size={20} />
+                            <span className="text-[10px] font-black uppercase text-brand-muted tracking-widest">Área Técnica</span>
                         </div>
                         <textarea
                             name="especializacion"
                             value={formData.especializacion}
                             onChange={handleChange}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 text-sm font-bold outline-none h-40 resize-none focus:ring-2 focus:ring-orange-500/10"
+                            className="w-full bg-brand-bg border border-brand-border rounded-2xl p-4 text-sm font-bold outline-none h-40 resize-none focus:ring-2 focus:ring-brand-accent/10"
                             placeholder="Actualizar especialidad..."
                         />
                     </div>
 
-                    <div className="bg-slate-900 p-6 rounded-3xl text-white">
-                        <ShieldCheck className="text-orange-500 mb-3" size={24} />
+                    <div className="bg-brand-primary-dark p-6 rounded-3xl text-white">
+                        <ShieldCheck className="text-brand-accent mb-3" size={24} />
                         <h4 className="text-xs font-black uppercase italic tracking-tighter">Seguridad de Datos</h4>
-                        <p className="text-[9px] text-slate-400 mt-2 leading-relaxed uppercase">
+                        <p className="text-[9px] text-brand-muted mt-2 leading-relaxed uppercase">
                             Cualquier cambio en el email afectará el inicio de sesión del coordinador. Use esta herramienta con precaución.
                         </p>
                     </div>

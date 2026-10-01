@@ -44,44 +44,44 @@ const MassRescheduleHistory = ({ refreshSignal }) => { // 📥 Recibe la señal
     if (isLoading) return (
         <div className="flex flex-col items-center justify-center p-20 space-y-3">
             <Loader2 className="animate-spin text-blue-600" size={32} />
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic text-center">Actualizando...</p>
+            <p className="text-[10px] font-black text-brand-muted uppercase tracking-widest italic text-center">Actualizando...</p>
         </div>
     );
 
     if (history.length === 0) return (
-        <div className="p-10 text-center bg-slate-50/50 rounded-[2rem] border-2 border-dashed border-slate-200">
+        <div className="p-10 text-center bg-brand-bg/50 rounded-[2rem] border-2 border-dashed border-brand-border">
             <CalendarX2 className="mx-auto text-slate-300 mb-2" size={40} />
-            <p className="text-[10px] font-black text-slate-400 uppercase italic">Sin registros</p>
+            <p className="text-[10px] font-black text-brand-muted uppercase italic">Sin registros</p>
         </div>
     );
 
     return (
         <div className="space-y-5 px-2">
             {history.map((item) => (
-                <div key={item.id} className="bg-white rounded-[2.2rem] border border-slate-200 shadow-sm p-6 relative overflow-hidden transition-all hover:border-blue-200">
+                <div key={item.id} className="bg-brand-surface rounded-[2.2rem] border border-brand-border shadow-sm p-6 relative overflow-hidden transition-all hover:border-blue-200">
                     <div className="flex justify-between items-center mb-5">
                         <div className="flex flex-col gap-1">
-                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Identificador</span>
-                            <h4 className="text-xs font-black text-[#1e3a8a] italic uppercase">Lote {item.grupo_uuid?.split('-')[0]}</h4>
+                            <span className="text-[10px] font-black text-brand-muted uppercase tracking-widest">Identificador</span>
+                            <h4 className="text-xs font-black text-brand-primary italic uppercase">Lote {item.grupo_uuid?.split('-')[0]}</h4>
                         </div>
-                        <div className="bg-[#1e3a8a] px-4 py-2 rounded-2xl flex items-center gap-2 shadow-lg">
+                        <div className="bg-brand-primary px-4 py-2 rounded-2xl flex items-center gap-2 shadow-lg">
                             <Users size={16} className="text-blue-300" />
                             <span className="text-white font-black text-sm">{item._count?.registros_asistencia || 0}</span>
                             <span className="text-[8px] text-blue-200 font-bold uppercase tracking-tighter">Afectados</span>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 bg-slate-50 rounded-2xl border border-slate-100 p-4 mb-4">
-                        <div className="border-r border-slate-200 pr-2">
-                            <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Cancelada</span>
+                    <div className="grid grid-cols-2 gap-4 bg-brand-bg rounded-2xl border border-brand-border-soft p-4 mb-4">
+                        <div className="border-r border-brand-border pr-2">
+                            <span className="text-[8px] font-black text-brand-muted uppercase tracking-widest mb-1 block">Cancelada</span>
                             <div className="flex items-center gap-2 text-slate-800 font-bold text-xs uppercase">
                                 <CalendarClock size={14} className="text-red-500" />
                                 {formatearFechaUTC(item.fecha_origen)}
                             </div>
                         </div>
                         <div className="pl-2 text-right">
-                            <span className="text-[8px] font-black text-orange-500 uppercase tracking-widest mb-1 block">Acción</span>
-                            <div className="flex items-center gap-1 text-orange-600 font-black text-[9px] uppercase italic justify-end">
+                            <span className="text-[8px] font-black text-brand-accent uppercase tracking-widest mb-1 block">Acción</span>
+                            <div className="flex items-center gap-1 text-brand-accent-dark font-black text-[9px] uppercase italic justify-end">
                                 <FastForward size={14} /> Ciclo +7 Días
                             </div>
                         </div>
@@ -93,15 +93,15 @@ const MassRescheduleHistory = ({ refreshSignal }) => { // 📥 Recibe la señal
                                 <MapPin size={12} className="text-blue-500" />
                                 {item.horarios_clases?.canchas?.nombre}
                             </div>
-                            <div className="flex items-center gap-1.5 text-[9px] font-black text-slate-400 uppercase">
+                            <div className="flex items-center gap-1.5 text-[9px] font-black text-brand-muted uppercase">
                                 <User size={12} />
                                 {item.usuarios?.nombres}
                             </div>
                         </div>
 
-                        <div className="bg-blue-50/50 p-4 rounded-2xl border-l-4 border-blue-500 relative">
-                            <AlertCircle size={14} className="text-blue-500 absolute -top-1.5 -left-1.5 bg-white rounded-full" />
-                            <p className="text-[10px] text-slate-700 italic font-bold leading-relaxed">"{item.motivo}"</p>
+                        <div className="bg-brand-primary-soft/50 p-4 rounded-2xl border-l-4 border-blue-500 relative">
+                            <AlertCircle size={14} className="text-blue-500 absolute -top-1.5 -left-1.5 bg-brand-surface rounded-full" />
+                            <p className="text-[10px] text-brand-body italic font-bold leading-relaxed">"{item.motivo}"</p>
                         </div>
                     </div>
                 </div>

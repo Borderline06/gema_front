@@ -7,7 +7,7 @@ const InfoTip = ({ text, width = 'w-64' }) => (
         <button
             type="button"
             aria-label="Más información"
-            className="text-slate-300 hover:text-[#1e3a8a] transition-colors focus:outline-none"
+            className="text-slate-300 hover:text-brand-primary transition-colors focus:outline-none"
         >
             <Info size={14} strokeWidth={2.5} />
         </button>

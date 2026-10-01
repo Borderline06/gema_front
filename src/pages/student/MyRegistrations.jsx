@@ -26,16 +26,16 @@ const RenovacionModal = ({ isOpen, onClose, onConfirm, fechasSugeridas }) => {
   if (!isOpen || !fechasSugeridas) return null;
   const etiquetas = [
     { label: 'RENOVACIÓN INMEDIATA', desc: 'Inicia en tu próxima clase.', style: 'border-green-500 bg-green-50/50', iconColor: 'text-green-600' },
-    { label: 'REPROGRAMACIÓN +1 SESIÓN', desc: 'Saltas un turno y retomas.', style: 'border-slate-300 bg-slate-50/50', iconColor: 'text-blue-600' },
-    { label: 'REINICIO POSTERGADO', desc: 'Retoma en una semana.', style: 'border-slate-200 bg-white', iconColor: 'text-orange-600' }
+    { label: 'REPROGRAMACIÓN +1 SESIÓN', desc: 'Saltas un turno y retomas.', style: 'border-slate-300 bg-brand-bg/50', iconColor: 'text-blue-600' },
+    { label: 'REINICIO POSTERGADO', desc: 'Retoma en una semana.', style: 'border-brand-border bg-brand-surface', iconColor: 'text-brand-accent-dark' }
   ];
 
   return (
-    <div className="fixed inset-0 z-[500] flex items-center justify-center bg-[#0f172a]/95 backdrop-blur-xl p-6">
-      <div className="bg-white w-full max-w-[420px] rounded-[3.5rem] relative shadow-2xl border-4 border-white overflow-hidden animate-in zoom-in-95 duration-300">
-        <div className="p-8 text-center bg-slate-50/80 border-b border-slate-100">
-          <div className="bg-[#1e3a8a] text-white w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl"><Zap size={24} fill="white" /></div>
-          <h2 className="text-2xl font-black text-[#1e3a8a] uppercase italic tracking-tighter leading-none">Renovación Gema</h2>
+    <div className="fixed inset-0 z-[500] flex items-center justify-center bg-brand-primary-dark/95 backdrop-blur-xl p-6">
+      <div className="bg-brand-surface w-full max-w-[420px] rounded-[3.5rem] relative shadow-2xl border-4 border-white overflow-hidden animate-in zoom-in-95 duration-300">
+        <div className="p-8 text-center bg-brand-bg/80 border-b border-brand-border-soft">
+          <div className="bg-brand-primary text-white w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl"><Zap size={24} fill="white" /></div>
+          <h2 className="text-2xl font-black text-brand-primary uppercase italic tracking-tighter leading-none">Renovación Gema</h2>
         </div>
         <div className="p-6 space-y-4 max-h-[50vh] overflow-y-auto scrollbar-hide">
           {fechasSugeridas.map((fecha, idx) => (
@@ -43,15 +43,15 @@ const RenovacionModal = ({ isOpen, onClose, onConfirm, fechasSugeridas }) => {
               <div className="text-left">
                 <p className={`text-[11px] font-black uppercase italic ${etiquetas[idx]?.iconColor}`}>{etiquetas[idx]?.label}</p>
                 <div className="mt-2 flex items-center gap-2">
-                  <div className="bg-slate-900 text-white px-3 py-1 rounded-lg text-[10px] font-black italic uppercase">{dayjs(fecha).format('dddd DD')}</div>
-                  <span className="text-[10px] font-bold text-slate-700 uppercase">{dayjs(fecha).format('MMMM')}</span>
+                  <div className="bg-brand-primary-dark text-white px-3 py-1 rounded-lg text-[10px] font-black italic uppercase">{dayjs(fecha).format('dddd DD')}</div>
+                  <span className="text-[10px] font-bold text-brand-body uppercase">{dayjs(fecha).format('MMMM')}</span>
                 </div>
               </div>
               <ArrowIcon size={18} className="text-slate-300 group-hover:translate-x-1" />
             </button>
           ))}
         </div>
-        <button onClick={onClose} className="w-full py-6 bg-slate-50 text-slate-400 font-black uppercase text-[9px] tracking-[0.4em]">CANCELAR</button>
+        <button onClick={onClose} className="w-full py-6 bg-brand-bg text-brand-muted font-black uppercase text-[9px] tracking-[0.4em]">CANCELAR</button>
       </div>
     </div>
   );
@@ -157,24 +157,24 @@ const MyRegistrations = () => {
 
   // 🚀 ESTADO DE CARGA MEJORADO
   if (loading) return (
-    <div className="flex flex-col h-screen items-center justify-center bg-[#f8fafc] gap-4">
-      <Loader2 className="animate-spin text-orange-500" size={48} />
-      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#1e3a8a] animate-pulse">Sincronizando tus clases...</p>
+    <div className="flex flex-col h-screen items-center justify-center bg-brand-bg gap-4">
+      <Loader2 className="animate-spin text-brand-accent" size={48} />
+      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-primary animate-pulse">Sincronizando tus clases...</p>
     </div>
   );
 
   return (
-    <div className="relative min-h-screen bg-[#f8fafc]">
+    <div className="relative min-h-screen bg-brand-bg">
 
       {/* 🛡️ BANNER DE DEUDA ULTRA EVIDENTE (STICKY) */}
       {pendingPayment && (
-        <div className="w-full bg-slate-900 py-4 border-b-4 border-orange-500 shadow-2xl sticky top-0 z-[100] animate-in slide-in-from-top duration-500">
+        <div className="w-full bg-brand-primary-dark py-4 border-b-4 border-brand-accent shadow-2xl sticky top-0 z-[100] animate-in slide-in-from-top duration-500">
           <div className="max-w-5xl mx-auto px-4">
             <div className="flex items-center gap-3 mb-3">
-              <div className="bg-orange-500 p-1.5 rounded-lg animate-pulse">
+              <div className="bg-brand-accent p-1.5 rounded-lg animate-pulse">
                 <AlertTriangle size={18} className="text-white" />
               </div>
-              <p className="text-[11px] font-black text-orange-500 uppercase italic tracking-[0.3em]">Acción Requerida: Regularizar Pago</p>
+              <p className="text-[11px] font-black text-brand-accent uppercase italic tracking-[0.3em]">Acción Requerida: Regularizar Pago</p>
             </div>
             <OutstandingDebtAlert pendingPayment={pendingPayment} onRefresh={fetchInitialData} onPay={handleOpenPayment} />
           </div>
@@ -184,33 +184,33 @@ const MyRegistrations = () => {
       <div className="max-w-5xl mx-auto p-4 md:p-8 pb-20">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-10 px-2">
           <div>
-            <h2 className="text-4xl md:text-5xl font-black text-[#1e3a8a] uppercase italic tracking-tighter leading-none">MIS <span className="text-orange-500">CLASES</span></h2>
-            <p className="text-[10px] font-black text-slate-400 uppercase mt-3 flex items-center gap-2 italic tracking-widest text-orange-600">
+            <h2 className="text-4xl md:text-5xl font-black text-brand-primary uppercase italic tracking-tighter leading-none">MIS <span className="text-brand-accent">CLASES</span></h2>
+            <p className="text-[10px] font-black text-brand-muted uppercase mt-3 flex items-center gap-2 italic tracking-widest text-brand-accent-dark">
               <Dumbbell size={14} /> Atleta: {user?.user?.nombres}
             </p>
           </div>
-          <div className="bg-white px-5 py-3 rounded-[1.5rem] border border-slate-100 shadow-sm flex items-center gap-4 hover:shadow-md transition-shadow">
-            <Trophy size={16} className="text-orange-500" />
+          <div className="bg-brand-surface px-5 py-3 rounded-[1.5rem] border border-brand-border-soft shadow-sm flex items-center gap-4 hover:shadow-md transition-shadow">
+            <Trophy size={16} className="text-brand-accent" />
             <div className="flex flex-col items-end">
-              <p className="text-2xl font-black text-[#1e3a8a] italic leading-none">{currentPackages.length}</p>
-              <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Paquetes Activos</p>
+              <p className="text-2xl font-black text-brand-primary italic leading-none">{currentPackages.length}</p>
+              <p className="text-[8px] font-bold text-brand-muted uppercase tracking-widest">Paquetes Activos</p>
             </div>
           </div>
         </header>
 
         {/* 🌟 EMPTY STATE SUPERIOR (Si no hay clases activas) */}
         {currentPackages.length === 0 && (
-          <div className="bg-white rounded-[3.5rem] border-2 border-dashed border-slate-200 p-8 md:p-16 text-center flex flex-col items-center justify-center min-h-[50vh] shadow-sm animate-in fade-in zoom-in-95 duration-700">
-            <div className="w-24 h-24 bg-orange-50 rounded-[2.5rem] flex items-center justify-center mb-6 shadow-inner">
-              <CalendarSearch size={48} className="text-orange-500" strokeWidth={1.5} />
+          <div className="bg-brand-surface rounded-[3.5rem] border-2 border-dashed border-brand-border p-8 md:p-16 text-center flex flex-col items-center justify-center min-h-[50vh] shadow-sm animate-in fade-in zoom-in-95 duration-700">
+            <div className="w-24 h-24 bg-brand-accent-soft rounded-[2.5rem] flex items-center justify-center mb-6 shadow-inner">
+              <CalendarSearch size={48} className="text-brand-accent" strokeWidth={1.5} />
             </div>
-            <h3 className="text-3xl font-black text-[#1e3a8a] uppercase italic mb-3 tracking-tighter">¡Aún no estás en la cancha!</h3>
-            <p className="text-slate-400 text-[12px] font-bold uppercase tracking-[0.2em] max-w-md mb-8 leading-relaxed">
+            <h3 className="text-3xl font-black text-brand-primary uppercase italic mb-3 tracking-tighter">¡Aún no estás en la cancha!</h3>
+            <p className="text-brand-muted text-[12px] font-bold uppercase tracking-[0.2em] max-w-md mb-8 leading-relaxed">
               No tienes paquetes de clases activos en este momento. Dale play a tu entrenamiento y reserva tu horario.
             </p>
             <Link
               to="/dashboard/student/enrollment" // 👈 Asegúrate que esta ruta es la correcta
-              className="bg-orange-500 text-white px-10 py-5 rounded-full font-black uppercase italic tracking-widest text-[12px] hover:bg-orange-600 hover:scale-105 transition-all shadow-xl shadow-orange-500/20 flex items-center gap-3 active:scale-95 group"
+              className="bg-brand-accent text-white px-10 py-5 rounded-full font-black uppercase italic tracking-widest text-[12px] hover:bg-brand-accent-dark hover:scale-105 transition-all shadow-xl shadow-brand-accent/20 flex items-center gap-3 active:scale-95 group"
             >
               <Rocket size={18} fill="currentColor" className="group-hover:-translate-y-1 transition-transform" />
               Matricularme Ahora
@@ -221,35 +221,35 @@ const MyRegistrations = () => {
         {/* LISTA DE PAQUETES ACTIVOS */}
         <div className="space-y-12">
           {currentPackages.map((pkg) => (
-            <div key={pkg.id} className="bg-white rounded-[3.5rem] border border-slate-100 shadow-xl overflow-hidden group hover:shadow-2xl transition-shadow duration-500">
-              <div className="p-5 bg-slate-50/50 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 px-8">
+            <div key={pkg.id} className="bg-brand-surface rounded-[3.5rem] border border-brand-border-soft shadow-xl overflow-hidden group hover:shadow-2xl transition-shadow duration-500">
+              <div className="p-5 bg-brand-bg/50 border-b border-brand-border-soft flex flex-col md:flex-row justify-between items-start md:items-center gap-4 px-8">
                 <div className="flex items-center gap-3">
-                  <Receipt size={16} className="text-orange-500" />
-                  <span className="text-[11px] font-black text-[#1e3a8a] uppercase italic tracking-tighter">CONTRATO: {pkg.id.slice(0, 10)}...</span>
+                  <Receipt size={16} className="text-brand-accent" />
+                  <span className="text-[11px] font-black text-brand-primary uppercase italic tracking-tighter">CONTRATO: {pkg.id.slice(0, 10)}...</span>
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold text-slate-500 bg-white px-4 py-2 rounded-full border border-slate-200 shadow-sm flex items-center gap-2">
+                  <span className="text-[10px] font-bold text-slate-500 bg-brand-surface px-4 py-2 rounded-full border border-brand-border shadow-sm flex items-center gap-2">
                     <Calendar size={12} className="text-blue-500" />
                     Inicio: {dayjs(pkg.fecha_inicio).add(5, 'hour').format('DD MMM, YYYY')}
                   </span>
-                  <span className="text-[10px] font-bold text-slate-500 bg-white px-4 py-2 rounded-full border border-slate-200 shadow-sm flex items-center gap-2 mt-1">
+                  <span className="text-[10px] font-bold text-slate-500 bg-brand-surface px-4 py-2 rounded-full border border-brand-border shadow-sm flex items-center gap-2 mt-1">
                     <Calendar size={12} className="text-blue-500" />
                     Fin: {dayjs(pkg.fecha_inicio).add(29, 'day').add(5, 'hour').format('DD MMM, YYYY')}
                   </span>
                 </div>
               </div>
 
-              <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-6 bg-white">
+              <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-6 bg-brand-surface">
                 {pkg.items.map((reg) => (
-                  <div key={reg.id} className="bg-slate-50 rounded-[2.5rem] p-6 border border-slate-100 shadow-sm hover:border-blue-300 hover:bg-blue-50/30 transition-all flex flex-col gap-5 relative overflow-hidden">
+                  <div key={reg.id} className="bg-brand-bg rounded-[2.5rem] p-6 border border-brand-border-soft shadow-sm hover:border-blue-300 hover:bg-brand-primary-soft/30 transition-all flex flex-col gap-5 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-white to-transparent opacity-50 pointer-events-none"></div>
                     <div className="flex justify-between items-start relative z-10">
                       <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 rounded-[1.2rem] bg-[#1e3a8a] flex items-center justify-center text-white shadow-lg"><Calendar size={24} /></div>
+                        <div className="w-14 h-14 rounded-[1.2rem] bg-brand-primary flex items-center justify-center text-white shadow-lg"><Calendar size={24} /></div>
                         <div>
-                          <h4 className="text-2xl font-black text-[#1e3a8a] uppercase italic leading-none">{DIAS_NOMBRES[reg.horarios_clases?.dia_semana]}</h4>
-                          <p className="text-[11px] font-bold text-slate-500 mt-2 flex items-center gap-1.5 uppercase bg-white w-fit px-2 py-0.5 rounded-md border border-slate-200">
-                            <Clock size={12} className="text-orange-500" /> {formatTimeSafe(reg.horarios_clases?.hora_inicio)} - {formatTimeSafe(reg.horarios_clases?.hora_fin)}
+                          <h4 className="text-2xl font-black text-brand-primary uppercase italic leading-none">{DIAS_NOMBRES[reg.horarios_clases?.dia_semana]}</h4>
+                          <p className="text-[11px] font-bold text-slate-500 mt-2 flex items-center gap-1.5 uppercase bg-brand-surface w-fit px-2 py-0.5 rounded-md border border-brand-border">
+                            <Clock size={12} className="text-brand-accent" /> {formatTimeSafe(reg.horarios_clases?.hora_inicio)} - {formatTimeSafe(reg.horarios_clases?.hora_fin)}
                           </p>
                         </div>
                       </div>
@@ -258,17 +258,17 @@ const MyRegistrations = () => {
                       </span>
                     </div>
 
-                    <div className="flex flex-col gap-3 pt-4 border-t border-slate-200/60 relative z-10">
-                      <div className="flex items-center gap-2 text-slate-500 bg-white px-3 py-2 rounded-xl border border-slate-100">
-                        <MapPin size={14} className="text-orange-500 shrink-0" />
+                    <div className="flex flex-col gap-3 pt-4 border-t border-brand-border/60 relative z-10">
+                      <div className="flex items-center gap-2 text-slate-500 bg-brand-surface px-3 py-2 rounded-xl border border-brand-border-soft">
+                        <MapPin size={14} className="text-brand-accent shrink-0" />
                         <span className="text-[10px] font-black uppercase italic truncate">{reg.horarios_clases?.canchas?.sedes?.nombre}</span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-xl border border-slate-100 shadow-sm">
+                        <div className="flex items-center gap-2 bg-brand-surface px-3 py-2 rounded-xl border border-brand-border-soft shadow-sm">
                           <Activity size={12} className="text-blue-500" />
                           <span className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">{reg.horarios_clases?.niveles_entrenamiento?.nombre}</span>
                         </div>
-                        <button onClick={() => handleAction(reg)} className="p-3 text-rose-500 bg-white border border-rose-100 hover:bg-rose-500 hover:text-white rounded-xl transition-all active:scale-90 shadow-sm hover:shadow-rose-500/30">
+                        <button onClick={() => handleAction(reg)} className="p-3 text-rose-500 bg-brand-surface border border-rose-100 hover:bg-rose-500 hover:text-white rounded-xl transition-all active:scale-90 shadow-sm hover:shadow-rose-500/30">
                           <Trash2 size={18} />
                         </button>
                       </div>
@@ -277,8 +277,8 @@ const MyRegistrations = () => {
                 ))}
               </div>
 
-              <div className="p-6 bg-slate-50/80 flex justify-center border-t border-slate-100">
-                <button onClick={() => handlePrepaymentGroup(pkg.id)} className="w-full max-w-md py-4 bg-[#1e3a8a] text-white rounded-2xl text-[11px] font-black uppercase italic hover:bg-orange-500 transition-all shadow-xl shadow-blue-900/20 flex items-center justify-center gap-3 active:scale-95">
+              <div className="p-6 bg-brand-bg/80 flex justify-center border-t border-brand-border-soft">
+                <button onClick={() => handlePrepaymentGroup(pkg.id)} className="w-full max-w-md py-4 bg-brand-primary text-white rounded-2xl text-[11px] font-black uppercase italic hover:bg-brand-accent transition-all shadow-xl shadow-brand-primary/20 flex items-center justify-center gap-3 active:scale-95">
                   <Zap size={16} fill="white" /> Renovar Paquete Completo
                 </button>
               </div>
@@ -288,36 +288,36 @@ const MyRegistrations = () => {
 
         {/* HISTORIAL SEGMENTADO */}
         {historyItems.length > 0 && (
-          <div className="mt-20 bg-slate-50/80 rounded-[3.5rem] p-6 md:p-10 border-2 border-dashed border-slate-200 transition-all hover:border-slate-300">
-            <button onClick={() => setShowHistory(!showHistory)} className="flex items-center justify-between w-full text-[#1e3a8a] group transition-all">
+          <div className="mt-20 bg-brand-bg/80 rounded-[3.5rem] p-6 md:p-10 border-2 border-dashed border-brand-border transition-all hover:border-slate-300">
+            <button onClick={() => setShowHistory(!showHistory)} className="flex items-center justify-between w-full text-brand-primary group transition-all">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-white rounded-2xl shadow-sm border border-slate-200 group-hover:bg-[#1e3a8a] group-hover:text-white transition-colors duration-300"><History size={22} /></div>
+                <div className="p-3 bg-brand-surface rounded-2xl shadow-sm border border-brand-border group-hover:bg-brand-primary group-hover:text-white transition-colors duration-300"><History size={22} /></div>
                 <div className="text-left">
                   <span className="block text-[14px] font-black uppercase tracking-[0.2em] italic">Expediente Histórico</span>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{historyItems.length} registros pasados</span>
+                  <span className="text-[10px] font-bold text-brand-muted uppercase tracking-widest">{historyItems.length} registros pasados</span>
                 </div>
               </div>
-              <div className={`p-2 bg-white rounded-full shadow-sm border border-slate-100 transition-transform duration-500 ${showHistory ? 'rotate-180 bg-slate-100' : ''}`}>
-                <ChevronDown size={24} className="text-slate-400" />
+              <div className={`p-2 bg-brand-surface rounded-full shadow-sm border border-brand-border-soft transition-transform duration-500 ${showHistory ? 'rotate-180 bg-brand-surface-alt' : ''}`}>
+                <ChevronDown size={24} className="text-brand-muted" />
               </div>
             </button>
 
             {showHistory && (
               <div className="mt-10 space-y-3 animate-in slide-in-from-top-4 duration-500">
                 {historyItems.map(item => (
-                  <div key={item.id} className="bg-white p-5 rounded-[2rem] border border-slate-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 group/h hover:bg-[#1e3a8a] transition-all duration-300 shadow-sm hover:shadow-xl">
+                  <div key={item.id} className="bg-brand-surface p-5 rounded-[2rem] border border-brand-border-soft flex flex-col md:flex-row items-start md:items-center justify-between gap-4 group/h hover:bg-brand-primary transition-all duration-300 shadow-sm hover:shadow-xl">
                     <div className="flex items-center gap-4 md:gap-8 pl-2">
-                      <span className="text-[13px] font-black text-[#1e3a8a] italic w-28 group-hover:text-orange-500 transition-colors">{DIAS_NOMBRES[item.horarios_clases?.dia_semana]}</span>
-                      <div className="hidden md:block h-6 w-[2px] bg-slate-100 group-hover:bg-slate-700 transition-colors"></div>
-                      <div className="flex items-center gap-2 text-slate-500 text-[11px] font-bold group-hover:text-slate-300 transition-colors bg-slate-50 group-hover:bg-slate-800 px-3 py-1.5 rounded-lg">
-                        <Clock size={12} className="text-orange-500 group-hover:text-white" />
+                      <span className="text-[13px] font-black text-brand-primary italic w-28 group-hover:text-brand-accent transition-colors">{DIAS_NOMBRES[item.horarios_clases?.dia_semana]}</span>
+                      <div className="hidden md:block h-6 w-[2px] bg-brand-surface-alt group-hover:bg-slate-700 transition-colors"></div>
+                      <div className="flex items-center gap-2 text-slate-500 text-[11px] font-bold group-hover:text-slate-300 transition-colors bg-brand-bg group-hover:bg-slate-800 px-3 py-1.5 rounded-lg">
+                        <Clock size={12} className="text-brand-accent group-hover:text-white" />
                         <span>{formatTimeSafe(item.horarios_clases?.hora_inicio)} - {formatTimeSafe(item.horarios_clases?.hora_fin)}</span>
                       </div>
                     </div>
-                    <span className="text-[9px] font-black text-slate-400 border-slate-100 px-4 py-2 rounded-xluppercase italic transition-colors">
+                    <span className="text-[9px] font-black text-brand-muted border-brand-border-soft px-4 py-2 rounded-xluppercase italic transition-colors">
                       {item.tipo_inscripcion}
                     </span>
-                    <span className="text-[9px] font-black text-slate-400 border-2 border-slate-100 px-4 py-2 rounded-xl group-hover:border-slate-700 group-hover:text-slate-300 uppercase italic transition-colors">
+                    <span className="text-[9px] font-black text-brand-muted border-2 border-brand-border-soft px-4 py-2 rounded-xl group-hover:border-slate-700 group-hover:text-slate-300 uppercase italic transition-colors">
                       {item.estado}
                     </span>
                   </div>

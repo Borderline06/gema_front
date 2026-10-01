@@ -6,22 +6,22 @@ const CurrentScheduleCard = ({ horario, isSelected, onSelect }) => (
     <div
         onClick={onSelect}
         className={`cursor-pointer border-2 rounded-2xl p-4 transition-all relative overflow-hidden group ${isSelected
-            ? 'border-orange-500 bg-orange-50/30'
-            : 'border-slate-100 hover:border-orange-200 hover:bg-slate-50'
+            ? 'border-brand-accent bg-brand-accent-soft/30'
+            : 'border-brand-border-soft hover:border-orange-200 hover:bg-brand-bg'
             }`}
     >
         {isSelected && (
-            <div className="absolute top-4 right-4 text-orange-500">
-                <CheckSquare size={20} fill="currentColor" className="text-white bg-orange-500 rounded-lg" />
+            <div className="absolute top-4 right-4 text-brand-accent">
+                <CheckSquare size={20} fill="currentColor" className="text-white bg-brand-accent rounded-lg" />
             </div>
         )}
         <div className="space-y-3">
             <div className="flex gap-2">
-                <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-md ${isSelected ? 'bg-orange-500 text-white' : 'bg-slate-200 text-slate-600'
+                <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-md ${isSelected ? 'bg-brand-accent text-white' : 'bg-slate-200 text-slate-600'
                     }`}>
                     {horario.horarios_clases.niveles_entrenamiento?.nombre || 'Sin Nivel'}
                 </span>
-                <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-md ${isSelected ? 'bg-orange-200 text-orange-800' : 'bg-slate-100 text-slate-500'
+                <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-md ${isSelected ? 'bg-orange-200 text-orange-800' : 'bg-brand-surface-alt text-slate-500'
                     }`}>
                     {horario.horarios_clases.canchas.sedes.nombre || 'Sin Sede'}
                 </span>

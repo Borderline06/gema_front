@@ -139,7 +139,7 @@ const AdminBenefits = () => {
 
     if (loading) return (
         <div className="flex flex-col items-center justify-center h-64 text-slate-500 gap-3">
-            <Loader2 className="animate-spin text-[#1e3a8a]" size={40} />
+            <Loader2 className="animate-spin text-brand-primary" size={40} />
             <p className="font-black italic animate-pulse">Sincronizando Sistema de Beneficios...</p>
         </div>
     );
@@ -149,9 +149,9 @@ const AdminBenefits = () => {
             {/* Header */}
             <div>
                 <div className="flex items-center gap-2 mb-1">
-                    <div className="h-6 w-1 bg-orange-500 rounded-full"></div>
-                    <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
-                        Panel de <span className="text-[#1e3a8a]">Beneficios Académicos</span>
+                    <div className="h-6 w-1 bg-brand-accent rounded-full"></div>
+                    <h1 className="text-2xl font-black text-brand-heading uppercase tracking-tight">
+                        Panel de <span className="text-brand-primary">Beneficios Académicos</span>
                     </h1>
                 </div>
                 <p className="text-slate-500 text-xs font-bold uppercase tracking-widest opacity-70">
@@ -161,11 +161,11 @@ const AdminBenefits = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2 space-y-6">
-                    <form onSubmit={handleSubmit} className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-                        <div className="px-6 py-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
-                            <div className="flex items-center gap-2 text-slate-700">
-                                <TicketPercent className="text-[#1e3a8a]" size={20} />
-                                <span className="text-[11px] font-black uppercase tracking-widest text-[#1e3a8a]">Asignar Nuevo Incentivo</span>
+                    <form onSubmit={handleSubmit} className="bg-brand-surface rounded-3xl border border-brand-border shadow-sm overflow-hidden">
+                        <div className="px-6 py-4 bg-brand-bg border-b border-brand-border-soft flex items-center justify-between">
+                            <div className="flex items-center gap-2 text-brand-body">
+                                <TicketPercent className="text-brand-primary" size={20} />
+                                <span className="text-[11px] font-black uppercase tracking-widest text-brand-primary">Asignar Nuevo Incentivo</span>
                             </div>
                             {loadingDeuda && <Loader2 size={16} className="animate-spin text-blue-500" />}
                         </div>
@@ -173,9 +173,9 @@ const AdminBenefits = () => {
                         <div className="p-6 space-y-6">
                             {/* 1. SELECCIÓN DE ALUMNO */}
                             <div className="space-y-3">
-                                <label className="text-[10px] font-black text-slate-400 uppercase ml-1 tracking-widest">1. Buscar Alumno</label>
+                                <label className="text-[10px] font-black text-brand-muted uppercase ml-1 tracking-widest">1. Buscar Alumno</label>
                                 <div className="relative">
-                                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted" size={16} />
                                     <input
                                         type="text"
                                         placeholder="NOMBRE O DOCUMENTO..."
@@ -184,10 +184,10 @@ const AdminBenefits = () => {
                                             setSearchTerm(e.target.value);
                                             if (!e.target.value) { setSelectedAlumnoId(''); setDeudaPendiente(null); }
                                         }}
-                                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-11 pr-4 py-3 text-xs font-bold uppercase outline-none focus:ring-2 focus:ring-blue-500/10 transition-all"
+                                        className="w-full bg-brand-bg border border-brand-border rounded-2xl pl-11 pr-4 py-3 text-xs font-bold uppercase outline-none focus:ring-2 focus:ring-blue-500/10 transition-all"
                                     />
                                 </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-64 overflow-y-auto p-2 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200 custom-scrollbar">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-64 overflow-y-auto p-2 bg-brand-bg/50 rounded-2xl border border-dashed border-brand-border custom-scrollbar">
                                     {filteredAlumnos.length > 0 ? (
                                         filteredAlumnos.map(alum => (
                                             <button
@@ -195,25 +195,25 @@ const AdminBenefits = () => {
                                                 type="button"
                                                 onClick={() => handleSelectAlumno(alum)}
                                                 className={`flex items-center gap-3 p-3 rounded-xl border transition-all text-left ${selectedAlumnoId === alum.id
-                                                    ? 'border-[#1e3a8a] bg-blue-50 ring-1 ring-[#1e3a8a]'
-                                                    : 'border-slate-100 bg-white hover:border-slate-200 shadow-sm'
+                                                    ? 'border-brand-primary bg-brand-primary-soft ring-1 ring-brand-primary'
+                                                    : 'border-brand-border-soft bg-brand-surface hover:border-brand-border shadow-sm'
                                                     }`}
                                             >
-                                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-black text-[10px] shrink-0 ${selectedAlumnoId === alum.id ? 'bg-[#1e3a8a] text-white' : 'bg-slate-100 text-slate-400'
+                                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-black text-[10px] shrink-0 ${selectedAlumnoId === alum.id ? 'bg-brand-primary text-white' : 'bg-brand-surface-alt text-brand-muted'
                                                     }`}>
                                                     {alum.nombres.charAt(0)}
                                                 </div>
                                                 <div className="truncate">
-                                                    <p className="text-[11px] font-black text-slate-700 uppercase leading-none mb-1 truncate">
+                                                    <p className="text-[11px] font-black text-brand-body uppercase leading-none mb-1 truncate">
                                                         {alum.nombres} {alum.apellidos}
                                                     </p>
-                                                    <p className="text-[9px] text-slate-400 font-bold">{alum.numero_documento}</p>
+                                                    <p className="text-[9px] text-brand-muted font-bold">{alum.numero_documento}</p>
                                                 </div>
                                             </button>
                                         ))
                                     ) : (
                                         <div className="col-span-full py-10 text-center">
-                                            <p className="text-[10px] font-black text-slate-400 uppercase italic">No se encontraron coincidencias</p>
+                                            <p className="text-[10px] font-black text-brand-muted uppercase italic">No se encontraron coincidencias</p>
                                         </div>
                                     )}
                                 </div>
@@ -222,15 +222,15 @@ const AdminBenefits = () => {
                             {/* BANNER DINÁMICO DE INTELIGENCIA */}
                             {selectedAlumnoId && !loadingDeuda && (
                                 <div className={`p-4 rounded-2xl border-2 animate-fade-in-up flex gap-4 ${deudaPendiente
-                                    ? 'bg-orange-50 border-orange-200'
-                                    : 'bg-blue-50 border-blue-200'
+                                    ? 'bg-brand-accent-soft border-orange-200'
+                                    : 'bg-brand-primary-soft border-blue-200'
                                     }`}>
-                                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm ${deudaPendiente ? 'bg-orange-500 text-white' : 'bg-[#1e3a8a] text-white'
+                                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm ${deudaPendiente ? 'bg-brand-accent text-white' : 'bg-brand-primary text-white'
                                         }`}>
                                         {deudaPendiente ? <AlertCircle size={24} /> : <Clock size={24} />}
                                     </div>
                                     <div>
-                                        <h5 className={`text-xs font-black uppercase tracking-tight ${deudaPendiente ? 'text-orange-800' : 'text-blue-900'}`}>
+                                        <h5 className={`text-xs font-black uppercase tracking-tight ${deudaPendiente ? 'text-orange-800' : 'text-brand-primary'}`}>
                                             {deudaPendiente ? 'DEUDA ACTIVA DETECTADA' : 'SIN DEUDAS: MODO RESERVA'}
                                         </h5>
                                         <p className="text-[10px] font-bold text-slate-600 leading-tight mt-1 uppercase italic">
@@ -246,11 +246,11 @@ const AdminBenefits = () => {
                             {/* 2. DATOS DEL BENEFICIO */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
                                 <div className="space-y-3">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase ml-1 tracking-widest">2. Tipo de Beneficio</label>
+                                    <label className="text-[10px] font-black text-brand-muted uppercase ml-1 tracking-widest">2. Tipo de Beneficio</label>
                                     <select
                                         value={selectedBeneficioId}
                                         onChange={(e) => setSelectedBeneficioId(e.target.value)}
-                                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-xs font-black uppercase outline-none focus:ring-2 focus:ring-blue-500/10 cursor-pointer shadow-sm"
+                                        className="w-full bg-brand-bg border border-brand-border rounded-2xl px-4 py-3 text-xs font-black uppercase outline-none focus:ring-2 focus:ring-blue-500/10 cursor-pointer shadow-sm"
                                     >
                                         <option value="">SELECCIONA DESCUENTO...</option>
                                         {tiposBeneficio.map(tipo => (
@@ -262,15 +262,15 @@ const AdminBenefits = () => {
                                 </div>
 
                                 <div className="space-y-3">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase ml-1 tracking-widest">3. Motivo del Incentivo</label>
+                                    <label className="text-[10px] font-black text-brand-muted uppercase ml-1 tracking-widest">3. Motivo del Incentivo</label>
                                     <div className="relative">
-                                        <MessageSquare className="absolute left-4 top-3.5 text-slate-400" size={16} />
+                                        <MessageSquare className="absolute left-4 top-3.5 text-brand-muted" size={16} />
                                         <textarea
                                             placeholder="EJ. BECA POR EXCELENCIA..."
                                             value={motivo}
                                             onChange={(e) => setMotivo(e.target.value)}
                                             rows="1"
-                                            className="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-11 pr-4 py-3 text-xs font-bold uppercase outline-none focus:ring-2 focus:ring-blue-500/10 min-h-[46px] resize-none shadow-sm"
+                                            className="w-full bg-brand-bg border border-brand-border rounded-2xl pl-11 pr-4 py-3 text-xs font-bold uppercase outline-none focus:ring-2 focus:ring-blue-500/10 min-h-[46px] resize-none shadow-sm"
                                         />
                                     </div>
                                 </div>
@@ -278,11 +278,11 @@ const AdminBenefits = () => {
                         </div>
 
                         {/* ACCIÓN */}
-                        <div className="p-6 bg-slate-50 border-t border-slate-100 flex justify-end">
+                        <div className="p-6 bg-brand-bg border-t border-brand-border-soft flex justify-end">
                             <button
                                 type="submit"
                                 disabled={submitting || !selectedAlumnoId}
-                                className={`flex items-center gap-2 text-white px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg disabled:opacity-50 ${deudaPendiente ? 'bg-orange-600 hover:bg-orange-700' : 'bg-[#1e3a8a] hover:bg-[#0f172a]'
+                                className={`flex items-center gap-2 text-white px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg disabled:opacity-50 ${deudaPendiente ? 'bg-brand-accent-dark hover:bg-orange-700' : 'bg-brand-primary hover:bg-brand-primary-dark'
                                     }`}
                             >
                                 {submitting ? <Loader2 className="animate-spin" size={16} /> : <Save size={16} />}
@@ -294,15 +294,15 @@ const AdminBenefits = () => {
 
                 {/* Sidebar Gema */}
                 <div className="space-y-6">
-                    <div className="bg-[#0f172a] p-8 rounded-[2.5rem] text-white shadow-2xl border border-white/10 relative overflow-hidden group">
-                        <div className="absolute -right-10 -top-10 w-40 h-40 bg-orange-500/10 rounded-full blur-[80px] group-hover:bg-orange-500/20 transition-all duration-700"></div>
+                    <div className="bg-brand-primary-dark p-8 rounded-[2.5rem] text-white shadow-2xl border border-white/10 relative overflow-hidden group">
+                        <div className="absolute -right-10 -top-10 w-40 h-40 bg-brand-accent/10 rounded-full blur-[80px] group-hover:bg-brand-accent/20 transition-all duration-700"></div>
                         <h4 className="font-black uppercase italic tracking-tighter text-xl mb-6 flex items-center gap-3">
-                            <Info size={24} className="text-orange-500" />
-                            Guía <span className="text-orange-500">Inteligente</span>
+                            <Info size={24} className="text-brand-accent" />
+                            Guía <span className="text-brand-accent">Inteligente</span>
                         </h4>
                         <div className="space-y-8">
                             <div className="flex gap-4">
-                                <div className="w-6 h-6 rounded bg-orange-500/20 flex items-center justify-center shrink-0 text-orange-500 font-black text-xs">01</div>
+                                <div className="w-6 h-6 rounded bg-brand-accent/20 flex items-center justify-center shrink-0 text-brand-accent font-black text-xs">01</div>
                                 <p className="text-[10px] font-bold text-white/70 leading-relaxed uppercase">
                                     Si el cuadro es <span className="text-orange-400">Naranja</span>, el alumno tiene deudas. El descuento se aplica de inmediato.
                                 </p>

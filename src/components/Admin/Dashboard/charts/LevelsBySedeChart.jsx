@@ -33,21 +33,21 @@ const LevelsBySedeChart = ({ vigentesPorSedeNivel }) => {
     };
 
     return (
-        <div className="lg:col-span-3 bg-white rounded-[2.5rem] border border-slate-100 shadow-[0_20px_60px_rgba(0,0,0,0.03)] p-5 md:p-8 flex flex-col mt-6">
+        <div className="lg:col-span-3 bg-brand-surface rounded-[2.5rem] border border-brand-border-soft shadow-[0_20px_60px_rgba(0,0,0,0.03)] p-5 md:p-8 flex flex-col mt-6">
             <div className="mb-8 flex flex-col gap-6">
                 <div>
-                    <h2 className="font-black text-[#1e3a8a] uppercase tracking-tight text-xl italic mb-1 flex items-center gap-2">
+                    <h2 className="font-black text-brand-primary uppercase tracking-tight text-xl italic mb-1 flex items-center gap-2">
                         <div className="w-1.5 h-6 bg-teal-500 rounded-full"></div> Niveles x Sede (FTE)
                         <InfoTip
                             text="Las barras muestran FTE (0.5 por horario), no alumnos físicos. Pasa el mouse sobre una barra para ver el equivalente en alumnos reales entre paréntesis."
                         />
                     </h2>
-                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest ml-3.5">Distribución Académica en Equivalentes (Hoy)</p>
+                    <p className="text-[10px] text-brand-muted font-bold uppercase tracking-widest ml-3.5">Distribución Académica en Equivalentes (Hoy)</p>
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-6 bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+                <div className="flex flex-col md:flex-row gap-6 bg-brand-bg/50 p-4 rounded-2xl border border-brand-border-soft">
                     <div className="flex-1">
-                        <p className="text-[10px] font-bold text-slate-400 uppercase mb-2">Filtrar Niveles</p>
+                        <p className="text-[10px] font-bold text-brand-muted uppercase mb-2">Filtrar Niveles</p>
                         <div className="flex flex-wrap gap-2">
                             {nivelesUnicos.map((nivel) => {
                                 const isSelected = nivelesSeleccionados.includes(nivel);
@@ -55,7 +55,7 @@ const LevelsBySedeChart = ({ vigentesPorSedeNivel }) => {
                                     <button
                                         key={nivel}
                                         onClick={() => toggleNivel(nivel)}
-                                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${isSelected ? 'bg-[#1e3a8a] text-white shadow-md' : 'bg-white text-slate-400 border border-slate-200 hover:bg-slate-100'}`}
+                                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${isSelected ? 'bg-brand-primary text-white shadow-md' : 'bg-brand-surface text-brand-muted border border-brand-border hover:bg-brand-surface-alt'}`}
                                     >
                                         {nivel}
                                     </button>
@@ -66,7 +66,7 @@ const LevelsBySedeChart = ({ vigentesPorSedeNivel }) => {
 
                     <div className="flex-[2]">
                         <div className="flex justify-between items-center mb-2">
-                            <p className="text-[10px] font-bold text-slate-400 uppercase">Filtrar Sedes</p>
+                            <p className="text-[10px] font-bold text-brand-muted uppercase">Filtrar Sedes</p>
                             {sedeSeleccionada.length > 0 && (
                                 <button onClick={() => setSedeSeleccionada([])} className="text-[9px] font-bold text-teal-600 hover:text-teal-700 underline">
                                     Limpiar filtros
@@ -79,7 +79,7 @@ const LevelsBySedeChart = ({ vigentesPorSedeNivel }) => {
                                 return (
                                     <label
                                         key={item.sede}
-                                        className={`flex items-center gap-1.5 cursor-pointer px-2.5 py-1.5 rounded-lg text-xs font-bold transition-colors select-none ${isSelected ? 'bg-teal-50 border-teal-200 text-teal-800' : 'bg-white border-slate-200 text-slate-400 hover:bg-slate-50'} border`}
+                                        className={`flex items-center gap-1.5 cursor-pointer px-2.5 py-1.5 rounded-lg text-xs font-bold transition-colors select-none ${isSelected ? 'bg-teal-50 border-teal-200 text-teal-800' : 'bg-brand-surface border-brand-border text-brand-muted hover:bg-brand-bg'} border`}
                                     >
                                         <input type="checkbox" checked={isSelected} onChange={() => toggleSede(item.sede)} className="hidden" />
                                         {item.sede}
@@ -119,7 +119,7 @@ const LevelsBySedeChart = ({ vigentesPorSedeNivel }) => {
                         </BarChart>
                     </ResponsiveContainer>
                 ) : (
-                    <div className="h-full w-full flex items-center justify-center text-slate-400 font-bold text-sm uppercase bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
+                    <div className="h-full w-full flex items-center justify-center text-brand-muted font-bold text-sm uppercase bg-brand-bg/50 rounded-2xl border border-dashed border-brand-border">
                         Sin volumen activo
                     </div>
                 )}

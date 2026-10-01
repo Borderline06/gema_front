@@ -179,8 +179,8 @@ const AdminStudentsManager = () => {
     // --- RENDERIZADOS ---
     if (loading) return (
         <div className="flex flex-col items-center justify-center h-96 gap-4">
-            <Loader2 className="animate-spin text-[#1e3a8a]" size={48} />
-            <p className="font-black text-[#1e3a8a] text-xs uppercase italic tracking-widest animate-pulse">Consultando Registros...</p>
+            <Loader2 className="animate-spin text-brand-primary" size={48} />
+            <p className="font-black text-brand-primary text-xs uppercase italic tracking-widest animate-pulse">Consultando Registros...</p>
         </div>
     );
 
@@ -220,26 +220,26 @@ const AdminStudentsManager = () => {
             {/* Header y Filtros */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h1 className="text-3xl font-black text-slate-900 uppercase italic tracking-tighter leading-none">Gestión de <span className="text-[#1e3a8a]">Alumnos</span></h1>
-                    <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mt-2">Control Maestro de la Academia</p>
+                    <h1 className="text-3xl font-black text-brand-heading uppercase italic tracking-tighter leading-none">Gestión de <span className="text-brand-primary">Alumnos</span></h1>
+                    <p className="text-brand-muted text-[10px] font-bold uppercase tracking-[0.2em] mt-2">Control Maestro de la Academia</p>
                 </div>
-                <button onClick={() => setView('create')} className="bg-[#1e3a8a] text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all hover:bg-orange-500 shadow-lg">
+                <button onClick={() => setView('create')} className="bg-brand-primary text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all hover:bg-brand-accent shadow-lg">
                     <Plus size={20} /> Registrar Alumno
                 </button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-[1fr_220px] gap-4">
                 <div className="relative group">
-                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-[#1e3a8a] transition-colors" size={20} />
+                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-brand-primary transition-colors" size={20} />
                     <input
                         type="text"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         placeholder="BUSCAR POR NOMBRE, APELLIDO O DNI..."
-                        className="w-full bg-white border-2 border-slate-100 rounded-[1.8rem] pl-16 pr-8 py-5 font-black text-xs uppercase tracking-widest outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-[#1e3a8a] transition-all shadow-sm"
+                        className="w-full bg-brand-surface border-2 border-brand-border-soft rounded-[1.8rem] pl-16 pr-8 py-5 font-black text-xs uppercase tracking-widest outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-brand-primary transition-all shadow-sm"
                     />
                 </div>
-                <select value={selectedSede} onChange={(e) => setSelectedSede(e.target.value)} className="bg-white border border-slate-200 rounded-xl px-4 py-3 text-[10px] font-black uppercase shadow-sm outline-none cursor-pointer focus:ring-2 focus:ring-blue-500">
+                <select value={selectedSede} onChange={(e) => setSelectedSede(e.target.value)} className="bg-brand-surface border border-brand-border rounded-xl px-4 py-3 text-[10px] font-black uppercase shadow-sm outline-none cursor-pointer focus:ring-2 focus:ring-blue-500">
                     <option value="">TODAS LAS SEDES</option>
                     {sedes.map(s => <option key={s.id} value={s.id}>SEDE {s.nombre}</option>)}
                 </select>
@@ -266,16 +266,16 @@ const AdminStudentsManager = () => {
             />
 
             {/* Paginación — ahora basada en processedAlumnos (con filtros aplicados) */}
-            <div className="bg-slate-50/50 border-t border-slate-100 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                    Mostrando <span className="text-[#1e3a8a]">{currentAlumnos.length}</span> de <span className="text-slate-600">{processedAlumnos.length}</span> alumnos
+            <div className="bg-brand-bg/50 border-t border-brand-border-soft p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p className="text-[10px] font-black text-brand-muted uppercase tracking-widest">
+                    Mostrando <span className="text-brand-primary">{currentAlumnos.length}</span> de <span className="text-slate-600">{processedAlumnos.length}</span> alumnos
                 </p>
 
                 <div className="flex items-center gap-2">
                     <button
                         onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                         disabled={currentPage === 1}
-                        className="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#1e3a8a] hover:text-white transition-all shadow-sm"
+                        className="w-10 h-10 flex items-center justify-center rounded-xl bg-brand-surface border border-brand-border text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-brand-primary hover:text-white transition-all shadow-sm"
                     >
                         <ArrowLeft size={18} />
                     </button>
@@ -290,7 +290,7 @@ const AdminStudentsManager = () => {
                                 <button
                                     key={i}
                                     onClick={() => setCurrentPage(i + 1)}
-                                    className={`w-10 h-10 rounded-xl text-[10px] font-black transition-all ${currentPage === i + 1 ? 'bg-[#1e3a8a] text-white shadow-lg shadow-blue-100' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'}`}
+                                    className={`w-10 h-10 rounded-xl text-[10px] font-black transition-all ${currentPage === i + 1 ? 'bg-brand-primary text-white shadow-lg shadow-blue-100' : 'bg-brand-surface border border-brand-border text-slate-600 hover:bg-brand-bg'}`}
                                 >
                                     {i + 1}
                                 </button>
@@ -301,7 +301,7 @@ const AdminStudentsManager = () => {
                     <button
                         onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                         disabled={currentPage === totalPages}
-                        className="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#1e3a8a] hover:text-white transition-all shadow-sm"
+                        className="w-10 h-10 flex items-center justify-center rounded-xl bg-brand-surface border border-brand-border text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-brand-primary hover:text-white transition-all shadow-sm"
                     >
                         <ChevronRight size={18} />
                     </button>

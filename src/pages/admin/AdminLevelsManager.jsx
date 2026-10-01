@@ -79,12 +79,12 @@ const AdminLevelsManager = () => {
             {/* Header */}
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2 mb-1">
-                    <div className="h-6 w-1 bg-orange-500 rounded-full"></div>
-                    <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight italic">
-                        Gestión de <span className="text-[#1e3a8a]">Niveles</span>
+                    <div className="h-6 w-1 bg-brand-accent rounded-full"></div>
+                    <h1 className="text-2xl font-black text-brand-heading uppercase tracking-tight italic">
+                        Gestión de <span className="text-brand-primary">Niveles</span>
                     </h1>
                 </div>
-                <button onClick={() => setView('create')} className="bg-[#1e3a8a] text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:bg-orange-500 transition-all group">
+                <button onClick={() => setView('create')} className="bg-brand-primary text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:bg-brand-accent transition-all group">
                     <Plus size={20} className="group-hover:rotate-90 transition-transform" />
                     Nuevo Nivel
                 </button>
@@ -96,7 +96,7 @@ const AdminLevelsManager = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="BUSCAR NIVEL..."
                 wrapperClassName="relative group"
-                className="w-full bg-white border border-slate-200 rounded-2xl pl-12 pr-4 py-3 text-xs font-bold uppercase outline-none focus:ring-2 focus:ring-blue-500/20"
+                className="w-full bg-brand-surface border border-brand-border rounded-2xl pl-12 pr-4 py-3 text-xs font-bold uppercase outline-none focus:ring-2 focus:ring-blue-500/20"
             />
 
             {loading ? (
@@ -104,15 +104,15 @@ const AdminLevelsManager = () => {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredNiveles.map((nivel) => (
-                        <div key={nivel.id} className="bg-white rounded-3xl border border-slate-200 p-6 hover:shadow-xl transition-all group flex flex-col justify-between min-h-[160px]">
+                        <div key={nivel.id} className="bg-brand-surface rounded-3xl border border-brand-border p-6 hover:shadow-xl transition-all group flex flex-col justify-between min-h-[160px]">
                             <div className="flex justify-between items-start mb-4">
-                                <div className="p-3 bg-blue-50 text-[#1e3a8a] rounded-2xl group-hover:bg-[#1e3a8a] group-hover:text-white transition-all shadow-sm">
+                                <div className="p-3 bg-brand-primary-soft text-brand-primary rounded-2xl group-hover:bg-brand-primary group-hover:text-white transition-all shadow-sm">
                                     <Trophy size={24} />
                                 </div>
                                 <div className="flex gap-1">
                                     <button
                                         onClick={() => handleEdit(nivel)}
-                                        className="p-2 text-slate-300 hover:text-[#1e3a8a] transition-colors"
+                                        className="p-2 text-slate-300 hover:text-brand-primary transition-colors"
                                         title="Editar nombre"
                                     >
                                         <Edit3 size={18} />
@@ -131,7 +131,7 @@ const AdminLevelsManager = () => {
                                 <h3 className="font-black text-slate-800 text-lg uppercase italic leading-tight">
                                     {nivel.nombre}
                                 </h3>
-                                <ChevronRight size={20} className="text-slate-200 group-hover:text-orange-500 group-hover:translate-x-1 transition-all" />
+                                <ChevronRight size={20} className="text-slate-200 group-hover:text-brand-accent group-hover:translate-x-1 transition-all" />
                             </div>
                         </div>
                     ))}

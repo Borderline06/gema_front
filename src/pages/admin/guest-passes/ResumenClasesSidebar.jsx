@@ -2,7 +2,7 @@ import React from 'react';
 import { Loader2, Send, X, Clock, Layers, MapPin, Calendar, ShoppingBag } from 'lucide-react';
 
 const ResumenClasesSidebar = ({ formDataList, alumnos, horarios, metodosPago, onRemoveItem, submitting }) => (
-    <div className="bg-slate-900 text-white p-6 rounded-[2.5rem] shadow-2xl border-4 border-slate-800 flex flex-col max-h-[80vh]">
+    <div className="bg-brand-primary-dark text-white p-6 rounded-[2.5rem] shadow-2xl border-4 border-slate-800 flex flex-col max-h-[80vh]">
 
         <div className="flex items-center justify-between mb-6 border-b border-slate-800 pb-4">
             <div>
@@ -48,11 +48,11 @@ const ResumenClasesSidebar = ({ formDataList, alumnos, horarios, metodosPago, on
                                     <MapPin size={10} className="text-slate-500" />
                                     {horario ? `${horario.sede?.nombre}` : "Sede no encontrada"}
                                 </p>
-                                <p className="flex items-center gap-1.5 text-slate-400 text-[10px]">
+                                <p className="flex items-center gap-1.5 text-brand-muted text-[10px]">
                                     <Calendar size={10} className="text-slate-500" />
                                     Fecha: {item.fecha_inicio_electiva.split("-").reverse().join("-")}
                                 </p>
-                                <div className="pt-2 mt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-bold text-slate-400">
+                                <div className="pt-2 mt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-bold text-brand-muted">
                                     <span>{pago ? pago.nombre : 'Pago'}</span>
                                 </div>
                             </div>
@@ -61,7 +61,7 @@ const ResumenClasesSidebar = ({ formDataList, alumnos, horarios, metodosPago, on
                 })
             ) : (
                 <div className="h-full flex flex-col items-center justify-center text-center p-6 py-12 border-2 border-dashed border-slate-800 rounded-2xl bg-slate-950/30">
-                    <ShoppingBag size={32} className="text-slate-700 mb-2" />
+                    <ShoppingBag size={32} className="text-brand-body mb-2" />
                     <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Las clases agregadas se mostrarán en esta sección</p>
                 </div>
             )}
@@ -70,7 +70,7 @@ const ResumenClasesSidebar = ({ formDataList, alumnos, horarios, metodosPago, on
         <div className="mt-6 pt-4 border-t border-slate-800 space-y-3">
             {formDataList.length > 0 && (
                 <div className="flex items-center justify-between px-2 text-sm font-black uppercase italic">
-                    <span className="text-slate-400">Total:</span>
+                    <span className="text-brand-muted">Total:</span>
                     <span className="text-orange-400 text-base">
                         S/. {formDataList[0]?.montoTotal || '0'}
                     </span>

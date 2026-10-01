@@ -147,7 +147,7 @@ const AdminLocations = ({ onSuccess, initialData }) => {
                 <button
                     onClick={handleSubmit}
                     disabled={loading || !formData.nombre}
-                    className="bg-gradient-to-r from-[#1e3a8a] to-[#0f172a] hover:from-orange-500 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all duration-300 shadow-lg shadow-blue-900/20 group"
+                    className="bg-gradient-to-r from-brand-primary to-brand-primary-dark hover:from-brand-accent hover:to-brand-accent-dark disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all duration-300 shadow-lg shadow-brand-primary/20 group"
                 >
                     <Save size={20} />
                     {loading ? 'Guardando...' : isEdit ? 'Actualizar Sede' : 'Finalizar Registro'}
@@ -157,68 +157,68 @@ const AdminLocations = ({ onSuccess, initialData }) => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2 space-y-6">
                     {/* Información General */}
-                    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-                        <div className="p-6 border-b border-slate-100 bg-[#f8fafc] flex items-center gap-3">
-                            <div className="p-2 bg-blue-100 text-[#1e3a8a] rounded-lg">
+                    <div className="bg-brand-surface rounded-3xl border border-brand-border shadow-sm overflow-hidden">
+                        <div className="p-6 border-b border-brand-border-soft bg-brand-bg flex items-center gap-3">
+                            <div className="p-2 bg-blue-100 text-brand-primary rounded-lg">
                                 <Home size={20} />
                             </div>
-                            <h3 className="font-black text-[#1e3a8a] uppercase tracking-wider text-sm">Información General</h3>
+                            <h3 className="font-black text-brand-primary uppercase tracking-wider text-sm">Información General</h3>
                         </div>
                         <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div className="space-y-1">
-                                <label className="text-[10px] font-black text-slate-400 uppercase ml-1">Nombre de la Sede</label>
-                                <input name="nombre" value={formData.nombre} onChange={handleChange} placeholder="Ej: Sede Central" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none transition-all" />
+                                <label className="text-[10px] font-black text-brand-muted uppercase ml-1">Nombre de la Sede</label>
+                                <input name="nombre" value={formData.nombre} onChange={handleChange} placeholder="Ej: Sede Central" className="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none transition-all" />
                             </div>
                             <div className="space-y-1">
-                                <label className="text-[10px] font-black text-slate-400 uppercase ml-1">Teléfono</label>
+                                <label className="text-[10px] font-black text-brand-muted uppercase ml-1">Teléfono</label>
                                 <div className="relative">
-                                    <Phone size={14} className="absolute left-4 top-3 text-slate-400" />
-                                    <input name="telefono_contacto" value={formData.telefono_contacto} onChange={handleChange} placeholder="999 999 999" className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none" />
+                                    <Phone size={14} className="absolute left-4 top-3 text-brand-muted" />
+                                    <input name="telefono_contacto" value={formData.telefono_contacto} onChange={handleChange} placeholder="999 999 999" className="w-full bg-brand-bg border border-brand-border rounded-xl pl-10 pr-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none" />
                                 </div>
                             </div>
                             <div className="space-y-1">
-                                <label className="text-[10px] font-black text-slate-400 uppercase ml-1">Estado</label>
+                                <label className="text-[10px] font-black text-brand-muted uppercase ml-1">Estado</label>
                                 <select name="activo" value={String(formData.activo)}
                                     onChange={(e) =>
                                         setFormData({
                                             ...formData,
                                             activo: e.target.value === "true",
                                         })
-                                    } className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                                    } className="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none">
                                     <option value="true">Activo</option>
                                     <option value="false">Inactivo</option>
                                 </select>
                             </div>
                             <div className="md:col-span-3 space-y-1">
-                                <label className="text-[10px] font-black text-slate-400 uppercase ml-1">Tipo de Instalación</label>
-                                <input name="tipo_instalacion" value={formData.tipo_instalacion} onChange={handleChange} placeholder="Ej: Club Deportivo / Complejo Techado" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none" />
+                                <label className="text-[10px] font-black text-brand-muted uppercase ml-1">Tipo de Instalación</label>
+                                <input name="tipo_instalacion" value={formData.tipo_instalacion} onChange={handleChange} placeholder="Ej: Club Deportivo / Complejo Techado" className="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none" />
                             </div>
                         </div>
                     </div>
 
                     {/* Ubicación */}
-                    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-                        <div className="p-6 border-b border-slate-100 bg-[#f8fafc] flex items-center gap-3">
-                            <div className="p-2 bg-orange-100 text-orange-600 rounded-lg">
+                    <div className="bg-brand-surface rounded-3xl border border-brand-border shadow-sm overflow-hidden">
+                        <div className="p-6 border-b border-brand-border-soft bg-brand-bg flex items-center gap-3">
+                            <div className="p-2 bg-orange-100 text-brand-accent-dark rounded-lg">
                                 <MapPin size={20} />
                             </div>
-                            <h3 className="font-black text-[#1e3a8a] uppercase tracking-wider text-sm">Ubicación Exacta</h3>
+                            <h3 className="font-black text-brand-primary uppercase tracking-wider text-sm">Ubicación Exacta</h3>
                         </div>
                         <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="md:col-span-2 space-y-1">
-                                <label className="text-[10px] font-black text-slate-400 uppercase ml-1">Dirección Completa</label>
-                                <input name="direccion_completa" value={formData.direccion_completa} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-orange-500 outline-none transition-all" />
+                                <label className="text-[10px] font-black text-brand-muted uppercase ml-1">Dirección Completa</label>
+                                <input name="direccion_completa" value={formData.direccion_completa} onChange={handleChange} className="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-brand-accent outline-none transition-all" />
                             </div>
                             {/* Ciudad Select */}
                             <div className="space-y-1">
-                                <label className="text-[10px] font-black text-slate-400 uppercase ml-1">Ciudad</label>
+                                <label className="text-[10px] font-black text-brand-muted uppercase ml-1">Ciudad</label>
                                 <select
                                     name="ciudad"
                                     value={formData.ciudad}
                                     onChange={(e) => {
                                         setFormData(prev => ({ ...prev, ciudad: e.target.value, distrito: '' }));
                                     }}
-                                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-orange-500 outline-none appearance-none"
+                                    className="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-brand-accent outline-none appearance-none"
                                 >
                                     <option value="">Seleccione Ciudad</option>
                                     {Object.keys(UBI_DATA).map(ciudad => (
@@ -229,13 +229,13 @@ const AdminLocations = ({ onSuccess, initialData }) => {
 
                             {/* Distrito Select */}
                             <div className="space-y-1">
-                                <label className="text-[10px] font-black text-slate-400 uppercase ml-1">Distrito</label>
+                                <label className="text-[10px] font-black text-brand-muted uppercase ml-1">Distrito</label>
                                 <select
                                     name="distrito"
                                     value={formData.distrito}
                                     onChange={handleChange}
                                     disabled={!formData.ciudad}
-                                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-orange-500 outline-none appearance-none disabled:opacity-50"
+                                    className="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-brand-accent outline-none appearance-none disabled:opacity-50"
                                 >
                                     <option value="">Seleccione Distrito</option>
                                     {formData.ciudad && UBI_DATA[formData.ciudad].map(dist => (
@@ -244,8 +244,8 @@ const AdminLocations = ({ onSuccess, initialData }) => {
                                 </select>
                             </div>
                             <div className="md:col-span-2 space-y-1">
-                                <label className="text-[10px] font-black text-slate-400 uppercase ml-1">Referencia</label>
-                                <input name="referencia" value={formData.referencia} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-orange-500 outline-none transition-all" />
+                                <label className="text-[10px] font-black text-brand-muted uppercase ml-1">Referencia</label>
+                                <input name="referencia" value={formData.referencia} onChange={handleChange} className="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-brand-accent outline-none transition-all" />
                             </div>
                         </div>
                     </div>
@@ -253,25 +253,25 @@ const AdminLocations = ({ onSuccess, initialData }) => {
 
                 {/* Canchas (Derecha) */}
                 <div className="space-y-6">
-                    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-                        <div className="p-6 border-b border-slate-100 bg-[#f8fafc] flex items-center justify-between">
+                    <div className="bg-brand-surface rounded-3xl border border-brand-border shadow-sm overflow-hidden">
+                        <div className="p-6 border-b border-brand-border-soft bg-brand-bg flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <div className="p-2 bg-blue-100 text-[#1e3a8a] rounded-lg"><Map size={20} /></div>
-                                <h3 className="font-black text-[#1e3a8a] uppercase tracking-wider text-sm">Canchas</h3>
+                                <div className="p-2 bg-blue-100 text-brand-primary rounded-lg"><Map size={20} /></div>
+                                <h3 className="font-black text-brand-primary uppercase tracking-wider text-sm">Canchas</h3>
                             </div>
-                            <button onClick={addCancha} className="p-1.5 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors shadow-md shadow-orange-200"><Plus size={18} /></button>
+                            <button onClick={addCancha} className="p-1.5 bg-brand-accent text-white rounded-lg hover:bg-brand-accent-dark transition-colors shadow-md shadow-orange-200"><Plus size={18} /></button>
                         </div>
                         <div className="p-4 space-y-4 max-h-[400px] overflow-y-auto">
                             {formData.canchas.map((cancha, index) => (
-                                <div key={index} className="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-3 relative group">
+                                <div key={index} className="p-4 bg-brand-bg rounded-2xl border border-brand-border-soft space-y-3 relative group">
                                     <button onClick={() => removeCancha(index)} className="absolute top-2 right-2 text-slate-300 hover:text-red-500 transition-colors"><Trash2 size={16} /></button>
                                     <div className="space-y-1">
-                                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-tighter">Nombre</label>
-                                        <input name="nombre" value={cancha.nombre} onChange={(e) => handleCanchaChange(index, e)} className="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold outline-none focus:border-[#1e3a8a]" />
+                                        <label className="text-[9px] font-black text-brand-muted uppercase tracking-tighter">Nombre</label>
+                                        <input name="nombre" value={cancha.nombre} onChange={(e) => handleCanchaChange(index, e)} className="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-1.5 text-xs font-bold outline-none focus:border-brand-primary" />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-tighter">Descripción</label>
-                                        <input name="descripcion" value={cancha.descripcion} onChange={(e) => handleCanchaChange(index, e)} className="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold outline-none focus:border-[#1e3a8a]" />
+                                        <label className="text-[9px] font-black text-brand-muted uppercase tracking-tighter">Descripción</label>
+                                        <input name="descripcion" value={cancha.descripcion} onChange={(e) => handleCanchaChange(index, e)} className="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-1.5 text-xs font-bold outline-none focus:border-brand-primary" />
                                     </div>
                                 </div>
                             ))}
@@ -279,7 +279,7 @@ const AdminLocations = ({ onSuccess, initialData }) => {
                     </div>
 
                     {/* Widget de Resumen */}
-                    <div className="bg-gradient-to-br from-[#1e3a8a] to-[#0f172a] p-6 rounded-3xl text-white shadow-xl relative overflow-hidden">
+                    <div className="bg-gradient-to-br from-brand-primary to-brand-primary-dark p-6 rounded-3xl text-white shadow-xl relative overflow-hidden">
                         <div className="relative z-10">
                             <h4 className="font-black uppercase italic tracking-tighter text-xl mb-2">Resumen</h4>
                             <div className="space-y-2 opacity-80 text-xs font-bold uppercase">

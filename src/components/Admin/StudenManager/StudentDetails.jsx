@@ -83,8 +83,8 @@ const StudentDetails = ({ selectedAlumno, onBack, onStatusHistoryChange }) => {
     if (loadingDetalle || !detalle) {
         return (
             <div className="flex flex-col items-center justify-center h-96 gap-4">
-                <Loader2 className="animate-spin text-[#1e3a8a]" size={48} />
-                <p className="font-black text-[#1e3a8a] text-xs uppercase italic tracking-widest animate-pulse">Cargando expediente...</p>
+                <Loader2 className="animate-spin text-brand-primary" size={48} />
+                <p className="font-black text-brand-primary text-xs uppercase italic tracking-widest animate-pulse">Cargando expediente...</p>
             </div>
         );
     }
@@ -93,12 +93,12 @@ const StudentDetails = ({ selectedAlumno, onBack, onStatusHistoryChange }) => {
         <div className="space-y-6 animate-fade-in-up p-1">
             {/* Header del Expediente */}
             <div className="flex items-center gap-4">
-                <button onClick={onBack} className="w-12 h-12 bg-white border border-slate-200 rounded-2xl flex items-center justify-center hover:bg-slate-50 transition-all shadow-sm">
+                <button onClick={onBack} className="w-12 h-12 bg-brand-surface border border-brand-border rounded-2xl flex items-center justify-center hover:bg-brand-bg transition-all shadow-sm">
                     <ArrowLeft size={24} className="text-slate-600" />
                 </button>
                 <div>
-                    <h2 className="text-2xl font-black uppercase italic text-slate-800 leading-none">Expediente <span className="text-[#1e3a8a]">Gema</span></h2>
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-1">Ficha completa del Alumno</p>
+                    <h2 className="text-2xl font-black uppercase italic text-slate-800 leading-none">Expediente <span className="text-brand-primary">Gema</span></h2>
+                    <p className="text-[10px] font-bold text-brand-muted uppercase tracking-[0.2em] mt-1">Ficha completa del Alumno</p>
                 </div>
             </div>
 

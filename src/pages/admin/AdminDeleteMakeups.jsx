@@ -94,14 +94,14 @@ const AdminDeleteMakeups = () => {
     return (
         <div className="p-4 max-w-6xl mx-auto space-y-4 pb-20">
             {/* Header */}
-            <div className="bg-slate-900 rounded-3xl p-6 shadow-xl flex flex-col md:flex-row justify-between items-center gap-4 border-b-4 border-orange-500">
+            <div className="bg-brand-primary-dark rounded-3xl p-6 shadow-xl flex flex-col md:flex-row justify-between items-center gap-4 border-b-4 border-brand-accent">
                 <div className="flex items-center gap-4">
-                    <div className="bg-orange-500 p-3 rounded-2xl text-white shadow-lg">
+                    <div className="bg-brand-accent p-3 rounded-2xl text-white shadow-lg">
                         <History size={20} />
                     </div>
                     <div>
                         <h1 className="text-xl font-black text-white uppercase italic tracking-tighter leading-none">Depuración Maestra</h1>
-                        <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-1">Gema Academy • Control de Registros</p>
+                        <p className="text-[9px] text-brand-muted font-bold uppercase tracking-widest mt-1">Gema Academy • Control de Registros</p>
                     </div>
                 </div>
                 <SearchInput
@@ -111,22 +111,22 @@ const AdminDeleteMakeups = () => {
                     wrapperClassName="relative w-full md:w-80"
                     iconClassName="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
                     iconSize={16}
-                    className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-xs font-bold text-white outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-xs font-bold text-white outline-none focus:ring-2 focus:ring-brand-accent transition-all"
                 />
             </div>
 
             {/* Listado */}
             <div className="space-y-3">
                 {Object.entries(groupedData).map(([sede, alumnosGroup]) => (
-                    <div key={sede} className="bg-white rounded-3xl border border-slate-100 overflow-hidden shadow-sm">
+                    <div key={sede} className="bg-brand-surface rounded-3xl border border-brand-border-soft overflow-hidden shadow-sm">
                         <button 
                             onClick={() => toggleSection(sede)}
-                            className="w-full flex items-center justify-between p-4 hover:bg-slate-50 transition-colors"
+                            className="w-full flex items-center justify-between p-4 hover:bg-brand-bg transition-colors"
                         >
                             <div className="flex items-center gap-3">
-                                <MapPin size={18} className={sede.includes("NO PROGRAMADAS") ? 'text-red-400' : 'text-orange-500'} />
-                                <h2 className="text-sm font-black text-slate-700 uppercase italic">{sede}</h2>
-                                <span className="text-[10px] font-bold px-2 py-0.5 bg-slate-100 text-slate-500 rounded-lg">
+                                <MapPin size={18} className={sede.includes("NO PROGRAMADAS") ? 'text-red-400' : 'text-brand-accent'} />
+                                <h2 className="text-sm font-black text-brand-body uppercase italic">{sede}</h2>
+                                <span className="text-[10px] font-bold px-2 py-0.5 bg-brand-surface-alt text-slate-500 rounded-lg">
                                     {Object.keys(alumnosGroup).length} alumnos
                                 </span>
                             </div>
@@ -134,25 +134,25 @@ const AdminDeleteMakeups = () => {
                         </button>
 
                         {openSections[sede] && (
-                            <div className="p-2 bg-slate-50/30 space-y-1 border-t border-slate-50">
+                            <div className="p-2 bg-brand-bg/30 space-y-1 border-t border-slate-50">
                                 {Object.entries(alumnosGroup).map(([alumnoId, data]) => (
-                                    <div key={alumnoId} className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
+                                    <div key={alumnoId} className="bg-brand-surface rounded-2xl border border-brand-border-soft overflow-hidden shadow-sm">
                                         {/* Botón Desplegable del Alumno */}
                                         <button 
                                             onClick={() => toggleAlumno(alumnoId)}
-                                            className="w-full flex items-center justify-between p-3 hover:bg-slate-50 transition-colors"
+                                            className="w-full flex items-center justify-between p-3 hover:bg-brand-bg transition-colors"
                                         >
                                             <div className="flex items-center gap-3">
-                                                <div className={`p-1.5 rounded-lg ${openAlumnos[alumnoId] ? 'bg-blue-50 text-blue-600' : 'bg-slate-50 text-slate-400'}`}>
+                                                <div className={`p-1.5 rounded-lg ${openAlumnos[alumnoId] ? 'bg-brand-primary-soft text-blue-600' : 'bg-brand-bg text-brand-muted'}`}>
                                                     <User size={14} />
                                                 </div>
                                                 <div className="flex items-baseline gap-2">
-                                                    <span className="text-[11px] font-black text-slate-700 uppercase tracking-tight">
+                                                    <span className="text-[11px] font-black text-brand-body uppercase tracking-tight">
                                                         {data.nombre}
                                                     </span>
                                                     <span className="text-[9px] font-bold text-slate-300 uppercase">ID: {alumnoId}</span>
                                                 </div>
-                                                <span className="text-[9px] font-black px-1.5 py-0.5 bg-blue-50 text-blue-500 rounded-md">
+                                                <span className="text-[9px] font-black px-1.5 py-0.5 bg-brand-primary-soft text-blue-500 rounded-md">
                                                     {data.tickets.length} registros
                                                 </span>
                                             </div>
@@ -163,8 +163,8 @@ const AdminDeleteMakeups = () => {
                                         {openAlumnos[alumnoId] && (
                                             <div className="p-3 pt-0 animate-in slide-in-from-top-2 duration-200">
                                                 <div className="overflow-hidden border border-slate-50 rounded-xl">
-                                                    <table className="w-full text-left border-collapse bg-white">
-                                                        <thead className="bg-slate-50 text-[8px] uppercase font-black text-slate-400">
+                                                    <table className="w-full text-left border-collapse bg-brand-surface">
+                                                        <thead className="bg-brand-bg text-[8px] uppercase font-black text-brand-muted">
                                                             <tr>
                                                                 <th className="px-4 py-2">Faltó el</th>
                                                                 <th className="px-4 py-2">Recupera</th>
@@ -175,7 +175,7 @@ const AdminDeleteMakeups = () => {
                                                         </thead>
                                                         <tbody className="divide-y divide-slate-50">
                                                             {data.tickets.map((recu) => (
-                                                                <tr key={recu.id} className="hover:bg-slate-50/50 transition-colors text-[10px]">
+                                                                <tr key={recu.id} className="hover:bg-brand-bg/50 transition-colors text-[10px]">
                                                                     <td className="px-4 py-2 font-bold text-slate-600">
                                                                         {formatLocalDate(recu.fecha_falta)}
                                                                     </td>
@@ -188,7 +188,7 @@ const AdminDeleteMakeups = () => {
                                                                                 <Stethoscope size={10} /> Médico
                                                                             </div>
                                                                         ) : (
-                                                                            <span className="text-slate-400 uppercase text-[8px] font-bold">Falta Común</span>
+                                                                            <span className="text-brand-muted uppercase text-[8px] font-bold">Falta Común</span>
                                                                         )}
                                                                     </td>
                                                                     <td className="px-4 py-2 text-center">

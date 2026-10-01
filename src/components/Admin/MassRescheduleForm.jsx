@@ -199,9 +199,9 @@ const MassRescheduleForm = ({ onSuccess }) => {
 
     return (
         <div className="max-w-5xl mx-auto">
-            <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+            <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-brand-surface p-6 rounded-2xl border border-brand-border-soft shadow-sm">
                 <div className="flex items-center gap-4">
-                    <div className="p-3 bg-orange-100 text-orange-600 rounded-2xl shadow-inner">
+                    <div className="p-3 bg-orange-100 text-brand-accent-dark rounded-2xl shadow-inner">
                         <CalendarRange size={32} />
                     </div>
                     <div>
@@ -209,16 +209,16 @@ const MassRescheduleForm = ({ onSuccess }) => {
                         <p className="text-slate-500 text-sm font-medium">Club Gema - Control de Contingencias</p>
                     </div>
                 </div>
-                <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-xl border border-slate-100">
+                <div className="flex items-center gap-2 px-4 py-2 bg-brand-bg rounded-xl border border-brand-border-soft">
                     <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
                     <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{filteredHorarios.length} ACTIVOS</span>
                 </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-8 animate-in fade-in duration-500">
-                <div className="bg-gradient-to-r from-orange-50 to-amber-50 border-l-4 border-orange-500 p-6 rounded-r-2xl shadow-sm">
+                <div className="bg-gradient-to-r from-orange-50 to-amber-50 border-l-4 border-brand-accent p-6 rounded-r-2xl shadow-sm">
                     <div className="flex gap-4">
-                        <AlertTriangle className="h-6 w-6 text-orange-500 shrink-0" />
+                        <AlertTriangle className="h-6 w-6 text-brand-accent shrink-0" />
                         <div>
                             <h4 className="text-sm font-black text-orange-800 uppercase tracking-wider mb-1">Advertencia Crítica</h4>
                             <p className="text-xs text-orange-700 font-bold leading-relaxed italic">
@@ -228,7 +228,7 @@ const MassRescheduleForm = ({ onSuccess }) => {
                     </div>
                 </div>
 
-                <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl space-y-8">
+                <div className="bg-brand-surface p-8 rounded-[2.5rem] border border-brand-border-soft shadow-xl space-y-8">
 
                     <HorarioFilterBar
                         filterDay={filterDay}
@@ -265,16 +265,16 @@ const MassRescheduleForm = ({ onSuccess }) => {
                         </div>
 
                         <div className="col-span-full space-y-2">
-                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2">4. Motivo Institucional</label>
-                            <textarea name="motivo" value={formData.motivo} onChange={handleChange} rows="3" className="w-full p-6 rounded-[2rem] border-2 border-slate-100 bg-slate-50 focus:border-orange-500 transition-all text-xs font-bold text-slate-600 italic" placeholder="Ej: Mantenimiento Preventivo de Canchas..." required></textarea>
+                            <label className="text-[10px] font-black text-brand-muted uppercase tracking-[0.2em] ml-2">4. Motivo Institucional</label>
+                            <textarea name="motivo" value={formData.motivo} onChange={handleChange} rows="3" className="w-full p-6 rounded-[2rem] border-2 border-brand-border-soft bg-brand-bg focus:border-brand-accent transition-all text-xs font-bold text-slate-600 italic" placeholder="Ej: Mantenimiento Preventivo de Canchas..." required></textarea>
                         </div>
                     </div>
 
-                    <div className="pt-6 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-6">
-                        <div className="flex items-center gap-2 text-xs font-bold text-blue-500 bg-blue-50 px-4 py-2 rounded-full border border-blue-100">
+                    <div className="pt-6 border-t border-brand-border-soft flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div className="flex items-center gap-2 text-xs font-bold text-blue-500 bg-brand-primary-soft px-4 py-2 rounded-full border border-blue-100">
                             <ShieldAlert size={14} /> <span>Procesando {horariosSeleccionados.length} bloque(s)</span>
                         </div>
-                        <button type="submit" disabled={isSubmitting || horariosSeleccionados.length === 0} className="w-full md:w-auto bg-gradient-to-br from-[#1e3a8a] to-[#0f172a] text-white px-12 py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] transition-all hover:scale-[1.03] disabled:grayscale">
+                        <button type="submit" disabled={isSubmitting || horariosSeleccionados.length === 0} className="w-full md:w-auto bg-gradient-to-br from-brand-primary to-brand-primary-dark text-white px-12 py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] transition-all hover:scale-[1.03] disabled:grayscale">
                             {isSubmitting ? <Loader2 className="animate-spin mx-auto" /> : "EJECUTAR REPROGRAMACIÓN"}
                         </button>
                     </div>

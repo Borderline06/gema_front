@@ -120,51 +120,51 @@ const AdminPublications = () => {
             <div className="space-y-6 animate-fade-in-up p-1 pb-20">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div className="flex items-center gap-4">
-                        <button onClick={() => setView('list')} className="p-2.5 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-all text-slate-600">
+                        <button onClick={() => setView('list')} className="p-2.5 bg-brand-surface border border-brand-border rounded-xl hover:bg-brand-bg transition-all text-slate-600">
                             <ArrowLeft size={20} />
                         </button>
                         <div>
-                            <h1 className="text-2xl font-black italic uppercase tracking-tight text-slate-900">
-                                Nueva <span className="text-[#1e3a8a]">Publicación</span>
+                            <h1 className="text-2xl font-black italic uppercase tracking-tight text-brand-heading">
+                                Nueva <span className="text-brand-primary">Publicación</span>
                             </h1>
-                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Anuncio para la comunidad Gema</p>
+                            <p className="text-[10px] font-black text-brand-muted uppercase tracking-widest italic">Anuncio para la comunidad Gema</p>
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden max-w-3xl mx-auto">
+                <div className="bg-brand-surface rounded-[2.5rem] border border-brand-border shadow-sm overflow-hidden max-w-3xl mx-auto">
                     <form onSubmit={handleSubmit} className="p-8 space-y-6">
                         <div className="space-y-1">
-                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Título del Anuncio</label>
+                            <label className="text-[10px] font-black text-brand-muted uppercase tracking-widest ml-1">Título del Anuncio</label>
                             <input
                                 type="text"
                                 value={titulo}
                                 onChange={(e) => setTitulo(e.target.value)}
-                                className="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-5 py-4 text-sm font-black text-[#1e3a8a] outline-none focus:border-orange-500 transition-colors"
+                                className="w-full bg-brand-bg border-2 border-brand-border-soft rounded-2xl px-5 py-4 text-sm font-black text-brand-primary outline-none focus:border-brand-accent transition-colors"
                                 placeholder="EJ: ¡MAÑANA GRAN TORNEO!"
                             />
                         </div>
 
                         <div className="space-y-1">
-                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Contenido</label>
+                            <label className="text-[10px] font-black text-brand-muted uppercase tracking-widest ml-1">Contenido</label>
                             <textarea
                                 value={contenido}
                                 onChange={(e) => setContenido(e.target.value)}
-                                className="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-5 py-4 text-sm font-medium text-slate-700 outline-none focus:border-orange-500 min-h-[180px] resize-none"
+                                className="w-full bg-brand-bg border-2 border-brand-border-soft rounded-2xl px-5 py-4 text-sm font-medium text-brand-body outline-none focus:border-brand-accent min-h-[180px] resize-none"
                                 placeholder="Escribe los detalles aquí..."
                             />
                         </div>
 
                         <div className="space-y-1">
-                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Imagen Destacada</label>
+                            <label className="text-[10px] font-black text-brand-muted uppercase tracking-widest ml-1">Imagen Destacada</label>
                             <input type="file" id="pub-image" className="hidden" accept="image/*" onChange={handleFileChange} />
-                            <label htmlFor="pub-image" className="block bg-slate-50 border-2 border-dashed border-slate-200 rounded-[2rem] py-10 text-center cursor-pointer hover:bg-orange-50 hover:border-orange-200 transition-all">
+                            <label htmlFor="pub-image" className="block bg-brand-bg border-2 border-dashed border-brand-border rounded-[2rem] py-10 text-center cursor-pointer hover:bg-brand-accent-soft hover:border-orange-200 transition-all">
                                 {previewUrl ? (
                                     <img src={previewUrl} className="h-40 mx-auto rounded-2xl shadow-lg" alt="Preview" />
                                 ) : (
                                     <div className="flex flex-col items-center gap-2">
                                         <UploadIcon className="text-slate-300" size={40} />
-                                        <p className="text-[10px] font-black text-slate-400 uppercase">Seleccionar Imagen</p>
+                                        <p className="text-[10px] font-black text-brand-muted uppercase">Seleccionar Imagen</p>
                                     </div>
                                 )}
                             </label>
@@ -173,7 +173,7 @@ const AdminPublications = () => {
                         <button
                             type="submit"
                             disabled={submitting}
-                            className="w-full bg-[#1e3a8a] hover:bg-orange-600 text-white font-black py-5 rounded-[2rem] transition-all flex items-center justify-center gap-3 disabled:bg-slate-300 shadow-xl shadow-blue-900/10 active:scale-95"
+                            className="w-full bg-brand-primary hover:bg-brand-accent-dark text-white font-black py-5 rounded-[2rem] transition-all flex items-center justify-center gap-3 disabled:bg-slate-300 shadow-xl shadow-brand-primary/10 active:scale-95"
                         >
                             {submitting ? <Loader2 className="animate-spin" size={20} /> : <Megaphone size={20} />}
                             {submitting ? "PROCESANDO..." : "PUBLICAR EN EL MURO"}
@@ -191,14 +191,14 @@ const AdminPublications = () => {
         <div className="space-y-6 animate-fade-in-up p-1 pb-20">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h1 className="text-2xl font-black italic uppercase tracking-tight text-slate-900">
-                        Muro de <span className="text-[#1e3a8a]">Publicaciones</span>
+                    <h1 className="text-2xl font-black italic uppercase tracking-tight text-brand-heading">
+                        Muro de <span className="text-brand-primary">Publicaciones</span>
                     </h1>
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Anuncios y noticias del club</p>
+                    <p className="text-[10px] font-black text-brand-muted uppercase tracking-widest italic">Anuncios y noticias del club</p>
                 </div>
                 <button
                     onClick={() => setView('create')}
-                    className="bg-gradient-to-r from-[#1e3a8a] to-[#0f172a] hover:from-orange-500 hover:to-orange-600 text-white px-8 py-3 rounded-2xl font-black uppercase italic text-xs flex items-center gap-2 transition-all duration-300 shadow-xl"
+                    className="bg-gradient-to-r from-brand-primary to-brand-primary-dark hover:from-brand-accent hover:to-brand-accent-dark text-white px-8 py-3 rounded-2xl font-black uppercase italic text-xs flex items-center gap-2 transition-all duration-300 shadow-xl"
                 >
                     <Plus size={20} />
                     Crear Noticia
@@ -208,27 +208,27 @@ const AdminPublications = () => {
             {loading ? (
                 <LoadingSpinner />
             ) : publicaciones.length === 0 ? (
-                <div className="bg-white rounded-3xl border border-slate-200 p-16 text-center">
+                <div className="bg-brand-surface rounded-3xl border border-brand-border p-16 text-center">
                     <Megaphone className="mx-auto text-slate-200 mb-4" size={60} />
-                    <h3 className="text-sm font-black text-slate-400 uppercase italic">No hay publicaciones activas</h3>
+                    <h3 className="text-sm font-black text-brand-muted uppercase italic">No hay publicaciones activas</h3>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                     {publicaciones.map((pub) => (
-                        <div key={pub.id} className="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden flex flex-col group">
+                        <div key={pub.id} className="bg-brand-surface rounded-[2.5rem] border border-brand-border shadow-sm overflow-hidden flex flex-col group">
                             {pub.imagen_url && (
                                 <div className="h-48 overflow-hidden">
                                     <img src={pub.imagen_url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="News" />
                                 </div>
                             )}
                             <div className="p-7 flex-1 flex flex-col">
-                                <h3 className="font-black text-[#1e3a8a] uppercase italic text-lg mb-3 line-clamp-2">{pub.titulo}</h3>
+                                <h3 className="font-black text-brand-primary uppercase italic text-lg mb-3 line-clamp-2">{pub.titulo}</h3>
                                 <p className="text-slate-600 text-sm font-medium line-clamp-4 flex-1">{pub.contenido}</p>
 
-                                <div className="mt-6 pt-5 border-t border-slate-100 flex justify-between items-center">
-                                    <div className="text-[9px] font-black text-slate-400 uppercase italic space-y-1">
+                                <div className="mt-6 pt-5 border-t border-brand-border-soft flex justify-between items-center">
+                                    <div className="text-[9px] font-black text-brand-muted uppercase italic space-y-1">
                                         <div className="flex items-center gap-2"><Calendar size={12} /> {new Date(pub.creado_en).toLocaleDateString()}</div>
-                                        <div className="flex items-center gap-2 text-[#1e3a8a]"><User size={12} /> {pub.administrador?.usuarios?.nombres || 'Admin'}</div>
+                                        <div className="flex items-center gap-2 text-brand-primary"><User size={12} /> {pub.administrador?.usuarios?.nombres || 'Admin'}</div>
                                     </div>
                                     <button onClick={() => handleDelete(pub.id)} className="p-2 text-slate-300 hover:text-red-500 transition-colors">
                                         <Trash2 size={18} />
@@ -255,7 +255,7 @@ const AdminPublications = () => {
 
 // Icono auxiliar para el diseño
 const UploadIcon = ({ size, className }) => (
-    <div className={`p-4 bg-slate-100 rounded-full ${className}`}>
+    <div className={`p-4 bg-brand-surface-alt rounded-full ${className}`}>
         <ImageIcon size={size} />
     </div>
 );

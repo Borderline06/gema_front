@@ -8,12 +8,12 @@ const HorarioFilters = ({
 }) => (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div>
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+            <label className="text-[10px] font-black text-brand-muted uppercase tracking-widest mb-2 flex items-center gap-2">
                 <MapPin size={12} /> Sede
             </label>
             <select
                 id="sedeSelect"
-                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm font-bold text-[#1e3a8a] focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all uppercase cursor-pointer"
+                className="w-full bg-brand-bg border border-brand-border rounded-2xl px-5 py-4 text-sm font-bold text-brand-primary focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all uppercase cursor-pointer"
                 value={sedeSelect}
                 onChange={(e) => onSedeChange(e.target.value)}
             >
@@ -24,12 +24,12 @@ const HorarioFilters = ({
             </select>
         </div>
         <div>
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+            <label className="text-[10px] font-black text-brand-muted uppercase tracking-widest mb-2 flex items-center gap-2">
                 <Layers size={12} /> Nivel
             </label>
             <select
                 id="nivelSelect"
-                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm font-bold text-[#1e3a8a] focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all uppercase cursor-pointer"
+                className="w-full bg-brand-bg border border-brand-border rounded-2xl px-5 py-4 text-sm font-bold text-brand-primary focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all uppercase cursor-pointer"
                 value={nivelSelect}
                 onChange={(e) => onNivelChange(e.target.value)}
             >
@@ -40,12 +40,12 @@ const HorarioFilters = ({
             </select>
         </div>
         <div>
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+            <label className="text-[10px] font-black text-brand-muted uppercase tracking-widest mb-2 flex items-center gap-2">
                 <Clock size={12} /> Día
             </label>
             <select
                 id="diaSelect"
-                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm font-bold text-[#1e3a8a] focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all uppercase cursor-pointer"
+                className="w-full bg-brand-bg border border-brand-border rounded-2xl px-5 py-4 text-sm font-bold text-brand-primary focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all uppercase cursor-pointer"
                 value={diaSelect}
                 onChange={(e) => onDiaChange(e.target.value)}
             >

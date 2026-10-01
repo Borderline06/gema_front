@@ -4,16 +4,16 @@ import InfoTip from '../../../shared/InfoTip';
 import { CHART_COLORS } from './chartColors';
 
 const RevenueChart = ({ metodosPago }) => (
-    <div className="lg:col-span-3 bg-white rounded-[2.5rem] border border-slate-100 shadow-[0_20px_60px_rgba(0,0,0,0.03)] p-5 md:p-8 flex flex-col mt-6">
+    <div className="lg:col-span-3 bg-brand-surface rounded-[2.5rem] border border-brand-border-soft shadow-[0_20px_60px_rgba(0,0,0,0.03)] p-5 md:p-8 flex flex-col mt-6">
         <div className="mb-6 flex justify-between items-start">
             <div>
-                <h2 className="font-black text-[#1e3a8a] uppercase tracking-tight text-xl italic mb-1 flex items-center gap-2">
+                <h2 className="font-black text-brand-primary uppercase tracking-tight text-xl italic mb-1 flex items-center gap-2">
                     <div className="w-1.5 h-6 bg-red-500 rounded-full"></div> Recaudación Anual
                     <InfoTip
                         text="Solo suma pagos con estado APROBADO dentro del año seleccionado. Pagos pendientes de validación o rechazados no aparecen aquí."
                     />
                 </h2>
-                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest ml-3.5">Ingresos por Canales de Pago</p>
+                <p className="text-[10px] text-brand-muted font-bold uppercase tracking-widest ml-3.5">Ingresos por Canales de Pago</p>
             </div>
         </div>
         <div style={{ width: '100%', height: 350 }}>
@@ -32,7 +32,7 @@ const RevenueChart = ({ metodosPago }) => (
                     </BarChart>
                 </ResponsiveContainer>
             ) : (
-                <div className="h-full w-full flex items-center justify-center text-slate-400 font-bold text-sm uppercase bg-slate-50/50 rounded-2xl border border-dashed border-slate-200 text-center p-4">
+                <div className="h-full w-full flex items-center justify-center text-brand-muted font-bold text-sm uppercase bg-brand-bg/50 rounded-2xl border border-dashed border-brand-border text-center p-4">
                     No hay pagos registrados
                 </div>
             )}

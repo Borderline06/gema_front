@@ -126,37 +126,37 @@ const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
 
             {showDateModal && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-sm">
-                    <div className="bg-white rounded-[3rem] p-10 w-full max-w-md shadow-2xl border-t-[12px] border-orange-500 animate-bounce-in">
+                    <div className="bg-brand-surface rounded-[3rem] p-10 w-full max-w-md shadow-2xl border-t-[12px] border-brand-accent animate-bounce-in">
                         <div className="text-center mb-8">
-                            <div className="bg-orange-100 w-20 h-20 rounded-3xl text-orange-600 flex items-center justify-center mx-auto mb-4">
+                            <div className="bg-orange-100 w-20 h-20 rounded-3xl text-brand-accent-dark flex items-center justify-center mx-auto mb-4">
                                 <Calendar size={40} />
                             </div>
                             <h3 className="text-2xl font-black uppercase italic text-slate-800">Definir Inicio de Clases</h3>
-                            <p className="text-[10px] text-slate-400 font-bold uppercase mt-2">Solo disponible para el primer abono</p>
+                            <p className="text-[10px] text-brand-muted font-bold uppercase mt-2">Solo disponible para el primer abono</p>
                         </div>
 
                         <div className="space-y-6">
                             <input
                                 type="date"
-                                className="w-full bg-slate-50 border-4 border-slate-100 rounded-[2rem] px-8 py-5 font-black text-[#1e3a8a] text-xl outline-none focus:border-orange-500 text-center"
+                                className="w-full bg-brand-bg border-4 border-brand-border-soft rounded-[2rem] px-8 py-5 font-black text-brand-primary text-xl outline-none focus:border-brand-accent text-center"
                                 value={fechaInicioClases}
                                 onChange={(e) => setFechaInicioClases(e.target.value)}
                             />
                             <button
                                 onClick={handleApplyNewDate}
-                                className="w-full bg-orange-500 text-white py-5 rounded-[2rem] font-black uppercase italic shadow-xl hover:bg-slate-900 transition-all flex items-center justify-center gap-3"
+                                className="w-full bg-brand-accent text-white py-5 rounded-[2rem] font-black uppercase italic shadow-xl hover:bg-brand-primary-dark transition-all flex items-center justify-center gap-3"
                             >
                                 ESTABLECER FECHA <Check size={20} />
                             </button>
-                            <button onClick={() => setShowDateModal(false)} className="w-full text-[10px] font-black text-slate-400 uppercase tracking-widest">Cerrar</button>
+                            <button onClick={() => setShowDateModal(false)} className="w-full text-[10px] font-black text-brand-muted uppercase tracking-widest">Cerrar</button>
                         </div>
                     </div>
                 </div>
             )}
 
-            <div className="flex flex-col md:flex-row justify-between items-center bg-white p-4 rounded-[2.5rem] shadow-sm border border-slate-100 gap-4">
+            <div className="flex flex-col md:flex-row justify-between items-center bg-brand-surface p-4 rounded-[2.5rem] shadow-sm border border-brand-border-soft gap-4">
                 <div className="flex items-center gap-3 w-full md:w-auto">
-                    <button onClick={onBack} className="p-3 bg-slate-50 rounded-2xl text-slate-600 hover:bg-slate-200 transition-all"><ArrowLeft size={20} /></button>
+                    <button onClick={onBack} className="p-3 bg-brand-bg rounded-2xl text-slate-600 hover:bg-slate-200 transition-all"><ArrowLeft size={20} /></button>
                     <h1 className="text-xl font-black text-slate-800 uppercase italic">Revisión de <span className="text-blue-600">Pago</span></h1>
                 </div>
 
@@ -169,7 +169,7 @@ const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
                     <button
                         onClick={handleVerify}
                         disabled={loading || validationStatus === 'PENDIENTE'}
-                        className="bg-[#1e3a8a] hover:bg-green-600 text-white px-10 py-4 rounded-2xl font-black uppercase italic text-xs shadow-xl flex items-center gap-2 transition-all"
+                        className="bg-brand-primary hover:bg-green-600 text-white px-10 py-4 rounded-2xl font-black uppercase italic text-xs shadow-xl flex items-center gap-2 transition-all"
                     >
                         {loading ? <Loader2 className="animate-spin" size={18} /> : <CheckCircle size={18} />}
                         Validar Transacción
@@ -179,28 +179,28 @@ const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm flex items-center gap-6 relative overflow-hidden">
+                    <div className="bg-brand-surface p-6 rounded-[2.5rem] border border-brand-border-soft shadow-sm flex items-center gap-6 relative overflow-hidden">
                         <div className="bg-blue-600 p-4 rounded-[2.5rem] text-white shadow-lg"><User size={38} /></div>
                         <div className="flex-1">
-                            <p className="text-[10px] font-black text-slate-400 uppercase italic tracking-widest leading-none mb-1">Alumno</p>
+                            <p className="text-[10px] font-black text-brand-muted uppercase italic tracking-widest leading-none mb-1">Alumno</p>
                             <h2 className="text-2xl font-black uppercase italic text-slate-800 leading-none">{alumno?.nombres} {alumno?.apellidos}</h2>
                         </div>
                     </div>
 
-                    <div className="bg-white p-8 rounded-[3rem] border border-slate-100 shadow-sm relative overflow-hidden">
+                    <div className="bg-brand-surface p-8 rounded-[3rem] border border-brand-border-soft shadow-sm relative overflow-hidden">
                         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4 border-b border-slate-50 pb-6">
                             <div>
                                 <h3 className="font-black uppercase italic text-slate-800 text-lg tracking-tighter">Detalle de Inscripción</h3>
-                                <p className="text-[10px] text-slate-400 font-bold uppercase mt-1">Ubicación y Cronograma seleccionado</p>
+                                <p className="text-[10px] text-brand-muted font-bold uppercase mt-1">Ubicación y Cronograma seleccionado</p>
                             </div>
 
                             {/* 🚩 REGLA DE ORO: Solo mostramos el botón si NO hay abonos previos */}
                             {infoFinanciera.esPrimerPago ? (
-                                <button onClick={() => setShowDateModal(true)} className="bg-orange-500 text-white px-6 py-3.5 rounded-2xl text-[10px] font-black uppercase italic hover:bg-slate-900 transition-all flex items-center gap-2 shadow-lg shadow-orange-200">
+                                <button onClick={() => setShowDateModal(true)} className="bg-brand-accent text-white px-6 py-3.5 rounded-2xl text-[10px] font-black uppercase italic hover:bg-brand-primary-dark transition-all flex items-center gap-2 shadow-lg shadow-orange-200">
                                     <Calendar size={14} /> AJUSTAR FECHA DE INICIO
                                 </button>
                             ) : (
-                                <div className="bg-blue-50 px-5 py-3 rounded-2xl border border-blue-100 flex items-center gap-2">
+                                <div className="bg-brand-primary-soft px-5 py-3 rounded-2xl border border-blue-100 flex items-center gap-2">
                                     <ShieldCheck size={16} className="text-blue-500" />
                                     <span className="text-[9px] font-black text-blue-600 uppercase italic">Ciclo ya iniciado (Abono previo)</span>
                                 </div>
@@ -214,25 +214,25 @@ const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
                                 const tipoInsc = link.inscripciones?.tipo_inscripcion;
 
                                 return (
-                                    <div key={idx} className="bg-slate-50 p-6 rounded-[2.5rem] border-2 border-slate-50 hover:bg-white hover:border-blue-200 transition-all">
+                                    <div key={idx} className="bg-brand-bg p-6 rounded-[2.5rem] border-2 border-slate-50 hover:bg-brand-surface hover:border-blue-200 transition-all">
                                         <div className="space-y-4">
                                             {tipoInsc === 'REGULAR' ? (
-                                                <div className="flex items-center justify-between gap-2 bg-white p-3 rounded-2xl border border-slate-100 shadow-sm">
+                                                <div className="flex items-center justify-between gap-2 bg-brand-surface p-3 rounded-2xl border border-brand-border-soft shadow-sm">
                                                     <div className="text-center flex-1">
-                                                        <p className="text-[7px] font-black text-slate-400 uppercase">Inicia</p>
-                                                        <p className="text-[10px] font-black text-[#1e3a8a]">{formatFechaLocal(fechaInicioClases)}</p>
+                                                        <p className="text-[7px] font-black text-brand-muted uppercase">Inicia</p>
+                                                        <p className="text-[10px] font-black text-brand-primary">{formatFechaLocal(fechaInicioClases)}</p>
                                                     </div>
                                                     <ArrowRight size={14} className="text-slate-300" />
                                                     <div className="text-center flex-1">
-                                                        <p className="text-[7px] font-black text-slate-400 uppercase">Vence</p>
-                                                        <p className="text-[10px] font-black text-orange-600">{formatFechaLocal(calcularFechaFin(fechaInicioClases))}</p>
+                                                        <p className="text-[7px] font-black text-brand-muted uppercase">Vence</p>
+                                                        <p className="text-[10px] font-black text-brand-accent-dark">{formatFechaLocal(calcularFechaFin(fechaInicioClases))}</p>
                                                     </div>
                                                 </div>
                                             ) : (
-                                                <div className="flex items-center justify-between gap-2 bg-white p-3 rounded-2xl border border-slate-100 shadow-sm">
+                                                <div className="flex items-center justify-between gap-2 bg-brand-surface p-3 rounded-2xl border border-brand-border-soft shadow-sm">
                                                     <div className="text-center flex-1">
-                                                        <p className="text-[7px] font-black text-slate-400 uppercase">Fecha de la Clase</p>
-                                                        <p className="text-[10px] font-black text-[#1e3a8a]">{formatFechaLocal(fechaInicioClases)}</p>
+                                                        <p className="text-[7px] font-black text-brand-muted uppercase">Fecha de la Clase</p>
+                                                        <p className="text-[10px] font-black text-brand-primary">{formatFechaLocal(fechaInicioClases)}</p>
                                                     </div>
                                                 </div>
                                             )}
@@ -242,21 +242,21 @@ const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
                                                     <MapPin size={14} className="text-blue-500 mt-0.5" />
                                                     <div>
                                                         <p className="text-[10px] font-black text-slate-800 uppercase leading-none">{h?.canchas?.sedes?.nombre}</p>
-                                                        <p className="text-[9px] font-bold text-slate-400 uppercase">{h?.canchas?.nombre}</p>
+                                                        <p className="text-[9px] font-bold text-brand-muted uppercase">{h?.canchas?.nombre}</p>
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    <Activity size={14} className="text-orange-500" />
+                                                    <Activity size={14} className="text-brand-accent" />
                                                     <p className="text-[9px] font-black text-slate-600 uppercase">Nivel: {h?.niveles_entrenamiento?.nombre}</p>
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center justify-between border-t border-slate-100 pt-4">
+                                            <div className="flex items-center justify-between border-t border-brand-border-soft pt-4">
                                                 <div className="flex items-center gap-2">
                                                     <Clock size={16} className="text-blue-600" />
                                                     <div>
-                                                        <p className="text-[9px] font-black text-slate-400 uppercase tracking-tighter leading-none">{diasSemana[h?.dia_semana]}</p>
-                                                        <p className="text-sm font-black italic text-[#1e3a8a] mt-0.5">
+                                                        <p className="text-[9px] font-black text-brand-muted uppercase tracking-tighter leading-none">{diasSemana[h?.dia_semana]}</p>
+                                                        <p className="text-sm font-black italic text-brand-primary mt-0.5">
                                                             {renderHoraLimpia(h?.hora_inicio)} - {renderHoraLimpia(h?.hora_fin)}
                                                         </p>
                                                     </div>
@@ -269,33 +269,33 @@ const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-[3rem] border border-slate-100 shadow-sm p-8 text-center relative overflow-hidden">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4 italic">Evidencia de Operación</p>
+                    <div className="bg-brand-surface rounded-[3rem] border border-brand-border-soft shadow-sm p-8 text-center relative overflow-hidden">
+                        <p className="text-[10px] font-black text-brand-muted uppercase tracking-[0.3em] mb-4 italic">Evidencia de Operación</p>
                         <img src={paymentData?.url_comprobante} alt="Voucher" className="max-h-[600px] mx-auto rounded-[2rem] shadow-2xl border-4 border-white transition-transform hover:scale-[1.01]" />
-                        <a href={paymentData?.url_comprobante} target="_blank" rel="noreferrer" className="absolute top-12 right-12 p-3 bg-white/90 backdrop-blur rounded-2xl text-blue-600 shadow-xl hover:bg-[#1e3a8a] hover:text-white transition-all"><ExternalLink size={20} /></a>
+                        <a href={paymentData?.url_comprobante} target="_blank" rel="noreferrer" className="absolute top-12 right-12 p-3 bg-white/90 backdrop-blur rounded-2xl text-blue-600 shadow-xl hover:bg-brand-primary hover:text-white transition-all"><ExternalLink size={20} /></a>
                     </div>
                 </div>
 
                 <div className="space-y-6">
-                    <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-xl p-8 space-y-8">
+                    <div className="bg-brand-surface rounded-[2.5rem] border border-brand-border-soft shadow-xl p-8 space-y-8">
                         <div className="grid grid-cols-2 gap-4">
-                            <button onClick={() => setValidationStatus('APROBADO')} className={`py-5 rounded-2xl font-black uppercase text-[10px] border-2 transition-all ${validationStatus === 'APROBADO' ? 'bg-green-600 border-green-600 text-white shadow-lg' : 'bg-slate-50 border-slate-100 text-slate-400'}`}>APROBAR</button>
-                            <button onClick={() => setValidationStatus('RECHAZADO')} className={`py-5 rounded-2xl font-black uppercase text-[10px] border-2 transition-all ${validationStatus === 'RECHAZADO' ? 'bg-red-600 border-red-600 text-white shadow-lg' : 'bg-slate-50 border-slate-100 text-slate-400'}`}>RECHAZAR</button>
+                            <button onClick={() => setValidationStatus('APROBADO')} className={`py-5 rounded-2xl font-black uppercase text-[10px] border-2 transition-all ${validationStatus === 'APROBADO' ? 'bg-green-600 border-green-600 text-white shadow-lg' : 'bg-brand-bg border-brand-border-soft text-brand-muted'}`}>APROBAR</button>
+                            <button onClick={() => setValidationStatus('RECHAZADO')} className={`py-5 rounded-2xl font-black uppercase text-[10px] border-2 transition-all ${validationStatus === 'RECHAZADO' ? 'bg-red-600 border-red-600 text-white shadow-lg' : 'bg-brand-bg border-brand-border-soft text-brand-muted'}`}>RECHAZAR</button>
                         </div>
 
                         <div className="space-y-1">
-                            <label className="text-[9px] font-black text-slate-400 uppercase ml-2 tracking-widest">Monto Confirmado (S/)</label>
+                            <label className="text-[9px] font-black text-brand-muted uppercase ml-2 tracking-widest">Monto Confirmado (S/)</label>
                             <div className="relative">
-                                <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                                <input type="number" className="w-full bg-slate-50 border-4 border-slate-100 rounded-[1.5rem] pl-12 pr-6 py-4 font-black text-2xl text-[#1e3a8a] outline-none focus:border-blue-200 transition-all" value={montoConfirmado} onChange={(e) => setMontoConfirmado(e.target.value)} />
+                                <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted" size={18} />
+                                <input type="number" className="w-full bg-brand-bg border-4 border-brand-border-soft rounded-[1.5rem] pl-12 pr-6 py-4 font-black text-2xl text-brand-primary outline-none focus:border-blue-200 transition-all" value={montoConfirmado} onChange={(e) => setMontoConfirmado(e.target.value)} />
                             </div>
                         </div>
 
-                        <textarea className="w-full bg-slate-50 border-2 border-slate-100 rounded-xl p-4 text-[11px] font-bold min-h-[120px] resize-none outline-none focus:border-blue-100" placeholder="Escribir notas de validación..." value={notas} onChange={(e) => setNotas(e.target.value)} />
+                        <textarea className="w-full bg-brand-bg border-2 border-brand-border-soft rounded-xl p-4 text-[11px] font-bold min-h-[120px] resize-none outline-none focus:border-blue-100" placeholder="Escribir notas de validación..." value={notas} onChange={(e) => setNotas(e.target.value)} />
                     </div>
 
                     {/* ALCANCÍA DINÁMICA */}
-                    <div className={`p-8 rounded-[3rem] text-white shadow-2xl relative overflow-hidden transition-all duration-500 ${infoFinanciera.esPagoCompleto ? 'bg-[#1e3a8a]' : 'bg-orange-600'}`}>
+                    <div className={`p-8 rounded-[3rem] text-white shadow-2xl relative overflow-hidden transition-all duration-500 ${infoFinanciera.esPagoCompleto ? 'bg-brand-primary' : 'bg-brand-accent-dark'}`}>
                         <div className="relative z-10">
                             <div className="flex justify-between items-start mb-6">
                                 <h4 className="font-black uppercase italic text-xl leading-none">Control de<br />Alcancía</h4>

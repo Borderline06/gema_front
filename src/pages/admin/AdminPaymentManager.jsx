@@ -134,7 +134,7 @@ const AdminPaymentManager = () => {
         switch (status) {
             case 'APROBADO': return 'bg-green-100 text-green-600 border-green-200';
             case 'RECHAZADO': return 'bg-red-100 text-red-600 border-red-200';
-            default: return 'bg-orange-100 text-orange-600 border-orange-200';
+            default: return 'bg-orange-100 text-brand-accent-dark border-orange-200';
         }
     };
 
@@ -147,20 +147,20 @@ const AdminPaymentManager = () => {
             <header className="flex justify-between items-center">
                 <div>
                     <div className="flex items-center gap-2 mb-1">
-                        <div className="h-6 w-1 bg-orange-500 rounded-full"></div>
-                        <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight italic">
-                            Gestión de <span className="text-[#1e3a8a]">Ingresos</span>
+                        <div className="h-6 w-1 bg-brand-accent rounded-full"></div>
+                        <h1 className="text-2xl font-black text-brand-heading uppercase tracking-tight italic">
+                            Gestión de <span className="text-brand-primary">Ingresos</span>
                         </h1>
                     </div>
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest italic ml-1">Monitor de pagos - Club Gema</p>
+                    <p className="text-[10px] font-bold text-brand-muted uppercase tracking-widest italic ml-1">Monitor de pagos - Club Gema</p>
                 </div>
 
-                <div className="flex bg-white p-1 rounded-xl border border-slate-200 shadow-sm">
+                <div className="flex bg-brand-surface p-1 rounded-xl border border-brand-border shadow-sm">
                     {['2025', '2026'].map(year => (
                         <button
                             key={year}
                             onClick={() => setSelectedYear(year)}
-                            className={`px-4 py-1.5 rounded-lg text-[10px] font-black transition-all ${selectedYear === year ? 'bg-[#1e3a8a] text-white shadow-md' : 'text-slate-400 hover:text-slate-600'}`}
+                            className={`px-4 py-1.5 rounded-lg text-[10px] font-black transition-all ${selectedYear === year ? 'bg-brand-primary text-white shadow-md' : 'text-brand-muted hover:text-slate-600'}`}
                         >
                             {year}
                         </button>
@@ -171,20 +171,20 @@ const AdminPaymentManager = () => {
             <AdminPaymentStats stats={statsData} />
 
             {/* Filtros */}
-            <div className="bg-white p-3 rounded-[2rem] border border-slate-200 shadow-sm flex flex-col xl:flex-row gap-3">
+            <div className="bg-brand-surface p-3 rounded-[2rem] border border-brand-border shadow-sm flex flex-col xl:flex-row gap-3">
                 <div className="flex-1 relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted" size={18} />
                     <input
                         type="text"
                         placeholder="BUSCAR POR ALUMNO O CÓDIGO..."
-                        className="w-full pl-12 pr-4 py-3 bg-slate-50 border-none rounded-2xl text-[10px] font-black uppercase outline-none focus:ring-2 focus:ring-blue-500/20"
+                        className="w-full pl-12 pr-4 py-3 bg-brand-bg border-none rounded-2xl text-[10px] font-black uppercase outline-none focus:ring-2 focus:ring-blue-500/20"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
                 <div className="flex flex-wrap gap-2">
-                    <div className="flex items-center gap-2 bg-slate-50 px-4 py-2 rounded-2xl border border-slate-100">
-                        <Calendar size={14} className="text-slate-400" />
+                    <div className="flex items-center gap-2 bg-brand-bg px-4 py-2 rounded-2xl border border-brand-border-soft">
+                        <Calendar size={14} className="text-brand-muted" />
                         <select
                             className="bg-transparent text-[10px] font-black uppercase outline-none cursor-pointer text-slate-600"
                             value={selectedMonth}
@@ -197,8 +197,8 @@ const AdminPaymentManager = () => {
                         </select>
                     </div>
 
-                    <div className="flex items-center gap-2 bg-slate-50 px-4 py-2 rounded-2xl border border-slate-100">
-                        <Filter size={14} className="text-slate-400" />
+                    <div className="flex items-center gap-2 bg-brand-bg px-4 py-2 rounded-2xl border border-brand-border-soft">
+                        <Filter size={14} className="text-brand-muted" />
                         <select
                             className="bg-transparent text-[10px] font-black uppercase outline-none cursor-pointer text-slate-600"
                             value={statusFilter}
@@ -215,7 +215,7 @@ const AdminPaymentManager = () => {
 
             {loading ? (
                 <div className="flex flex-col items-center justify-center py-24 gap-4">
-                    <Loader2 className="animate-spin text-[#1e3a8a]" size={40} />
+                    <Loader2 className="animate-spin text-brand-primary" size={40} />
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -232,32 +232,32 @@ const AdminPaymentManager = () => {
                                     key={p.id}
                                     // 🔥 CAMBIO: Ahora llama a la función de carga profunda
                                     onClick={() => handleSelectPayment(p)}
-                                    className={`bg-white rounded-[2.5rem] border-2 p-6 hover:shadow-2xl transition-all duration-300 cursor-pointer group relative overflow-hidden border-slate-200 hover:border-blue-300`}
+                                    className={`bg-brand-surface rounded-[2.5rem] border-2 p-6 hover:shadow-2xl transition-all duration-300 cursor-pointer group relative overflow-hidden border-brand-border hover:border-blue-300`}
                                 >
 
                                     <div className={`flex justify-between items-start mb-6`}>
                                         <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase border shadow-sm ${getStatusStyle(p.estado_validacion)}`}>
                                             {p.cuentas_por_cobrar?.detalle_adicional === 'Plan Individual' ? `${p.estado_validacion} | Clase Única` : p.estado_validacion}
                                         </div>
-                                        <div className={`p-2.5 rounded-2xl transition-all duration-300 bg-slate-50 group-hover:bg-[#1e3a8a] group-hover:text-white`}>
+                                        <div className={`p-2.5 rounded-2xl transition-all duration-300 bg-brand-bg group-hover:bg-brand-primary group-hover:text-white`}>
                                             <ChevronRight size={18} />
                                         </div>
                                     </div>
 
                                     <div className="space-y-4">
                                         <div className="flex items-start gap-4">
-                                            <div className={`p-3 rounded-2xl transition-colors duration-300 shrink-0 bg-blue-50 text-[#1e3a8a] group-hover:bg-[#1e3a8a] group-hover:text-white`}>
+                                            <div className={`p-3 rounded-2xl transition-colors duration-300 shrink-0 bg-brand-primary-soft text-brand-primary group-hover:bg-brand-primary group-hover:text-white`}>
                                                 <User size={22} />
                                             </div>
                                             <div className="min-w-0 flex-1">
-                                                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Alumno</p>
+                                                <p className="text-[9px] font-black text-brand-muted uppercase tracking-widest mb-0.5">Alumno</p>
                                                 <h3 className="text-sm font-black text-slate-800 truncate uppercase tracking-tighter italic leading-tight">
                                                     {usuario?.nombres} {usuario?.apellidos}
                                                 </h3>
 
                                                 <div className="mt-2 flex flex-col gap-1.5">
                                                     <div className="flex items-center gap-1.5 text-[10px] text-slate-500 font-bold uppercase">
-                                                        <FileText size={12} className="text-slate-400" />
+                                                        <FileText size={12} className="text-brand-muted" />
                                                         <span>{usuario?.numero_documento || 'S/N'}</span>
                                                     </div>
 
@@ -265,13 +265,13 @@ const AdminPaymentManager = () => {
                                                     <div className="flex items-center gap-1.5 text-[10px] font-black uppercase">
                                                         <Phone size={12} className={`${usuario?.telefono_personal ? 'text-blue-400' : 'text-slate-300'} shrink-0`} />
                                                         {usuario?.telefono_personal ? (
-                                                            <span className="text-[#1e3a8a]">{usuario.telefono_personal}</span>
+                                                            <span className="text-brand-primary">{usuario.telefono_personal}</span>
                                                         ) : (
-                                                            <span className="text-slate-400 italic">S/N REGISTRADO</span>
+                                                            <span className="text-brand-muted italic">S/N REGISTRADO</span>
                                                         )}
                                                     </div>
                                                     <div className="flex items-center gap-1.5 text-[10px] text-slate-500 font-bold truncate">
-                                                        <Mail size={12} className="text-slate-400 shrink-0" />
+                                                        <Mail size={12} className="text-brand-muted shrink-0" />
                                                         <span className="truncate">{usuario?.email || 'Sin correo'}</span>
                                                     </div>
                                                 </div>
@@ -279,12 +279,12 @@ const AdminPaymentManager = () => {
                                         </div>
 
                                         <div className="flex items-center gap-4 pt-2">
-                                            <div className={`p-3 rounded-2xl shrink-0 bg-orange-50 text-orange-600`}>
+                                            <div className={`p-3 rounded-2xl shrink-0 bg-brand-accent-soft text-brand-accent-dark`}>
                                                 <DollarSign size={22} />
                                             </div>
                                             <div>
-                                                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Monto Confirmado</p>
-                                                <h3 className="text-xl font-black text-slate-900 italic tracking-tighter">
+                                                <p className="text-[9px] font-black text-brand-muted uppercase tracking-widest mb-0.5">Monto Confirmado</p>
+                                                <h3 className="text-xl font-black text-brand-heading italic tracking-tighter">
                                                     S/ {parseFloat(p.monto_pagado).toFixed(2)}
                                                 </h3>
                                             </div>

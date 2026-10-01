@@ -24,10 +24,10 @@ const StudentTable = ({
 
     // --- SUBCOMPONENTES DE CABECERA ---
     const SortableHeader = ({ label, sortKey, align = 'left' }) => (
-        <th className={`p-4 cursor-pointer hover:bg-slate-100 transition-colors group select-none ${align === 'center' ? 'text-center' : align === 'right' ? 'text-right' : 'text-left'}`} onClick={() => requestSort(sortKey)}>
+        <th className={`p-4 cursor-pointer hover:bg-brand-surface-alt transition-colors group select-none ${align === 'center' ? 'text-center' : align === 'right' ? 'text-right' : 'text-left'}`} onClick={() => requestSort(sortKey)}>
             <div className={`flex items-center gap-1.5 ${align === 'center' ? 'justify-center' : align === 'right' ? 'justify-end' : 'justify-start'}`}>
                 {label}
-                <ArrowUpDown size={12} className={`transition-opacity ${sortConfig.key === sortKey ? 'opacity-100 text-[#1e3a8a]' : 'opacity-30 group-hover:opacity-100'}`} />
+                <ArrowUpDown size={12} className={`transition-opacity ${sortConfig.key === sortKey ? 'opacity-100 text-brand-primary' : 'opacity-30 group-hover:opacity-100'}`} />
             </div>
         </th>
     );
@@ -37,7 +37,7 @@ const StudentTable = ({
             <div className={`flex items-center gap-1.5 ${align === 'center' ? 'justify-center' : align === 'right' ? 'justify-end' : 'justify-start'}`}>
                 <span>{label}</span>
                 <div className="relative inline-flex items-center justify-center">
-                    <Filter size={12} className={`transition-colors ${filters[filterKey] !== '' ? 'text-orange-500' : 'text-slate-300 group-hover:text-blue-500'}`} />
+                    <Filter size={12} className={`transition-colors ${filters[filterKey] !== '' ? 'text-brand-accent' : 'text-slate-300 group-hover:text-blue-500'}`} />
                     <select
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                         value={filters[filterKey]}
@@ -53,15 +53,15 @@ const StudentTable = ({
     );
 
     return (
-        <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-xl overflow-visible">
+        <div className="bg-brand-surface rounded-[2.5rem] border border-brand-border-soft shadow-xl overflow-visible">
 
             {/* Aviso de Filtros Activos */}
             {hasFilters && (
-                <div className="bg-orange-50 px-6 py-2 border-b border-orange-100 flex items-center justify-between">
-                    <span className="text-[10px] font-black text-orange-600 uppercase tracking-widest">Filtros Aplicados</span>
+                <div className="bg-brand-accent-soft px-6 py-2 border-b border-orange-100 flex items-center justify-between">
+                    <span className="text-[10px] font-black text-brand-accent-dark uppercase tracking-widest">Filtros Aplicados</span>
                     <button
                         onClick={onClearFilters}
-                        className="text-[9px] font-bold bg-white border border-orange-200 text-orange-500 px-3 py-1 rounded-lg hover:bg-orange-500 hover:text-white transition-all"
+                        className="text-[9px] font-bold bg-brand-surface border border-orange-200 text-brand-accent px-3 py-1 rounded-lg hover:bg-brand-accent hover:text-white transition-all"
                     >
                         Limpiar Filtros
                     </button>
@@ -71,14 +71,14 @@ const StudentTable = ({
             <div className="overflow-x-auto overflow-y-visible">
                 <table className="w-full text-left">
                     <thead>
-                        <tr className="bg-slate-50/50 border-b border-slate-100 font-black text-[9px] text-slate-400 uppercase tracking-[0.15em]">
+                        <tr className="bg-brand-bg/50 border-b border-brand-border-soft font-black text-[9px] text-brand-muted uppercase tracking-[0.15em]">
 
                             {/* CABECERA PERSONALIZADA CON POP-UP DE BÚSQUEDA */}
                             <th className="p-4 pl-6 text-left group select-none relative">
                                 <div className="flex items-center gap-2">
-                                    <div className="cursor-pointer flex items-center gap-1.5 hover:bg-slate-100 p-1 rounded transition-colors" onClick={() => requestSort('full_name')}>
+                                    <div className="cursor-pointer flex items-center gap-1.5 hover:bg-brand-surface-alt p-1 rounded transition-colors" onClick={() => requestSort('full_name')}>
                                         Alumno / Contacto
-                                        <ArrowUpDown size={12} className={`transition-opacity ${sortConfig.key === 'full_name' ? 'opacity-100 text-[#1e3a8a]' : 'opacity-30 group-hover:opacity-100'}`} />
+                                        <ArrowUpDown size={12} className={`transition-opacity ${sortConfig.key === 'full_name' ? 'opacity-100 text-brand-primary' : 'opacity-30 group-hover:opacity-100'}`} />
                                     </div>
 
                                     <div>
@@ -87,18 +87,18 @@ const StudentTable = ({
                                             className="p-1 rounded hover:bg-slate-200 transition-colors"
                                             title="Búsqueda Avanzada"
                                         >
-                                            <Search size={12} className={textFilter.value ? 'text-orange-500' : 'text-slate-300 group-hover:text-[#1e3a8a]'} />
+                                            <Search size={12} className={textFilter.value ? 'text-brand-accent' : 'text-slate-300 group-hover:text-brand-primary'} />
                                         </button>
 
                                         {/* POP-UP DEL BUSCADOR */}
                                         {isTextFilterOpen && (
-                                            <div className="absolute top-full left-6 mt-1 bg-white border border-slate-200 shadow-2xl rounded-2xl p-4 w-64 z-50 normal-case tracking-normal font-normal">
-                                                <p className="text-[10px] font-black text-[#1e3a8a] uppercase mb-2 tracking-widest">Filtro de Texto</p>
+                                            <div className="absolute top-full left-6 mt-1 bg-brand-surface border border-brand-border shadow-2xl rounded-2xl p-4 w-64 z-50 normal-case tracking-normal font-normal">
+                                                <p className="text-[10px] font-black text-brand-primary uppercase mb-2 tracking-widest">Filtro de Texto</p>
 
                                                 <select
                                                     value={textFilter.field}
                                                     onChange={(e) => setTextFilter({ ...textFilter, field: e.target.value })}
-                                                    className="w-full mb-3 p-2 text-xs bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-blue-500 font-bold text-slate-700 cursor-pointer"
+                                                    className="w-full mb-3 p-2 text-xs bg-brand-bg border border-brand-border rounded-lg outline-none focus:border-blue-500 font-bold text-brand-body cursor-pointer"
                                                 >
                                                     <option value="full_name">Nombre del Alumno</option>
                                                     <option value="dni">Documento (DNI)</option>
@@ -110,20 +110,20 @@ const StudentTable = ({
                                                     value={textFilter.value}
                                                     onChange={(e) => setTextFilter({ ...textFilter, value: e.target.value })}
                                                     placeholder={`Ingresa el ${textFilter.field === 'full_name' ? 'nombre' : textFilter.field === 'dni' ? 'DNI' : 'celular'}...`}
-                                                    className="w-full p-2.5 text-xs border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500 font-bold transition-all"
+                                                    className="w-full p-2.5 text-xs border border-brand-border rounded-lg outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500 font-bold transition-all"
                                                     autoFocus
                                                 />
 
                                                 <div className="flex justify-between items-center mt-4">
                                                     <button
                                                         onClick={() => { setTextFilter({ field: 'full_name', value: '' }); setIsTextFilterOpen(false); }}
-                                                        className="text-[10px] font-bold text-slate-400 hover:text-red-500 transition-colors"
+                                                        className="text-[10px] font-bold text-brand-muted hover:text-red-500 transition-colors"
                                                     >
                                                         Limpiar
                                                     </button>
                                                     <button
                                                         onClick={() => setIsTextFilterOpen(false)}
-                                                        className="text-[10px] font-black bg-[#1e3a8a] hover:bg-blue-800 text-white px-4 py-2 rounded-lg transition-colors shadow-sm"
+                                                        className="text-[10px] font-black bg-brand-primary hover:bg-blue-800 text-white px-4 py-2 rounded-lg transition-colors shadow-sm"
                                                     >
                                                         Aplicar
                                                     </button>
@@ -143,23 +143,23 @@ const StudentTable = ({
                     </thead>
                     <tbody className="divide-y divide-slate-50">
                         {alumnos.length === 0 ? (
-                            <tr><td colSpan="6" className="p-12 text-center text-slate-400 text-xs font-bold uppercase italic">No se encontraron alumnos con esos filtros</td></tr>
+                            <tr><td colSpan="6" className="p-12 text-center text-brand-muted text-xs font-bold uppercase italic">No se encontraron alumnos con esos filtros</td></tr>
                         ) : alumnos.map((alum) => (
-                            <tr key={alum.id} className="hover:bg-blue-50/30 transition-all group">
+                            <tr key={alum.id} className="hover:bg-brand-primary-soft/30 transition-all group">
 
                                 {/* COLUMNA 1: ALUMNO Y CONTACTO */}
                                 <td className="p-4 pl-6">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 bg-[#1e3a8a] text-white rounded-xl flex items-center justify-center font-black text-xl italic shadow-md shadow-blue-100 shrink-0">
+                                        <div className="w-12 h-12 bg-brand-primary text-white rounded-xl flex items-center justify-center font-black text-xl italic shadow-md shadow-blue-100 shrink-0">
                                             {alum.nombres.charAt(0)}
                                         </div>
                                         <div className="space-y-1">
                                             <p className="text-sm font-black text-slate-800 uppercase italic tracking-tighter leading-none">{alum.full_name}</p>
                                             <div className="flex items-center gap-3">
-                                                <span className={`flex items-center gap-1 text-[9px] font-bold ${textFilter.field === 'dni' && textFilter.value ? 'text-orange-500 bg-orange-50 px-1 rounded' : 'text-slate-400'}`}>
+                                                <span className={`flex items-center gap-1 text-[9px] font-bold ${textFilter.field === 'dni' && textFilter.value ? 'text-brand-accent bg-brand-accent-soft px-1 rounded' : 'text-brand-muted'}`}>
                                                     <Fingerprint size={10} /> {alum.dni}
                                                 </span>
-                                                <span className={`flex items-center gap-1 text-[9px] font-bold ${textFilter.field === 'telefono' && textFilter.value ? 'text-orange-500 bg-orange-50 px-1 rounded' : 'text-blue-500'}`}>
+                                                <span className={`flex items-center gap-1 text-[9px] font-bold ${textFilter.field === 'telefono' && textFilter.value ? 'text-brand-accent bg-brand-accent-soft px-1 rounded' : 'text-blue-500'}`}>
                                                     <Phone size={10} /> {alum.telefono}
                                                 </span>
                                             </div>
@@ -171,11 +171,11 @@ const StudentTable = ({
                                 <td className="p-4">
                                     <div className="flex flex-col gap-1">
                                         {alum.sedes.length > 0 ? alum.sedes.map((s, idx) => (
-                                            <span key={idx} className="inline-flex items-center gap-1 w-fit text-[9px] font-black text-orange-600 bg-orange-50 px-2.5 py-1 rounded-md uppercase border border-orange-100 italic">
+                                            <span key={idx} className="inline-flex items-center gap-1 w-fit text-[9px] font-black text-brand-accent-dark bg-brand-accent-soft px-2.5 py-1 rounded-md uppercase border border-orange-100 italic">
                                                 <MapPin size={10} /> {s}
                                             </span>
                                         )) : (
-                                            <span className="inline-flex items-center gap-1 w-fit text-[9px] font-black text-slate-400 bg-slate-50 px-2.5 py-1 rounded-md uppercase border border-slate-100 italic">S/N</span>
+                                            <span className="inline-flex items-center gap-1 w-fit text-[9px] font-black text-brand-muted bg-brand-bg px-2.5 py-1 rounded-md uppercase border border-brand-border-soft italic">S/N</span>
                                         )}
                                     </div>
                                 </td>
@@ -186,7 +186,7 @@ const StudentTable = ({
                                         {alum.niveles.length > 0 ? alum.niveles.map((n, idx) => (
                                             <span key={idx} className="bg-indigo-50 text-indigo-600 text-[9px] font-black px-3 py-1 rounded-lg uppercase border border-indigo-100 italic">{n}</span>
                                         )) : (
-                                            <span className="bg-slate-100 text-slate-400 text-[9px] font-black px-3 py-1 rounded-lg uppercase border border-slate-200 italic">SIN NIVEL</span>
+                                            <span className="bg-brand-surface-alt text-brand-muted text-[9px] font-black px-3 py-1 rounded-lg uppercase border border-brand-border italic">SIN NIVEL</span>
                                         )}
                                     </div>
                                 </td>
@@ -213,11 +213,11 @@ const StudentTable = ({
                                                 ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
                                                 : alum.estadoDisplay === 'NO RENOVADO'
                                                     ? 'bg-red-50 text-red-600 border-red-200'
-                                                    : 'bg-slate-50 text-slate-500 border-slate-200'}`}
+                                                    : 'bg-brand-bg text-slate-500 border-brand-border'}`}
                                             >
                                                 <Zap size={10} fill="currentColor" className={alum.multiplesActivas ? "animate-bounce" : ""} />
                                                 {alum.estadoDisplay}
-                                                {alum.multiplesActivas && <span className="bg-orange-500 text-white px-1 rounded ml-1 animate-pulse">+</span>}
+                                                {alum.multiplesActivas && <span className="bg-brand-accent text-white px-1 rounded ml-1 animate-pulse">+</span>}
                                             </span>
                                         )}
                                     </button>
@@ -246,14 +246,14 @@ const StudentTable = ({
                                     <div className="flex justify-center gap-2">
                                         <button
                                             onClick={() => onViewDetails(alum)}
-                                            className="w-10 h-10 bg-slate-100 text-slate-500 rounded-xl hover:bg-orange-500 hover:text-white transition-all flex items-center justify-center shadow-sm"
+                                            className="w-10 h-10 bg-brand-surface-alt text-slate-500 rounded-xl hover:bg-brand-accent hover:text-white transition-all flex items-center justify-center shadow-sm"
                                             title="Ver Expediente"
                                         >
                                             <Eye size={18} />
                                         </button>
                                         <button
                                             onClick={() => onAttendanceHistory(alum)}
-                                            className="w-10 h-10 bg-slate-100 text-slate-500 rounded-xl hover:bg-orange-500 hover:text-white transition-all flex items-center justify-center shadow-sm"
+                                            className="w-10 h-10 bg-brand-surface-alt text-slate-500 rounded-xl hover:bg-brand-accent hover:text-white transition-all flex items-center justify-center shadow-sm"
                                             title="Historial de Asistencias"
                                         >
                                             <History size={18} />
@@ -264,8 +264,8 @@ const StudentTable = ({
                                             title={!alum.fechaCorte ? "Alumno sin inscripción" : "Cambiar horario"}
                                             className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all shadow-sm
                                                 ${!alum.fechaCorte
-                                                    ? 'bg-slate-100 text-slate-300 cursor-not-allowed shadow-none'
-                                                    : 'bg-[#1e3a8a] text-white hover:bg-orange-600 active:scale-95'
+                                                    ? 'bg-brand-surface-alt text-slate-300 cursor-not-allowed shadow-none'
+                                                    : 'bg-brand-primary text-white hover:bg-brand-accent-dark active:scale-95'
                                                 }`}
                                         >
                                             <RefreshCw size={16} className={`${alum.fechaCorte ? 'group-hover:rotate-180' : ''} transition-transform duration-500`} />

@@ -22,19 +22,19 @@ const AdminReprogramaciones = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50/50 pb-20 overflow-x-hidden">
+        <div className="min-h-screen bg-brand-bg/50 pb-20 overflow-x-hidden">
 
             {showFeriadoModal && (
                 <FeriadoHistory onClose={() => setShowFeriadoModal(false)} />
             )}
 
             {/* Hero Section */}
-            <div className="relative overflow-hidden bg-[#1e3a8a] py-10 md:py-16 mb-8 md:mb-12">
+            <div className="relative overflow-hidden bg-brand-primary py-10 md:py-16 mb-8 md:mb-12">
                 <div className="absolute top-0 right-0 -mt-20 -mr-20 opacity-10">
                     <div className="w-96 h-96 rounded-full border-[40px] border-white animate-pulse"></div>
                 </div>
                 <div className="absolute bottom-0 left-0 -mb-20 -ml-20 opacity-10">
-                    <div className="w-64 h-64 rounded-full bg-white rotate-45"></div>
+                    <div className="w-64 h-64 rounded-full bg-brand-surface rotate-45"></div>
                 </div>
 
                 <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -94,17 +94,17 @@ const AdminReprogramaciones = () => {
                                     </div>
                                     <div>
                                         <h3 className="font-black text-xl text-slate-800 leading-tight uppercase tracking-tight">Validar Feriados</h3>
-                                        <p className="text-[10px] font-black text-orange-600 uppercase tracking-[0.15em] mb-1">¡Evita regalar clases!</p>
+                                        <p className="text-[10px] font-black text-brand-accent-dark uppercase tracking-[0.15em] mb-1">¡Evita regalar clases!</p>
                                     </div>
                                 </div>
-                                <div className="bg-white p-4 rounded-2xl border border-orange-100 shadow-sm mb-5">
+                                <div className="bg-brand-surface p-4 rounded-2xl border border-orange-100 shadow-sm mb-5">
                                     <p className="text-slate-600 text-[11px] font-bold leading-relaxed">
                                         Si vas a cancelar por <span className="text-red-500 font-black">FERIADO</span>, regístralo aquí primero.
                                     </p>
                                 </div>
                                 <button
                                     onClick={() => setShowFeriadoModal(true)}
-                                    className="w-full py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-2xl font-black text-[12px] uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2"
+                                    className="w-full py-4 bg-gradient-to-r from-brand-accent to-red-500 text-white rounded-2xl font-black text-[12px] uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2"
                                 >
                                     <Calendar size={16} /> Revisar Calendario
                                 </button>
@@ -112,7 +112,7 @@ const AdminReprogramaciones = () => {
                         </section>
 
                         <div className="flex justify-center mt-6 mb-2 opacity-60">
-                            <div className="flex flex-col lg:flex-row items-center gap-2 animate-bounce text-orange-500">
+                            <div className="flex flex-col lg:flex-row items-center gap-2 animate-bounce text-brand-accent">
                                 <span className="text-[10px] font-black uppercase tracking-widest">Continuar en el Paso 2</span>
                                 <ArrowDown size={20} className="lg:hidden" />
                                 <ArrowRight size={20} className="hidden lg:block" />
@@ -125,12 +125,12 @@ const AdminReprogramaciones = () => {
                 <div className="lg:col-span-8 lg:row-span-2 w-full flex flex-col gap-6">
                     <div className="flex items-center justify-between pl-2">
                         <div className="flex items-center gap-3">
-                            <div className="w-1.5 h-8 bg-orange-500 rounded-full"></div>
+                            <div className="w-1.5 h-8 bg-brand-accent rounded-full"></div>
                             <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight">Paso 2: Editor de Reprogramación</h2>
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] shadow-2xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+                    <div className="bg-brand-surface rounded-[2rem] md:rounded-[2.5rem] shadow-2xl shadow-slate-200/50 border border-brand-border-soft overflow-hidden">
                         <div className="p-4 sm:p-8 md:p-12">
                             <MassRescheduleForm onSuccess={handleRefresh} />
                         </div>
@@ -141,13 +141,13 @@ const AdminReprogramaciones = () => {
                 <div className="lg:col-span-4 w-full">
                     <section className="space-y-4">
                         <div className="flex items-center gap-3 pl-2">
-                            <History size={20} className="text-[#1e3a8a]" />
-                            <h2 className="text-sm font-black text-slate-700 uppercase tracking-widest underline decoration-blue-500/30 underline-offset-8">
+                            <History size={20} className="text-brand-primary" />
+                            <h2 className="text-sm font-black text-brand-body uppercase tracking-widest underline decoration-blue-500/30 underline-offset-8">
                                 Historial de Lotes
                             </h2>
                         </div>
 
-                        <div className="bg-white rounded-[2rem] shadow-lg border border-slate-100 overflow-hidden">
+                        <div className="bg-brand-surface rounded-[2rem] shadow-lg border border-brand-border-soft overflow-hidden">
                             <div className="p-2 overflow-y-auto h-[500px] lg:h-[750px] xl:h-[850px] custom-scrollbar">
                                 <MassRescheduleHistory refreshSignal={refreshSignal} />
                             </div>

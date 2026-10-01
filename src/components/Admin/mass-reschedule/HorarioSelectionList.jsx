@@ -4,8 +4,8 @@ import { Filter } from 'lucide-react';
 const HorarioSelectionList = ({ filterDay, filteredHorarios, horariosSeleccionados, onToggleHorario, onToggleTodos, diasSemana }) => (
     <div className={`col-span-full space-y-2 transition-opacity duration-300 ${!filterDay ? 'opacity-60' : 'opacity-100'}`}>
         <div className="flex justify-between items-center ml-2 mb-2">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
-                2. Horarios Afectados <span className="text-orange-500">({horariosSeleccionados.length} seleccionados)</span>
+            <label className="text-[10px] font-black text-brand-muted uppercase tracking-[0.2em]">
+                2. Horarios Afectados <span className="text-brand-accent">({horariosSeleccionados.length} seleccionados)</span>
             </label>
             <button
                 type="button"
@@ -17,9 +17,9 @@ const HorarioSelectionList = ({ filterDay, filteredHorarios, horariosSeleccionad
             </button>
         </div>
 
-        <div className="max-h-56 overflow-y-auto bg-slate-50 border-2 border-slate-100 rounded-2xl p-2 space-y-1 custom-scrollbar">
+        <div className="max-h-56 overflow-y-auto bg-brand-bg border-2 border-brand-border-soft rounded-2xl p-2 space-y-1 custom-scrollbar">
             {filteredHorarios.length === 0 ? (
-                <div className="py-8 text-center text-slate-400">
+                <div className="py-8 text-center text-brand-muted">
                     <Filter className="mx-auto mb-2 opacity-50" size={24} />
                     <p className="text-xs font-bold uppercase tracking-widest">
                         {!filterDay ? "Elige un día arriba para ver horarios" : "No hay horarios para este filtro"}
@@ -32,10 +32,10 @@ const HorarioSelectionList = ({ filterDay, filteredHorarios, horariosSeleccionad
                             type="checkbox"
                             checked={horariosSeleccionados.includes(h.id)}
                             onChange={() => onToggleHorario(h.id)}
-                            className="w-4 h-4 text-orange-500 rounded border-slate-300 focus:ring-orange-500 transition-all"
+                            className="w-4 h-4 text-brand-accent rounded border-slate-300 focus:ring-brand-accent transition-all"
                         />
                         <div className="flex flex-col">
-                            <span className="text-xs font-black text-slate-700 uppercase">
+                            <span className="text-xs font-black text-brand-body uppercase">
                                 [{diasSemana[h.dia_semana]}] {h.hora_inicio}
                             </span>
                             <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">

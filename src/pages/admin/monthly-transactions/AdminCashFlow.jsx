@@ -212,9 +212,9 @@ const AdminCashFlow = () => {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
                 <div>
                     <div className="flex items-center gap-3 mb-1">
-                        <div className="h-8 w-1.5 bg-[#f97316] rounded-full"></div>
-                        <h1 className="text-2xl font-black text-[#0f172a] uppercase tracking-tight italic">
-                            Libro Diario <span className="text-[#f97316]">Mensual</span>
+                        <div className="h-8 w-1.5 bg-brand-accent rounded-full"></div>
+                        <h1 className="text-2xl font-black text-brand-heading uppercase tracking-tight italic">
+                            Libro Diario <span className="text-brand-accent">Mensual</span>
                         </h1>
                     </div>
                     <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest opacity-70 ml-4">
@@ -223,12 +223,12 @@ const AdminCashFlow = () => {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
-                    <div className="flex items-center bg-white border border-slate-200 rounded-2xl px-3 py-1.5 shadow-sm hover:border-orange-300 transition-colors">
-                        <Calendar size={14} className="text-slate-400" />
+                    <div className="flex items-center bg-brand-surface border border-brand-border rounded-2xl px-3 py-1.5 shadow-sm hover:border-orange-300 transition-colors">
+                        <Calendar size={14} className="text-brand-muted" />
                         <select
                             value={filtroAnio}
                             onChange={(e) => setFiltroAnio(e.target.value)}
-                            className="bg-transparent border-none text-[11px] font-black uppercase text-[#0f172a] outline-none cursor-pointer py-2 pl-2 pr-4 focus:ring-0"
+                            className="bg-transparent border-none text-[11px] font-black uppercase text-brand-heading outline-none cursor-pointer py-2 pl-2 pr-4 focus:ring-0"
                         >
                             <option value="2024">Año 2024</option>
                             <option value="2025">Año 2025</option>
@@ -237,7 +237,7 @@ const AdminCashFlow = () => {
                         </select>
                     </div>
 
-                    <button onClick={exportToExcel} className="bg-[#f97316] hover:bg-orange-600 text-white px-5 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-orange-500/30 transition-all flex items-center gap-2">
+                    <button onClick={exportToExcel} className="bg-brand-accent hover:bg-brand-accent-dark text-white px-5 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-brand-accent/30 transition-all flex items-center gap-2">
                         <FileSpreadsheet size={16} /> Descargar Excel
                     </button>
                 </div>

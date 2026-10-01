@@ -133,17 +133,17 @@ const AdminSchedule = ({ onBack, initialData }) => {
         <div className="space-y-6 animate-fade-in-up p-1">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div className="flex items-center gap-4">
-                    <button onClick={onBack} className="p-2.5 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 shadow-sm transition-all text-slate-600">
+                    <button onClick={onBack} className="p-2.5 bg-brand-surface border border-brand-border rounded-xl hover:bg-brand-bg shadow-sm transition-all text-slate-600">
                         <ArrowLeft size={20} />
                     </button>
                     <h1 className="text-2xl font-black italic uppercase tracking-tight">
-                        {isEdit ? 'Editar' : 'Programar'} <span className="text-[#1e3a8a]">Clases</span>
+                        {isEdit ? 'Editar' : 'Programar'} <span className="text-brand-primary">Clases</span>
                     </h1>
                 </div>
                 <button
                     onClick={handleSubmit}
                     disabled={loading || !commonData.cancha_id}
-                    className="bg-gradient-to-r from-[#1e3a8a] to-[#0f172a] hover:from-orange-500 hover:to-orange-600 disabled:opacity-50 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all duration-300 shadow-lg shadow-blue-900/20"
+                    className="bg-gradient-to-r from-brand-primary to-brand-primary-dark hover:from-brand-accent hover:to-brand-accent-dark disabled:opacity-50 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all duration-300 shadow-lg shadow-brand-primary/20"
                 >
                     {loading ? <Loader2 className="animate-spin" size={20} /> : <Save size={20} />}
                     {isEdit ? 'Guardar Cambios' : 'Finalizar Programación'}
@@ -152,32 +152,32 @@ const AdminSchedule = ({ onBack, initialData }) => {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-                        <div className="p-6 border-b border-slate-100 bg-[#f8fafc] flex items-center gap-3">
-                            <div className="p-2 bg-blue-100 text-[#1e3a8a] rounded-lg"><Home size={20} /></div>
-                            <h3 className="font-black text-[#1e3a8a] uppercase tracking-wider text-sm">Asignación de Espacio</h3>
+                    <div className="bg-brand-surface rounded-3xl border border-brand-border shadow-sm overflow-hidden">
+                        <div className="p-6 border-b border-brand-border-soft bg-brand-bg flex items-center gap-3">
+                            <div className="p-2 bg-blue-100 text-brand-primary rounded-lg"><Home size={20} /></div>
+                            <h3 className="font-black text-brand-primary uppercase tracking-wider text-sm">Asignación de Espacio</h3>
                         </div>
                         <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-1">
-                                <label className="text-[10px] font-black text-slate-400 uppercase ml-1">Sede</label>
+                                <label className="text-[10px] font-black text-brand-muted uppercase ml-1">Sede</label>
                                 <select
                                     value={commonData.sede_id}
                                     onChange={(e) => setCommonData({ ...commonData, sede_id: e.target.value, cancha_id: '' })}
-                                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                                    className="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                                 >
                                     <option value="">Seleccione Sede</option>
                                     {sedes.map(s => <option key={s.id} value={s.id.toString()}>{s.nombre}</option>)}
                                 </select>
                             </div>
                             <div className="space-y-1">
-                                <label className="text-[10px] font-black text-slate-400 uppercase ml-1">Cancha</label>
+                                <label className="text-[10px] font-black text-brand-muted uppercase ml-1">Cancha</label>
                                 <div className="relative">
-                                    <MapPin size={14} className="absolute left-4 top-3.5 text-slate-400" />
+                                    <MapPin size={14} className="absolute left-4 top-3.5 text-brand-muted" />
                                     <select
                                         value={commonData.cancha_id}
                                         onChange={(e) => setCommonData({ ...commonData, cancha_id: e.target.value })}
                                         disabled={!commonData.sede_id}
-                                        className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none disabled:opacity-50"
+                                        className="w-full bg-brand-bg border border-brand-border rounded-xl pl-10 pr-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none disabled:opacity-50"
                                     >
                                         <option value="">Seleccione Cancha</option>
                                         {canchas.map(c => <option key={c.id} value={c.id.toString()}>{c.nombre}</option>)}
@@ -185,27 +185,27 @@ const AdminSchedule = ({ onBack, initialData }) => {
                                 </div>
                             </div>
                             <div className="space-y-1">
-                                <label className="text-[10px] font-black text-slate-400 uppercase ml-1">Aforo</label>
+                                <label className="text-[10px] font-black text-brand-muted uppercase ml-1">Aforo</label>
                                 <input
                                     type='number'
                                     min={0}
                                     step={1}
                                     value={commonData.capacidad_max}
                                     onChange={(e) => setCommonData({ ...commonData, capacidad_max: e.target.value })}
-                                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                                    className="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                                 />
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-                        <div className="p-6 border-b border-slate-100 bg-[#f8fafc] flex items-center gap-3">
-                            <div className="p-2 bg-orange-100 text-orange-600 rounded-lg"><User size={20} /></div>
-                            <h3 className="font-black text-[#1e3a8a] uppercase tracking-wider text-sm">Personal y Nivel</h3>
+                    <div className="bg-brand-surface rounded-3xl border border-brand-border shadow-sm overflow-hidden">
+                        <div className="p-6 border-b border-brand-border-soft bg-brand-bg flex items-center gap-3">
+                            <div className="p-2 bg-orange-100 text-brand-accent-dark rounded-lg"><User size={20} /></div>
+                            <h3 className="font-black text-brand-primary uppercase tracking-wider text-sm">Personal y Nivel</h3>
                         </div>
                         <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-1">
-                                <label className="text-[10px] font-black text-slate-400 uppercase ml-1">Coordinador</label>
+                                <label className="text-[10px] font-black text-brand-muted uppercase ml-1">Coordinador</label>
                                 <select
                                     value={commonData.coordinador_id || ''} // Aseguramos que si es null, muestre la opción vacía
                                     onChange={(e) => {
@@ -215,7 +215,7 @@ const AdminSchedule = ({ onBack, initialData }) => {
                                             coordinador_id: val === "" ? null : val
                                         });
                                     }}
-                                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-orange-500 outline-none transition-all"
+                                    className="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-brand-accent outline-none transition-all"
                                 >
                                     <option value="">Seleccione Coordinador</option>
                                     {coordinadores.map(p => (
@@ -226,11 +226,11 @@ const AdminSchedule = ({ onBack, initialData }) => {
                                 </select>
                             </div>
                             <div className="space-y-1">
-                                <label className="text-[10px] font-black text-slate-400 uppercase ml-1">Nivel</label>
+                                <label className="text-[10px] font-black text-brand-muted uppercase ml-1">Nivel</label>
                                 <select
                                     value={commonData.nivel_id}
                                     onChange={(e) => setCommonData({ ...commonData, nivel_id: e.target.value })}
-                                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-orange-500 outline-none transition-all"
+                                    className="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-brand-accent outline-none transition-all"
                                 >
                                     <option value="">Seleccione Nivel</option>
                                     {niveles.map(n => <option key={n.id} value={n.id.toString()}>{n.nombre}</option>)}
@@ -241,23 +241,23 @@ const AdminSchedule = ({ onBack, initialData }) => {
                 </div>
 
                 <div className="space-y-6">
-                    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden flex flex-col max-h-[500px]">
-                        <div className="p-6 border-b border-slate-100 bg-[#f8fafc] flex items-center justify-between">
+                    <div className="bg-brand-surface rounded-3xl border border-brand-border shadow-sm overflow-hidden flex flex-col max-h-[500px]">
+                        <div className="p-6 border-b border-brand-border-soft bg-brand-bg flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <div className="p-2 bg-blue-100 text-[#1e3a8a] rounded-lg"><Clock size={20} /></div>
-                                <h3 className="font-black text-[#1e3a8a] uppercase tracking-wider text-sm">Horarios</h3>
+                                <div className="p-2 bg-blue-100 text-brand-primary rounded-lg"><Clock size={20} /></div>
+                                <h3 className="font-black text-brand-primary uppercase tracking-wider text-sm">Horarios</h3>
                             </div>
                             {/* BOTÓN PLUS VISIBLE SIEMPRE */}
                             <button
                                 onClick={addBloque}
-                                className="p-1.5 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors shadow-md shadow-orange-200"
+                                className="p-1.5 bg-brand-accent text-white rounded-lg hover:bg-brand-accent-dark transition-colors shadow-md shadow-orange-200"
                             >
                                 <Plus size={18} />
                             </button>
                         </div>
                         <div className="p-6 space-y-4 overflow-y-auto custom-scrollbar">
                             {bloques.map((bloque, index) => (
-                                <div key={bloque.id} className="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-100 relative group hover:bg-white hover:border-blue-100 transition-all">
+                                <div key={bloque.id} className="space-y-3 bg-brand-bg p-4 rounded-2xl border border-brand-border-soft relative group hover:bg-brand-surface hover:border-blue-100 transition-all">
                                     {bloques.length > 1 && (
                                         <button
                                             onClick={() => removeBloque(bloque.id)}
@@ -267,11 +267,11 @@ const AdminSchedule = ({ onBack, initialData }) => {
                                         </button>
                                     )}
                                     <div className="space-y-1">
-                                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-tighter">Día de la semana</label>
+                                        <label className="text-[9px] font-black text-brand-muted uppercase tracking-tighter">Día de la semana</label>
                                         <select
                                             value={bloque.dia_semana}
                                             onChange={(e) => updateBloque(bloque.id, 'dia_semana', e.target.value)}
-                                            className="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold outline-none focus:border-[#1e3a8a]"
+                                            className="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-1.5 text-xs font-bold outline-none focus:border-brand-primary"
                                         >
                                             <option value="">Seleccionar día...</option>
                                             <option value="1">Lunes</option><option value="2">Martes</option>
@@ -282,12 +282,12 @@ const AdminSchedule = ({ onBack, initialData }) => {
                                     </div>
                                     <div className="grid grid-cols-2 gap-2">
                                         <div className="space-y-1">
-                                            <label className="text-[9px] font-black text-slate-400 uppercase tracking-tighter">Hora Inicio</label>
-                                            <input type="time" value={bloque.hora_inicio} onChange={(e) => updateBloque(bloque.id, 'hora_inicio', e.target.value)} className="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold outline-none focus:border-[#1e3a8a]" />
+                                            <label className="text-[9px] font-black text-brand-muted uppercase tracking-tighter">Hora Inicio</label>
+                                            <input type="time" value={bloque.hora_inicio} onChange={(e) => updateBloque(bloque.id, 'hora_inicio', e.target.value)} className="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-1.5 text-xs font-bold outline-none focus:border-brand-primary" />
                                         </div>
                                         <div className="space-y-1">
-                                            <label className="text-[9px] font-black text-slate-400 uppercase tracking-tighter">Hora Fin</label>
-                                            <input type="time" value={bloque.hora_fin} onChange={(e) => updateBloque(bloque.id, 'hora_fin', e.target.value)} className="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold outline-none focus:border-[#1e3a8a]" />
+                                            <label className="text-[9px] font-black text-brand-muted uppercase tracking-tighter">Hora Fin</label>
+                                            <input type="time" value={bloque.hora_fin} onChange={(e) => updateBloque(bloque.id, 'hora_fin', e.target.value)} className="w-full bg-brand-surface border border-brand-border rounded-lg px-3 py-1.5 text-xs font-bold outline-none focus:border-brand-primary" />
                                         </div>
                                     </div>
                                 </div>
@@ -295,9 +295,9 @@ const AdminSchedule = ({ onBack, initialData }) => {
                         </div>
                     </div>
 
-                    <div className="bg-gradient-to-br from-[#1e3a8a] to-[#0f172a] p-6 rounded-3xl text-white shadow-xl relative overflow-hidden group">
+                    <div className="bg-gradient-to-br from-brand-primary to-brand-primary-dark p-6 rounded-3xl text-white shadow-xl relative overflow-hidden group">
                         <div className="relative z-10">
-                            <h4 className="font-black uppercase italic tracking-tighter text-xl mb-2 text-orange-500">Resumen</h4>
+                            <h4 className="font-black uppercase italic tracking-tighter text-xl mb-2 text-brand-accent">Resumen</h4>
                             <div className="space-y-2 opacity-80 text-[10px] font-bold uppercase">
                                 <p className="flex justify-between border-b border-white/10 pb-1">Sede: <span className="text-white">{sedes.find(s => s.id.toString() === commonData.sede_id)?.nombre || '---'}</span></p>
                                 <p className="flex justify-between border-b border-white/10 pb-1">Sesiones: <span className="text-white">{bloques.length} bloque(s)</span></p>
