@@ -4,6 +4,7 @@ import { Menu, X, Loader2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import Sidebar from '../components/Sidebar';
 import MobileNavbarAdmin from '../components/MobileNavbarAdmin'; // ✅ Importamos la nueva barra
+import { THEME_ASSETS } from "../config/themeAssets.js";
 
 const DashboardLayout = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -43,7 +44,7 @@ const DashboardLayout = () => {
 
                     <div className="md:hidden flex items-center">
                         <img
-                            src="/logo.png"
+                            src={THEME_ASSETS.logo}
                             alt="Gema Logo"
                             className="h-10 w-auto filter drop-shadow-[0_0_3px_rgba(255,255,255,1)]"
                         />
@@ -74,7 +75,7 @@ const DashboardLayout = () => {
                 {/* MAIN: Añadimos pb-24 para que el MobileNavbarAdmin no tape el contenido */}
                 <main className="flex-1 overflow-y-auto bg-brand-surface-alt p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 relative">
                     <div className="absolute top-0 right-0 p-10 opacity-[0.03] pointer-events-none hidden xl:block">
-                        <img src="/logo.png" alt="" className="w-96 h-auto rotate-12" />
+                        <img src={THEME_ASSETS.logoWatermark} alt="" className="w-96 h-auto rotate-12" />
                     </div>
 
                     <div className="max-w-7xl mx-auto relative z-10">

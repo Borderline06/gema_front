@@ -4,6 +4,7 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Eye, EyeOff, ArrowLeft, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { THEME_ASSETS } from "../config/themeAssets.js";
 
 function Login() {
   const [identifier, setIdentifier] = useState('');
@@ -64,7 +65,7 @@ function Login() {
 
       {/* FONDO */}
       <div className="absolute inset-0 z-0">
-        <img src="/bg.jpg" alt="Background" className="w-full h-full object-cover" />
+        <img src={THEME_ASSETS.authBackground} alt="Background" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-brand-primary-dark/80 backdrop-blur-sm"></div>
       </div>
 
@@ -89,7 +90,7 @@ function Login() {
 
           <div className="z-10 flex flex-col items-center text-center mt-2 md:mt-10">
             <img
-              src="/logo_diamante.jpeg"
+              src={THEME_ASSETS.logoPublic}
               alt="Logo Club Gema"
               className="w-20 md:w-72 h-auto rounded-full filter drop-shadow-lg"
             />

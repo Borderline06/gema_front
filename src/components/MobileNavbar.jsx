@@ -9,6 +9,7 @@ import { useAuth } from '../context/AuthContext';
 import { apiFetch } from "../interceptors/api";
 import { API_ROUTES } from "../constants/apiRoutes";
 import Cookies from "js-cookie";
+import { THEME_ASSETS } from "../config/themeAssets.js";
 
 const MobileNavbar = () => {
   const { user, logout } = useAuth();
@@ -65,7 +66,7 @@ const MobileNavbar = () => {
             <div className="flex-none pt-12 pb-6 px-4 flex flex-col items-center border-b border-white/10 bg-white/5">
               <div className="relative z-10 w-[120px] aspect-square bg-brand-surface rounded-full p-2.5 shadow-2xl flex items-center justify-center border-[4px] border-white/10 overflow-hidden mb-3">
                 <Link to="/" onClick={toggleMenu}>
-                  <img src="/Logo con borde blanco.png" alt="Logo Club Gema" className="w-full h-full object-cover" />
+                  <img src={THEME_ASSETS.logoFramed} alt="Logo Club Gema" className="w-full h-full object-cover" />
                 </Link>
               </div>
               <div className="text-center">

@@ -7,6 +7,7 @@ import {
 import { Link } from 'react-router-dom';
 import { apiFetch } from '../interceptors/api';
 import { API_ROUTES } from '../constants/apiRoutes';
+import { THEME_ASSETS } from "../config/themeAssets.js";
 
 
 const Blog = () => {
@@ -102,7 +103,7 @@ const Blog = () => {
                 <div className="flex items-center gap-3 text-brand-primary">
                   {/* LOGO MÁS GRANDE CON FONDO BLANCO */}
                   <div className="w-12 h-12 bg-brand-surface border-2 border-brand-border-soft rounded-2xl p-1.5 shadow-md">
-                    <img src="/Logo con borde blanco.png" alt="Gema" className="w-full h-full object-contain" />
+                    <img src={THEME_ASSETS.logoFramed} alt="Gema" className="w-full h-full object-contain" />
                   </div>
                   <span className="font-black italic text-sm">Club Gema Oficial</span>
                 </div>
@@ -141,7 +142,7 @@ const Blog = () => {
                   {/* LOGO EN CARDS: MÁS GRANDE Y FONDO BLANCO */}
                   <div className="absolute top-6 left-6 bg-brand-surface px-4 py-2 rounded-2xl flex items-center gap-3 shadow-2xl border border-brand-border-soft">
                     <div className="w-8 h-8 bg-brand-surface rounded-lg p-0.5">
-                      <img src="/Logo con borde blanco.png" alt="Gema" className="w-full h-full object-contain" />
+                      <img src={THEME_ASSETS.logoFramed} alt="Gema" className="w-full h-full object-contain" />
                     </div>
                     <span className="text-[10px] font-black uppercase text-brand-primary italic tracking-widest">Gema News</span>
                   </div>

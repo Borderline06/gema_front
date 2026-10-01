@@ -1,6 +1,7 @@
 import React from 'react';
 import { Copy, ShieldCheck } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { THEME_ASSETS } from "../../../config/themeAssets.js";
 
 const PaymentMethodCard = ({ phoneNumber = "902585995", owner = "Club Gema S.A.C." }) => {
   
@@ -15,7 +16,7 @@ const PaymentMethodCard = ({ phoneNumber = "902585995", owner = "Club Gema S.A.C
     <div className="bg-gradient-to-br from-brand-primary to-brand-primary-dark text-white rounded-[3rem] p-8 mb-12 shadow-2xl relative overflow-hidden border border-white/10">
       {/* Logo de fondo decorativo */}
       <div className="absolute -bottom-10 -right-10 opacity-10 pointer-events-none">
-        <img src="/logo.png" alt="" className="w-64 h-auto rotate-12" />
+        <img src={THEME_ASSETS.logoWatermark} alt="" className="w-64 h-auto rotate-12" />
       </div>
 
       <div className="flex flex-col lg:flex-row items-center gap-10 relative z-10">

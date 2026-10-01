@@ -7,6 +7,7 @@ import apiFetch from '../../interceptors/api';
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import { API_ROUTES } from '../../constants/apiRoutes';
+import { THEME_ASSETS } from "../../config/themeAssets.js";
 
 const StudentNews = () => {
     const [publicaciones, setPublicaciones] = useState([]);
@@ -105,7 +106,7 @@ const StudentNews = () => {
                                     <div className="flex items-center gap-3 mb-8">
                                         {/* LOGO CON FONDO BLANCO Y BORDE */}
                                         <div className="w-12 h-12 bg-brand-surface rounded-2xl flex items-center justify-center p-1.5 shadow-md border border-brand-border-soft">
-                                            <img src="/Logo con borde blanco.png" alt="Gema" className="w-full h-full object-contain" />
+                                            <img src={THEME_ASSETS.logoFramed} alt="Gema" className="w-full h-full object-contain" />
                                         </div>
                                         <div className="flex flex-col">
                                             <span className="text-sm font-black text-brand-primary uppercase italic leading-none tracking-tight">Club Gema Oficial</span>

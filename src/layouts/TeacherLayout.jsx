@@ -4,6 +4,7 @@ import { Menu } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import TeacherSidebar from '../components/teacher/TeacherSidebar';
 import MobileNavbarTeacher from '../components/MobileNavbarTeacher';
+import { THEME_ASSETS } from "../config/themeAssets.js";
 
 const TeacherLayout = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -70,7 +71,7 @@ const TeacherLayout = () => {
 
                     {/* MARCA DE AGUA: Logo de fondo sutil */}
                     <div className="absolute top-0 right-0 p-10 opacity-[0.02] pointer-events-none hidden xl:block">
-                        <img src="/logo.png" alt="" className="w-96 h-auto rotate-12" />
+                        <img src={THEME_ASSETS.logoWatermark} alt="" className="w-96 h-auto rotate-12" />
                     </div>
 
                     {/* CONTENEDOR DE LA PÁGINA: Centrado y con ancho máximo */}

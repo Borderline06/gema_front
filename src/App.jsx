@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { Toaster } from "react-hot-toast";
 
+import { BRAND_COLORS, alpha } from "./config/themeColors.js";
+
 import ScrollToTop from "./components/ScrollToTop";
 import Login from "./pages/Login";
 import { ForgotPassword } from './pages/ForgotPassword';
@@ -26,25 +28,28 @@ function App() {
         toastOptions={{
           className: '',
           style: {
-            border: '2px solid #1e3a8a',
+            border: `2px solid ${BRAND_COLORS.primary}`,
             padding: '16px',
-            color: '#1e3a8a',
+            color: BRAND_COLORS.primary,
             borderRadius: '1rem',
             fontWeight: '900',
             fontStyle: 'italic',
             textTransform: 'uppercase',
-            boxShadow: '0 10px 15px -3px rgba(30, 58, 138, 0.2), 0 4px 6px -2px rgba(30, 58, 138, 0.1)'
+            boxShadow: `0 10px 15px -3px ${alpha(BRAND_COLORS.primary, 0.2)}, 0 4px 6px -2px ${alpha(BRAND_COLORS.primary, 0.1)}`
           },
           success: {
             style: {
-              background: '#f8fafc',
-              borderLeft: '6px solid #1e3a8a', // Blue representing Gema successful operations
+              background: BRAND_COLORS.bg,
+              borderLeft: `6px solid ${BRAND_COLORS.primary}`, // Blue representing Gema successful operations
             },
             iconTheme: {
-              primary: '#1e3a8a',
-              secondary: '#fff',
+              primary: BRAND_COLORS.primary,
+              secondary: '#fff', // primer plano sobre el primario, no una superficie de marca
             },
           },
+          // El naranja del toast de error se queda crudo a propósito: aquí es
+          // un color de ESTADO (atención), no el acento de marca. Si el acento
+          // cambiara a otro tono, los errores no deben seguirlo.
           error: {
             style: {
               background: '#fff',

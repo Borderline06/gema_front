@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { logoutService } from '../services/auth.service';
 import toast from 'react-hot-toast';
+import { THEME_ASSETS } from "../config/themeAssets.js";
 
 const Sidebar = ({ isOpen, onClose }) => {
     const location = useLocation();
@@ -101,7 +102,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <div className="flex-none pt-8 pb-6 px-4 flex flex-col items-center bg-white/5 relative">
                     <div className="relative z-10 w-[140px] aspect-square bg-brand-surface rounded-full p-2.5 shadow-2xl flex items-center justify-center border-[4px] border-white/10 overflow-hidden mb-3 hover:border-brand-accent/30 transition-colors">
                         <Link to="/" className="relative z-10 hover:scale-105 transition-transform duration-300">
-                            <img src="/Logo con borde blanco.png" alt="Logo Club Gema" className="w-full h-full object-cover" />
+                            <img src={THEME_ASSETS.logoFramed} alt="Logo Club Gema" className="w-full h-full object-cover" />
                         </Link>
                     </div>
                     <div className="text-center">

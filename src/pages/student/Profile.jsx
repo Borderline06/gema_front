@@ -7,6 +7,7 @@ import { API_ROUTES } from '../../constants/apiRoutes.js';
 import EditProfileModal from '../../components/student/DataUsuario/EditProfileModal.jsx';
 import ChangePasswordModal from '../../components/shared/ChangePasswordModal.jsx';
 import { KeyRound } from 'lucide-react';
+import { THEME_ASSETS } from "../../config/themeAssets.js";
 
 const Profile = () => {
   const { updateUserData } = useAuth();
@@ -89,7 +90,7 @@ const Profile = () => {
       {/* Hero Card Premium */}
       <div className="relative mb-8 md:mb-12">
         <div className="bg-gradient-to-br from-brand-primary to-brand-primary-dark rounded-[2rem] md:rounded-[3.5rem] p-6 sm:p-8 md:p-12 text-white shadow-2xl relative overflow-hidden border border-white/5">
-          <img src="/logo.png" className="absolute -right-10 -bottom-10 md:-right-20 md:-bottom-20 w-64 md:w-80 opacity-[0.05] rotate-12 pointer-events-none" alt="" />
+          <img src={THEME_ASSETS.logoWatermark} className="absolute -right-10 -bottom-10 md:-right-20 md:-bottom-20 w-64 md:w-80 opacity-[0.05] rotate-12 pointer-events-none" alt="" />
 
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8 relative z-10">
             <div className="relative shrink-0">

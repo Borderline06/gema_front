@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { registerService } from '../services/auth.service';
 import toast from 'react-hot-toast';
+import { THEME_ASSETS } from "../config/themeAssets.js";
 
 const TERMINOS_Y_CONDICIONES = [
     { title: "Uso de Imagen", desc: "Autorizo el uso de mi imagen y voz para materiales promocionales del Club Gema en medios digitales." },
@@ -123,7 +124,7 @@ function Register() {
         <div className="min-h-screen w-full flex items-center justify-center p-2 md:p-4 font-sans relative overflow-x-hidden bg-brand-primary-dark">
             {/* FONDO */}
             <div className="absolute inset-0 z-0">
-                <img src="/bg.jpg" alt="Background" className="w-full h-full object-cover opacity-40" />
+                <img src={THEME_ASSETS.authBackground} alt="Background" className="w-full h-full object-cover opacity-40" />
                 <div className="absolute inset-0 backdrop-blur-[6px] bg-brand-primary-dark/60"></div>
             </div>
 
@@ -141,7 +142,7 @@ function Register() {
                 {/* LADO IZQUIERDO: Branding (Arriba en móvil, lateral en MD) */}
                 <div className="w-full md:w-1/3 bg-gradient-to-b from-blue-600 via-blue-800 to-indigo-950 p-6 md:p-10 text-white flex flex-col justify-center items-center relative overflow-hidden shrink-0">
                     <div className="z-10 text-center">
-                        <img src="/logo_diamante.jpeg" alt="Logo" className="rounded-full w-24 h-24 md:w-40 md:h-40 mx-auto mb-4 md:mb-6 shadow-2xl border-4 border-white/10" />
+                        <img src={THEME_ASSETS.logoPublic} alt="Logo" className="rounded-full w-24 h-24 md:w-40 md:h-40 mx-auto mb-4 md:mb-6 shadow-2xl border-4 border-white/10" />
                         <h2 className="text-2xl md:text-3xl font-black uppercase italic tracking-tighter leading-none">Club Gema</h2>
                         <div className="h-1 w-8 md:w-12 bg-brand-accent mx-auto my-3 md:my-4 rounded-full"></div>
                         <p className="text-blue-100 text-[10px] md:text-sm font-medium opacity-80">Portal Oficial Club Gema</p>

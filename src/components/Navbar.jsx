@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Bell, Menu, X, UserCircle, ChevronRight } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { THEME_ASSETS } from "../config/themeAssets.js";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,7 +48,7 @@ const Navbar = () => {
               {/* Logo reducido a w-14 h-14 */}
               <div className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg shadow-brand-primary/10 group-hover:scale-105 transition-transform overflow-hidden border border-slate-50">
                 <img
-                  src="/logo_diamante.jpeg"
+                  src={THEME_ASSETS.logoPublic}
                   alt="Logo"
                   className="w-full h-full object-contain p-1.5 filter drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]"
                 />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Facebook, Instagram, Twitter, MapPin, Phone, Mail, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { THEME_ASSETS } from "../config/themeAssets.js";
 
 const Footer = () => {
   const quickLinks = [
@@ -15,7 +16,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-16 mb-20">
           <div className="space-y-8">
             <div className="w-24 h-24 bg-brand-surface rounded-3xl p-3 shadow-2xl border-4 border-brand-accent/20">
-              <img src="/Logo con borde blanco.png" className="w-full h-full object-contain" alt="Logo" />
+              <img src={THEME_ASSETS.logoFramed} className="w-full h-full object-contain" alt="Logo" />
             </div>
             <h3 className="text-4xl font-black text-white uppercase italic tracking-tighter leading-none">
               GEMA <span className="text-brand-accent">CLUB</span>
