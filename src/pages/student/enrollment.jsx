@@ -163,23 +163,23 @@ const Enrollment = () => {
   };
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
-      <Loader2 className="animate-spin text-[#1e3a8a]" size={48} />
+    <div className="min-h-screen flex items-center justify-center bg-brand-surface">
+      <Loader2 className="animate-spin text-brand-primary" size={48} />
     </div>
   );
 
   return (
-    <div className="relative min-h-screen bg-[#f8fafc]">
+    <div className="relative min-h-screen bg-brand-bg">
 
       {/* 🚨 ZONA DE ALERTA CRÍTICA (BANNER SUPERIOR STICKY) */}
       {pendingPayment && (
-        <div className="w-full bg-slate-900 py-4 border-b-4 border-orange-500 shadow-2xl sticky top-0 z-[200] animate-in slide-in-from-top duration-500">
+        <div className="w-full bg-brand-primary-dark py-4 border-b-4 border-brand-accent shadow-2xl sticky top-0 z-[200] animate-in slide-in-from-top duration-500">
           <div className="max-w-6xl mx-auto px-4 md:px-8">
             <div className="flex items-center gap-3 mb-3">
-              <div className="bg-orange-500 p-1.5 rounded-lg animate-pulse">
+              <div className="bg-brand-accent p-1.5 rounded-lg animate-pulse">
                 <AlertTriangle size={18} className="text-white" />
               </div>
-              <p className="text-[11px] font-black text-orange-500 uppercase italic tracking-[0.3em]">Acción Administrativa Requerida</p>
+              <p className="text-[11px] font-black text-brand-accent uppercase italic tracking-[0.3em]">Acción Administrativa Requerida</p>
             </div>
             <OutstandingDebtAlert
               pendingPayment={pendingPayment}
@@ -194,27 +194,27 @@ const Enrollment = () => {
       <div className="px-4 md:px-8 transition-all duration-700">
         <div className="max-w-6xl mx-auto py-8">
           <header className="mb-8">
-            <Link to="/dashboard/student" className="inline-flex items-center gap-1 text-slate-400 hover:text-[#1e3a8a] mb-4 text-[10px] font-black uppercase italic tracking-widest transition-colors">
+            <Link to="/dashboard/student" className="inline-flex items-center gap-1 text-brand-muted hover:text-brand-primary mb-4 text-[10px] font-black uppercase italic tracking-widest transition-colors">
               <ArrowLeft size={12} /> Dashboard
             </Link>
-            <h1 className="text-4xl md:text-6xl font-black text-[#1e3a8a] italic uppercase tracking-tighter leading-none">
-              Matrícula <span className="text-orange-500">Gema</span>
+            <h1 className="text-4xl md:text-6xl font-black text-brand-primary italic uppercase tracking-tighter leading-none">
+              Matrícula <span className="text-brand-accent">Gema</span>
             </h1>
           </header>
 
           {/* SEDES */}
           <div className="relative mb-12 group">
-            <button onClick={() => scroll('left')} className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white p-3 rounded-full shadow-xl hidden md:group-hover:flex hover:bg-[#1e3a8a] hover:text-white transition-all -ml-6 border border-slate-100">
+            <button onClick={() => scroll('left')} className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-brand-surface p-3 rounded-full shadow-xl hidden md:group-hover:flex hover:bg-brand-primary hover:text-white transition-all -ml-6 border border-brand-border-soft">
               <ChevronLeft size={20} />
             </button>
             <div ref={scrollRef} className="flex gap-3 overflow-x-auto scrollbar-hide py-4 px-2 scroll-smooth">
               {sedesDisponibles.map(sede => (
-                <button key={sede} onClick={() => setActiveSede(sede)} className={`px-8 py-4 rounded-[2rem] font-black text-[10px] uppercase italic transition-all duration-500 border-2 flex-shrink-0 ${activeSede === sede ? 'bg-[#1e3a8a] border-[#1e3a8a] text-white shadow-lg' : 'bg-white border-slate-100 text-slate-400'}`}>
+                <button key={sede} onClick={() => setActiveSede(sede)} className={`px-8 py-4 rounded-[2rem] font-black text-[10px] uppercase italic transition-all duration-500 border-2 flex-shrink-0 ${activeSede === sede ? 'bg-brand-primary border-brand-primary text-white shadow-lg' : 'bg-brand-surface border-brand-border-soft text-brand-muted'}`}>
                   <Building2 size={16} /> {sede}
                 </button>
               ))}
             </div>
-            <button onClick={() => scroll('right')} className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white p-3 rounded-full shadow-xl hidden md:group-hover:flex hover:bg-[#1e3a8a] hover:text-white transition-all -mr-6 border border-slate-100">
+            <button onClick={() => scroll('right')} className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-brand-surface p-3 rounded-full shadow-xl hidden md:group-hover:flex hover:bg-brand-primary hover:text-white transition-all -mr-6 border border-brand-border-soft">
               <ChevronRight size={20} />
             </button>
           </div>
@@ -236,7 +236,7 @@ const Enrollment = () => {
           <div className='flex gap-4'>
             <label className={`pointer-events-auto flex items-center gap-4 px-6 py-3.5 rounded-[1.8rem] mb-3 border-2 shadow-2xl transition-all group ${claseUnica
               ? "bg-slate-800 border-white/10 cursor-not-allowed"
-              : "bg-[#0f172a] border-white/20 cursor-pointer hover:bg-slate-900 active:scale-95"
+              : "bg-brand-primary-dark border-white/20 cursor-pointer hover:bg-brand-primary-dark active:scale-95"
               }`}>
               <input type="checkbox" checked={incluyeCamiseta} disabled={claseUnica} onChange={(e) => { setIncluyeCamiseta(e.target.checked); setClaseUnica(false) }} className="w-5 h-5 accent-orange-500" />
               <div className="flex flex-col">
@@ -258,7 +258,7 @@ const Enrollment = () => {
             {selectedIds.length === 1 && (
               <label className={`pointer-events-auto flex items-center gap-4 px-6 py-3.5 rounded-[1.8rem] mb-3 border-2 shadow-2xl transition-all group ${incluyeCamiseta
                 ? "bg-slate-800 border-white/10 cursor-not-allowed"
-                : "bg-[#0f172a] border-white/20 cursor-pointer hover:bg-slate-900 active:scale-95"
+                : "bg-brand-primary-dark border-white/20 cursor-pointer hover:bg-brand-primary-dark active:scale-95"
                 }`}>
                 <input type="checkbox" checked={claseUnica} disabled={incluyeCamiseta} onChange={(e) => { setClaseUnica(e.target.checked); setIncluyeCamiseta(false) }} className="w-5 h-5 accent-orange-500" />
                 <div className="flex flex-col">
@@ -279,8 +279,8 @@ const Enrollment = () => {
             )}
           </div>
 
-          <div className="bg-[#1e3a8a] text-white p-4 rounded-[2rem] shadow-2xl border-4 border-white mb-3 pointer-events-auto flex gap-4 items-center w-full max-w-md animate-fade-in-up">
-            <div className="bg-orange-500 p-2.5 rounded-xl shrink-0"><Zap size={20} fill="white" /></div>
+          <div className="bg-brand-primary text-white p-4 rounded-[2rem] shadow-2xl border-4 border-white mb-3 pointer-events-auto flex gap-4 items-center w-full max-w-md animate-fade-in-up">
+            <div className="bg-brand-accent p-2.5 rounded-xl shrink-0"><Zap size={20} fill="white" /></div>
             <div className="flex flex-1 gap-3 overflow-hidden divide-x divide-white/10">
               {Object.entries(resumenMatricula).map(([sede, dias]) => (
                 <div key={sede} className="pl-3 first:pl-0 truncate">
@@ -298,7 +298,7 @@ const Enrollment = () => {
           <button
             onClick={iniciarProcesoMatricula}
             disabled={submitting}
-            className="pointer-events-auto flex items-center justify-center gap-4 px-12 py-5 rounded-full font-black uppercase italic transition-all duration-500 shadow-2xl bg-orange-500 text-white hover:scale-105 active:scale-95 border-4 border-white w-full max-w-sm"
+            className="pointer-events-auto flex items-center justify-center gap-4 px-12 py-5 rounded-full font-black uppercase italic transition-all duration-500 shadow-2xl bg-brand-accent text-white hover:scale-105 active:scale-95 border-4 border-white w-full max-w-sm"
           >
             {submitting ? <Loader2 className="animate-spin" size={24} /> : <Send size={24} />}
             <span className="tracking-widest text-[12px]">Finalizar Selección</span>

@@ -6,7 +6,7 @@ const RecoveryTabs = ({ activeTab, onChange }) => (
         <button
             onClick={() => onChange('agendar')}
             className={`pb-4 px-2 text-sm font-bold uppercase tracking-widest transition-all border-b-2 flex items-center gap-2 ${activeTab === 'agendar'
-                ? 'border-[#1e3a8a] text-[#1e3a8a]'
+                ? 'border-brand-primary text-brand-primary'
                 : 'border-transparent text-gray-400 hover:text-gray-600'
                 }`}
         >
@@ -15,7 +15,7 @@ const RecoveryTabs = ({ activeTab, onChange }) => (
         <button
             onClick={() => onChange('historial')}
             className={`pb-4 px-2 text-sm font-bold uppercase tracking-widest transition-all border-b-2 flex items-center gap-2 ${activeTab === 'historial'
-                ? 'border-[#1e3a8a] text-[#1e3a8a]'
+                ? 'border-brand-primary text-brand-primary'
                 : 'border-transparent text-gray-400 hover:text-gray-600'
                 }`}
         >

@@ -83,17 +83,17 @@ const EditProfileModal = ({ isOpen, onClose, onSuccess }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[150] flex items-center justify-center p-2 sm:p-4 bg-[#0f172a]/90 backdrop-blur-sm">
-      <div className="bg-white w-full max-w-xl rounded-3xl overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-200 flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-[150] flex items-center justify-center p-2 sm:p-4 bg-brand-primary-dark/90 backdrop-blur-sm">
+      <div className="bg-brand-surface w-full max-w-xl rounded-3xl overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-200 flex flex-col max-h-[90vh]">
         
         {/* HEADER COMPACTO */}
-        <div className="bg-[#1e3a8a] p-4 text-white flex justify-between items-center shrink-0">
+        <div className="bg-brand-primary p-4 text-white flex justify-between items-center shrink-0">
           <div className="flex items-center gap-3">
             <button onClick={onClose} className="p-1.5 bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
               <ArrowLeft size={18} />
             </button>
             <div>
-              <h3 className="font-black uppercase italic text-lg leading-none">Mi <span className="text-orange-500">Expediente</span></h3>
+              <h3 className="font-black uppercase italic text-lg leading-none">Mi <span className="text-brand-accent">Expediente</span></h3>
               <p className="text-[9px] font-bold opacity-70 uppercase tracking-wider mt-0.5">Sincronización en vivo</p>
             </div>
           </div>
@@ -106,37 +106,37 @@ const EditProfileModal = ({ isOpen, onClose, onSuccess }) => {
             
             {/* SECCIÓN 1: PERSONALES */}
             <div className="space-y-3">
-              <div className="border-b border-slate-100 pb-1.5 flex items-center gap-2">
-                <User size={14} className="text-[#1e3a8a]" />
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Personales</span>
+              <div className="border-b border-brand-border-soft pb-1.5 flex items-center gap-2">
+                <User size={14} className="text-brand-primary" />
+                <span className="text-[10px] font-black text-brand-muted uppercase tracking-widest">Personales</span>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <input type="text" placeholder="Teléfono" value={formData.telefono_personal} onChange={e => setFormData({ ...formData, telefono_personal: e.target.value })} className="col-span-2 sm:col-span-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-orange-500" />
-                <input type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="col-span-2 sm:col-span-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-orange-500" />
-                <select value={formData.tipo_documento_id} onChange={e => setFormData({ ...formData, tipo_documento_id: e.target.value })} className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-orange-500">
+                <input type="text" placeholder="Teléfono" value={formData.telefono_personal} onChange={e => setFormData({ ...formData, telefono_personal: e.target.value })} className="col-span-2 sm:col-span-1 bg-brand-bg border border-brand-border rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-brand-accent" />
+                <input type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="col-span-2 sm:col-span-1 bg-brand-bg border border-brand-border rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-brand-accent" />
+                <select value={formData.tipo_documento_id} onChange={e => setFormData({ ...formData, tipo_documento_id: e.target.value })} className="bg-brand-bg border border-brand-border rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-brand-accent">
                   <option value="">Documento</option>{['DNI', 'PAS', 'CE'].map(g => <option key={g} value={g}>{g}</option>)}
                 </select>
-                <input type="text" placeholder="N° Documento" value={formData.numero_documento} onChange={e => setFormData({ ...formData, numero_documento: e.target.value })} className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-orange-500" />
-                <select value={formData.genero} onChange={e => setFormData({ ...formData, genero: e.target.value })} className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-orange-500">
+                <input type="text" placeholder="N° Documento" value={formData.numero_documento} onChange={e => setFormData({ ...formData, numero_documento: e.target.value })} className="bg-brand-bg border border-brand-border rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-brand-accent" />
+                <select value={formData.genero} onChange={e => setFormData({ ...formData, genero: e.target.value })} className="bg-brand-bg border border-brand-border rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-brand-accent">
                   <option value="">Género</option><option value="M">Masculino (M)</option><option value="F">Femenino (F)</option>
                 </select>
                 <div className="relative">
-                  <label className="text-[8px] font-black text-slate-400 uppercase absolute -top-1.5 left-2 bg-white px-1">Nacimiento</label>
-                  <input type="date" value={formData.fecha_nacimiento} onChange={e => setFormData({ ...formData, fecha_nacimiento: e.target.value })} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-orange-500" />
+                  <label className="text-[8px] font-black text-brand-muted uppercase absolute -top-1.5 left-2 bg-brand-surface px-1">Nacimiento</label>
+                  <input type="date" value={formData.fecha_nacimiento} onChange={e => setFormData({ ...formData, fecha_nacimiento: e.target.value })} className="w-full bg-brand-bg border border-brand-border rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-brand-accent" />
                 </div>
               </div>
             </div>
 
             {/* SECCIÓN 2: SALUD */}
             <div className="space-y-3">
-              <div className="border-b border-slate-100 pb-1.5 flex items-center gap-2">
-                <HeartPulse size={14} className="text-orange-500" />
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Salud</span>
+              <div className="border-b border-brand-border-soft pb-1.5 flex items-center gap-2">
+                <HeartPulse size={14} className="text-brand-accent" />
+                <span className="text-[10px] font-black text-brand-muted uppercase tracking-widest">Salud</span>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <input type="text" placeholder="Alergias o condiciones" value={formData.condiciones_medicas} onChange={e => setFormData({ ...formData, condiciones_medicas: e.target.value })} className="col-span-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-orange-500" />
-                <input type="text" placeholder="Seguro (EPS/SIS)" value={formData.seguro_medico} onChange={e => setFormData({ ...formData, seguro_medico: e.target.value })} className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-orange-500" />
-                <select value={formData.grupo_sanguineo} onChange={e => setFormData({ ...formData, grupo_sanguineo: e.target.value })} className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-orange-500">
+                <input type="text" placeholder="Alergias o condiciones" value={formData.condiciones_medicas} onChange={e => setFormData({ ...formData, condiciones_medicas: e.target.value })} className="col-span-2 bg-brand-bg border border-brand-border rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-brand-accent" />
+                <input type="text" placeholder="Seguro (EPS/SIS)" value={formData.seguro_medico} onChange={e => setFormData({ ...formData, seguro_medico: e.target.value })} className="bg-brand-bg border border-brand-border rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-brand-accent" />
+                <select value={formData.grupo_sanguineo} onChange={e => setFormData({ ...formData, grupo_sanguineo: e.target.value })} className="bg-brand-bg border border-brand-border rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-brand-accent">
                   <option value="">Sangre</option>{['O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-'].map(g => <option key={g} value={g}>{g}</option>)}
                 </select>
               </div>
@@ -144,16 +144,16 @@ const EditProfileModal = ({ isOpen, onClose, onSuccess }) => {
 
             {/* SECCIÓN 3: UBICACIÓN */}
             <div className="space-y-3">
-              <div className="border-b border-slate-100 pb-1.5 flex items-center gap-2">
+              <div className="border-b border-brand-border-soft pb-1.5 flex items-center gap-2">
                 <MapPin size={14} className="text-blue-500" />
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Ubicación</span>
+                <span className="text-[10px] font-black text-brand-muted uppercase tracking-widest">Ubicación</span>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <input type="text" placeholder="Dirección completa" value={formData.direccion_completa} onChange={e => setFormData({ ...formData, direccion_completa: e.target.value })} className="col-span-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-orange-500" />
-                <select value={formData.distrito} onChange={e => setFormData({ ...formData, distrito: e.target.value })} className="col-span-2 sm:col-span-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-orange-500">
+                <input type="text" placeholder="Dirección completa" value={formData.direccion_completa} onChange={e => setFormData({ ...formData, direccion_completa: e.target.value })} className="col-span-2 bg-brand-bg border border-brand-border rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-brand-accent" />
+                <select value={formData.distrito} onChange={e => setFormData({ ...formData, distrito: e.target.value })} className="col-span-2 sm:col-span-1 bg-brand-bg border border-brand-border rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-brand-accent">
                   <option value="">Distrito</option>{DISTRITOS_LIMA.map(d => <option key={d} value={d}>{d}</option>)}
                 </select>
-                <input type="text" placeholder="Referencia" value={formData.referencia} onChange={e => setFormData({ ...formData, referencia: e.target.value })} className="col-span-2 sm:col-span-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-orange-500" />
+                <input type="text" placeholder="Referencia" value={formData.referencia} onChange={e => setFormData({ ...formData, referencia: e.target.value })} className="col-span-2 sm:col-span-1 bg-brand-bg border border-brand-border rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-brand-accent" />
               </div>
             </div>
           </form>
@@ -168,8 +168,8 @@ const EditProfileModal = ({ isOpen, onClose, onSuccess }) => {
         </div>
 
         {/* FOOTER FIJO CON BOTÓN */}
-        <div className="p-4 border-t border-slate-100 bg-white shrink-0">
-          <button form="profile-form" type="submit" disabled={loading} className="w-full bg-[#1e3a8a] hover:bg-[#0f172a] text-white font-black py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-md">
+        <div className="p-4 border-t border-brand-border-soft bg-brand-surface shrink-0">
+          <button form="profile-form" type="submit" disabled={loading} className="w-full bg-brand-primary hover:bg-brand-primary-dark text-white font-black py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-md">
             {loading ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
             {loading ? "GUARDANDO..." : "GUARDAR CAMBIOS"}
           </button>

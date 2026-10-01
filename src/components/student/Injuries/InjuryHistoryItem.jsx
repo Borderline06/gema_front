@@ -11,7 +11,7 @@ const InjuryHistoryItem = ({ solicitud }) => {
     };
 
     return (
-        <div className="group bg-white border border-gray-200 rounded-3xl p-6 flex flex-col shadow-xl md:flex-row justify-between items-start md:items-center gap-4 hover:border-[#1e3a8a] hover:bg-[#1e3a8a] transition-all duration-300">
+        <div className="group bg-brand-surface border border-gray-200 rounded-3xl p-6 flex flex-col shadow-xl md:flex-row justify-between items-start md:items-center gap-4 hover:border-brand-primary hover:bg-brand-primary transition-all duration-300">
             <div>
                 <div className="flex items-center gap-3 mb-2">
                     {getStatusBadge(solicitud.estado)}
@@ -19,7 +19,7 @@ const InjuryHistoryItem = ({ solicitud }) => {
                 </div>
                 <p className="text-slate-600 font-medium group-hover:text-white transition-colors">{solicitud.descripcion_lesion}</p>
                 {solicitud.notas_admin && (
-                    <p className="text-sm text-orange-600 mt-2 bg-orange-200 p-2 rounded-lg border border-orange-500/20">
+                    <p className="text-sm text-brand-accent-dark mt-2 bg-orange-200 p-2 rounded-lg border border-brand-accent/20">
                         <span className="font-bold">Admin:</span> {solicitud.notas_admin}
                     </p>
                 )}

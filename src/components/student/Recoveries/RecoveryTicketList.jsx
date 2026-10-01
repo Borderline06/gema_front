@@ -7,11 +7,11 @@ const RecoveryTicketList = ({ tickets, selectedTicket, onSelect }) => {
 
     if (!ticketArray || ticketArray.length === 0) {
         return (
-            <div className="bg-white border border-slate-200 rounded-3xl p-12 text-center shadow-sm">
-                <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="bg-brand-surface border border-brand-border rounded-3xl p-12 text-center shadow-sm">
+                <div className="w-20 h-20 bg-brand-bg rounded-full flex items-center justify-center mx-auto mb-4">
                     <CalendarCheck size={40} className="text-slate-300" />
                 </div>
-                <h3 className="text-slate-900 font-bold text-lg">¡Todo en orden!</h3>
+                <h3 className="text-brand-heading font-bold text-lg">¡Todo en orden!</h3>
                 <p className="text-slate-500 max-w-xs mx-auto">No tienes clases pendientes de recuperar en este momento.</p>
             </div>
         );
@@ -29,24 +29,24 @@ const RecoveryTicketList = ({ tickets, selectedTicket, onSelect }) => {
                         key={ticket.id}
                         onClick={() => onSelect(isSelected ? null : ticket)}
                         className={`relative p-6 rounded-[2rem] border-2 text-left transition-all duration-300 transform ${isSelected
-                            ? 'bg-orange-500 border-orange-600 shadow-2xl shadow-orange-200 scale-[1.03] -translate-y-1'
-                            : 'bg-white border-slate-100 hover:border-orange-200 hover:shadow-xl shadow-sm'
+                            ? 'bg-brand-accent border-orange-600 shadow-2xl shadow-orange-200 scale-[1.03] -translate-y-1'
+                            : 'bg-brand-surface border-brand-border-soft hover:border-orange-200 hover:shadow-xl shadow-sm'
                             }`}
                     >
                         {/* Indicador de Estado Superior  */}
                         <div className="flex justify-between items-start mb-4">
-                            <div className={`p-3 rounded-2xl ${isSelected ? 'bg-white/20 text-white' : 'bg-orange-50 text-orange-600'
+                            <div className={`p-3 rounded-2xl ${isSelected ? 'bg-white/20 text-white' : 'bg-brand-accent-soft text-brand-accent-dark'
                                 }`}>
                                 {isVip ? <Flame size={24} strokeWidth={2.5} /> : <Ticket size={24} strokeWidth={2.5} />}
                             </div>
 
                             {isVip ? (
-                                <span className={`flex items-center gap-1 text-[10px] font-black uppercase tracking-tighter px-3 py-1 rounded-full ${isSelected ? 'bg-white text-orange-600' : 'bg-red-500 text-white animate-pulse'
+                                <span className={`flex items-center gap-1 text-[10px] font-black uppercase tracking-tighter px-3 py-1 rounded-full ${isSelected ? 'bg-brand-surface text-brand-accent-dark' : 'bg-red-500 text-white animate-pulse'
                                     }`}>
                                     <ShieldCheck size={12} /> Lesión
                                 </span>
                             ) : (
-                                <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${isSelected ? 'bg-orange-600 text-white' : 'bg-slate-100 text-slate-500'
+                                <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${isSelected ? 'bg-brand-accent-dark text-white' : 'bg-brand-surface-alt text-slate-500'
                                     }`}>
                                     Ticket
                                 </span>
@@ -55,11 +55,11 @@ const RecoveryTicketList = ({ tickets, selectedTicket, onSelect }) => {
 
                         {/* Información Principal */}
                         <div className="space-y-1">
-                            <p className={`text-[11px] font-bold uppercase tracking-[0.15em] ${isSelected ? 'text-orange-100' : 'text-slate-400'
+                            <p className={`text-[11px] font-bold uppercase tracking-[0.15em] ${isSelected ? 'text-orange-100' : 'text-brand-muted'
                                 }`}>
                                 Sesión perdida
                             </p>
-                            <p className={`text-2xl font-black italic uppercase tracking-tight ${isSelected ? 'text-white' : 'text-[#1e3a8a]'
+                            <p className={`text-2xl font-black italic uppercase tracking-tight ${isSelected ? 'text-white' : 'text-brand-primary'
                                 }`}>
                                 {new Date(ticket.fecha_falta).toLocaleDateString('es-PE', {
                                     day: '2-digit',

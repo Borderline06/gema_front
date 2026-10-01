@@ -50,22 +50,22 @@ const Payments = () => {
 
   if (loading) return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
-      <Loader2 className="animate-spin text-orange-500" size={48} />
-      <p className="font-black text-[#1e3a8a] uppercase italic text-xs tracking-widest">Cargando...</p>
+      <Loader2 className="animate-spin text-brand-accent" size={48} />
+      <p className="font-black text-brand-primary uppercase italic text-xs tracking-widest">Cargando...</p>
     </div>
   );
 
   return (
     <div className="max-w-6xl mx-auto p-4 md:p-8 animate-fade-in pb-24">
-      <Link to="/dashboard/student" className="inline-flex items-center gap-2 text-slate-400 hover:text-[#1e3a8a] mb-6 text-[10px] font-black uppercase tracking-widest italic transition-colors">
+      <Link to="/dashboard/student" className="inline-flex items-center gap-2 text-brand-muted hover:text-brand-primary mb-6 text-[10px] font-black uppercase tracking-widest italic transition-colors">
         <ArrowLeft size={14} /> REGRESAR AL PANEL
       </Link>
 
       <div className="mb-10 text-center md:text-left">
-        <h1 className="text-5xl font-black text-[#1e3a8a] uppercase tracking-tighter italic leading-none">
-          CENTRO DE <span className="text-orange-500">PAGOS</span>
+        <h1 className="text-5xl font-black text-brand-primary uppercase tracking-tighter italic leading-none">
+          CENTRO DE <span className="text-brand-accent">PAGOS</span>
         </h1>
-        <div className="h-2 w-24 bg-orange-500 rounded-full mt-3 mx-auto md:mx-0"></div>
+        <div className="h-2 w-24 bg-brand-accent rounded-full mt-3 mx-auto md:mx-0"></div>
       </div>
 
       {/* <PaymentMethodCard /> */}
@@ -79,7 +79,7 @@ const Payments = () => {
           <div className="relative z-10 w-full p-8 md:p-12 border-4 border-white/40 rounded-[3rem] flex flex-col md:flex-row items-center gap-8 md:gap-12">
 
             {/* Icono con Pulso de Alerta */}
-            <div className="bg-white shadow-xl p-5 rounded-[2.2rem] shrink-0">
+            <div className="bg-brand-surface shadow-xl p-5 rounded-[2.2rem] shrink-0">
               <ShieldAlert size={48} strokeWidth={2.5} className="text-[#ff4d4d] animate-pulse" />
             </div>
 
@@ -97,11 +97,11 @@ const Payments = () => {
               {/* Mensaje con Cápsulas Rectas (Sin inclinaciones chuecas) */}
               <div className="text-[13px] md:text-[15px] font-bold text-white/95 leading-relaxed uppercase tracking-tight">
                 Estimado alumno: Le informamos que el acceso a nuevas inscripciones y el derecho al beneficio de
-                <span className="inline-block mx-2 bg-white text-[#ff4d4d] px-4 py-1.5 rounded-xl font-black italic shadow-md">
+                <span className="inline-block mx-2 bg-brand-surface text-[#ff4d4d] px-4 py-1.5 rounded-xl font-black italic shadow-md">
                   Recuperación de Clases
                 </span>
                 se encuentran suspendidos temporalmente hasta la liquidación del
-                <span className="inline-block mx-2 bg-[#1e3a8a] text-white px-4 py-1.5 rounded-xl font-black italic shadow-md">
+                <span className="inline-block mx-2 bg-brand-primary text-white px-4 py-1.5 rounded-xl font-black italic shadow-md">
                   Pago Completo
                 </span>
                 de sus deudas pendientes.
@@ -119,8 +119,8 @@ const Payments = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         {/* CUENTAS PENDIENTES */}
         <section>
-          <h2 className="font-black text-[#1e3a8a] uppercase italic mb-8 flex items-center gap-3 text-2xl">
-            <div className="w-3 h-8 bg-orange-500 rounded-full"></div>
+          <h2 className="font-black text-brand-primary uppercase italic mb-8 flex items-center gap-3 text-2xl">
+            <div className="w-3 h-8 bg-brand-accent rounded-full"></div>
             CUENTAS PENDIENTES
           </h2>
           <div className="space-y-6">
@@ -140,12 +140,12 @@ const Payments = () => {
 
         {/* HISTORIAL DE REPORTES */}
         <section className="sticky top-8">
-          <h2 className="font-black text-[#1e3a8a] uppercase italic mb-8 flex items-center gap-3 text-2xl">
+          <h2 className="font-black text-brand-primary uppercase italic mb-8 flex items-center gap-3 text-2xl">
             <div className="w-3 h-8 bg-blue-400 rounded-full"></div>
             HISTORIAL DE REPORTES
           </h2>
 
-          <div className="bg-white rounded-[2.5rem] border shadow-2xl overflow-hidden">
+          <div className="bg-brand-surface rounded-[2.5rem] border shadow-2xl overflow-hidden">
             <div className="max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
               {payments.length > 0 ? (
                 <div className="divide-y divide-slate-50">

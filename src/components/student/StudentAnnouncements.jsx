@@ -11,7 +11,7 @@ const StudentAnnouncements = () => {
       titulo: '¡No pierdas tu progreso!',
       descripcion: 'Entrena 2-3 veces/semana y recupera hasta 2 clases. Si vas 4 veces, ¡recupera hasta 4! Tienes hasta el mes siguiente.',
       icon: <RefreshCcw size={32} />,
-      gradient: 'from-[#1e3a8a] to-blue-600',
+      gradient: 'from-brand-primary to-blue-600',
       badge: 'FLEXIBILIDAD'
     },
     {
@@ -20,7 +20,7 @@ const StudentAnnouncements = () => {
       titulo: 'Entrenar con amigos paga',
       descripcion: 'Por cada referido que se inscriba, obtén S/ 10 de descuento directo en tu siguiente mensualidad. ¡Sin límites!',
       icon: <Users size={32} />,
-      gradient: 'from-orange-600 to-orange-400',
+      gradient: 'from-brand-accent-dark to-orange-400',
       badge: 'AHORRO'
     },
     {
@@ -58,11 +58,11 @@ const StudentAnnouncements = () => {
       {/* Header del Carrusel */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div className="bg-orange-500 p-1.5 rounded-lg shadow-lg shadow-orange-500/20">
+          <div className="bg-brand-accent p-1.5 rounded-lg shadow-lg shadow-brand-accent/20">
             <Gift size={16} className="text-white" />
           </div>
-          <h2 className="font-black uppercase tracking-[0.2em] text-[11px] italic text-[#1e3a8a]">
-            Beneficios Exclusivos <span className="text-orange-500">Gema</span>
+          <h2 className="font-black uppercase tracking-[0.2em] text-[11px] italic text-brand-primary">
+            Beneficios Exclusivos <span className="text-brand-accent">Gema</span>
           </h2>
         </div>
       </div>
@@ -114,7 +114,7 @@ const StudentAnnouncements = () => {
         {/* Barra de progreso inferior */}
         <div className="absolute bottom-0 left-0 h-1 bg-black/20 w-full">
           <div 
-            className="h-full bg-white transition-all duration-[6000ms] ease-linear"
+            className="h-full bg-brand-surface transition-all duration-[6000ms] ease-linear"
             style={{ width: `${((currentIndex + 1) / beneficios.length) * 100}%` }}
           />
         </div>

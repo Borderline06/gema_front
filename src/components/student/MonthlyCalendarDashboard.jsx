@@ -56,8 +56,8 @@ const MonthlyCalendarDashboard = () => {
 
     if (esPresente) return { color: 'border-emerald-500 bg-emerald-50 text-emerald-700' };
     if (esFalta) return { color: 'border-rose-500 bg-rose-50 text-rose-700' };
-    if (esReprogramado) return { color: 'border-slate-300 bg-slate-100 text-slate-400 opacity-60' };
-    return { color: 'border-orange-500 bg-white text-[#1e3a8a]' };
+    if (esReprogramado) return { color: 'border-slate-300 bg-brand-surface-alt text-brand-muted opacity-60' };
+    return { color: 'border-brand-accent bg-brand-surface text-brand-primary' };
   };
 
   const getClasesDia = (fechaCalendario) => {
@@ -70,39 +70,39 @@ const MonthlyCalendarDashboard = () => {
   };
 
   if (loading) return (
-    <div className="bg-white rounded-[2rem] p-8 shadow-sm flex justify-center items-center h-40 border border-slate-100">
-      <Loader2 className="animate-spin text-orange-500" size={28} />
+    <div className="bg-brand-surface rounded-[2rem] p-8 shadow-sm flex justify-center items-center h-40 border border-brand-border-soft">
+      <Loader2 className="animate-spin text-brand-accent" size={28} />
     </div>
   );
 
   return (
-    <section className="bg-white rounded-[1.5rem] md:rounded-[2.5rem] p-3 md:p-6 shadow-xl border border-slate-100 flex flex-col overflow-hidden">
+    <section className="bg-brand-surface rounded-[1.5rem] md:rounded-[2.5rem] p-3 md:p-6 shadow-xl border border-brand-border-soft flex flex-col overflow-hidden">
       {/* HEADER COMPACTO */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-3">
         <div>
-          <h2 className="flex items-center gap-1.5 text-sm md:text-lg font-black italic uppercase tracking-widest text-orange-500">
+          <h2 className="flex items-center gap-1.5 text-sm md:text-lg font-black italic uppercase tracking-widest text-brand-accent">
             <CalendarDays className="w-4 h-4" /> GEMA PLANNER
           </h2>
-          <p className="text-[8px] md:text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5 italic">
+          <p className="text-[8px] md:text-[9px] font-bold text-brand-muted uppercase tracking-widest mt-0.5 italic">
             Mes de {new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(new Date(anioActual, mesActual))} {anioActual}
           </p>
         </div>
 
-        <div className="flex items-center justify-between md:justify-center w-full md:w-auto bg-slate-50 p-1 rounded-xl border border-slate-100">
-          <button onClick={() => setFechaReferencia(new Date(anioActual, mesActual - 1))} className="p-2 md:p-1.5 hover:bg-white rounded-lg transition-all shadow-sm bg-white md:bg-transparent"><ChevronLeft size={16} /></button>
-          <span className="text-[10px] font-black px-2 text-[#1e3a8a] text-center italic uppercase truncate">
+        <div className="flex items-center justify-between md:justify-center w-full md:w-auto bg-brand-bg p-1 rounded-xl border border-brand-border-soft">
+          <button onClick={() => setFechaReferencia(new Date(anioActual, mesActual - 1))} className="p-2 md:p-1.5 hover:bg-brand-surface rounded-lg transition-all shadow-sm bg-brand-surface md:bg-transparent"><ChevronLeft size={16} /></button>
+          <span className="text-[10px] font-black px-2 text-brand-primary text-center italic uppercase truncate">
             {new Intl.DateTimeFormat('es-ES', { month: 'short' }).format(new Date(anioActual, mesActual))}
           </span>
-          <button onClick={() => setFechaReferencia(new Date(anioActual, mesActual + 1))} className="p-2 md:p-1.5 hover:bg-white rounded-lg transition-all shadow-sm bg-white md:bg-transparent"><ChevronRight size={16} /></button>
+          <button onClick={() => setFechaReferencia(new Date(anioActual, mesActual + 1))} className="p-2 md:p-1.5 hover:bg-brand-surface rounded-lg transition-all shadow-sm bg-brand-surface md:bg-transparent"><ChevronRight size={16} /></button>
         </div>
       </div>
 
       {/* GRID CALENDARIO */}
-      <div className="border border-slate-200 rounded-xl md:rounded-2xl bg-white overflow-hidden shadow-sm">
+      <div className="border border-brand-border rounded-xl md:rounded-2xl bg-brand-surface overflow-hidden shadow-sm">
         {/* DÍAS SEMANA */}
-        <div className="grid grid-cols-7 bg-slate-50 border-b border-slate-200">
+        <div className="grid grid-cols-7 bg-brand-bg border-b border-brand-border">
           {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((d, i) => (
-            <div key={i} className="py-2 text-center text-[9px] md:text-[10px] font-black text-[#1e3a8a] italic tracking-wider">{d}</div>
+            <div key={i} className="py-2 text-center text-[9px] md:text-[10px] font-black text-brand-primary italic tracking-wider">{d}</div>
           ))}
         </div>
 
@@ -114,10 +114,10 @@ const MonthlyCalendarDashboard = () => {
             const mismoMes = esMismoMes(dia);
 
             return (
-              <div key={idx} className={`min-h-[70px] md:min-h-[100px] border-r border-b border-slate-100 p-0.5 md:p-1 transition-colors ${!mismoMes ? 'bg-slate-50/50 opacity-40' : 'bg-white'}`}>
+              <div key={idx} className={`min-h-[70px] md:min-h-[100px] border-r border-b border-brand-border-soft p-0.5 md:p-1 transition-colors ${!mismoMes ? 'bg-brand-bg/50 opacity-40' : 'bg-brand-surface'}`}>
                 {/* NÚMERO DÍA */}
                 <div className="flex justify-end mb-0.5 md:mb-1">
-                  <span className={`text-[8px] md:text-[10px] font-black w-4 h-4 md:w-6 md:h-6 flex items-center justify-center rounded-full ${hoy ? 'bg-orange-500 text-white shadow-md' : 'text-slate-400'}`}>
+                  <span className={`text-[8px] md:text-[10px] font-black w-4 h-4 md:w-6 md:h-6 flex items-center justify-center rounded-full ${hoy ? 'bg-brand-accent text-white shadow-md' : 'text-brand-muted'}`}>
                     {dia.getDate()}
                   </span>
                 </div>

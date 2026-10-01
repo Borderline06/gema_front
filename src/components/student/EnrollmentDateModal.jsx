@@ -35,21 +35,21 @@ const EnrollmentDateModal = ({ isOpen, onClose, previewData, onConfirm }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-[#0f172a]/80 backdrop-blur-md p-6">
+    <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-brand-primary-dark/80 backdrop-blur-md p-6">
       <div className="absolute inset-0" onClick={onClose}></div>
 
-      <div className="bg-white w-full max-w-[400px] rounded-[3rem] relative z-10 animate-in zoom-in-95 duration-300 flex flex-col max-h-[85vh] shadow-2xl border-4 border-white overflow-hidden">
+      <div className="bg-brand-surface w-full max-w-[400px] rounded-[3rem] relative z-10 animate-in zoom-in-95 duration-300 flex flex-col max-h-[85vh] shadow-2xl border-4 border-white overflow-hidden">
         
         <button onClick={onClose} className="absolute top-6 right-6 text-slate-300 hover:text-red-500 transition-colors">
           <X size={24} />
         </button>
 
         <div className="p-8 pb-4 text-center">
-          <div className="bg-orange-50 text-orange-500 w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+          <div className="bg-brand-accent-soft text-brand-accent w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
             <Calendar size={28} />
           </div>
-          <h2 className="text-2xl font-black text-[#1e3a8a] uppercase italic tracking-tighter leading-none">¿Cuándo empiezas?</h2>
-          <p className="text-[10px] font-bold text-slate-400 uppercase mt-2 tracking-widest">Elige tu fecha de debut</p>
+          <h2 className="text-2xl font-black text-brand-primary uppercase italic tracking-tighter leading-none">¿Cuándo empiezas?</h2>
+          <p className="text-[10px] font-bold text-brand-muted uppercase mt-2 tracking-widest">Elige tu fecha de debut</p>
         </div>
 
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-8 scrollbar-hide text-center">
@@ -57,8 +57,8 @@ const EnrollmentDateModal = ({ isOpen, onClose, previewData, onConfirm }) => {
           {/* SECCIÓN 1: INICIO INMEDIATO / ENGANCHE */}
           <div>
             <div className="flex items-center justify-center gap-2 mb-4">
-              <Zap size={14} className="text-orange-500" fill="currentColor" />
-              <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Lo más pronto posible</span>
+              <Zap size={14} className="text-brand-accent" fill="currentColor" />
+              <span className="text-[10px] font-black text-brand-muted uppercase tracking-[0.2em]">Lo más pronto posible</span>
             </div>
             <div className="grid grid-cols-1 gap-3">
               {fechasOpciones.inmediatas.map((fecha, idx) => {
@@ -67,15 +67,15 @@ const EnrollmentDateModal = ({ isOpen, onClose, previewData, onConfirm }) => {
                   <button
                     key={`now-${idx}`}
                     onClick={() => onConfirm(f.full)}
-                    className="flex items-center justify-between p-4 bg-slate-50 hover:bg-orange-50 border-2 border-slate-100 hover:border-orange-500 rounded-[2rem] transition-all group active:scale-95"
+                    className="flex items-center justify-between p-4 bg-brand-bg hover:bg-brand-accent-soft border-2 border-brand-border-soft hover:border-brand-accent rounded-[2rem] transition-all group active:scale-95"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="bg-[#1e3a8a] text-white w-12 h-12 rounded-2xl flex flex-col items-center justify-center shadow-lg group-hover:bg-orange-600 transition-colors">
+                      <div className="bg-brand-primary text-white w-12 h-12 rounded-2xl flex flex-col items-center justify-center shadow-lg group-hover:bg-brand-accent-dark transition-colors">
                         <span className="text-lg font-black leading-none">{f.num}</span>
                         <span className="text-[8px] font-bold">{f.mes}</span>
                       </div>
                       <div className="text-left">
-                        <p className="text-xs font-black text-[#1e3a8a] uppercase italic">{f.diaNom}</p>
+                        <p className="text-xs font-black text-brand-primary uppercase italic">{f.diaNom}</p>
                         
                         {f.isContinuacion ? (
                            <div className="flex items-center gap-1 mt-0.5">
@@ -83,11 +83,11 @@ const EnrollmentDateModal = ({ isOpen, onClose, previewData, onConfirm }) => {
                              <p className="text-[9px] font-bold text-green-600 uppercase">Continuación de paquete</p>
                            </div>
                         ) : (
-                           <p className="text-[9px] font-bold text-slate-400 uppercase">Empezar esta semana</p>
+                           <p className="text-[9px] font-bold text-brand-muted uppercase">Empezar esta semana</p>
                         )}
                       </div>
                     </div>
-                    <ArrowRight size={18} className="text-slate-300 group-hover:translate-x-1 group-hover:text-orange-500 transition-all" />
+                    <ArrowRight size={18} className="text-slate-300 group-hover:translate-x-1 group-hover:text-brand-accent transition-all" />
                   </button>
                 );
               })}
@@ -98,7 +98,7 @@ const EnrollmentDateModal = ({ isOpen, onClose, previewData, onConfirm }) => {
           <div className="pb-6">
             <div className="flex items-center justify-center gap-2 mb-4">
               <Star size={14} className="text-blue-500" fill="currentColor" />
-              <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Siguiente Turno</span>
+              <span className="text-[10px] font-black text-brand-muted uppercase tracking-[0.2em]">Siguiente Turno</span>
             </div>
             <div className="grid grid-cols-1 gap-3">
               {fechasOpciones.siguientes.map((fecha, idx) => {
@@ -107,16 +107,16 @@ const EnrollmentDateModal = ({ isOpen, onClose, previewData, onConfirm }) => {
                   <button
                     key={`next-${idx}`}
                     onClick={() => onConfirm(f.full)}
-                    className="flex items-center justify-between p-4 bg-white hover:bg-blue-50 border-2 border-slate-100 hover:border-blue-400 rounded-[2rem] transition-all group active:scale-95"
+                    className="flex items-center justify-between p-4 bg-brand-surface hover:bg-brand-primary-soft border-2 border-brand-border-soft hover:border-blue-400 rounded-[2rem] transition-all group active:scale-95"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="bg-slate-100 text-slate-400 w-12 h-12 rounded-2xl flex flex-col items-center justify-center border border-slate-200 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                      <div className="bg-brand-surface-alt text-brand-muted w-12 h-12 rounded-2xl flex flex-col items-center justify-center border border-brand-border group-hover:bg-blue-500 group-hover:text-white transition-colors">
                         <span className="text-lg font-black leading-none">{f.num}</span>
                         <span className="text-[8px] font-bold">{f.mes}</span>
                       </div>
                       <div className="text-left">
                         <p className="text-xs font-black text-slate-600 uppercase italic">{f.diaNom}</p>
-                        <p className="text-[9px] font-bold text-slate-400 uppercase">Esperar a la siguiente</p>
+                        <p className="text-[9px] font-bold text-brand-muted uppercase">Esperar a la siguiente</p>
                       </div>
                     </div>
                     <ArrowRight size={18} className="text-slate-300 group-hover:translate-x-1 group-hover:text-blue-500 transition-all" />
@@ -127,7 +127,7 @@ const EnrollmentDateModal = ({ isOpen, onClose, previewData, onConfirm }) => {
           </div>
         </div>
 
-        <div className="p-6 bg-slate-50 border-t border-slate-100">
+        <div className="p-6 bg-brand-bg border-t border-brand-border-soft">
            <div className="flex items-center gap-3 bg-blue-100/50 p-3 rounded-2xl border border-blue-200">
               <Info size={16} className="text-blue-600 shrink-0" />
               <p className="text-[9px] font-bold text-blue-800 uppercase leading-tight italic">Tus 30 días de ciclo contarán a partir de la fecha que inicies.</p>

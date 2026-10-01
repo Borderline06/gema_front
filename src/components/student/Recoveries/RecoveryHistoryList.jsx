@@ -43,12 +43,12 @@ const RecoveryHistoryList = ({ historial, onCancel }) => {
         <div className="flex flex-col gap-6">
 
             {/* 🔥 NUEVO: Banner Informativo de Reglas */}
-            <div className="bg-blue-50 border border-blue-200 rounded-3xl p-5 flex gap-4 text-blue-800 shadow-sm">
+            <div className="bg-brand-primary-soft border border-blue-200 rounded-3xl p-5 flex gap-4 text-blue-800 shadow-sm">
                 <Info className="shrink-0 text-blue-600 mt-0.5" size={24} />
                 <div className="text-sm">
-                    <h4 className="font-extrabold text-blue-900 mb-2 uppercase tracking-wide text-xs">Información Importante</h4>
+                    <h4 className="font-extrabold text-brand-primary mb-2 uppercase tracking-wide text-xs">Información Importante</h4>
                     <ul className="list-disc list-inside space-y-1.5 text-blue-700/80 font-medium">
-                        <li>Las clases <strong className="text-blue-900">Programadas</strong> pueden cancelarse con al menos <strong className="text-blue-900">1 hora de anticipación</strong>.</li>
+                        <li>Las clases <strong className="text-brand-primary">Programadas</strong> pueden cancelarse con al menos <strong className="text-brand-primary">1 hora de anticipación</strong>.</li>
                         <li>Si cancelas a tiempo, el ticket volverá automáticamente a tu lista de "Pendientes".</li>
                         <li>Si faltas a una clase de recuperación programada, el ticket se perderá definitivamente.</li>
                     </ul>
@@ -56,7 +56,7 @@ const RecoveryHistoryList = ({ historial, onCancel }) => {
             </div>
             {/* Manejo de estado vacío */}
             {(!historial || historial.length === 0) ? (
-                <div className="p-6 rounded-3xl border border-dashed border-gray-300 text-center text-gray-500 shadow-sm bg-white">
+                <div className="p-6 rounded-3xl border border-dashed border-gray-300 text-center text-gray-500 shadow-sm bg-brand-surface">
                     Aún no tienes un historial de recuperaciones.
                 </div>
             ) : (
@@ -66,7 +66,7 @@ const RecoveryHistoryList = ({ historial, onCancel }) => {
                         const isCancelable = isProgramada && canCancel(ticket.fecha_programada, ticket.horarios_clases?.hora_inicio);
 
                         return (
-                            <div key={ticket.id} className="group bg-white border border-gray-200 rounded-3xl p-6 flex flex-col shadow-xl md:flex-row justify-between items-start md:items-center gap-4 hover:border-[#1e3a8a] hover:bg-[#1e3a8a] transition-all duration-300">
+                            <div key={ticket.id} className="group bg-brand-surface border border-gray-200 rounded-3xl p-6 flex flex-col shadow-xl md:flex-row justify-between items-start md:items-center gap-4 hover:border-brand-primary hover:bg-brand-primary transition-all duration-300">
                                 {/* Lado Izquierdo: Info */}
                                 <div>
                                     <div className="flex items-center gap-3 mb-3">
@@ -75,7 +75,7 @@ const RecoveryHistoryList = ({ historial, onCancel }) => {
                                             Fecha de falta: {new Date(ticket.fecha_falta).toLocaleDateString('es-ES', { year: 'numeric', month: 'numeric', day: 'numeric', timeZone: 'UTC' })}
                                         </span>
                                         {ticket.es_por_lesion && (
-                                            <span className="text-[10px] bg-orange-100 text-orange-600 border border-orange-200 px-2 py-0.5 rounded uppercase font-black">
+                                            <span className="text-[10px] bg-orange-100 text-brand-accent-dark border border-orange-200 px-2 py-0.5 rounded uppercase font-black">
                                                 Justificado Méd.
                                             </span>
                                         )}

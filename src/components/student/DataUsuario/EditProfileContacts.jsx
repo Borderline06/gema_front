@@ -100,10 +100,10 @@ const EditProfileContacts = () => {
 
   return (
     <div className="space-y-3">
-      <div className="border-b border-slate-100 pb-1.5 flex items-center justify-between">
+      <div className="border-b border-brand-border-soft pb-1.5 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Phone size={14} className="text-emerald-600" />
-          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Contactos de Emergencia</span>
+          <span className="text-[10px] font-black text-brand-muted uppercase tracking-widest">Contactos de Emergencia</span>
         </div>
         {editandoId === null && (
           <button
@@ -123,7 +123,7 @@ const EditProfileContacts = () => {
       ) : (
         <div className="space-y-2">
           {contactos.length === 0 && editandoId === null && (
-            <p className="text-[10px] font-bold text-slate-400 italic py-2">Sin contactos registrados aún.</p>
+            <p className="text-[10px] font-bold text-brand-muted italic py-2">Sin contactos registrados aún.</p>
           )}
 
           {contactos.map((c) => (
@@ -137,19 +137,19 @@ const EditProfileContacts = () => {
                 guardando={guardando}
               />
             ) : (
-              <div key={c.id} className="flex items-center justify-between gap-3 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5">
+              <div key={c.id} className="flex items-center justify-between gap-3 bg-brand-bg border border-brand-border rounded-xl px-3 py-2.5">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-1.5">
                     <h4 className="text-xs font-black text-slate-800 truncate">{c.nombre_completo}</h4>
-                    {c.es_principal && <Star size={11} className="text-orange-500 fill-orange-500 shrink-0" />}
+                    {c.es_principal && <Star size={11} className="text-brand-accent fill-orange-500 shrink-0" />}
                   </div>
                   <p className="text-[10px] font-bold text-slate-500">{c.relacion} · {c.telefono}</p>
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
-                  <button type="button" onClick={() => abrirEdicion(c)} className="p-1.5 text-slate-400 hover:text-[#1e3a8a] hover:bg-blue-50 rounded-lg transition-colors">
+                  <button type="button" onClick={() => abrirEdicion(c)} className="p-1.5 text-brand-muted hover:text-brand-primary hover:bg-brand-primary-soft rounded-lg transition-colors">
                     <Pencil size={14} />
                   </button>
-                  <button type="button" onClick={() => eliminarContacto(c.id)} className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                  <button type="button" onClick={() => eliminarContacto(c.id)} className="p-1.5 text-brand-muted hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
                     <Trash2 size={14} />
                   </button>
                 </div>
@@ -184,28 +184,28 @@ const EditProfileContacts = () => {
 
 // Sub-formulario reutilizado tanto para crear como para editar un contacto
 const FormularioContacto = ({ formContacto, setFormContacto, onGuardar, onCancelar, guardando }) => (
-  <div className="bg-white border-2 border-emerald-200 rounded-xl p-3 space-y-2">
+  <div className="bg-brand-surface border-2 border-emerald-200 rounded-xl p-3 space-y-2">
     <div className="grid grid-cols-2 gap-2">
       <input
         type="text"
         placeholder="Nombre completo"
         value={formContacto.nombre_completo}
         onChange={e => setFormContacto({ ...formContacto, nombre_completo: e.target.value })}
-        className="col-span-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold outline-none focus:border-emerald-500"
+        className="col-span-2 bg-brand-bg border border-brand-border rounded-lg px-3 py-2 text-xs font-bold outline-none focus:border-emerald-500"
       />
       <input
         type="text"
         placeholder="Relación (Madre, Padre...)"
         value={formContacto.relacion}
         onChange={e => setFormContacto({ ...formContacto, relacion: e.target.value })}
-        className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold outline-none focus:border-emerald-500"
+        className="bg-brand-bg border border-brand-border rounded-lg px-3 py-2 text-xs font-bold outline-none focus:border-emerald-500"
       />
       <input
         type="text"
         placeholder="Teléfono"
         value={formContacto.telefono}
         onChange={e => setFormContacto({ ...formContacto, telefono: e.target.value })}
-        className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold outline-none focus:border-emerald-500"
+        className="bg-brand-bg border border-brand-border rounded-lg px-3 py-2 text-xs font-bold outline-none focus:border-emerald-500"
       />
     </div>
 
@@ -233,7 +233,7 @@ const FormularioContacto = ({ formContacto, setFormContacto, onGuardar, onCancel
         type="button"
         onClick={onCancelar}
         disabled={guardando}
-        className="flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-[10px] font-black uppercase py-2 px-3 rounded-lg transition-colors"
+        className="flex items-center justify-center gap-1.5 bg-brand-surface-alt hover:bg-slate-200 text-slate-600 text-[10px] font-black uppercase py-2 px-3 rounded-lg transition-colors"
       >
         <X size={14} />
       </button>

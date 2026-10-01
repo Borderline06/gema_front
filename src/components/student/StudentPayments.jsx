@@ -83,7 +83,7 @@ const StudentPayments = () => {
 
   if (loading) return (
     <div className="flex justify-center py-8">
-      <Loader2 className="animate-spin text-orange-500" size={32} />
+      <Loader2 className="animate-spin text-brand-accent" size={32} />
     </div>
   );
 
@@ -96,18 +96,18 @@ const StudentPayments = () => {
           return (
             <div
               key={`debt-${item.id}-${idx}`}
-              className="bg-orange-50/50 border border-orange-200 border-l-4 border-l-orange-500 rounded-xl p-4 flex justify-between items-center cursor-pointer shadow-sm hover:shadow-md hover:bg-orange-50 transition-all group"
+              className="bg-brand-accent-soft/50 border border-orange-200 border-l-4 border-l-orange-500 rounded-xl p-4 flex justify-between items-center cursor-pointer shadow-sm hover:shadow-md hover:bg-brand-accent-soft transition-all group"
               onClick={() => handleOpenModal(item)}
             >
               <div className="flex items-center gap-3">
-                <div className="bg-orange-500 p-2 rounded-xl text-white shadow-sm">
+                <div className="bg-brand-accent p-2 rounded-xl text-white shadow-sm">
                   <AlertCircle size={18} />
                 </div>
                 <div>
                   <p className="text-[10px] font-black text-orange-700 uppercase leading-none tracking-tight">
                     {item.catalogo_conceptos?.nombre || "Concepto Pendiente"}
                   </p>
-                  <p className="text-[8px] text-orange-600 font-bold uppercase mt-1 flex items-center gap-1">
+                  <p className="text-[8px] text-brand-accent-dark font-bold uppercase mt-1 flex items-center gap-1">
                     Requiere Pago <ChevronRight size={10} />
                   </p>
                 </div>
@@ -122,7 +122,7 @@ const StudentPayments = () => {
         // --- 🟡 RENDER EN VALIDACIÓN (Visualmente en proceso) ---
         if (item.sortType === 'PAYMENT_PROCESS' || item.sortType === 'PAYMENT_PROCESS_FALLBACK') {
           return (
-            <div key={`proc-${item.id}-${idx}`} className="bg-blue-50/50 border border-blue-200 border-l-4 border-l-blue-400 rounded-xl p-4 space-y-3">
+            <div key={`proc-${item.id}-${idx}`} className="bg-brand-primary-soft/50 border border-blue-200 border-l-4 border-l-blue-400 rounded-xl p-4 space-y-3">
               <div className="flex justify-between items-start">
                 <div className="flex items-center gap-3">
                   <div className="bg-blue-100 p-2 rounded-xl text-blue-600">
@@ -130,7 +130,7 @@ const StudentPayments = () => {
                   </div>
                   <div>
                     <span className="bg-blue-200 text-blue-800 text-[7px] font-black px-1.5 py-0.5 rounded-sm uppercase tracking-widest">En Revisión</span>
-                    <p className="text-[10px] font-black text-[#1e3a8a] uppercase leading-none mt-1.5">
+                    <p className="text-[10px] font-black text-brand-primary uppercase leading-none mt-1.5">
                       {item.cuentas_por_cobrar?.catalogo_conceptos?.nombre || item.catalogo_conceptos?.nombre || "Mensualidad"}
                     </p>
                   </div>
@@ -185,7 +185,7 @@ const StudentPayments = () => {
         // --- ✅ RENDER APROBADO (Historial, más sutil) ---
         if (item.sortType === 'PAYMENT_SUCCESS') {
           return (
-            <div key={`ok-${item.id}-${idx}`} className="bg-white border border-slate-100 border-l-4 border-l-emerald-400 rounded-xl p-4 shadow-sm space-y-3 opacity-70 hover:opacity-100 transition-opacity">
+            <div key={`ok-${item.id}-${idx}`} className="bg-brand-surface border border-brand-border-soft border-l-4 border-l-emerald-400 rounded-xl p-4 shadow-sm space-y-3 opacity-70 hover:opacity-100 transition-opacity">
               <div className="flex justify-between items-start">
                 <div className="flex items-center gap-3">
                   <div className="bg-emerald-50 p-2 rounded-xl text-emerald-500">
@@ -199,13 +199,13 @@ const StudentPayments = () => {
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="font-black text-[#1e3a8a] text-sm block leading-none">S/ {item.monto_pagado}</span>
+                  <span className="font-black text-brand-primary text-sm block leading-none">S/ {item.monto_pagado}</span>
                   {item.url_comprobante && (
                     <a
                       href={item.url_comprobante}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-[7px] text-orange-500 font-black uppercase flex items-center justify-end gap-0.5 mt-1 hover:underline"
+                      className="text-[7px] text-brand-accent font-black uppercase flex items-center justify-end gap-0.5 mt-1 hover:underline"
                     >
                       Voucher <ExternalLink size={8} />
                     </a>
@@ -214,10 +214,10 @@ const StudentPayments = () => {
               </div>
 
               {item.notas_validacion && (
-                <div className="bg-slate-50 rounded-lg p-2 flex gap-2 items-start border border-slate-100">
-                  <MessageSquare size={12} className="text-slate-400 mt-0.5" />
+                <div className="bg-brand-bg rounded-lg p-2 flex gap-2 items-start border border-brand-border-soft">
+                  <MessageSquare size={12} className="text-brand-muted mt-0.5" />
                   <p className="text-[9px] text-slate-500 font-medium leading-tight">
-                    <span className="font-bold text-slate-700 uppercase text-[8px]">Nota:</span> {item.notas_validacion}
+                    <span className="font-bold text-brand-body uppercase text-[8px]">Nota:</span> {item.notas_validacion}
                   </p>
                 </div>
               )}
@@ -232,7 +232,7 @@ const StudentPayments = () => {
       {itemsOrdenados.length === 0 && (
         <div className="flex flex-col items-center justify-center py-8 opacity-50">
           <Receipt className="text-slate-300 mb-2" size={36} />
-          <p className="text-[10px] text-slate-400 font-black uppercase text-center italic tracking-widest leading-relaxed">
+          <p className="text-[10px] text-brand-muted font-black uppercase text-center italic tracking-widest leading-relaxed">
             Sin movimientos <br /> financieros
           </p>
         </div>

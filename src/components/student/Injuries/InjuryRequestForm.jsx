@@ -41,9 +41,9 @@ const InjuryRequestForm = ({ onSuccess }) => {
     };
 
     return (
-        <div className="bg-gradient-to-br from-[#1e3a8a] to-[#142857] backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-xl">
+        <div className="bg-gradient-to-br from-brand-primary to-[#142857] backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-xl">
             <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                <Activity className="text-orange-500" /> Detalle de la Lesión
+                <Activity className="text-brand-accent" /> Detalle de la Lesión
             </h3>
             <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
@@ -51,7 +51,7 @@ const InjuryRequestForm = ({ onSuccess }) => {
                     <textarea
                         required
                         rows="4"
-                        className="w-full bg-black/20 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-orange-500 transition-colors"
+                        className="w-full bg-black/20 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-accent transition-colors"
                         placeholder="Explica brevemente qué te pasó..."
                         value={formData.descripcion}
                         onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
@@ -68,7 +68,7 @@ const InjuryRequestForm = ({ onSuccess }) => {
                             type="file"
                             accept="image/png, image/jpeg, image/jpg, image/webp"
                             required
-                            className="w-full bg-black/20 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors
+                            className="w-full bg-black/20 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white focus:outline-none focus:border-brand-accent transition-colors
                             file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:uppercase file:tracking-widest file:bg-gray-500 file:text-white hover:file:bg-gray-600 file:cursor-pointer cursor-pointer"
                             onChange={(e) => setFormData({ ...formData, evidencia: e.target.files[0] })}
                         />
@@ -79,7 +79,7 @@ const InjuryRequestForm = ({ onSuccess }) => {
                 </div> */}
 
                 <div className="space-y-1">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Evidencia Médica</label>
+                    <label className="text-[10px] font-black text-brand-muted uppercase tracking-widest ml-1">Evidencia Médica</label>
                     <p className="text-[10px] text-gray-400 mt-2 ml-1">* Subir imagen (JPG, JPEG o PNG).</p>
                     <input
                         type="file"
@@ -100,7 +100,7 @@ const InjuryRequestForm = ({ onSuccess }) => {
                         ) : (
                             <>
                                 <Upload size={32} className="mx-auto text-slate-300 mb-2" />
-                                <p className="text-[10px] font-black text-slate-400 uppercase">Subir Foto</p>
+                                <p className="text-[10px] font-black text-brand-muted uppercase">Subir Foto</p>
                             </>
                         )}
                     </label>
@@ -109,7 +109,7 @@ const InjuryRequestForm = ({ onSuccess }) => {
                 <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-orange-500 hover:bg-orange-600 text-white font-black py-4 rounded-xl shadow-lg shadow-orange-900/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest text-sm"
+                    className="w-full bg-brand-accent hover:bg-brand-accent-dark text-white font-black py-4 rounded-xl shadow-lg shadow-orange-900/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest text-sm"
                 >
                     {loading ? 'Subiendo Evidencia...' : 'ENVIAR SOLICITUD'}
                 </button>

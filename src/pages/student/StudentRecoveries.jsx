@@ -175,18 +175,18 @@ const StudentRecoveries = () => {
 
     return (
         <div className="p-6 md:p-10 max-w-7xl mx-auto min-h-screen">
-            <Link to="/dashboard/student" className="inline-flex items-center gap-2 text-slate-400 hover:text-[#1e3a8a] transition-all mb-4 text-[10px] font-black uppercase tracking-widest italic">
+            <Link to="/dashboard/student" className="inline-flex items-center gap-2 text-brand-muted hover:text-brand-primary transition-all mb-4 text-[10px] font-black uppercase tracking-widest italic">
                 <ArrowLeft size={14} /> Volver
             </Link>
 
             <div className="mb-8">
                 <div className="flex justify-between items-end">
                     <div>
-                        <h1 className="text-4xl md:text-4xl font-black text-[#1e3a8a] italic uppercase tracking-tighter">
-                            Centro de <span className="text-orange-500">Recuperación</span>
+                        <h1 className="text-4xl md:text-4xl font-black text-brand-primary italic uppercase tracking-tighter">
+                            Centro de <span className="text-brand-accent">Recuperación</span>
                         </h1>
                     </div>
-                    <button onClick={loadData} className="p-3 bg-white/5 hover:bg-white/10 rounded-xl text-white transition-colors border border-slate-200 text-slate-400">
+                    <button onClick={loadData} className="p-3 bg-white/5 hover:bg-white/10 rounded-xl text-white transition-colors border border-brand-border text-brand-muted">
                         <RefreshCw size={20} className={loading ? "animate-spin" : ""} />
                     </button>
                 </div>
@@ -201,8 +201,8 @@ const StudentRecoveries = () => {
 
                     {/* Alerta si no hay paquete activo */}
                     {horariosPatron.length === 0 && !loading && (
-                        <div className="mb-8 p-6 bg-orange-50 border border-orange-200 rounded-[2rem] flex items-center gap-4">
-                            <AlertCircle className="text-orange-500 shrink-0" size={32} />
+                        <div className="mb-8 p-6 bg-brand-accent-soft border border-orange-200 rounded-[2rem] flex items-center gap-4">
+                            <AlertCircle className="text-brand-accent shrink-0" size={32} />
                             <div>
                                 <h4 className="text-orange-800 font-black uppercase italic text-sm tracking-widest">Atención</h4>
                                 <p className="text-orange-700 font-medium text-xs">No tienes una inscripción vigente. Para agendar una recuperación, necesitas tener un paquete activo.</p>
@@ -223,17 +223,17 @@ const StudentRecoveries = () => {
 
                     {selectedTicket && horariosPatron.length > 0 && (
                         <div className="animate-in fade-in slide-in-from-bottom-8 duration-500">
-                            <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 border-t border-slate-200 pt-8 gap-4">
+                            <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 border-t border-brand-border pt-8 gap-4">
                                 <h3 className="text-emerald-500 font-bold uppercase tracking-widest text-xs flex items-center gap-2">
                                     2. Elige tu nueva clase
                                 </h3>
                                 {availableSlots.length > 0 && (
-                                    <div className="flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-xl border border-slate-200">
-                                        <Filter size={14} className="text-slate-400" />
+                                    <div className="flex items-center gap-2 bg-brand-bg px-3 py-2 rounded-xl border border-brand-border">
+                                        <Filter size={14} className="text-brand-muted" />
                                         <select
                                             value={filtroSede}
                                             onChange={(e) => setFiltroSede(e.target.value)}
-                                            className="bg-transparent border-none text-[#1e3a8a] text-[10px] font-black uppercase tracking-widest outline-none cursor-pointer"
+                                            className="bg-transparent border-none text-brand-primary text-[10px] font-black uppercase tracking-widest outline-none cursor-pointer"
                                         >
                                             <option value="">TODAS LAS SEDES</option>
                                             {sedesUnicas.map((sede, idx) => (
@@ -251,7 +251,7 @@ const StudentRecoveries = () => {
                                     loading={false}
                                 />
                             ) : (
-                                <div className="p-8 rounded-3xl border border-dashed border-slate-300 text-center text-slate-400 text-[10px] font-black uppercase tracking-widest italic bg-white">
+                                <div className="p-8 rounded-3xl border border-dashed border-slate-300 text-center text-brand-muted text-[10px] font-black uppercase tracking-widest italic bg-brand-surface">
                                     No hay horarios disponibles en esta sede o nivel.
                                 </div>
                             )}
@@ -259,7 +259,7 @@ const StudentRecoveries = () => {
                     )}
 
                     {!selectedTicket && (tickets.data?.length > 0 || tickets.length > 0) && horariosPatron.length > 0 && (
-                        <div className="mt-8 p-6 rounded-3xl border border-dashed border-slate-300 text-center text-slate-400 bg-white">
+                        <div className="mt-8 p-6 rounded-3xl border border-dashed border-slate-300 text-center text-brand-muted bg-brand-surface">
                             <AlertCircle className="mx-auto mb-3 opacity-50" size={32} />
                             <span className="text-[10px] font-black uppercase tracking-widest italic">Selecciona un ticket arriba para ver dónde puedes recuperar.</span>
                         </div>

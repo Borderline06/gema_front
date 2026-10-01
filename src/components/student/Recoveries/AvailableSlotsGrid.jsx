@@ -10,13 +10,13 @@ const AvailableSlotsGrid = ({ slots, onSlotClick, loading }) => {
 
     if (loading) return (
         <div className="flex flex-col items-center justify-center py-20 space-y-4">
-            <div className="w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-10 h-10 border-4 border-brand-accent border-t-transparent rounded-full animate-spin"></div>
             <p className="text-slate-500 font-black uppercase text-xs tracking-widest italic">Buscando horarios...</p>
         </div>
     );
 
     if (!slots || slots.length === 0) return (
-        <div className="text-center py-16 px-6 bg-white border-2 border-dashed border-slate-200 rounded-[2rem]">
+        <div className="text-center py-16 px-6 bg-brand-surface border-2 border-dashed border-brand-border rounded-[2rem]">
             <Search size={48} className="mx-auto mb-4 text-slate-300" />
             <p className="text-slate-500 font-bold italic">No hay horarios disponibles para los filtros seleccionados.</p>
         </div>
@@ -37,13 +37,13 @@ const AvailableSlotsGrid = ({ slots, onSlotClick, loading }) => {
                     <button
                         key={slot.id}
                         onClick={() => onSlotClick(slot)}
-                        className="group relative bg-white border-2 border-slate-100 hover:border-orange-500 rounded-[2rem] p-6 text-left transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-orange-500/10"
+                        className="group relative bg-brand-surface border-2 border-brand-border-soft hover:border-brand-accent rounded-[2rem] p-6 text-left transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-accent/10"
                     >
                         {/* Header Tarjeta */}
                         <div className="flex items-start justify-between mb-5">
                             <div className="flex items-center gap-4">
                                 {/* 🗓️ Bloque de Día Numérico */}
-                                <div className="flex flex-col items-center justify-center w-14 h-14 rounded-2xl bg-[#1e3a8a] text-white font-black shadow-lg shadow-blue-900/20 group-hover:bg-orange-500 group-hover:shadow-orange-500/30 transition-colors shrink-0">
+                                <div className="flex flex-col items-center justify-center w-14 h-14 rounded-2xl bg-brand-primary text-white font-black shadow-lg shadow-brand-primary/20 group-hover:bg-brand-accent group-hover:shadow-brand-accent/30 transition-colors shrink-0">
                                     <span className="text-2xl leading-none italic font-black">
                                         {fechaObj.getDate()}
                                     </span>
@@ -52,23 +52,23 @@ const AvailableSlotsGrid = ({ slots, onSlotClick, loading }) => {
                                 {/* 📅 Texto de Fecha y Rango de Horas */}
                                 <div className="min-w-0">
                                     <div className="flex flex-col">
-                                        <span className="text-[10px] text-slate-400 font-black uppercase tracking-tighter leading-none">
+                                        <span className="text-[10px] text-brand-muted font-black uppercase tracking-tighter leading-none">
                                             {diasSemana[fechaObj.getDay()]}
                                         </span>
-                                        <span className="text-sm text-[#1e3a8a] font-black uppercase tracking-tighter italic leading-tight">
+                                        <span className="text-sm text-brand-primary font-black uppercase tracking-tighter italic leading-tight">
                                             {mesesCompletos[fechaObj.getMonth()]}
                                         </span>
                                     </div>
 
                                     {/* 🕒 Muestra el rango: 00:00 - 00:00 */}
-                                    <div className="flex items-center gap-1.5 mt-1 text-slate-700 font-black text-xs uppercase tracking-tighter bg-slate-50 group-hover:bg-orange-50 px-2 py-0.5 rounded-lg w-fit transition-colors">
-                                        <Clock size={12} className="text-orange-500" />
+                                    <div className="flex items-center gap-1.5 mt-1 text-brand-body font-black text-xs uppercase tracking-tighter bg-brand-bg group-hover:bg-brand-accent-soft px-2 py-0.5 rounded-lg w-fit transition-colors">
+                                        <Clock size={12} className="text-brand-accent" />
                                         {horaInicio} {horaFin && `— ${horaFin}`}
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="bg-slate-50 p-2.5 rounded-xl text-slate-400 group-hover:bg-orange-50 group-hover:text-orange-500 transition-all shrink-0">
+                            <div className="bg-brand-bg p-2.5 rounded-xl text-brand-muted group-hover:bg-brand-accent-soft group-hover:text-brand-accent transition-all shrink-0">
                                 <CalendarPlus size={22} />
                             </div>
                         </div>
@@ -76,7 +76,7 @@ const AvailableSlotsGrid = ({ slots, onSlotClick, loading }) => {
                         {/* Detalles Inferiores */}
                         <div className="space-y-3 border-t border-slate-50 pt-4">
                             <div className="flex items-center gap-3 text-slate-600">
-                                <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+                                <div className="w-7 h-7 rounded-lg bg-brand-primary-soft flex items-center justify-center text-blue-600">
                                     <MapPin size={14} />
                                 </div>
                                 <span className="uppercase font-black text-[10px] tracking-[0.05em] italic truncate">
@@ -85,7 +85,7 @@ const AvailableSlotsGrid = ({ slots, onSlotClick, loading }) => {
                             </div>
 
                             <div className="flex items-center gap-3 text-slate-600">
-                                <div className="w-7 h-7 rounded-lg bg-orange-50 flex items-center justify-center text-orange-600">
+                                <div className="w-7 h-7 rounded-lg bg-brand-accent-soft flex items-center justify-center text-brand-accent-dark">
                                     <Star size={14} fill="currentColor" />
                                 </div>
                                 <span className="uppercase font-black text-[10px] tracking-[0.05em] italic">
@@ -94,7 +94,7 @@ const AvailableSlotsGrid = ({ slots, onSlotClick, loading }) => {
                             </div>
 
                             <div className="flex items-center gap-3 text-slate-600">
-                                <div className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500">
+                                <div className="w-7 h-7 rounded-lg bg-brand-surface-alt flex items-center justify-center text-slate-500">
                                     <User size={14} />
                                 </div>
                                 <span className="uppercase font-black text-[10px] tracking-[0.05em] italic truncate">
@@ -111,7 +111,7 @@ const AvailableSlotsGrid = ({ slots, onSlotClick, loading }) => {
                             </div>
 
                             {/* Botón flotante simulado para mejorar el feedback visual */}
-                            <span className="text-[9px] font-black uppercase text-orange-500 tracking-widest opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
+                            <span className="text-[9px] font-black uppercase text-brand-accent tracking-widest opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
                                 AGENDAR →
                             </span>
                         </div>

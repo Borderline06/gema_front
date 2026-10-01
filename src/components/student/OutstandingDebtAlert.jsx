@@ -67,7 +67,7 @@ const OutstandingDebtAlert = ({ pendingPayment, onRefresh, onPay }) => {
   };
 
   return (
-    <div className={`relative overflow-hidden rounded-[3.5rem] p-8 md:p-10 text-white shadow-2xl animate-fade-in mb-8 ${stats.esParcial ? 'bg-gradient-to-br from-[#2563eb] to-[#1e3a8a] border-b-8 border-blue-900/50' : 'bg-gradient-to-br from-[#f97316] to-[#ea580c] border-b-8 border-orange-800/40'}`}>
+    <div className={`relative overflow-hidden rounded-[3.5rem] p-8 md:p-10 text-white shadow-2xl animate-fade-in mb-8 ${stats.esParcial ? 'bg-gradient-to-br from-[#2563eb] to-brand-primary border-b-8 border-brand-primary/50' : 'bg-gradient-to-br from-brand-accent to-[#ea580c] border-b-8 border-orange-800/40'}`}>
       
       <div className="absolute top-8 right-10">
         <span className="bg-white/20 backdrop-blur-md px-5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-white/20">
@@ -104,7 +104,7 @@ const OutstandingDebtAlert = ({ pendingPayment, onRefresh, onPay }) => {
                 
                 <div className="w-full h-3 bg-white/20 rounded-full overflow-hidden border border-white/10">
                   <div 
-                    className="h-full bg-white transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(255,255,255,0.5)]"
+                    className="h-full bg-brand-surface transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(255,255,255,0.5)]"
                     style={{ width: `${stats.porcentaje}%` }}
                   />
                 </div>
@@ -126,7 +126,7 @@ const OutstandingDebtAlert = ({ pendingPayment, onRefresh, onPay }) => {
         <div className="flex flex-col sm:flex-row lg:flex-col gap-4 w-full lg:w-72">
           <button 
             onClick={handlePayClick}
-            className={`flex-1 py-5 rounded-[1.8rem] font-black uppercase italic text-sm flex items-center justify-center gap-3 transition-all shadow-2xl active:scale-95 border-b-4 ${stats.esParcial ? 'bg-[#f97316] hover:bg-[#ea580c] border-[#9a3412] text-white' : 'bg-white text-[#1e3a8a] border-slate-200 hover:bg-slate-50'}`}
+            className={`flex-1 py-5 rounded-[1.8rem] font-black uppercase italic text-sm flex items-center justify-center gap-3 transition-all shadow-2xl active:scale-95 border-b-4 ${stats.esParcial ? 'bg-brand-accent hover:bg-[#ea580c] border-[#9a3412] text-white' : 'bg-brand-surface text-brand-primary border-brand-border hover:bg-brand-bg'}`}
           >
             <CreditCard size={20} /> 
             {stats.esParcial ? 'Pagar Saldo' : 'Pagar Ahora'} 

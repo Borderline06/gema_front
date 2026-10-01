@@ -89,19 +89,19 @@ const StudentSidebar = () => {
 
   return (
     <>
-      <aside className="hidden md:flex flex-col w-64 bg-gradient-to-b from-[#1e3a8a] to-[#0f172a] text-white h-screen fixed left-0 top-0 z-40 border-r border-white/10 shadow-2xl overflow-hidden">
+      <aside className="hidden md:flex flex-col w-64 bg-gradient-to-b from-brand-primary to-brand-primary-dark text-white h-screen fixed left-0 top-0 z-40 border-r border-white/10 shadow-2xl overflow-hidden">
 
         {/* HEADER LOGO */}
         <div className="flex-none pt-8 pb-6 px-4 flex flex-col items-center bg-white/5 relative">
           {/* 🌟 LOGO AHORA ES TOTALMENTE CIRCULAR */}
-          <div className="relative z-10 w-[160px] aspect-square bg-white rounded-full p-3 shadow-2xl flex items-center justify-center border-[6px] border-white/10 overflow-hidden mb-4 hover:border-orange-500/20 transition-colors">
+          <div className="relative z-10 w-[160px] aspect-square bg-brand-surface rounded-full p-3 shadow-2xl flex items-center justify-center border-[6px] border-white/10 overflow-hidden mb-4 hover:border-brand-accent/20 transition-colors">
             <Link to="/" className="relative z-10 hover:scale-105 transition-transform duration-300">
               <img src="/Logo con borde blanco.png" alt="Logo Club Gema" className="w-full h-full object-cover" />
             </Link>
           </div>
           <div className="text-center">
             <span className="block font-black text-xl tracking-tighter uppercase italic text-white leading-none">
-              Gema<span className="text-orange-500">Student</span>
+              Gema<span className="text-brand-accent">Student</span>
             </span>
           </div>
         </div>
@@ -110,7 +110,7 @@ const StudentSidebar = () => {
         <div className="px-5 pb-8 pt-4 border-b border-white/10 relative z-20"> {/* pb-8 pt-4 para bajarlo */}
           <Link
             to="/dashboard/student/enrollment"
-            className="group relative w-full flex items-center justify-center gap-3 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl shadow-[0_0_20px_rgba(249,115,22,0.4)] hover:shadow-[0_0_30px_rgba(249,115,22,0.6)] transition-all duration-300 active:scale-95 overflow-hidden"
+            className="group relative w-full flex items-center justify-center gap-3 py-4 bg-gradient-to-r from-brand-accent to-brand-accent-dark text-white rounded-2xl shadow-[0_0_20px_rgba(249,115,22,0.4)] hover:shadow-[0_0_30px_rgba(249,115,22,0.6)] transition-all duration-300 active:scale-95 overflow-hidden"
           >
             {/* Efecto de brillo interior */}
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
@@ -145,7 +145,7 @@ const StudentSidebar = () => {
                   {group.hasAlert && (
                     <div className="relative flex h-2.5 w-2.5">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.8)]"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-accent shadow-[0_0_10px_rgba(249,115,22,0.8)]"></span>
                     </div>
                   )}
                 </Link>

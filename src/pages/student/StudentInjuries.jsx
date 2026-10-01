@@ -30,13 +30,13 @@ const StudentInjuries = () => {
 
     return (
         <div className="p-6 max-w-5xl mx-auto">
-            <Link to="/dashboard/student" className="inline-flex items-center gap-2 text-slate-400 hover:text-[#1e3a8a] transition-all mb-4 text-[10px] font-black uppercase tracking-widest italic">
+            <Link to="/dashboard/student" className="inline-flex items-center gap-2 text-brand-muted hover:text-brand-primary transition-all mb-4 text-[10px] font-black uppercase tracking-widest italic">
                 <ArrowLeft size={14} /> Volver
             </Link>
 
             <div className="mb-8">
-                <h1 className="text-4xl font-black text-[#1e3a8a] italic uppercase tracking-tighter">
-                    Gestión de <span className="text-orange-500">Lesiones</span>
+                <h1 className="text-4xl font-black text-brand-primary italic uppercase tracking-tighter">
+                    Gestión de <span className="text-brand-accent">Lesiones</span>
                 </h1>
             </div>
 
@@ -45,7 +45,7 @@ const StudentInjuries = () => {
                     <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
-                        className={`pb-3 px-4 text-sm font-bold transition-all ${activeTab === tab ? 'text-orange-500 border-b-2 border-orange-500' : 'text-slate-400 hover:text-slate-300'}`}
+                        className={`pb-3 px-4 text-sm font-bold transition-all ${activeTab === tab ? 'text-brand-accent border-b-2 border-brand-accent' : 'text-brand-muted hover:text-slate-300'}`}
                     >
                         {tab === 'request' ? 'Nueva Solicitud' : 'Historial'}
                     </button>
@@ -57,7 +57,7 @@ const StudentInjuries = () => {
                     <InjuryRequestForm onSuccess={() => setActiveTab('history')} />
 
                     <div className="bg-blue-100 border border-blue-200 rounded-2xl p-6 h-fit">
-                        <h4 className="font-bold text-[#1e3a8a] mb-4 flex items-center gap-2">
+                        <h4 className="font-bold text-brand-primary mb-4 flex items-center gap-2">
                             <AlertCircle size={20} /> Información Importante
                         </h4>
                         <ul className="space-y-3 text-sm font-semibold text-slate-500">
