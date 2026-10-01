@@ -70,10 +70,10 @@ const AttendanceModal = ({ clase, onClose, onRefresh }) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pb-28 bg-black/60 backdrop-blur-sm animate-fade-in">
-            <div className="bg-white w-full max-w-2xl rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col max-h-[80vh] animate-zoom-in">
+            <div className="bg-brand-surface w-full max-w-2xl rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col max-h-[80vh] animate-zoom-in">
 
                 {/* Header */}
-                <div className="bg-[#1e3a8a] p-8 text-white flex justify-between items-center">
+                <div className="bg-brand-primary p-8 text-white flex justify-between items-center">
                     <div>
                         <h2 className="text-2xl font-black uppercase italic leading-none">Control de Asistencia</h2>
                         <p className="text-blue-200 text-[10px] font-bold uppercase tracking-widest mt-2 italic">
@@ -86,21 +86,21 @@ const AttendanceModal = ({ clase, onClose, onRefresh }) => {
                 </div>
 
                 {/* Lista */}
-                <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-50/50">
+                <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-brand-bg/50">
                     {listaAsistencia.map((alumno) => (
-                        <div key={alumno.asistenciaId} className="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-white rounded-3xl border border-slate-100 shadow-sm transition-all hover:border-blue-200 gap-4">
+                        <div key={alumno.asistenciaId} className="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-brand-surface rounded-3xl border border-brand-border-soft shadow-sm transition-all hover:border-blue-200 gap-4">
                             <div className="space-y-1">
-                                <p className="font-black text-[#1e3a8a] uppercase text-sm tracking-tight leading-tight">
+                                <p className="font-black text-brand-primary uppercase text-sm tracking-tight leading-tight">
                                     {alumno.nombreCompleto}
                                 </p>
 
                                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest italic">
+                                    <span className="text-[9px] font-bold text-brand-muted uppercase tracking-widest italic">
                                         DNI: {alumno.dni}
                                     </span>
 
                                     {/* FECHA DE NACIMIENTO */}
-                                    <span className="text-[9px] font-black text-blue-600 uppercase tracking-tighter flex items-center gap-1 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
+                                    <span className="text-[9px] font-black text-blue-600 uppercase tracking-tighter flex items-center gap-1 bg-brand-primary-soft px-2 py-0.5 rounded-md border border-blue-100">
                                         <Baby size={10} /> {alumno.fechaNacimiento} {alumno.edad && `(${alumno.edad} años)`}
                                     </span>
 
@@ -112,7 +112,7 @@ const AttendanceModal = ({ clase, onClose, onRefresh }) => {
                                         <span className={`px-2 py-0.5 rounded-lg border text-[9px] font-black tracking-tighter ${alumno.vencido
                                             ? 'bg-red-50 text-red-600 border-red-100 animate-pulse'
                                             : alumno.esHoyCorte
-                                                ? 'bg-orange-50 text-orange-600 border-orange-100'
+                                                ? 'bg-brand-accent-soft text-brand-accent-dark border-orange-100'
                                                 : 'bg-emerald-50 text-emerald-600 border-emerald-100'
                                             }`}>
                                             CORTE: {format(alumno.fechaCorte, "dd/MM", { locale: es })}
@@ -128,8 +128,8 @@ const AttendanceModal = ({ clase, onClose, onRefresh }) => {
                                     disabled={alumno.esLesion}
                                     className={`p-3 rounded-2xl transition-all ${alumno.estado === 'PRESENTE'
                                         ? 'bg-green-500 text-white shadow-lg shadow-green-200' : alumno.esLesion
-                                            ? 'bg-slate-100 text-slate-300 cursor-not-allowed opacity-50'
-                                            : 'bg-slate-50 text-slate-300 border border-slate-100 hover:text-green-500'
+                                            ? 'bg-brand-surface-alt text-slate-300 cursor-not-allowed opacity-50'
+                                            : 'bg-brand-bg text-slate-300 border border-brand-border-soft hover:text-green-500'
                                         }`}
                                 >
                                     <Check size={20} strokeWidth={3} />
@@ -140,8 +140,8 @@ const AttendanceModal = ({ clase, onClose, onRefresh }) => {
                                     disabled={alumno.esLesion}
                                     className={`p-3 rounded-2xl transition-all ${alumno.estado === 'FALTA'
                                         ? 'bg-red-500 text-white shadow-lg shadow-red-200' : alumno.esLesion
-                                            ? 'bg-slate-100 text-slate-300 cursor-not-allowed opacity-50'
-                                            : 'bg-slate-50 text-slate-300 border border-slate-100 hover:text-red-500'
+                                            ? 'bg-brand-surface-alt text-slate-300 cursor-not-allowed opacity-50'
+                                            : 'bg-brand-bg text-slate-300 border border-brand-border-soft hover:text-red-500'
                                         }`}
                                 >
                                     <UserMinus size={20} strokeWidth={3} />
@@ -152,11 +152,11 @@ const AttendanceModal = ({ clase, onClose, onRefresh }) => {
                 </div>
 
                 {/* Footer Botón Guardar */}
-                <div className="p-6 bg-white border-t border-slate-100">
+                <div className="p-6 bg-brand-surface border-t border-brand-border-soft">
                     <button
                         onClick={handleSaveAll}
                         disabled={isSaving || listaAsistencia.length === 0}
-                        className="w-full bg-[#1e3a8a] hover:bg-orange-500 text-white py-5 rounded-[1.5rem] font-black uppercase tracking-[0.2em] text-xs transition-all shadow-xl shadow-blue-900/20 flex items-center justify-center gap-3 disabled:bg-slate-200 disabled:text-slate-400 italic"
+                        className="w-full bg-brand-primary hover:bg-brand-accent text-white py-5 rounded-[1.5rem] font-black uppercase tracking-[0.2em] text-xs transition-all shadow-xl shadow-brand-primary/20 flex items-center justify-center gap-3 disabled:bg-slate-200 disabled:text-brand-muted italic"
                     >
                         {isSaving ? <Loader2 className="animate-spin" size={20} /> : "GUARDAR ASISTENCIA DEL GRUPO"}
                     </button>

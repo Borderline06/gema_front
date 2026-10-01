@@ -30,23 +30,23 @@ const TeacherSidebar = ({ isOpen, onClose }) => {
       <aside className={`
         hidden md:flex flex-col
         fixed inset-y-0 left-0 z-50 w-64 h-screen 
-        bg-gradient-to-b from-[#1e3a8a] to-[#0f172a] text-white 
+        bg-gradient-to-b from-brand-primary to-brand-primary-dark text-white 
         border-r border-white/10 shadow-2xl
         overflow-hidden
       `}>
 
         {/* SECCIÓN LOGO: Branding oficial unificado */}
         <div className="flex-none py-8 px-6 flex flex-col items-center border-b border-white/10">
-          <div className="relative z-10 w-[180px] aspect-square bg-white rounded-full p-2 shadow-2xl flex items-center justify-center border-4 border-white/20 overflow-hidden">
+          <div className="relative z-10 w-[180px] aspect-square bg-brand-surface rounded-full p-2 shadow-2xl flex items-center justify-center border-4 border-white/20 overflow-hidden">
             <Link to="/" className="relative z-10">
               <img src="/Logo con borde blanco.png" alt="Logo Club Gema" className="w-full h-full object-cover" />
             </Link>
           </div>
           <div className="text-center mt-4">
             <span className="block font-black text-xl tracking-tighter uppercase italic text-white leading-none">
-              Gema<span className="text-orange-500 font-black">Coordinador</span>
+              Gema<span className="text-brand-accent font-black">Coordinador</span>
             </span>
-            <div className="h-1 w-8 bg-orange-500 mx-auto mt-2 rounded-full shadow-[0_0_8px_rgba(249,115,22,0.5)]"></div>
+            <div className="h-1 w-8 bg-brand-accent mx-auto mt-2 rounded-full shadow-[0_0_8px_rgba(249,115,22,0.5)]"></div>
           </div>
         </div>
 
@@ -83,7 +83,7 @@ const clasesItems = (items, location, onClose) => items.map((item) => {
       to={item.path}
       onClick={onClose}
       className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group ${isActive
-        ? 'bg-orange-500 text-white shadow-lg shadow-orange-900/40'
+        ? 'bg-brand-accent text-white shadow-lg shadow-orange-900/40'
         : 'text-blue-100/60 hover:bg-white/5 hover:text-white'
         }`}
     >

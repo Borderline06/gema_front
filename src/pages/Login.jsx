@@ -65,7 +65,7 @@ function Login() {
       {/* FONDO */}
       <div className="absolute inset-0 z-0">
         <img src="/bg.jpg" alt="Background" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-[#0f172a]/80 backdrop-blur-sm"></div>
+        <div className="absolute inset-0 bg-brand-primary-dark/80 backdrop-blur-sm"></div>
       </div>
 
       {/* BOTÓN VOLVER */}
@@ -73,18 +73,18 @@ function Login() {
         onClick={() => navigate('/')}
         className="absolute top-3 left-3 md:top-8 md:left-8 flex items-center gap-2 px-3 py-1.5 md:px-5 md:py-2.5 bg-white/5 backdrop-blur-xl border border-white/10 text-white rounded-xl z-50 text-[10px] md:text-xs font-black uppercase tracking-[0.2em]"
       >
-        <ArrowLeft size={14} className="text-orange-500" />
+        <ArrowLeft size={14} className="text-brand-accent" />
         <span className="hidden xs:inline">Volver al inicio</span>
         <span className="xs:hidden">Volver</span>
       </button>
 
       {/* TARJETA PRINCIPAL - max-h-full y flex-col permite que se ajuste al alto del dispositivo */}
-      <div className="relative z-10 w-full max-w-4xl max-h-full md:max-h-[90vh] bg-white rounded-[1.5rem] md:rounded-[2rem] shadow-2xl overflow-hidden flex flex-col md:flex-row border border-white/10">
+      <div className="relative z-10 w-full max-w-4xl max-h-full md:max-h-[90vh] bg-brand-surface rounded-[1.5rem] md:rounded-[2rem] shadow-2xl overflow-hidden flex flex-col md:flex-row border border-white/10">
 
         {/* LADO IZQUIERDO: Branding - Reducido en móvil para dar espacio al form */}
         <div className="w-full md:w-1/2 bg-gradient-to-b from-blue-600 via-blue-800 to-indigo-950 p-6 md:p-10 text-white flex flex-col justify-between relative min-h-[140px] md:min-h-[500px]">
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
-            <div className="absolute -top-10 -left-10 w-32 h-32 bg-white rounded-full"></div>
+            <div className="absolute -top-10 -left-10 w-32 h-32 bg-brand-surface rounded-full"></div>
           </div>
 
           <div className="z-10 flex flex-col items-center text-center mt-2 md:mt-10">
@@ -96,7 +96,7 @@ function Login() {
           </div>
 
           <div className="z-10 flex flex-col items-center mt-2">
-            <div className="bg-transparent border border-orange-500/40 backdrop-blur-md px-3 py-2 md:px-6 md:py-4 rounded-xl w-full max-w-sm text-center">
+            <div className="bg-transparent border border-brand-accent/40 backdrop-blur-md px-3 py-2 md:px-6 md:py-4 rounded-xl w-full max-w-sm text-center">
               <div className="text-[10px] md:text-sm font-bold text-blue-200">Ecosistema Deportivo Digital</div>
               <div className="text-[7px] md:text-[9px] text-blue-400 uppercase tracking-widest font-black hidden md:block">
                 Constancia · Disciplina · Comunidad
@@ -106,9 +106,9 @@ function Login() {
         </div>
 
         {/* LADO DERECHO: Formulario - overflow-y-auto es la clave aquí */}
-        <div className="w-full md:w-1/2 p-6 md:p-14 flex flex-col bg-white overflow-y-auto scrollbar-hide">
+        <div className="w-full md:w-1/2 p-6 md:p-14 flex flex-col bg-brand-surface overflow-y-auto scrollbar-hide">
           <div className="mb-6 md:mb-10 text-center md:text-left">
-            <h3 className="text-2xl md:text-4xl font-black text-[#1e3a8a] tracking-tighter uppercase italic">
+            <h3 className="text-2xl md:text-4xl font-black text-brand-primary tracking-tighter uppercase italic">
               Bienvenido
             </h3>
           </div>
@@ -120,7 +120,7 @@ function Login() {
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
               placeholder="Usuario"
-              className="w-full px-4 py-3 md:py-4 bg-slate-50 border border-slate-200 rounded-xl md:rounded-2xl text-slate-700 focus:border-orange-500 text-sm md:text-base outline-none transition-all"
+              className="w-full px-4 py-3 md:py-4 bg-brand-bg border border-brand-border rounded-xl md:rounded-2xl text-brand-body focus:border-brand-accent text-sm md:text-base outline-none transition-all"
             />
 
             <div className="space-y-3">
@@ -131,20 +131,20 @@ function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Ingrese su contraseña"
-                  className="w-full px-4 py-3 md:py-4 bg-slate-50 border border-slate-200 rounded-xl md:rounded-2xl text-slate-700 focus:border-orange-500 pr-12 text-sm md:text-base outline-none transition-all"
+                  className="w-full px-4 py-3 md:py-4 bg-brand-bg border border-brand-border rounded-xl md:rounded-2xl text-brand-body focus:border-brand-accent pr-12 text-sm md:text-base outline-none transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 p-2"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-muted p-2"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
 
               <div className="flex items-start gap-2 px-1">
-                <AlertCircle size={12} className="text-orange-500 mt-0.5 flex-shrink-0" />
-                <div className="text-[10px] text-slate-400 leading-tight italic font-medium">
+                <AlertCircle size={12} className="text-brand-accent mt-0.5 flex-shrink-0" />
+                <div className="text-[10px] text-brand-muted leading-tight italic font-medium">
                   Ingresa la contraseña de tu registro web.
                   <span className="block text-slate-500 not-italic mt-0.5">
                     Nota: Si no te registraste, tu contraseña es tu usuario.
@@ -161,19 +161,19 @@ function Login() {
             </button>
 
             <div className="text-center">
-              <Link to="/forgot-password" title="Recuperar" className="text-[10px] md:text-xs font-bold text-slate-400 hover:text-orange-500">
+              <Link to="/forgot-password" title="Recuperar" className="text-[10px] md:text-xs font-bold text-brand-muted hover:text-brand-accent">
                 ¿Olvidaste tu contraseña?
               </Link>
             </div>
           </form>
 
           {/* SECCIÓN INFERIOR COMPLETA */}
-          <div className="mt-6 md:mt-12 pt-6 border-t border-slate-100 text-center flex flex-col items-center gap-4">
-            <Link to="/register" className="text-orange-500 font-black hover:text-orange-600 inline-flex items-center gap-2 text-[10px] md:text-xs uppercase tracking-widest">
+          <div className="mt-6 md:mt-12 pt-6 border-t border-brand-border-soft text-center flex flex-col items-center gap-4">
+            <Link to="/register" className="text-brand-accent font-black hover:text-brand-accent-dark inline-flex items-center gap-2 text-[10px] md:text-xs uppercase tracking-widest">
               Comienza tu inscripción hoy <span>→</span>
             </Link>
 
-            <span className="text-[8px] md:text-[9px] text-slate-400 block font-bold uppercase tracking-tight">
+            <span className="text-[8px] md:text-[9px] text-brand-muted block font-bold uppercase tracking-tight">
               Al registrarte aceptas nuestros Términos y Condiciones
             </span>
           </div>

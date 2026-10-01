@@ -4,26 +4,26 @@ import { Link } from 'react-router-dom';
 
 const About = () => {
   return (
-    <div className="bg-white min-h-screen font-sans text-slate-900 overflow-x-hidden">
+    <div className="bg-brand-surface min-h-screen font-sans text-brand-heading overflow-x-hidden">
 
       {/* --- HERO SECTION: Impacto Visual --- */}
-      <section className="relative min-h-[45vh] md:min-h-[50vh] flex items-center bg-[#0f172a] py-8 md:py-12 px-6 overflow-hidden">
+      <section className="relative min-h-[45vh] md:min-h-[50vh] flex items-center bg-brand-primary-dark py-8 md:py-12 px-6 overflow-hidden">
         {/* Decoración de fondo */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-          <div className="absolute -top-[10%] -right-[5%] w-[500px] h-[500px] bg-orange-500/10 blur-[120px] rounded-full"></div>
+          <div className="absolute -top-[10%] -right-[5%] w-[500px] h-[500px] bg-brand-accent/10 blur-[120px] rounded-full"></div>
           <div className="absolute -bottom-[10%] -left-[5%] w-[400px] h-[400px] bg-blue-500/10 blur-[120px] rounded-full"></div>
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full mb-6 backdrop-blur-md">
-            <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
+            <span className="w-2 h-2 bg-brand-accent rounded-full animate-pulse"></span>
             <span className="text-white text-[10px] font-black uppercase tracking-[0.2em]">Más que un entrenamiento</span>
           </div>
 
           <h1 className="text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter leading-[0.9]">
-            Nuestra <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Esencia</span>
+            Nuestra <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-brand-accent-dark">Esencia</span>
           </h1>
-          <p className="mt-8 text-slate-400 max-w-2xl mx-auto text-lg font-medium leading-relaxed">
+          <p className="mt-8 text-brand-muted max-w-2xl mx-auto text-lg font-medium leading-relaxed">
             Formamos atletas integrales. En Gema, la técnica se encuentra con la mentalidad ganadora para crear la próxima generación de campeones.
           </p>
         </div>
@@ -31,7 +31,7 @@ const About = () => {
 
       {/* --- STATS BAR: Autoridad --- */}
       <div className="relative z-20 -mt-12 max-w-5xl mx-auto px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white p-8 rounded-[32px] shadow-2xl shadow-blue-900/10 border border-slate-100">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-brand-surface p-8 rounded-[32px] shadow-2xl shadow-brand-primary/10 border border-brand-border-soft">
           {[
             { label: 'Atletas', val: '+500', icon: Users },
             { label: 'Sedes', val: '03', icon: Shield },
@@ -39,8 +39,8 @@ const About = () => {
             { label: 'Coordinators', val: '15', icon: Award }
           ].map((s, i) => (
             <div key={i} className="text-center group">
-              <p className="text-3xl font-black text-[#1e3a8a] italic tracking-tighter group-hover:text-orange-500 transition-colors">{s.val}</p>
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">{s.label}</p>
+              <p className="text-3xl font-black text-brand-primary italic tracking-tighter group-hover:text-brand-accent transition-colors">{s.val}</p>
+              <p className="text-[10px] font-black text-brand-muted uppercase tracking-widest mt-1">{s.label}</p>
             </div>
           ))}
         </div>
@@ -51,7 +51,7 @@ const About = () => {
         <div className="grid lg:grid-cols-2 gap-20 items-center">
 
           <div className="relative order-2 lg:order-1">
-            <div className="absolute -top-6 -left-6 w-full h-full border-2 border-orange-500/20 rounded-[40px] -z-10"></div>
+            <div className="absolute -top-6 -left-6 w-full h-full border-2 border-brand-accent/20 rounded-[40px] -z-10"></div>
             <div className="relative z-10 rounded-[40px] overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-transform duration-500">
               <img
                 src="https://images.unsplash.com/photo-1592656094267-764a45160876?w=1200&q=80"
@@ -60,7 +60,7 @@ const About = () => {
               />
             </div>
             {/* El Badge "Rendimiento" ahora tiene z-30 para estar al frente de todo en su área */}
-            <div className="absolute -bottom-10 -right-6 bg-[#1e3a8a] text-white p-8 rounded-3xl shadow-2xl z-30 hidden sm:block">
+            <div className="absolute -bottom-10 -right-6 bg-brand-primary text-white p-8 rounded-3xl shadow-2xl z-30 hidden sm:block">
               <Zap className="text-orange-400 mb-2" size={32} />
               <p className="text-sm font-black uppercase tracking-widest leading-none">Alto</p>
               <p className="text-2xl font-black italic tracking-tighter">Rendimiento</p>
@@ -69,8 +69,8 @@ const About = () => {
 
           <div className="order-1 lg:order-2 space-y-8">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-2 bg-orange-500 rounded-full"></div>
-              <h2 className="text-4xl md:text-5xl font-black text-[#1e3a8a] uppercase italic tracking-tighter">
+              <div className="h-10 w-2 bg-brand-accent rounded-full"></div>
+              <h2 className="text-4xl md:text-5xl font-black text-brand-primary uppercase italic tracking-tighter">
                 Formando el futuro del voley
               </h2>
             </div>
@@ -80,19 +80,19 @@ const About = () => {
             </p>
 
             <div className="grid sm:grid-cols-2 gap-6 pt-4">
-              <div className="group p-6 bg-slate-50 rounded-[24px] border border-slate-100 hover:bg-white hover:shadow-xl transition-all">
-                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm mb-4 group-hover:bg-orange-500 group-hover:text-white transition-all">
+              <div className="group p-6 bg-brand-bg rounded-[24px] border border-brand-border-soft hover:bg-brand-surface hover:shadow-xl transition-all">
+                <div className="w-12 h-12 bg-brand-surface rounded-xl flex items-center justify-center shadow-sm mb-4 group-hover:bg-brand-accent group-hover:text-white transition-all">
                   <Target size={24} />
                 </div>
-                <h4 className="font-black text-[#1e3a8a] uppercase italic mb-2">Misión</h4>
+                <h4 className="font-black text-brand-primary uppercase italic mb-2">Misión</h4>
                 <p className="text-sm text-slate-500 font-medium">Liderar la formación técnica de atletas para alcanzar ligas profesionales.</p>
               </div>
 
-              <div className="group p-6 bg-slate-50 rounded-[24px] border border-slate-100 hover:bg-white hover:shadow-xl transition-all">
-                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm mb-4 group-hover:bg-[#1e3a8a] group-hover:text-white transition-all">
+              <div className="group p-6 bg-brand-bg rounded-[24px] border border-brand-border-soft hover:bg-brand-surface hover:shadow-xl transition-all">
+                <div className="w-12 h-12 bg-brand-surface rounded-xl flex items-center justify-center shadow-sm mb-4 group-hover:bg-brand-primary group-hover:text-white transition-all">
                   <TrendingUp size={24} />
                 </div>
-                <h4 className="font-black text-[#1e3a8a] uppercase italic mb-2">Valores</h4>
+                <h4 className="font-black text-brand-primary uppercase italic mb-2">Valores</h4>
                 <p className="text-sm text-slate-500 font-medium">Integridad, disciplina y la búsqueda constante de la excelencia.</p>
               </div>
             </div>
@@ -103,7 +103,7 @@ const About = () => {
 
       {/* --- SECCIÓN EXTRA: CTA --- */}
       <section className="max-w-7xl mx-auto px-6 pb-24">
-        <div className="bg-[#0f172a] rounded-[48px] p-12 md:p-20 text-center relative overflow-hidden">
+        <div className="bg-brand-primary-dark rounded-[48px] p-12 md:p-20 text-center relative overflow-hidden">
           <div className="absolute top-0 right-0 w-full h-full opacity-20">
             <img src="https://images.unsplash.com/photo-1526676037777-05a232554f77?q=80&w=2000" className="w-full h-full object-cover" />
           </div>
@@ -111,7 +111,7 @@ const About = () => {
             <h3 className="text-3xl md:text-5xl font-black text-white uppercase italic mb-8">¿Listo para escribir tu historia?</h3>
             <Link
               to="/register"
-              className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-black uppercase tracking-[0.2em] px-10 py-5 rounded-2xl text-sm shadow-xl shadow-orange-500/20 transition-all hover:-translate-y-1 active:scale-95 text-center"
+              className="inline-block bg-brand-accent hover:bg-brand-accent-dark text-white font-black uppercase tracking-[0.2em] px-10 py-5 rounded-2xl text-sm shadow-xl shadow-brand-accent/20 transition-all hover:-translate-y-1 active:scale-95 text-center"
             >
               Únete al Club Gema
             </Link>

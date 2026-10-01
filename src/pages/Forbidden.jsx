@@ -24,8 +24,8 @@ const Forbidden = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
-            <div className="max-w-md w-full bg-white rounded-[2rem] shadow-xl p-8 text-center border-t-4 border-red-500">
+        <div className="min-h-screen bg-brand-bg flex flex-col items-center justify-center p-4">
+            <div className="max-w-md w-full bg-brand-surface rounded-[2rem] shadow-xl p-8 text-center border-t-4 border-red-500">
 
                 <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
                     <ShieldAlert size={40} className="text-red-500" />
@@ -42,7 +42,7 @@ const Forbidden = () => {
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     <button
                         onClick={() => window.history.back()}
-                        className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition-all"
+                        className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl border-2 border-brand-border text-slate-600 font-bold hover:bg-brand-bg transition-all"
                     >
                         <ArrowLeft size={18} />
                         <span>Volver atrás</span>
@@ -50,7 +50,7 @@ const Forbidden = () => {
 
                     <Link
                         to={getReturnPath()}
-                        className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#1e3a8a] text-white font-bold hover:bg-blue-900 transition-all shadow-lg shadow-blue-900/20"
+                        className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-brand-primary text-white font-bold hover:bg-brand-primary transition-all shadow-lg shadow-brand-primary/20"
                     >
                         <Home size={18} />
                         <span>Ir al Inicio</span>
@@ -58,7 +58,7 @@ const Forbidden = () => {
                 </div>
             </div>
 
-            <p className="mt-8 text-[10px] text-slate-400 font-black uppercase tracking-[0.3em] opacity-50">
+            <p className="mt-8 text-[10px] text-brand-muted font-black uppercase tracking-[0.3em] opacity-50">
                 CLUB GEMA | SEGURIDAD
             </p>
         </div>

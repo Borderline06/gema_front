@@ -44,13 +44,13 @@ const StudentAnnouncements = ({ anuncios = [] }) => {
   return (
     <div className="w-full mb-8">
       <div className="flex items-center gap-2 mb-3 px-1">
-        <Gift size={16} className="text-orange-500" />
+        <Gift size={16} className="text-brand-accent" />
         <h2 className="font-black uppercase tracking-widest text-[9px] italic text-slate-500">Beneficios Exclusivos Gema</h2>
       </div>
 
       <div 
         key={item.id} 
-        className="relative overflow-hidden rounded-[2rem] shadow-xl shadow-blue-900/10 h-36 md:h-40 border border-white/50 animate-in fade-in slide-in-from-right-4 duration-700"
+        className="relative overflow-hidden rounded-[2rem] shadow-xl shadow-brand-primary/10 h-36 md:h-40 border border-white/50 animate-in fade-in slide-in-from-right-4 duration-700"
       >
         <div className={`absolute inset-0 bg-gradient-to-r ${item.gradiente} transition-all duration-1000`}></div>
 
@@ -202,23 +202,23 @@ const DashboardEstudiante = () => {
   const initial = firstName.charAt(0).toUpperCase();
 
   if (loading) return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#f1f5f9]">
-      <Loader2 className="animate-spin text-orange-500 mb-4" size={48} />
-      <p className="font-black text-[#1e3a8a] uppercase italic text-[10px] tracking-widest text-center animate-pulse">Sincronizando Club Gema...</p>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-brand-surface-alt">
+      <Loader2 className="animate-spin text-brand-accent mb-4" size={48} />
+      <p className="font-black text-brand-primary uppercase italic text-[10px] tracking-widest text-center animate-pulse">Sincronizando Club Gema...</p>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex justify-center relative overflow-hidden">
+    <div className="min-h-screen bg-brand-bg flex justify-center relative overflow-hidden">
       <div className="w-full max-w-lg md:max-w-6xl p-4 pb-28 relative z-10">
 
         {/* 1. HEADER MÓVIL OPTIMIZADO */}
         <header className="flex justify-between items-center mb-6 mt-2 relative">
           <div>
-            <h1 className="text-3xl md:text-4xl font-black text-[#1e3a8a] tracking-tighter uppercase italic leading-none">
-              Hola, <span className="text-orange-500">{firstName}</span> 👋
+            <h1 className="text-3xl md:text-4xl font-black text-brand-primary tracking-tighter uppercase italic leading-none">
+              Hola, <span className="text-brand-accent">{firstName}</span> 👋
             </h1>
-            <p className="text-[9px] md:text-xs text-slate-400 font-black mt-2 italic uppercase tracking-widest flex items-center gap-1.5">
+            <p className="text-[9px] md:text-xs text-brand-muted font-black mt-2 italic uppercase tracking-widest flex items-center gap-1.5">
               <Sparkles size={12} className="text-orange-400" /> ¡Bienvenido al Club!
             </p>
           </div>
@@ -227,20 +227,20 @@ const DashboardEstudiante = () => {
             <div className="relative">
               <NotificationBell count={unreadCountDB} onClick={() => setShowNotifList(!showNotifList)} />
               {showNotifList && (
-                <div className="absolute right-0 top-14 w-[280px] md:w-96 bg-white rounded-[2rem] shadow-2xl border border-slate-100 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2">
-                  <div className="p-4 border-b border-slate-50 flex justify-between items-center bg-slate-50/80">
-                    <h3 className="font-black text-[#1e3a8a] text-[10px] uppercase italic tracking-widest">Alertas</h3>
-                    {unreadCountDB > 0 && <span className="text-[8px] bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full font-black tracking-widest">{unreadCountDB} NUEVAS</span>}
+                <div className="absolute right-0 top-14 w-[280px] md:w-96 bg-brand-surface rounded-[2rem] shadow-2xl border border-brand-border-soft z-50 overflow-hidden animate-in fade-in slide-in-from-top-2">
+                  <div className="p-4 border-b border-slate-50 flex justify-between items-center bg-brand-bg/80">
+                    <h3 className="font-black text-brand-primary text-[10px] uppercase italic tracking-widest">Alertas</h3>
+                    {unreadCountDB > 0 && <span className="text-[8px] bg-orange-100 text-brand-accent-dark px-2 py-0.5 rounded-full font-black tracking-widest">{unreadCountDB} NUEVAS</span>}
                   </div>
                   <div className="max-h-[300px] overflow-y-auto custom-scrollbar">
                     {notifications.length > 0 ? (
                       <div className="flex flex-col">
                         {notifications.filter(n => !n.leido).map((n) => (
-                          <div key={n.id} className="p-4 border-b border-slate-50 bg-white" onClick={() => handleMarkAsRead(n.id)}>
+                          <div key={n.id} className="p-4 border-b border-slate-50 bg-brand-surface" onClick={() => handleMarkAsRead(n.id)}>
                             <div className="flex items-start gap-3">
-                              <div className="w-2 h-2 rounded-full mt-1 shrink-0 bg-orange-500 animate-pulse shadow-[0_0_8px_rgba(249,115,22,0.6)]" />
+                              <div className="w-2 h-2 rounded-full mt-1 shrink-0 bg-brand-accent animate-pulse shadow-[0_0_8px_rgba(249,115,22,0.6)]" />
                               <div>
-                                <h4 className="font-black text-[#1e3a8a] text-[11px] uppercase tracking-tight leading-none mb-1">{n.titulo}</h4>
+                                <h4 className="font-black text-brand-primary text-[11px] uppercase tracking-tight leading-none mb-1">{n.titulo}</h4>
                                 <p className="text-[10px] text-slate-600 font-medium leading-snug">{n.mensaje}</p>
                               </div>
                             </div>
@@ -250,14 +250,14 @@ const DashboardEstudiante = () => {
                     ) : (
                       <div className="p-8 text-center flex flex-col items-center gap-2">
                         <BellOff size={24} className="text-slate-300" />
-                        <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest italic">Sin notificaciones</p>
+                        <p className="text-[9px] font-black text-brand-muted uppercase tracking-widest italic">Sin notificaciones</p>
                       </div>
                     )}
                   </div>
                 </div>
               )}
             </div>
-            <div className="w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br from-[#1e40af] to-[#0f172a] rounded-[1rem] flex items-center justify-center text-white font-black border-2 border-white shadow-lg text-lg">
+            <div className="w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br from-[#1e40af] to-brand-primary-dark rounded-[1rem] flex items-center justify-center text-white font-black border-2 border-white shadow-lg text-lg">
               {initial}
             </div>
           </div>
@@ -272,7 +272,7 @@ const DashboardEstudiante = () => {
             <h2 className="font-black uppercase tracking-widest text-[9px] italic text-slate-500">Mi Agenda de la Semana</h2>
             <button 
               onClick={() => setShowCalendar(!showCalendar)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${showCalendar ? 'bg-orange-500 text-white' : 'bg-white text-[#1e3a8a] shadow-sm border border-slate-100'}`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${showCalendar ? 'bg-brand-accent text-white' : 'bg-brand-surface text-brand-primary shadow-sm border border-brand-border-soft'}`}
             >
               {showCalendar ? (
                 <><EyeOff size={14} /> Ocultar Calendario</>
@@ -295,10 +295,10 @@ const DashboardEstudiante = () => {
           
           {/* 🥇 SECCIÓN PAGOS: Aparece PRIMERO en celular (order-1), a la DERECHA en PC (lg:order-2) */}
           <div className="space-y-4 order-1 lg:order-2">
-            <div className="bg-white p-5 rounded-[2rem] shadow-xl shadow-blue-900/5 border-2 border-white overflow-hidden relative">
+            <div className="bg-brand-surface p-5 rounded-[2rem] shadow-xl shadow-brand-primary/5 border-2 border-white overflow-hidden relative">
               <div className="flex items-center gap-2 mb-6">
-                <div className="w-1 h-3 bg-orange-500 rounded-full"></div>
-                <h2 className="font-black text-[#1e3a8a] uppercase tracking-widest italic text-[10px]">Mis Finanzas 💎</h2>
+                <div className="w-1 h-3 bg-brand-accent rounded-full"></div>
+                <h2 className="font-black text-brand-primary uppercase tracking-widest italic text-[10px]">Mis Finanzas 💎</h2>
               </div>
               <StudentPayments debts={debts} payments={payments} />
             </div>
@@ -307,16 +307,16 @@ const DashboardEstudiante = () => {
           {/* 🥈 SECCIÓN CLASES: Aparece SEGUNDO en celular (order-2), a la IZQUIERDA en PC (lg:order-1) */}
           <div className="lg:col-span-2 space-y-4 order-2 lg:order-1">
             {/* Filtros Compactos con Menú de Año Mejorado */}
-            <div className="flex items-center justify-between bg-white p-3 rounded-[1.5rem] border border-slate-100 shadow-sm flex-wrap gap-3">
-              <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-100">
-                <Filter size={12} className="text-orange-500" />
-                <select value={filtroMes} onChange={(e) => setFiltroMes(e.target.value)} className="text-[9px] font-black uppercase tracking-widest text-[#1e3a8a] outline-none bg-transparent cursor-pointer">
+            <div className="flex items-center justify-between bg-brand-surface p-3 rounded-[1.5rem] border border-brand-border-soft shadow-sm flex-wrap gap-3">
+              <div className="flex items-center gap-2 bg-brand-bg px-3 py-1.5 rounded-xl border border-brand-border-soft">
+                <Filter size={12} className="text-brand-accent" />
+                <select value={filtroMes} onChange={(e) => setFiltroMes(e.target.value)} className="text-[9px] font-black uppercase tracking-widest text-brand-primary outline-none bg-transparent cursor-pointer">
                   <option value="TODOS">TODO EL AÑO</option>
                   {meses.map((mes, idx) => <option key={idx} value={idx.toString()}>{mes.toUpperCase()}</option>)}
                 </select>
               </div>
               
-              <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-100">
+              <div className="flex items-center gap-2 bg-brand-bg px-3 py-1.5 rounded-xl border border-brand-border-soft">
                 <Calendar size={12} className="text-blue-500" />
                 <select value={filtroAnio} onChange={(e) => setFiltroAnio(e.target.value)} className="text-[9px] font-black uppercase tracking-widest text-slate-500 outline-none bg-transparent cursor-pointer">
                   {aniosOpciones.map(anio => <option key={anio} value={anio}>CICLO {anio}</option>)}
@@ -324,7 +324,7 @@ const DashboardEstudiante = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-[2rem] shadow-lg shadow-slate-200/50 overflow-hidden border border-slate-100">
+            <div className="bg-brand-surface rounded-[2rem] shadow-lg shadow-slate-200/50 overflow-hidden border border-brand-border-soft">
                <StudentSchedule attendance={attendance} filtroMes={filtroMes} filtroAnio={filtroAnio} />
             </div>
           </div>

@@ -41,13 +41,13 @@ const CompletarEmailModal = ({ isOpen, onClose, onActionSuccess }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-[#0f172a]/95 backdrop-blur-md">
-      <div className="relative max-w-md w-full bg-white rounded-3xl shadow-2xl overflow-hidden p-8">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-brand-primary-dark/95 backdrop-blur-md">
+      <div className="relative max-w-md w-full bg-brand-surface rounded-3xl shadow-2xl overflow-hidden p-8">
         <div className="text-center mb-8">
           <div className="bg-blue-600/10 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <Mail className="text-blue-600" size={32} />
           </div>
-          <h3 className="text-2xl font-black text-slate-900 uppercase italic">
+          <h3 className="text-2xl font-black text-brand-heading uppercase italic">
             Vincula un correo electrónico para tu cuenta
           </h3>
           <p className="text-slate-500 text-sm mt-2">
@@ -63,7 +63,7 @@ const CompletarEmailModal = ({ isOpen, onClose, onActionSuccess }) => {
             value={nuevoEmail}
             onChange={(e) => setNuevoEmail(e.target.value)}
             placeholder="tu-correo@ejemplo.com"
-            className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-orange-500/10 outline-none transition-all"
+            className="w-full px-4 py-3.5 bg-brand-bg border border-brand-border rounded-xl focus:ring-4 focus:ring-brand-accent/10 outline-none transition-all"
           />
 
           <button
@@ -79,7 +79,7 @@ const CompletarEmailModal = ({ isOpen, onClose, onActionSuccess }) => {
           <button
             type="button"
             onClick={logout}
-            className="w-full bg-slate-100 text-slate-600 font-bold py-3 rounded-xl hover:bg-slate-200 transition-all flex items-center justify-center gap-2 uppercase text-[10px] tracking-widest"
+            className="w-full bg-brand-surface-alt text-slate-600 font-bold py-3 rounded-xl hover:bg-slate-200 transition-all flex items-center justify-center gap-2 uppercase text-[10px] tracking-widest"
           >
             <LogOut size={14} />
             No quiero ingresar correo, cerrar sesión

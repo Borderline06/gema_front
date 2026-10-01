@@ -77,14 +77,14 @@ const DiaCorte = () => {
     return (
         <div className="p-6 space-y-6 max-w-[98%] mx-auto animate-in fade-in duration-500">
             {/* Header */}
-            <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-slate-100 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="bg-brand-surface rounded-[2rem] p-8 shadow-sm border border-brand-border-soft flex flex-col md:flex-row justify-between items-center gap-6">
                 <div className="flex items-center gap-4">
                     <div className="bg-blue-600 p-4 rounded-[1.5rem] text-white shadow-lg shadow-blue-100">
                         <UserCircle size={28} />
                     </div>
                     <div>
                         <h1 className="text-2xl font-black text-slate-800 uppercase italic tracking-tighter">Gestión de Alumnos</h1>
-                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Corte de ciclo: 30 días (Sincronizado con Servidor)</p>
+                        <p className="text-[10px] text-brand-muted font-bold uppercase tracking-widest">Corte de ciclo: 30 días (Sincronizado con Servidor)</p>
                     </div>
                 </div>
 
@@ -96,13 +96,13 @@ const DiaCorte = () => {
                             placeholder="Buscar por DNI, Nombre o Apellido..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full pl-11 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-xs font-bold focus:ring-2 focus:ring-blue-500/10 outline-none transition-all"
+                            className="w-full pl-11 pr-4 py-4 bg-brand-bg border border-brand-border-soft rounded-2xl text-xs font-bold focus:ring-2 focus:ring-blue-500/10 outline-none transition-all"
                         />
                     </div>
                     <select
                         value={filterStatus}
                         onChange={(e) => setFilterStatus(e.target.value)}
-                        className="bg-slate-900 text-white px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none shadow-xl cursor-pointer hover:bg-slate-800 transition-all"
+                        className="bg-brand-primary-dark text-white px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none shadow-xl cursor-pointer hover:bg-slate-800 transition-all"
                     >
                         <option value="todos">Todos los Alumnos</option>
                         <option value="vencidos">Ciclo Realizado</option>
@@ -120,16 +120,16 @@ const DiaCorte = () => {
             </div>
 
             {/* Tabla */}
-            <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-slate-200/40 border border-slate-100 overflow-hidden">
+            <div className="bg-brand-surface rounded-[2.5rem] shadow-2xl shadow-slate-200/40 border border-brand-border-soft overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
-                            <tr className="bg-slate-50/50 border-b border-slate-100">
-                                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">Datos del Alumno</th>
-                                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] text-center">Nro Documento</th>
-                                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] text-center">Sede / Horario</th>
-                                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] text-center">Fecha Corte</th>
-                                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] text-center">Estado de Ciclo</th>
+                            <tr className="bg-brand-bg/50 border-b border-brand-border-soft">
+                                <th className="px-8 py-6 text-[10px] font-black text-brand-muted uppercase tracking-[0.15em]">Datos del Alumno</th>
+                                <th className="px-8 py-6 text-[10px] font-black text-brand-muted uppercase tracking-[0.15em] text-center">Nro Documento</th>
+                                <th className="px-8 py-6 text-[10px] font-black text-brand-muted uppercase tracking-[0.15em] text-center">Sede / Horario</th>
+                                <th className="px-8 py-6 text-[10px] font-black text-brand-muted uppercase tracking-[0.15em] text-center">Fecha Corte</th>
+                                <th className="px-8 py-6 text-[10px] font-black text-brand-muted uppercase tracking-[0.15em] text-center">Estado de Ciclo</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-50">
@@ -142,14 +142,14 @@ const DiaCorte = () => {
                                 const esIndividual = alumno.contratos?.[0].esIndividual;
 
                                 return (
-                                    <tr key={alumno.id} className="hover:bg-slate-50/80 transition-all text-center group">
+                                    <tr key={alumno.id} className="hover:bg-brand-bg/80 transition-all text-center group">
                                         <td className="px-8 py-6 text-left">
-                                            <span className="text-xs font-black text-slate-700 uppercase italic group-hover:text-blue-600 transition-colors">
+                                            <span className="text-xs font-black text-brand-body uppercase italic group-hover:text-blue-600 transition-colors">
                                                 {alumno.nombre_completo}
                                             </span>
                                         </td>
                                         <td className="px-8 py-6">
-                                            <span className="text-[11px] font-bold text-slate-500 tabular-nums bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100">
+                                            <span className="text-[11px] font-bold text-slate-500 tabular-nums bg-brand-bg px-3 py-1.5 rounded-lg border border-brand-border-soft">
                                                 {alumno.dni || "S/D"}
                                             </span>
                                         </td>
@@ -166,13 +166,13 @@ const DiaCorte = () => {
                                                         .map((horario, index) => (
                                                             <span
                                                                 key={index}
-                                                                className="text-[8px] text-slate-400 uppercase font-bold"
+                                                                className="text-[8px] text-brand-muted uppercase font-bold"
                                                             >
                                                                 {horario}
                                                             </span>
                                                         ))
                                                 ) : (
-                                                    <span className="text-[8px] text-slate-400 uppercase font-bold">
+                                                    <span className="text-[8px] text-brand-muted uppercase font-bold">
                                                         Sin Horario
                                                     </span>
                                                 )}
@@ -196,7 +196,7 @@ const DiaCorte = () => {
                                         ) : (
                                             <>
                                                 <td className="px-8 py-6">
-                                                    <div className={`inline-flex flex-col items-center px-4 py-2 rounded-2xl border ${vencido ? 'border-slate-100 bg-slate-50' : 'border-emerald-100 bg-emerald-50'}`}>
+                                                    <div className={`inline-flex flex-col items-center px-4 py-2 rounded-2xl border ${vencido ? 'border-brand-border-soft bg-brand-bg' : 'border-emerald-100 bg-emerald-50'}`}>
                                                         <span className={`text-xs font-black ${vencido ? 'text-slate-800' : 'text-emerald-500'}`}>
                                                             {fechaCorte ? format(fechaCorte, "dd 'de' MMMM", { locale: es }) : '---'}
                                                         </span>
@@ -204,7 +204,7 @@ const DiaCorte = () => {
                                                 </td>
                                                 <td className="px-8 py-6">
                                                     <span className={`text-[9px] font-black px-4 py-2 rounded-xl uppercase tracking-widest inline-block w-32 ${vencido ? 'bg-slate-500 text-white shadow-lg shadow-slate-200' :
-                                                        esHoy ? 'bg-orange-500 text-white shadow-lg shadow-orange-200' :
+                                                        esHoy ? 'bg-brand-accent text-white shadow-lg shadow-orange-200' :
                                                             'bg-emerald-500 text-white shadow-lg shadow-emerald-200'
                                                         }`}>
                                                         {vencido ? 'Ciclo Realizado' : esHoy ? 'Vence Hoy' : 'Ciclo al día'}
@@ -221,7 +221,7 @@ const DiaCorte = () => {
             </div>
 
             {filteredAlumnos.length === 0 && (
-                <div className="text-center py-24 bg-white rounded-[3rem] border-2 border-dashed border-slate-100">
+                <div className="text-center py-24 bg-brand-surface rounded-[3rem] border-2 border-dashed border-brand-border-soft">
                     <AlertCircle className="mx-auto text-slate-200 mb-4" size={56} />
                     <p className="text-xs font-black text-slate-300 uppercase tracking-widest">No se encontraron alumnos bajo ese criterio</p>
                 </div>

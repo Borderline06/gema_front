@@ -162,8 +162,8 @@ const Dashboard = ({ role = 'student' }) => {
             <DashboardHeader />
             <div className="mb-14">
                 <div className="flex items-center gap-3 mb-6">
-                    <Activity className="text-orange-500" size={20} />
-                    <h2 className="text-sm font-black text-slate-400 uppercase tracking-[0.2em]">Resumen Ejecutivo</h2>
+                    <Activity className="text-brand-accent" size={20} />
+                    <h2 className="text-sm font-black text-brand-muted uppercase tracking-[0.2em]">Resumen Ejecutivo</h2>
                 </div>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
                     {stats.map((stat, index) => <StatCard key={index} {...stat} />)}

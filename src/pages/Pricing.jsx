@@ -23,25 +23,25 @@ const Pricing = () => {
               badge: isUnitario ? "Pago Único" : "Membresía",
               icon: <Rocket className="text-blue-600" size={26} />,
               features: [plan.nombre, "Acceso prioritario", "Comunidad oficial"],
-              color: "border-slate-200 bg-white",
-              textColor: "text-[#1e3a8a]",
-              btnStyle: "bg-slate-100 text-[#1e3a8a] hover:bg-blue-100",
+              color: "border-brand-border bg-brand-surface",
+              textColor: "text-brand-primary",
+              btnStyle: "bg-brand-surface-alt text-brand-primary hover:bg-blue-100",
               recommended: false
             };
 
             if (index === 1) { // El del medio por defecto
               config.badge = "Más Versátil";
               config.icon = <MapPin className="text-blue-600" size={26} />;
-              config.color = "border-blue-200 shadow-[0_20px_50px_rgba(249,115,22,0.1)] scale-105 bg-white";
-              config.btnStyle = "bg-[#1e3a8a] text-white hover:bg-[#162a63] shadow-lg shadow-blue-900/20";
+              config.color = "border-blue-200 shadow-[0_20px_50px_rgba(249,115,22,0.1)] scale-105 bg-brand-surface";
+              config.btnStyle = "bg-brand-primary text-white hover:bg-[#162a63] shadow-lg shadow-brand-primary/20";
             }
 
             if (index === 2 || plan.precio_base >= 180) { // El más caro o el tercero
               config.badge = "Elite";
               config.recommended = true;
-              config.icon = <Star className="text-orange-500" size={26} />;
-              config.color = "border-orange-500 shadow-[0_20px_50px_rgba(249,115,22,0.1)] scale-105 bg-white z-10";
-              config.btnStyle = "bg-[#f97316] text-white hover:bg-[#ea580c] shadow-xl shadow-orange-500/30";
+              config.icon = <Star className="text-brand-accent" size={26} />;
+              config.color = "border-brand-accent shadow-[0_20px_50px_rgba(249,115,22,0.1)] scale-105 bg-brand-surface z-10";
+              config.btnStyle = "bg-brand-accent text-white hover:bg-[#ea580c] shadow-xl shadow-brand-accent/30";
             }
 
             // Si el plan tiene metadata de clases semanales de la DB, lo usamos
@@ -85,13 +85,13 @@ const Pricing = () => {
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen font-sans text-slate-900">
+    <div className="bg-brand-bg min-h-screen font-sans text-brand-heading">
 
       {/* --- HERO SECTION --- */}
-      <section className="relative pt-20 pb-40 md:pt-24 md:pb-48 bg-[#0f172a] px-6 overflow-hidden">
+      <section className="relative pt-20 pb-40 md:pt-24 md:pb-48 bg-brand-primary-dark px-6 overflow-hidden">
         {/* Unificación de luces de fondo con la paleta */}
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-          <div className="absolute -top-24 -right-24 w-96 h-96 bg-orange-500/10 blur-[120px] rounded-full"></div>
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-brand-accent/10 blur-[120px] rounded-full"></div>
           <div className="absolute top-1/2 -left-24 w-80 h-80 bg-blue-600/10 blur-[100px] rounded-full"></div>
         </div>
 
@@ -102,9 +102,9 @@ const Pricing = () => {
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white uppercase italic tracking-tighter leading-none mb-6">
-            Elige tu <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Plan de Juego</span>
+            Elige tu <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-brand-accent-dark">Plan de Juego</span>
           </h1>
-          <p className="text-slate-400 max-w-2xl mx-auto text-base md:text-xl font-medium leading-relaxed px-4">
+          <p className="text-brand-muted max-w-2xl mx-auto text-base md:text-xl font-medium leading-relaxed px-4">
             Entrenamiento de excelencia con la misma pasión en cada nivel.
           </p>
         </div>
@@ -114,7 +114,7 @@ const Pricing = () => {
       <section className="relative z-20 -mt-16 md:-mt-28 max-w-[95rem] mx-auto px-4 pb-24">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 bg-white/10 backdrop-blur-md rounded-[3rem] border border-white/10">
-            <Loader2 className="text-orange-500 animate-spin mb-4" size={48} />
+            <Loader2 className="text-brand-accent animate-spin mb-4" size={48} />
             <p className="text-white font-bold tracking-widest uppercase text-xs">Cargando niveles de formación...</p>
           </div>
         ) : error ? (
@@ -134,17 +134,17 @@ const Pricing = () => {
                   className={`relative p-6 xl:p-8 rounded-[2.5rem] border-2 transition-all duration-500 flex flex-col h-full hover:-translate-y-2 snap-center min-w-[80vw] sm:min-w-[60vw] lg:min-w-0 ${opt.color} shadow-xl lg:shadow-none mb-4 lg:mb-0`}
                 >
                   {opt.recommended && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#f97316] text-white px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg flex items-center gap-1 z-20 whitespace-nowrap">
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-accent text-white px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg flex items-center gap-1 z-20 whitespace-nowrap">
                       <Zap size={10} fill="currentColor" /> RECOMENDADO
                     </div>
                   )}
 
                   {/* Icon & Badge - Unificados */}
                   <div className="flex justify-between items-center mb-8">
-                    <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center border border-slate-100 flex-shrink-0">
+                    <div className="w-12 h-12 bg-brand-bg rounded-2xl flex items-center justify-center border border-brand-border-soft flex-shrink-0">
                       {React.cloneElement(opt.icon, { size: 22 })}
                     </div>
-                    <span className="bg-slate-100 text-slate-500 text-[9px] font-black px-2 py-1 rounded-lg uppercase tracking-widest border border-slate-200/50 truncate ml-2">
+                    <span className="bg-brand-surface-alt text-slate-500 text-[9px] font-black px-2 py-1 rounded-lg uppercase tracking-widest border border-brand-border/50 truncate ml-2">
                       {opt.badge}
                     </span>
                   </div>
@@ -155,9 +155,9 @@ const Pricing = () => {
                       {opt.nombre}
                     </h3>
                     <div className="flex items-start gap-0.5">
-                      <span className="text-sm font-black text-slate-900 mt-1">S/</span>
+                      <span className="text-sm font-black text-brand-heading mt-1">S/</span>
                       <span className={`text-5xl xl:text-6xl font-black tracking-tighter leading-none ${opt.textColor}`}>{Math.round(opt.precio_base)}</span>
-                      <span className="text-slate-400 text-[8px] font-bold uppercase tracking-widest self-end mb-1.5 ml-0.5">
+                      <span className="text-brand-muted text-[8px] font-bold uppercase tracking-widest self-end mb-1.5 ml-0.5">
                         {opt.nombre.toUpperCase().includes('UNITARIA') || opt.nombre.toUpperCase().includes('SESIÓN') || opt.nombre.toUpperCase().includes('SESION') ? '/ sesión' : '/ mes'}
                       </span>
                     </div>
@@ -194,7 +194,7 @@ const Pricing = () => {
               {planes.map((_, i) => (
                 <div
                   key={i}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${activeTab === i ? 'w-6 bg-orange-500' : 'w-2 bg-slate-300'}`}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${activeTab === i ? 'w-6 bg-brand-accent' : 'w-2 bg-slate-300'}`}
                 />
               ))}
             </div>
@@ -205,21 +205,21 @@ const Pricing = () => {
 
       {/* --- SECCIÓN INFERIOR --- */}
       <section className="max-w-7xl mx-auto px-6 pb-32">
-        <div className="bg-[#0f172a] rounded-[4rem] p-12 md:p-24 text-center relative overflow-hidden shadow-2xl">
+        <div className="bg-brand-primary-dark rounded-[4rem] p-12 md:p-24 text-center relative overflow-hidden shadow-2xl">
           <div className="absolute inset-0 opacity-10 pointer-events-none">
             <img src="https://images.unsplash.com/photo-1526676037777-05a232554f77?q=80&w=2000" className="w-full h-full object-cover" alt="voleibol" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-primary-dark to-transparent"></div>
           </div>
 
           <div className="relative z-10 max-w-3xl mx-auto">
             <h3 className="text-4xl md:text-6xl font-black text-white uppercase italic leading-tight mb-6 tracking-tighter">
-              ¿Quieres sentir la <span className="text-orange-500 text-glow">Energía</span>?
+              ¿Quieres sentir la <span className="text-brand-accent text-glow">Energía</span>?
             </h3>
-            <p className="text-slate-400 mb-10 text-base md:text-lg font-medium leading-relaxed max-w-xl mx-auto">
+            <p className="text-brand-muted mb-10 text-base md:text-lg font-medium leading-relaxed max-w-xl mx-auto">
               Visítanos en cualquiera de nuestras sedes y descubre el plan perfecto para tu nivel.
             </p>
             <div className="flex justify-center">
-              <Link to="/register" className="bg-[#f97316] text-white hover:bg-white hover:text-[#0f172a] font-black uppercase tracking-[0.2em] px-8 md:px-12 py-5 md:py-8 rounded-2xl md:rounded-3xl text-[10px] md:text-sm transition-all shadow-2xl shadow-orange-500/40 hover:-translate-y-2 flex items-center justify-center text-center gap-4 border-2 border-transparent hover:border-orange-500 max-w-2xl">
+              <Link to="/register" className="bg-brand-accent text-white hover:bg-brand-surface hover:text-brand-heading font-black uppercase tracking-[0.2em] px-8 md:px-12 py-5 md:py-8 rounded-2xl md:rounded-3xl text-[10px] md:text-sm transition-all shadow-2xl shadow-brand-accent/40 hover:-translate-y-2 flex items-center justify-center text-center gap-4 border-2 border-transparent hover:border-brand-accent max-w-2xl">
                 ¡Acercate a una de nuestras sedes y pregunta por nuestros planes!
                 <MapPin size={24} fill="currentColor" className="animate-bounce flex-shrink-0" />
               </Link>
