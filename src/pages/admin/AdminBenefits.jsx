@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Search, TicketPercent, MessageSquare, Loader2, Save, Info, Clock, AlertCircle } from 'lucide-react';
+import { TicketPercent, MessageSquare, Loader2, Save, Info, Clock, AlertCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { apiFetch } from '../../interceptors/api';
 import { useAuth } from '../../context/AuthContext';
 import { API_ROUTES } from '../../constants/apiRoutes';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import SearchInput from '../../components/shared/SearchInput';
 
 const AdminBenefits = () => {
     const { userId } = useAuth();
@@ -138,10 +140,11 @@ const AdminBenefits = () => {
     };
 
     if (loading) return (
-        <div className="flex flex-col items-center justify-center h-64 text-slate-500 gap-3">
-            <Loader2 className="animate-spin text-brand-primary" size={40} />
-            <p className="font-black italic animate-pulse">Sincronizando Sistema de Beneficios...</p>
-        </div>
+        <LoadingSpinner
+            className="flex flex-col items-center justify-center h-64 text-slate-500 gap-3"
+            label="Sincronizando Sistema de Beneficios..."
+            labelClassName="font-black italic animate-pulse"
+        />
     );
 
     return (
@@ -174,19 +177,16 @@ const AdminBenefits = () => {
                             {/* 1. SELECCIÓN DE ALUMNO */}
                             <div className="space-y-3">
                                 <label className="text-[10px] font-black text-brand-muted uppercase ml-1 tracking-widest">1. Buscar Alumno</label>
-                                <div className="relative">
-                                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted" size={16} />
-                                    <input
-                                        type="text"
-                                        placeholder="NOMBRE O DOCUMENTO..."
-                                        value={searchTerm}
-                                        onChange={(e) => {
-                                            setSearchTerm(e.target.value);
-                                            if (!e.target.value) { setSelectedAlumnoId(''); setDeudaPendiente(null); }
-                                        }}
-                                        className="w-full bg-brand-bg border border-brand-border rounded-2xl pl-11 pr-4 py-3 text-xs font-bold uppercase outline-none focus:ring-2 focus:ring-blue-500/10 transition-all"
-                                    />
-                                </div>
+                                <SearchInput
+                                    value={searchTerm}
+                                    onChange={(e) => {
+                                        setSearchTerm(e.target.value);
+                                        if (!e.target.value) { setSelectedAlumnoId(''); setDeudaPendiente(null); }
+                                    }}
+                                    placeholder="NOMBRE O DOCUMENTO..."
+                                    iconSize={16}
+                                    className="w-full bg-brand-bg border border-brand-border rounded-2xl pl-11 pr-4 py-3 text-xs font-bold uppercase outline-none focus:ring-2 focus:ring-blue-500/10 transition-all"
+                                />
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-64 overflow-y-auto p-2 bg-brand-bg/50 rounded-2xl border border-dashed border-brand-border custom-scrollbar">
                                     {filteredAlumnos.length > 0 ? (
                                         filteredAlumnos.map(alum => (

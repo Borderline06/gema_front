@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { 
-    Plus, Search, Phone, Loader2, UserCog, ArrowLeft, 
+    Plus, Phone, UserCog, ArrowLeft, 
     Mail, Award, Calendar, Fingerprint, User, 
     ShieldCheck, Info, Save, Edit3 
 } from 'lucide-react';
-import AdminTeachers from './AdminTeachers';
-import AdminTeacherEdit from './AdminTeacherEdit'; // 🔥 Importamos el nuevo componente
+import AdminTeachers from '../../components/Admin/AdminTeachers';
+import AdminTeacherEdit from '../../components/Admin/AdminTeacherEdit'; // 🔥 Importamos el nuevo componente
+import PageTitle from '../../components/shared/PageTitle';
+import SearchInput from '../../components/shared/SearchInput';
 import { apiFetch } from '../../interceptors/api';
 import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../constants/apiRoutes';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
 
 const AdminTeachersManager = () => {
     const [view, setView] = useState('list');
@@ -90,10 +93,14 @@ const AdminTeachersManager = () => {
                             <ArrowLeft size={20} />
                         </button>
                         <div>
-                            <h1 className="text-2xl font-black text-brand-heading uppercase tracking-tight italic">
-                                Expediente <span className="text-brand-primary">Profesional</span>
-                            </h1>
-                            <p className="text-[10px] font-black text-brand-accent uppercase tracking-[0.2em] ml-1">Staff Técnico Gema</p>
+                            <PageTitle
+                                title="Expediente"
+                                accent="Profesional"
+                                subtitle="Staff Técnico Gema"
+                                showBar={false}
+                                wrapperClassName=""
+                                subtitleClassName="text-[10px] font-black text-brand-accent uppercase tracking-[0.2em] ml-1"
+                            />
                         </div>
                     </div>
 
@@ -178,30 +185,22 @@ const AdminTeachersManager = () => {
     return (
         <div className="space-y-6 animate-fade-in-up p-1">
             <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2 mb-1">
-                    <div className="h-6 w-1 bg-brand-accent rounded-full"></div>
-                    <h1 className="text-2xl font-black text-brand-heading uppercase tracking-tight italic">
-                        Panel <span className="text-brand-primary">Coordinador</span>
-                    </h1>
-                </div>
+                <PageTitle title="Panel" accent="Coordinador" />
                 <button onClick={() => setView('create')} className="bg-brand-primary text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all hover:bg-brand-accent shadow-lg">
                     <Plus size={20} /> Registrar Coordinador
                 </button>
             </div>
 
-            <div className="relative group">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted" size={18} />
-                <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="BUSCAR STAFF POR NOMBRE O ESPECIALIDAD..."
-                    className="w-full bg-brand-surface border border-brand-border rounded-2xl pl-12 py-3 text-xs font-bold uppercase outline-none focus:ring-2 focus:ring-blue-500/20 shadow-sm"
-                />
-            </div>
+            <SearchInput
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="BUSCAR STAFF POR NOMBRE O ESPECIALIDAD..."
+                wrapperClassName="relative group"
+                className="w-full bg-brand-surface border border-brand-border rounded-2xl pl-12 py-3 text-xs font-bold uppercase outline-none focus:ring-2 focus:ring-blue-500/20 shadow-sm"
+            />
 
             {loading ? (
-                <div className="flex justify-center p-20"><Loader2 className="animate-spin text-brand-accent" size={40} /></div>
+                <LoadingSpinner className="flex justify-center p-20" colorClassName="text-brand-accent" />
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredTeachers.map((teacher) => (

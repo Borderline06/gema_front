@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { apiFetch } from '../../../interceptors/api.js';
 import { API_ROUTES } from '../../../constants/apiRoutes';
 import horarioService from '../../../services/horario.service';
+import LoadingSpinner from '../../..//components/shared/LoadingSpinner';
 import { useAuth } from '../../../context/AuthContext';
 import CurrentScheduleCard from './schedule-change/CurrentScheduleCard';
 import AvailableScheduleCard from './schedule-change/AvailableScheduleCard';
@@ -131,10 +132,11 @@ const ChangeLevelStudent = ({ alumno, onBack }) => {
 
     if (loadingActuales || loadingDisponibles) {
         return (
-            <div className="flex flex-col items-center justify-center h-64 text-slate-500 gap-3">
-                <Loader2 className="animate-spin text-brand-primary" size={40} />
-                <p className="font-bold italic animate-pulse">Sincronizando información de horarios...</p>
-            </div>
+            <LoadingSpinner
+                className="flex flex-col items-center justify-center h-64 text-slate-500 gap-3"
+                label="Sincronizando información de horarios..."
+                labelClassName="font-bold italic animate-pulse"
+            />
         );
     }
 

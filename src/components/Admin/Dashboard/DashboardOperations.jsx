@@ -3,6 +3,7 @@ import { FileSpreadsheet, Filter, X, RotateCcw, ChevronLeft, ChevronRight, Check
 import toast from 'react-hot-toast';
 import { apiFetch } from '../../../interceptors/api';
 import { API_ROUTES } from '../../../constants/apiRoutes';
+import { usePagination } from '../../../hooks/usePagination';
 
 // A nivel de modulo: antes se reconstruian en cada render.
 const MESES = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -48,7 +49,6 @@ const DashboardOperations = ({ reporte = [], onExport, isExporting }) => {
 
     const [filterState, setFilterState] = useState({});
     const [activeCol, setActiveCol] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
     const popoverRef = useRef(null);
 
     // 2. NUEVO: Sincronizamos los datos del prop 'reporte' con nuestro estado local
@@ -89,6 +89,9 @@ const DashboardOperations = ({ reporte = [], onExport, isExporting }) => {
         });
     }, [localReporte, filterState]);
 
+    const { currentPage, setCurrentPage, totalPages, pageItems: paginatedData } =
+        usePagination(processedData, ROWS_PER_PAGE);
+
     // Solo los filtros devuelven a la pagina 1. Antes este efecto dependia de
     // processedData, asi que cualquier edicion optimista (teclear un comentario)
     // tambien te sacaba de la pagina en la que estabas.
@@ -123,12 +126,6 @@ const DashboardOperations = ({ reporte = [], onExport, isExporting }) => {
             setLocalReporte(previousData); // Revertimos si hay error de red
         }
     }, []);
-
-    const totalPages = Math.ceil(processedData.length / ROWS_PER_PAGE);
-    const paginatedData = useMemo(
-        () => processedData.slice((currentPage - 1) * ROWS_PER_PAGE, currentPage * ROWS_PER_PAGE),
-        [processedData, currentPage]
-    );
 
     return (
         <div className="pt-10 mt-10">
@@ -167,7 +164,7 @@ const DashboardOperations = ({ reporte = [], onExport, isExporting }) => {
                                                 <Filter size={10} className="cursor-pointer hover:text-brand-primary transition-colors" onClick={() => setActiveCol(activeCol === key ? null : key)} />
                                             </div>
                                             {activeCol === key && (
-                                                <div ref={popoverRef} className="absolute top-12 left-0 w-64 bg-brand-surface p-4 shadow-2xl rounded-2xl border z-[9999] font-normal text-slate-600">
+                                                <div ref={popoverRef} className="absolute top-12 left-0 w-64 bg-brand-surface p-4 shadow-2xl rounded-2xl border z-dropdown font-normal text-slate-600">
                                                     <p className="text-[10px] font-bold mb-3 text-brand-muted uppercase">FILTRAR POR {key}</p>
                                                     
                                                     {SELECT_FILTER_COLS.includes(key) ? (

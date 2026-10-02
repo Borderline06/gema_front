@@ -3,18 +3,21 @@ import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Ba
 import InfoTip from '../../../shared/InfoTip';
 import { CHART_COLORS } from './chartColors';
 import { BRAND_COLORS } from "../../../../config/themeColors.js";
+import ChartHeader from '../../../shared/ChartHeader';
 
 const RevenueChart = ({ metodosPago }) => (
     <div className="lg:col-span-3 bg-brand-surface rounded-[2.5rem] border border-brand-border-soft shadow-[0_20px_60px_rgba(0,0,0,0.03)] p-5 md:p-8 flex flex-col mt-6">
         <div className="mb-6 flex justify-between items-start">
             <div>
-                <h2 className="font-black text-brand-primary uppercase tracking-tight text-xl italic mb-1 flex items-center gap-2">
-                    <div className="w-1.5 h-6 bg-red-500 rounded-full"></div> Recaudación Anual
+                <ChartHeader
+                    barClassName="w-1.5 h-6 bg-red-500 rounded-full"
+                    title="Recaudación Anual"
+                    subtitle="Ingresos por Canales de Pago"
+                >
                     <InfoTip
                         text="Solo suma pagos con estado APROBADO dentro del año seleccionado. Pagos pendientes de validación o rechazados no aparecen aquí."
                     />
-                </h2>
-                <p className="text-[10px] text-brand-muted font-bold uppercase tracking-widest ml-3.5">Ingresos por Canales de Pago</p>
+                </ChartHeader>
             </div>
         </div>
         <div style={{ width: '100%', height: 350 }}>

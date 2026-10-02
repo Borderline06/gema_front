@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Loader2, Calendar, Clock, MapPin, BadgeCheck, XCircle, HelpCircle } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, MapPin, BadgeCheck, XCircle, HelpCircle } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 import toast from 'react-hot-toast';
 import { asistenciaService } from '../../../services/asistencia.service';
+import LoadingSpinner from '../../..//components/shared/LoadingSpinner';
 
 const StudentAttendanceHistory = ({ alumno, onBack }) => {
     const [asistencias, setAsistencias] = useState([]);
@@ -49,10 +50,12 @@ const StudentAttendanceHistory = ({ alumno, onBack }) => {
     const faltas = asistencias.filter(a => ['FALTA'].includes(a.estado?.toUpperCase())).length;
 
     if (loading) return (
-        <div className="flex flex-col items-center justify-center h-96 gap-4">
-            <Loader2 className="animate-spin text-brand-primary" size={48} />
-            <p className="font-black text-brand-primary text-xs uppercase italic tracking-widest animate-pulse">Sincronizando Asistencias...</p>
-        </div>
+        <LoadingSpinner
+            className="flex flex-col items-center justify-center h-96 gap-4"
+            size={48}
+            label="Sincronizando Asistencias..."
+            labelClassName="font-black text-brand-primary text-xs uppercase italic tracking-widest animate-pulse"
+        />
     );
 
     return (

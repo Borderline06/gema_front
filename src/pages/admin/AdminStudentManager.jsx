@@ -1,19 +1,21 @@
 import React, { useState, useCallback, useMemo, useDeferredValue } from 'react';
-import { Search, ChevronRight, ArrowLeft, Plus } from 'lucide-react';
+import { ChevronRight, ArrowLeft, Plus } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 import alumnoService from '../../services/alumno.service';
 import { useFetch } from '../../hooks/useFetch';
 import { useCatalogos } from '../../hooks/useCatalogos';
+import { usePagination } from '../../hooks/usePagination';
 import { invalidarHistorialCiclos } from '../../hooks/useHistorialCiclos';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import SearchInput from '../../components/shared/SearchInput';
 
 // COMPONENTES MODULARIZADOS
 import ChangeLevelStudent from '../../components/Admin/StudenManager/ChangeLevelStudent.jsx';
 import StudentDetails from '../../components/Admin/StudenManager/StudentDetails.jsx';
 import InscriptionsModal from '../../components/Admin/StudenManager/InscriptionsModal.jsx';
 import StudentTable from '../../components/Admin/StudenManager/StudentTable.jsx';
-import AdminStudents from './AdminStudents.jsx';
+import AdminStudents from '../../components/Admin/AdminStudents.jsx';
 import StudentAttendanceHistory from '../../components/Admin/StudenManager/StudentAttendanceHistory.jsx';
 
 const AdminStudentsManager = () => {
@@ -25,7 +27,6 @@ const AdminStudentsManager = () => {
     // /sedes?activo=true por su cuenta, igual que otras cinco pantallas.
     const { sedes } = useCatalogos(['sedes']);
     const [modalInscripciones, setModalInscripciones] = useState({ isOpen: false, data: null });
-    const [currentPage, setCurrentPage] = useState(1);
 
     // 🔥 MOVIDO desde StudentTable: filtros avanzados, texto y orden ahora
     // viven aquí, porque deben aplicarse sobre la lista COMPLETA de alumnos
@@ -76,13 +77,6 @@ const AdminStudentsManager = () => {
             toast.error(e.message || 'Error al actualizar el historial');
         }
     };
-
-    // 🔥 Cambiar cualquier filtro devuelve a la página 1. Se hace en los propios
-    // setters en vez de en un useEffect que observase el estado ya cambiado.
-    const cambiarBusqueda = useCallback((valor) => { setSearchTerm(valor); setCurrentPage(1); }, []);
-    const cambiarSede = useCallback((valor) => { setSelectedSede(valor); setCurrentPage(1); }, []);
-    const cambiarFilters = useCallback((siguiente) => { setFilters(siguiente); setCurrentPage(1); }, []);
-    const cambiarTextFilter = useCallback((siguiente) => { setTextFilter(siguiente); setCurrentPage(1); }, []);
 
     // 🔥 Opciones de los selects de filtro: SIEMPRE calculadas sobre la lista
     // COMPLETA de alumnos (no solo los 10 de la página actual), para que no
@@ -157,8 +151,15 @@ const AdminStudentsManager = () => {
         return result;
     }, [alumnos, searchTermDiferido, textFilterDiferido, filters, sortConfig]);
 
-    const currentAlumnos = processedAlumnos.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-    const totalPages = Math.ceil(processedAlumnos.length / itemsPerPage);
+    const { currentPage, setCurrentPage, totalPages, pageItems: currentAlumnos } =
+        usePagination(processedAlumnos, itemsPerPage);
+
+    // 🔥 Cambiar cualquier filtro devuelve a la página 1. Se hace en los propios
+    // setters en vez de en un useEffect que observase el estado ya cambiado.
+    const cambiarBusqueda = useCallback((valor) => { setSearchTerm(valor); setCurrentPage(1); }, [setCurrentPage]);
+    const cambiarSede = useCallback((valor) => { setSelectedSede(valor); setCurrentPage(1); }, [setCurrentPage]);
+    const cambiarFilters = useCallback((siguiente) => { setFilters(siguiente); setCurrentPage(1); }, [setCurrentPage]);
+    const cambiarTextFilter = useCallback((siguiente) => { setTextFilter(siguiente); setCurrentPage(1); }, [setCurrentPage]);
 
     const hasFilters = filters.sede || filters.nivel || filters.estadoVisual || textFilter.value;
 
@@ -169,10 +170,12 @@ const AdminStudentsManager = () => {
 
     // --- RENDERIZADOS ---
     if (loading) return (
-        <div className="flex flex-col items-center justify-center h-96 gap-4">
-            <LoadingSpinner size={48} className="" />
-            <p className="font-black text-brand-primary text-xs uppercase italic tracking-widest animate-pulse">Consultando Registros...</p>
-        </div>
+        <LoadingSpinner
+            className="flex flex-col items-center justify-center h-96 gap-4"
+            size={48}
+            label="Consultando Registros..."
+            labelClassName="font-black text-brand-primary text-xs uppercase italic tracking-widest animate-pulse"
+        />
     );
 
     if (view === 'details' && selectedAlumno) {
@@ -220,16 +223,15 @@ const AdminStudentsManager = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-[1fr_220px] gap-4">
-                <div className="relative group">
-                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-brand-primary transition-colors" size={20} />
-                    <input
-                        type="text"
-                        value={searchTerm}
-                        onChange={(e) => cambiarBusqueda(e.target.value)}
-                        placeholder="BUSCAR POR NOMBRE, APELLIDO O DNI..."
-                        className="w-full bg-brand-surface border-2 border-brand-border-soft rounded-[1.8rem] pl-16 pr-8 py-5 font-black text-xs uppercase tracking-widest outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-brand-primary transition-all shadow-sm"
-                    />
-                </div>
+                <SearchInput
+                    value={searchTerm}
+                    onChange={(e) => cambiarBusqueda(e.target.value)}
+                    placeholder="BUSCAR POR NOMBRE, APELLIDO O DNI..."
+                    wrapperClassName="relative group"
+                    iconSize={20}
+                    iconClassName="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-brand-primary transition-colors"
+                    className="w-full bg-brand-surface border-2 border-brand-border-soft rounded-[1.8rem] pl-16 pr-8 py-5 font-black text-xs uppercase tracking-widest outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-brand-primary transition-all shadow-sm"
+                />
                 <select value={selectedSede} onChange={(e) => cambiarSede(e.target.value)} className="bg-brand-surface border border-brand-border rounded-xl px-4 py-3 text-[10px] font-black uppercase shadow-sm outline-none cursor-pointer focus:ring-2 focus:ring-blue-500">
                     <option value="">TODAS LAS SEDES</option>
                     {sedes.map(s => <option key={s.id} value={s.id}>SEDE {s.nombre}</option>)}

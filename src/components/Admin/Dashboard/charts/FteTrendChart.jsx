@@ -5,6 +5,7 @@ import {
 } from 'recharts';
 import InfoTip from '../../../shared/InfoTip';
 import { BRAND_COLORS } from "../../../../config/themeColors.js";
+import ChartHeader from '../../../shared/ChartHeader';
 
 const FteTrendChart = ({ activosPorMes, selectedYear, setSelectedYear, availableYears }) => {
     const tendenciaCombinada = useMemo(() => {
@@ -52,14 +53,16 @@ const FteTrendChart = ({ activosPorMes, selectedYear, setSelectedYear, available
         <div className="lg:col-span-2 bg-brand-surface rounded-[2.5rem] border border-brand-border-soft shadow-[0_20px_60px_rgba(0,0,0,0.03)] p-5 md:p-8 flex flex-col relative z-20">
             <div className="mb-6 flex justify-between items-start">
                 <div>
-                    <h2 className="font-black text-brand-primary uppercase tracking-tight text-xl italic mb-1 flex items-center gap-2">
-                        <div className="w-1.5 h-6 bg-indigo-500 rounded-full"></div> Volumen Activo (FTE)
+                    <ChartHeader
+                        barClassName="w-1.5 h-6 bg-indigo-500 rounded-full"
+                        title="Volumen Activo (FTE)"
+                        subtitle="Evolución de Full-Time Equivalents (1 Horario = 0.5 FTE)"
+                    >
                         <InfoTip
                             width="w-72"
                             text="FTE = Full-Time Equivalent. Cada horario semanal de un alumno equivale a 0.5 FTE (2 horarios = 1.0 FTE). El mes en curso es parcial: cuenta a quien estuvo activo en cualquier día del mes, aunque hoy ya no lo esté — por eso puede diferir un poco del contador de 'Alumnos Activos' de arriba, que es la foto de hoy."
                         />
-                    </h2>
-                    <p className="text-[10px] text-brand-muted font-bold uppercase tracking-widest ml-3.5">Evolución de Full-Time Equivalents (1 Horario = 0.5 FTE)</p>
+                    </ChartHeader>
                 </div>
                 <div className="flex items-center bg-brand-bg border border-brand-border-soft rounded-xl px-3 py-2 cursor-pointer shadow-sm relative">
                     <CalendarDays size={16} className="text-brand-primary mr-2" />

@@ -2,17 +2,20 @@ import React from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import InfoTip from '../../../shared/InfoTip';
 import { BRAND_COLORS } from "../../../../config/themeColors.js";
+import ChartHeader from '../../../shared/ChartHeader';
 
 const GenderChart = ({ alumnosGenero }) => (
     <div className="lg:col-span-1 bg-brand-surface rounded-[2.5rem] border border-brand-border-soft shadow-[0_20px_60px_rgba(0,0,0,0.03)] p-5 md:p-8 flex flex-col mt-6">
         <div className="mb-6">
-            <h2 className="font-black text-brand-primary uppercase tracking-tight text-xl italic mb-1 flex items-center gap-2">
-                <div className="w-1.5 h-6 bg-blue-600 rounded-full"></div> Alumnado Activo
+            <ChartHeader
+                barClassName="w-1.5 h-6 bg-blue-600 rounded-full"
+                title="Alumnado Activo"
+                subtitle="Segmentación por Género (Activos Hoy)"
+            >
                 <InfoTip
                     text="A diferencia del gráfico de Rangos de Edad, aquí SOLO se cuentan alumnos activos hoy (con clases vigentes). El número entre paréntesis es su equivalente en FTE."
                 />
-            </h2>
-            <p className="text-[10px] text-brand-muted font-bold uppercase tracking-widest ml-3.5">Segmentación por Género (Activos Hoy)</p>
+            </ChartHeader>
         </div>
         <div style={{ width: '100%', height: 180, position: 'relative' }}>
             <ResponsiveContainer width="100%" height="100%" minWidth={1}>

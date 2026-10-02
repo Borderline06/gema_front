@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Plus, Clock, User, MapPin, Edit3, Trash2, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
-import AdminSchedule from './AdminSchedule';
+import AdminSchedule from '../../components/Admin/AdminSchedule';
 import { apiFetch } from '../../interceptors/api';
 import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../constants/apiRoutes';
 import ConfirmModal from '../../components/shared/ConfirmModal';
 import SearchInput from '../../components/shared/SearchInput';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import EmptyState from '../../components/shared/EmptyState';
+import { usePagination } from '../../hooks/usePagination';
 
 const AdminSchedulesManager = () => {
     const [view, setView] = useState('list');
@@ -22,7 +24,6 @@ const AdminSchedulesManager = () => {
     const [selectedHorario, setSelectedHorario] = useState(null);
 
     // --- ESTADO PAGINACIÓN ---
-    const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 6;
 
     const handleEdit = (horario) => {
@@ -90,11 +91,8 @@ const AdminSchedulesManager = () => {
     }, [horarios, filterDia, filterSede, filterCoordinador, searchTerm]);
 
     // --- LÓGICA DE PAGINACIÓN ---
-    const totalPages = Math.ceil(filteredHorarios.length / itemsPerPage);
-    const currentData = filteredHorarios.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
-    );
+    const { currentPage, setCurrentPage, totalPages, pageItems: currentData } =
+        usePagination(filteredHorarios, itemsPerPage);
 
     // Obtener opciones únicas para los selects de filtro
     const uniqueSedes = [...new Set(horarios.map(h => h.cancha.sede.nombre))];
@@ -219,9 +217,11 @@ const AdminSchedulesManager = () => {
                                 </div>
                             ))
                         ) : (
-                            <div className="col-span-full py-20 text-center bg-brand-bg rounded-3xl border border-dashed border-brand-border">
-                                <p className="text-brand-muted font-bold italic">No se encontraron horarios con esos filtros.</p>
-                            </div>
+                            <EmptyState
+                                className="col-span-full py-20 text-center bg-brand-bg rounded-3xl border border-dashed border-brand-border"
+                                message="No se encontraron horarios con esos filtros."
+                                messageClassName="text-brand-muted font-bold italic"
+                            />
                         )}
                     </div>
 

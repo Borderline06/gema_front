@@ -25,7 +25,7 @@ const MobileNavbarTeacher = () => {
     return (
         <>
             {/* PANEL LATERAL (DRAWER) */}
-            <div className={`fixed inset-0 z-[60] ${isMenuOpen ? 'visible' : 'invisible'}`}>
+            <div className={`fixed inset-0 z-nav ${isMenuOpen ? 'visible' : 'invisible'}`}>
                 <div
                     className={`absolute inset-0 bg-slate-950/80 backdrop-blur-md transition-opacity duration-300 ${isMenuOpen ? 'opacity-100' : 'opacity-0'}`}
                     onClick={toggleMenu}

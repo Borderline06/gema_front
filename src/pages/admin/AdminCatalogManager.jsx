@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { Tag, Edit3, Filter } from 'lucide-react'; // Quitamos Plus de los imports
-import AdminCatalog from './AdminCatalog';
+import AdminCatalog from '../../components/Admin/AdminCatalog';
 import { useFetch } from '../../hooks/useFetch';
+import PageTitle from '../../components/shared/PageTitle';
 import { catalogoService } from '../../services/catalogo.service';
 import SearchInput from '../../components/shared/SearchInput';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
@@ -60,15 +61,12 @@ const AdminCatalogManager = () => {
             {/* Header - Botón eliminado aquí */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <div className="flex items-center gap-2 mb-1">
-                        <div className="h-6 w-1 bg-brand-accent rounded-full"></div>
-                        <h1 className="text-2xl font-black text-brand-heading uppercase tracking-tight italic">
-                            Catálogo de <span className="text-brand-primary">Precios</span>
-                        </h1>
-                    </div>
-                    <p className="text-slate-500 text-[11px] font-bold uppercase tracking-wider">
-                        Edita los precios del catálogo, ya que son parte de la lógica interna.
-                    </p>
+                    <PageTitle
+                        title="Catálogo de"
+                        accent="Precios"
+                        subtitle="Edita los precios del catálogo, ya que son parte de la lógica interna."
+                        subtitleClassName="text-slate-500 text-[11px] font-bold uppercase tracking-wider"
+                    />
                 </div>
             </div>
 

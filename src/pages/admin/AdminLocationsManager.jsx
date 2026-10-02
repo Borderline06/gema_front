@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Plus, MapPin, Building2, ChevronRight, Edit3, Trash2, ArrowLeft } from 'lucide-react';
-import AdminLocations from './AdminLocations';
+import AdminLocations from '../../components/Admin/AdminLocations';
 import { sedeService } from '../../services/sede.service';
 import { useFetch } from '../../hooks/useFetch';
 import ConfirmModal from '../../components/shared/ConfirmModal';

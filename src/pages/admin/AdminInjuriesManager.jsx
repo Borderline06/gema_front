@@ -159,7 +159,7 @@ const AdminInjuriesManager = () => {
             {/* MODALES Y VISOR (Lógica de Negocio intacta) */}
             <InjuryEvaluationModal isOpen={modalOpen} onClose={() => setModalOpen(false)} solicitud={selectedSolicitud} onEvaluateSuccess={fetchPendientes} />
             {evidenceViewerOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-xl animate-in fade-in duration-300" onClick={() => setEvidenceViewerOpen(false)}>
+                <div className="fixed inset-0 z-modal-nested flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-xl animate-in fade-in duration-300" onClick={() => setEvidenceViewerOpen(false)}>
                     <div className="relative max-w-4xl max-h-[85vh] w-full" onClick={(e) => e.stopPropagation()}>
                         <button onClick={() => setEvidenceViewerOpen(false)} className="absolute -top-16 right-0 p-3 text-white/40 hover:text-brand-accent transition-all bg-white/5 rounded-2xl border border-white/5"><X size={24} /></button>
                         <div className="bg-brand-surface p-2 rounded-[2.5rem] shadow-[0_0_80px_rgba(0,0,0,0.5)] overflow-hidden ring-1 ring-white/20">

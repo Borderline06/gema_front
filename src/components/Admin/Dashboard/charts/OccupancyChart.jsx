@@ -2,17 +2,20 @@ import React from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import InfoTip from '../../../shared/InfoTip';
 import { CHART_COLORS } from './chartColors';
+import ChartHeader from '../../../shared/ChartHeader';
 
 const OccupancyChart = ({ sedes, totalAlumnos, alumnosMultiSede }) => (
     <div className="lg:col-span-1 bg-brand-surface rounded-[2.5rem] border border-brand-border-soft shadow-[0_20px_60px_rgba(0,0,0,0.03)] p-5 md:p-8 flex flex-col">
         <div className="mb-6">
-            <h2 className="font-black text-brand-primary uppercase tracking-tight text-xl italic mb-1 flex items-center gap-2">
-                <div className="w-1.5 h-6 bg-blue-600 rounded-full"></div> Ocupación
+            <ChartHeader
+                barClassName="w-1.5 h-6 bg-blue-600 rounded-full"
+                title="Ocupación"
+                subtitle="Plazas Ocupadas por Sede (Hoy)"
+            >
                 <InfoTip
                     text="Cada alumno se cuenta una vez por sede en la que tiene clases activas hoy. Si está matriculado en 2+ sedes, la suma de las sedes será mayor al total real de alumnos — por eso mostramos el aviso de 'alumnos en 2+ sedes' abajo."
                 />
-            </h2>
-            <p className="text-[10px] text-brand-muted font-bold uppercase tracking-widest ml-3.5">Plazas Ocupadas por Sede (Hoy)</p>
+            </ChartHeader>
         </div>
         <div style={{ width: '100%', height: 200, position: 'relative' }}>
             <ResponsiveContainer width="100%" height="100%" minWidth={1}>

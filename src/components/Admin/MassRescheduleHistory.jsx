@@ -6,12 +6,13 @@ import {
     MapPin,
     AlertCircle,
     FastForward,
-    User,
-    Loader2
+    User
 } from 'lucide-react';
 import apiFetch from '../../interceptors/api';
 import { API_ROUTES } from '../../constants/apiRoutes';
 import toast from 'react-hot-toast';
+import LoadingSpinner from '../shared/LoadingSpinner';
+import EmptyState from '../shared/EmptyState';
 
 const MassRescheduleHistory = ({ refreshSignal }) => { // 📥 Recibe la señal
     const [history, setHistory] = useState([]);
@@ -42,17 +43,22 @@ const MassRescheduleHistory = ({ refreshSignal }) => { // 📥 Recibe la señal
     };
 
     if (isLoading) return (
-        <div className="flex flex-col items-center justify-center p-20 space-y-3">
-            <Loader2 className="animate-spin text-blue-600" size={32} />
-            <p className="text-[10px] font-black text-brand-muted uppercase tracking-widest italic text-center">Actualizando...</p>
-        </div>
+        <LoadingSpinner
+            className="flex flex-col items-center justify-center p-20 space-y-3"
+            colorClassName="text-blue-600"
+            size={32}
+            label="Actualizando..."
+            labelClassName="text-[10px] font-black text-brand-muted uppercase tracking-widest italic text-center"
+        />
     );
 
     if (history.length === 0) return (
-        <div className="p-10 text-center bg-brand-bg/50 rounded-[2rem] border-2 border-dashed border-brand-border">
-            <CalendarX2 className="mx-auto text-slate-300 mb-2" size={40} />
-            <p className="text-[10px] font-black text-brand-muted uppercase italic">Sin registros</p>
-        </div>
+        <EmptyState
+            className="p-10 text-center bg-brand-bg/50 rounded-[2rem] border-2 border-dashed border-brand-border"
+            icon={CalendarX2}
+            message="Sin registros"
+            messageClassName="text-[10px] font-black text-brand-muted uppercase italic"
+        />
     );
 
     return (

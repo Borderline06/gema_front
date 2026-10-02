@@ -6,6 +6,8 @@ import {
 import { apiFetch } from '../../interceptors/api';
 import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../constants/apiRoutes';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import PageTitle from '../../components/shared/PageTitle';
 
 const AdminSettings = () => {
     const [settings, setSettings] = useState([]);
@@ -69,13 +71,7 @@ const AdminSettings = () => {
                         <Settings size={32} className="animate-spin-slow" />
                     </div>
                     <div>
-                        <div className="flex items-center gap-2 mb-1">
-                            <div className="h-6 w-1 bg-brand-accent rounded-full"></div>
-                            <h1 className="text-2xl font-black text-brand-heading uppercase tracking-tight italic">
-                                Configuración del <span className="text-brand-primary">Sistema</span>
-                            </h1>
-                        </div>
-                        <p className="text-[10px] font-bold text-brand-muted uppercase tracking-widest italic ml-1">Panel de parámetros del sistema</p>
+                        <PageTitle title="Configuración del" accent="Sistema" subtitle="Panel de parámetros del sistema" />
                     </div>
                 </div>
                 <div className="bg-brand-bg px-6 py-3 rounded-2xl border border-brand-border-soft">
@@ -88,10 +84,13 @@ const AdminSettings = () => {
             </div>
 
             {loading ? (
-                <div className="flex flex-col items-center justify-center py-32 gap-4">
-                    <Loader2 className="animate-spin text-brand-accent" size={48} />
-                    <p className="text-[10px] font-black text-brand-muted uppercase tracking-[0.4em]">Cargando Parámetros...</p>
-                </div>
+                <LoadingSpinner
+                    className="flex flex-col items-center justify-center py-32 gap-4"
+                    colorClassName="text-brand-accent"
+                    size={48}
+                    label="Cargando Parámetros..."
+                    labelClassName="text-[10px] font-black text-brand-muted uppercase tracking-[0.4em]"
+                />
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                     {settings.map((item) => (

@@ -7,7 +7,7 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message, iconType = '
 
     return (
         <AnimatePresence>
-            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <div className="fixed inset-0 z-confirm flex items-center justify-center p-4">
                 {/* Backdrop con desenfoque */}
                 <motion.div
                     initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}

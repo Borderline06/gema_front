@@ -125,7 +125,7 @@ const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
         <div className="space-y-6 animate-fade-in-up pb-20 relative">
 
             {showDateModal && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-sm">
+                <div className="fixed inset-0 z-modal flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-sm">
                     <div className="bg-brand-surface rounded-[3rem] p-10 w-full max-w-md shadow-2xl border-t-[12px] border-brand-accent animate-bounce-in">
                         <div className="text-center mb-8">
                             <div className="bg-orange-100 w-20 h-20 rounded-3xl text-brand-accent-dark flex items-center justify-center mx-auto mb-4">

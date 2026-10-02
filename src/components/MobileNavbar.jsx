@@ -46,7 +46,7 @@ const MobileNavbar = () => {
   return (
     <>
       {/* PANEL LATERAL FLOTANTE (MENÚ EXTENDIDO) */}
-      <div className={`fixed inset-0 z-[60] transition-all duration-300 ${isMenuOpen ? 'visible' : 'invisible'}`}>
+      <div className={`fixed inset-0 z-nav transition-all duration-300 ${isMenuOpen ? 'visible' : 'invisible'}`}>
         {/* Fondo oscuro borroso */}
         <div 
           className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${isMenuOpen ? 'opacity-100' : 'opacity-0'}`}

@@ -3,6 +3,7 @@ import { CalendarClock, Loader2, Layers, MapPin, User, Clock, DollarSign, Info }
 import ClaseSueltaButton from '../ciclos/ClaseSueltaButton';
 import CicloSinRegistrosCard from '../ciclos/CicloSinRegistrosCard';
 import { formatearFecha, obtenerRangoCiclo, getEstadoPagoBadge, getEstadoInscripcionBadge } from '../ciclos/cicloHelpers';
+import EmptyState from '../../../shared/EmptyState';
 
 const CicloHistoryPanel = ({ ciclos, loadingCiclos, onSelectIndividual }) => (
     <div className="bg-brand-surface rounded-[2.5rem] border border-brand-border-soft shadow-sm overflow-hidden flex flex-col">
@@ -127,10 +128,15 @@ const CicloHistoryPanel = ({ ciclos, loadingCiclos, onSelectIndividual }) => (
                     );
                 })
             ) : (
-                <div className="text-center py-10 flex flex-col items-center justify-center opacity-60">
-                    <CalendarClock size={32} className="text-slate-300 mb-2" />
-                    <span className="text-[10px] font-bold text-brand-muted uppercase tracking-widest">Sin registros de ciclos</span>
-                </div>
+                <EmptyState
+                    className="text-center py-10 flex flex-col items-center justify-center opacity-60"
+                    icon={CalendarClock}
+                    iconSize={32}
+                    iconClassName="text-slate-300 mb-2"
+                    as="span"
+                    message="Sin registros de ciclos"
+                    messageClassName="text-[10px] font-bold text-brand-muted uppercase tracking-widest"
+                />
             )}
         </div>
     </div>

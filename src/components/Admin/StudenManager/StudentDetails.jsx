@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 import ChangePasswordModal from '../../../components/shared/ChangePasswordModal'; // Ajusta la ruta si es necesario
@@ -11,6 +11,7 @@ import EmergencyContactCard from './student-details/EmergencyContactCard';
 import CicloHistoryPanel from './student-details/CicloHistoryPanel';
 import ClaseSueltaDetailModal from './ciclos/ClaseSueltaDetailModal';
 import { useHistorialCiclos } from '../../../hooks/useHistorialCiclos';
+import LoadingSpinner from '../../..//components/shared/LoadingSpinner';
 
 const StudentDetails = ({ selectedAlumno, onBack, onStatusHistoryChange }) => {
     const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
@@ -58,10 +59,12 @@ const StudentDetails = ({ selectedAlumno, onBack, onStatusHistoryChange }) => {
     // cuerpo que depende de direccion/salud/contactoEmergencia/email/etc.
     if (loadingDetalle || !detalle) {
         return (
-            <div className="flex flex-col items-center justify-center h-96 gap-4">
-                <Loader2 className="animate-spin text-brand-primary" size={48} />
-                <p className="font-black text-brand-primary text-xs uppercase italic tracking-widest animate-pulse">Cargando expediente...</p>
-            </div>
+            <LoadingSpinner
+                className="flex flex-col items-center justify-center h-96 gap-4"
+                size={48}
+                label="Cargando expediente..."
+                labelClassName="font-black text-brand-primary text-xs uppercase italic tracking-widest animate-pulse"
+            />
         );
     }
 

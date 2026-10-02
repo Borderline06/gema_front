@@ -4,6 +4,8 @@ import toast from 'react-hot-toast';
 import { apiFetch } from '../../interceptors/api';
 import { API_ROUTES } from '../../constants/apiRoutes';
 import ConfirmModal from '../../components/shared/ConfirmModal';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import EmptyState from '../../components/shared/EmptyState';
 
 // 🎨 Mapeo de Iconos Disponibles
 const IconOptions = {
@@ -149,7 +151,7 @@ const AdminCreateBenefitsAnuncio = () => {
     }
   };
 
-  if (loading) return <div className="flex h-screen items-center justify-center bg-brand-bg"><Loader2 className="animate-spin text-brand-accent" size={48} /></div>;
+  if (loading) return <LoadingSpinner className="flex h-screen items-center justify-center bg-brand-bg" colorClassName="text-brand-accent" size={48} />;
 
   return (
     <div className="p-6 md:p-10 max-w-7xl mx-auto min-h-screen bg-brand-bg">
@@ -224,16 +226,20 @@ const AdminCreateBenefitsAnuncio = () => {
         })}
 
         {anuncios.length === 0 && (
-          <div className="col-span-full py-20 text-center border-2 border-dashed border-slate-300 rounded-[3rem]">
-            <Gift size={48} className="mx-auto text-slate-300 mb-4" />
-            <p className="text-brand-muted font-black uppercase tracking-widest text-sm">No hay anuncios configurados</p>
-          </div>
+          <EmptyState
+            className="col-span-full py-20 text-center border-2 border-dashed border-slate-300 rounded-[3rem]"
+            icon={Gift}
+            iconSize={48}
+            iconClassName="mx-auto text-slate-300 mb-4"
+            message="No hay anuncios configurados"
+            messageClassName="text-brand-muted font-black uppercase tracking-widest text-sm"
+          />
         )}
       </div>
 
       {/* MODAL DE EDICIÓN / CREACIÓN */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-brand-primary-dark/80 backdrop-blur-sm p-4">
+        <div className="fixed inset-0 z-modal flex items-center justify-center bg-brand-primary-dark/80 backdrop-blur-sm p-4">
           <div className="bg-brand-surface w-full max-w-2xl rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
             <div className="px-8 py-6 border-b border-brand-border-soft flex justify-between items-center bg-brand-bg">
               <h2 className="text-2xl font-black text-brand-primary uppercase italic">

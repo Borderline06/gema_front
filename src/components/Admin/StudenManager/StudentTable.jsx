@@ -97,7 +97,7 @@ const StudentTable = ({
 
                                         {/* POP-UP DEL BUSCADOR */}
                                         {isTextFilterOpen && (
-                                            <div className="absolute top-full left-6 mt-1 bg-brand-surface border border-brand-border shadow-2xl rounded-2xl p-4 w-64 z-50 normal-case tracking-normal font-normal">
+                                            <div className="absolute top-full left-6 mt-1 bg-brand-surface border border-brand-border shadow-2xl rounded-2xl p-4 w-64 z-dropdown normal-case tracking-normal font-normal">
                                                 <p className="text-[10px] font-black text-brand-primary uppercase mb-2 tracking-widest">Filtro de Texto</p>
 
                                                 <select

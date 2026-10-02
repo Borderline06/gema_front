@@ -3,6 +3,7 @@ import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, BarC
 import InfoTip from '../../../shared/InfoTip';
 import { CHART_COLORS } from './chartColors';
 import { BRAND_COLORS } from "../../../../config/themeColors.js";
+import ChartHeader from '../../../shared/ChartHeader';
 
 const LevelsBySedeChart = ({ vigentesPorSedeNivel }) => {
     const [sedeSeleccionada, setSedeSeleccionada] = useState([]);
@@ -37,13 +38,15 @@ const LevelsBySedeChart = ({ vigentesPorSedeNivel }) => {
         <div className="lg:col-span-3 bg-brand-surface rounded-[2.5rem] border border-brand-border-soft shadow-[0_20px_60px_rgba(0,0,0,0.03)] p-5 md:p-8 flex flex-col mt-6">
             <div className="mb-8 flex flex-col gap-6">
                 <div>
-                    <h2 className="font-black text-brand-primary uppercase tracking-tight text-xl italic mb-1 flex items-center gap-2">
-                        <div className="w-1.5 h-6 bg-teal-500 rounded-full"></div> Niveles x Sede (FTE)
+                    <ChartHeader
+                        barClassName="w-1.5 h-6 bg-teal-500 rounded-full"
+                        title="Niveles x Sede (FTE)"
+                        subtitle="Distribución Académica en Equivalentes (Hoy)"
+                    >
                         <InfoTip
                             text="Las barras muestran FTE (0.5 por horario), no alumnos físicos. Pasa el mouse sobre una barra para ver el equivalente en alumnos reales entre paréntesis."
                         />
-                    </h2>
-                    <p className="text-[10px] text-brand-muted font-bold uppercase tracking-widest ml-3.5">Distribución Académica en Equivalentes (Hoy)</p>
+                    </ChartHeader>
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-6 bg-brand-bg/50 p-4 rounded-2xl border border-brand-border-soft">

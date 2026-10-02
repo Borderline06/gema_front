@@ -73,7 +73,7 @@ const FeriadoHistory = ({ onClose }) => {
     };
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-brand-primary-dark/70 backdrop-blur-md animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-modal flex items-center justify-center p-4 bg-brand-primary-dark/70 backdrop-blur-md animate-in fade-in duration-300">
             <div className="bg-brand-surface w-full max-w-md rounded-[2.5rem] shadow-2xl overflow-hidden border border-brand-border-soft flex flex-col max-h-[90vh]">
                 
                 {/* Header */}

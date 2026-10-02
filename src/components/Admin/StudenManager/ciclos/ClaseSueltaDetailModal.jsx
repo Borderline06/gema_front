@@ -1,18 +1,16 @@
 import React from 'react';
 import { Zap, X, MapPin, User, Clock, DollarSign, Info } from 'lucide-react';
 import { formatearFecha, obtenerRangoCiclo, getEstadoPagoBadge, getEstadoInscripcionBadge } from './cicloHelpers';
+import Modal from '../../../shared/Modal';
 
 // title es configurable porque InscriptionsModal y StudentDetails lo usan con
 // textos ligeramente distintos ("Detalle" vs "Resumen") pero el mismo layout.
 const ClaseSueltaDetailModal = ({ ciclo, onClose, title = 'Detalle de Clase Suelta' }) => (
-    <div
-        className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-brand-primary-dark/60 backdrop-blur-sm"
-        onClick={onClose}
+    <Modal
+        onBackdropClick={onClose}
+        overlayClassName="fixed inset-0 z-modal-nested flex items-center justify-center p-4 bg-brand-primary-dark/60 backdrop-blur-sm"
+        boxClassName="bg-brand-surface rounded-[2rem] border border-brand-border-soft shadow-2xl w-full max-w-md overflow-hidden animate-fade-in-up"
     >
-        <div
-            className="bg-brand-surface rounded-[2rem] border border-brand-border-soft shadow-2xl w-full max-w-md overflow-hidden animate-fade-in-up"
-            onClick={(e) => e.stopPropagation()}
-        >
             <div className="px-6 py-5 bg-purple-50/50 border-b border-purple-100 flex items-center justify-between">
                 <div className="flex items-center gap-2 text-purple-600">
                     <Zap size={20} />
@@ -100,8 +98,7 @@ const ClaseSueltaDetailModal = ({ ciclo, onClose, title = 'Detalle de Clase Suel
                     Cuenta #{ciclo.cuenta_id} · {ciclo.concepto}
                 </p>
             </div>
-        </div>
-    </div>
+    </Modal>
 );
 
 export default ClaseSueltaDetailModal;

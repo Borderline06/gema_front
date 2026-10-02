@@ -32,8 +32,8 @@ const InjuryEvaluationModal = ({ isOpen, onClose, solicitud, onEvaluateSuccess }
     };
 
     return (
-        /* z-[110] para estar por encima de la barra móvil y el sidebar */
-        <div className="fixed inset-0 z-[110] flex items-center justify-center p-3 md:p-6 bg-brand-primary-dark/80 backdrop-blur-md animate-in fade-in duration-300">
+        /* z-modal: por encima de la barra móvil y el sidebar (ver la escala en tailwind.config.js) */
+        <div className="fixed inset-0 z-modal flex items-center justify-center p-3 md:p-6 bg-brand-primary-dark/80 backdrop-blur-md animate-in fade-in duration-300">
 
             {/* AJUSTE CLAVE: 
                 - En móvil (default): max-h-[80vh] y overflow-y-auto (para que no lo tape la barra inferior).
@@ -44,6 +44,7 @@ const InjuryEvaluationModal = ({ isOpen, onClose, solicitud, onEvaluateSuccess }
                 {/* Botón Cerrar */}
                 <button
                     onClick={onClose}
+                    /* z-[120] es local: solo compite con los hermanos dentro de la caja, no con el apilamiento global */
                     className="absolute top-6 right-6 text-brand-muted hover:text-brand-primary z-[120] transition-colors p-2 hover:bg-brand-bg rounded-full"
                 >
                     <X size={20} />

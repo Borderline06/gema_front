@@ -3,6 +3,7 @@ import { ArrowLeft, Save, Loader2, Calendar, MapPin, User, Home, Clock, Plus, Tr
 import { apiFetch } from '../../interceptors/api';
 import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../constants/apiRoutes';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
 
 const AdminSchedule = ({ onBack, initialData }) => {
     const isEdit = !!initialData;
@@ -126,7 +127,7 @@ const AdminSchedule = ({ onBack, initialData }) => {
     };
 
     if (fetchingData) return (
-        <div className="flex justify-center p-20"><Loader2 className="animate-spin text-blue-600" size={40} /></div>
+        <LoadingSpinner className="flex justify-center p-20" colorClassName="text-blue-600" />
     );
 
     return (

@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../constants/apiRoutes';
 import ConfirmModal from '../../components/shared/ConfirmModal';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import EmptyState from '../../components/shared/EmptyState';
 
 const AdminPublications = () => {
     const { userId } = useAuth(); // ID del administrador logueado
@@ -208,10 +209,15 @@ const AdminPublications = () => {
             {loading ? (
                 <LoadingSpinner />
             ) : publicaciones.length === 0 ? (
-                <div className="bg-brand-surface rounded-3xl border border-brand-border p-16 text-center">
-                    <Megaphone className="mx-auto text-slate-200 mb-4" size={60} />
-                    <h3 className="text-sm font-black text-brand-muted uppercase italic">No hay publicaciones activas</h3>
-                </div>
+                <EmptyState
+                    className="bg-brand-surface rounded-3xl border border-brand-border p-16 text-center"
+                    icon={Megaphone}
+                    iconSize={60}
+                    iconClassName="mx-auto text-slate-200 mb-4"
+                    as="h3"
+                    message="No hay publicaciones activas"
+                    messageClassName="text-sm font-black text-brand-muted uppercase italic"
+                />
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                     {publicaciones.map((pub) => (

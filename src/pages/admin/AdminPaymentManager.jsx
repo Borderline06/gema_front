@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import {
-    Search, Loader2, User, ChevronRight, AlertCircle, Calendar,
+    User, ChevronRight, AlertCircle, Calendar,
     Filter, DollarSign, Mail, Phone, FileText, ShieldAlert
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch } from '../../interceptors/api';
-import AdminPaymentValidation from './AdminPaymentValidation';
-import AdminPaymentStats from './AdminPaymentStats';
+import AdminPaymentValidation from '../../components/Admin/AdminPaymentValidation';
+import AdminPaymentStats from '../../components/Admin/AdminPaymentStats';
+import PageTitle from '../../components/shared/PageTitle';
 import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../constants/apiRoutes';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import SearchInput from '../../components/shared/SearchInput';
 
 const AdminPaymentManager = () => {
     const [view, setView] = useState('list');
@@ -146,13 +149,7 @@ const AdminPaymentManager = () => {
         <div className="space-y-6 animate-fade-in-up p-1 pb-20">
             <header className="flex justify-between items-center">
                 <div>
-                    <div className="flex items-center gap-2 mb-1">
-                        <div className="h-6 w-1 bg-brand-accent rounded-full"></div>
-                        <h1 className="text-2xl font-black text-brand-heading uppercase tracking-tight italic">
-                            Gestión de <span className="text-brand-primary">Ingresos</span>
-                        </h1>
-                    </div>
-                    <p className="text-[10px] font-bold text-brand-muted uppercase tracking-widest italic ml-1">Monitor de pagos - Club Gema</p>
+                    <PageTitle title="Gestión de" accent="Ingresos" subtitle="Monitor de pagos - Club Gema" />
                 </div>
 
                 <div className="flex bg-brand-surface p-1 rounded-xl border border-brand-border shadow-sm">
@@ -172,16 +169,13 @@ const AdminPaymentManager = () => {
 
             {/* Filtros */}
             <div className="bg-brand-surface p-3 rounded-[2rem] border border-brand-border shadow-sm flex flex-col xl:flex-row gap-3">
-                <div className="flex-1 relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted" size={18} />
-                    <input
-                        type="text"
-                        placeholder="BUSCAR POR ALUMNO O CÓDIGO..."
-                        className="w-full pl-12 pr-4 py-3 bg-brand-bg border-none rounded-2xl text-[10px] font-black uppercase outline-none focus:ring-2 focus:ring-blue-500/20"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                </div>
+                <SearchInput
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="BUSCAR POR ALUMNO O CÓDIGO..."
+                    wrapperClassName="flex-1 relative"
+                    className="w-full pl-12 pr-4 py-3 bg-brand-bg border-none rounded-2xl text-[10px] font-black uppercase outline-none focus:ring-2 focus:ring-blue-500/20"
+                />
                 <div className="flex flex-wrap gap-2">
                     <div className="flex items-center gap-2 bg-brand-bg px-4 py-2 rounded-2xl border border-brand-border-soft">
                         <Calendar size={14} className="text-brand-muted" />
@@ -214,9 +208,7 @@ const AdminPaymentManager = () => {
             </div>
 
             {loading ? (
-                <div className="flex flex-col items-center justify-center py-24 gap-4">
-                    <Loader2 className="animate-spin text-brand-primary" size={40} />
-                </div>
+                <LoadingSpinner className="flex flex-col items-center justify-center py-24 gap-4" />
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                     <AnimatePresence>

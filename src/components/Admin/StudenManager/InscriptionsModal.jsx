@@ -33,7 +33,7 @@ const InscriptionsModal = ({ isOpen, data, onClose }) => {
     if (!isOpen || !data) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-brand-primary-dark/40 backdrop-blur-sm animate-fade-in">
+        <div className="fixed inset-0 z-modal flex items-center justify-center p-4 bg-brand-primary-dark/40 backdrop-blur-sm animate-fade-in">
             <div className="bg-brand-surface rounded-[2rem] w-full max-w-lg shadow-2xl border border-brand-border-soft overflow-hidden animate-fade-in-up">
                 <div className="bg-brand-bg p-6 border-b border-brand-border-soft flex justify-between items-center">
                     <div>

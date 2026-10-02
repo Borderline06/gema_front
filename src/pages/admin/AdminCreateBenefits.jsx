@@ -3,6 +3,7 @@ import { TicketPercent, Plus, Save, Edit2, Trash2, Loader2, Info, X, Check, Perc
 import toast from 'react-hot-toast';
 import { apiFetch } from '../../interceptors/api';
 import { API_ROUTES } from '../../constants/apiRoutes';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
 
 const AdminCreateBenefits = () => {
     const [beneficios, setBeneficios] = useState([]);
@@ -87,10 +88,11 @@ const AdminCreateBenefits = () => {
     };
 
     if (loading) return (
-        <div className="flex flex-col items-center justify-center h-64 text-slate-500 gap-3">
-            <Loader2 className="animate-spin text-brand-primary" size={40} />
-            <p className="font-black italic animate-pulse tracking-widest uppercase">Sincronizando Catálogo Gema...</p>
-        </div>
+        <LoadingSpinner
+            className="flex flex-col items-center justify-center h-64 text-slate-500 gap-3"
+            label="Sincronizando Catálogo Gema..."
+            labelClassName="font-black italic animate-pulse tracking-widest uppercase"
+        />
     );
 
     return (

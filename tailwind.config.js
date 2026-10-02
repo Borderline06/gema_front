@@ -38,6 +38,28 @@ export default {
         'accent-bar': `0 0 15px ${alpha(ACCENT, 0.4)}`,          // barra decorativa
         'accent-bar-sm': `0 0 8px ${alpha(ACCENT, 0.5)}`,        // barra decorativa fina
       },
+
+      // ───────────────────────────────────────────────────────────────────
+      // ESCALA DE APILAMIENTO (z-index)
+      // Antes convivían 15 valores sueltos (z-50, z-[60], z-[100], z-[110],
+      // z-[150], z-[200], z-[500], z-[1000], z-[9999]...) elegidos a ojo en
+      // cada archivo. El resultado era un bug real: InscriptionsModal (z-50)
+      // quedaba POR DEBAJO del ConfirmModal (z-[100]) que él mismo lanzaba,
+      // mientras AdminCreateBenefitsAnuncio (z-[1000]) lo tapaba.
+      //
+      // El orden es el que importa, no los números:
+      //   nav < dropdown < modal < modal-nested < confirm < toast
+      // Un desplegable nunca debe tapar un diálogo, y el ConfirmModal debe
+      // quedar siempre por encima del diálogo desde el que se abre.
+      // ───────────────────────────────────────────────────────────────────
+      zIndex: {
+        nav: '60',            // drawers de navegación móvil
+        dropdown: '900',      // popovers y filtros de cabecera de tabla
+        modal: '1000',        // diálogos
+        'modal-nested': '1100', // diálogo abierto desde otro diálogo
+        confirm: '1200',      // ConfirmModal: por encima de lo que lo lanza
+        toast: '1300',        // avisos
+      },
     },
   },
   plugins: [],

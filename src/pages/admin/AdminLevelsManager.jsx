@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, Trophy, Edit3, Trash2, ChevronRight } from 'lucide-react';
-import AdminLevels from './AdminLevels';
+import AdminLevels from '../../components/Admin/AdminLevels';
+import PageTitle from '../../components/shared/PageTitle';
 import { apiFetch } from '../../interceptors/api';
 import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../constants/apiRoutes';
@@ -78,12 +79,7 @@ const AdminLevelsManager = () => {
         <div className="space-y-6 animate-fade-in-up p-1 pb-20">
             {/* Header */}
             <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2 mb-1">
-                    <div className="h-6 w-1 bg-brand-accent rounded-full"></div>
-                    <h1 className="text-2xl font-black text-brand-heading uppercase tracking-tight italic">
-                        Gestión de <span className="text-brand-primary">Niveles</span>
-                    </h1>
-                </div>
+                <PageTitle title="Gestión de" accent="Niveles" />
                 <button onClick={() => setView('create')} className="bg-brand-primary text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:bg-brand-accent transition-all group">
                     <Plus size={20} className="group-hover:rotate-90 transition-transform" />
                     Nuevo Nivel

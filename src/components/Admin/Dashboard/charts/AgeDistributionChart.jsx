@@ -3,17 +3,20 @@ import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Ba
 import InfoTip from '../../../shared/InfoTip';
 import { CHART_COLORS } from './chartColors';
 import { BRAND_COLORS } from "../../../../config/themeColors.js";
+import ChartHeader from '../../../shared/ChartHeader';
 
 const AgeDistributionChart = ({ alumnosEdades }) => (
     <div className="lg:col-span-2 bg-brand-surface rounded-[2.5rem] border border-brand-border-soft shadow-[0_20px_60px_rgba(0,0,0,0.03)] p-5 md:p-8 flex flex-col mt-6">
         <div className="mb-8">
-            <h2 className="font-black text-brand-primary uppercase tracking-tight text-xl italic mb-1 flex items-center gap-2">
-                <div className="w-1.5 h-6 bg-emerald-500 rounded-full"></div> Rangos de Edad
+            <ChartHeader
+                barClassName="w-1.5 h-6 bg-emerald-500 rounded-full"
+                title="Rangos de Edad"
+                subtitle="Métricas de Crecimiento (Histórico Físico)"
+            >
                 <InfoTip
                     text="Este gráfico es histórico: incluye a TODOS los alumnos que alguna vez se registraron (activos e inactivos), no solo a los activos hoy. Úsalo para entender el perfil general del club, no el volumen actual."
                 />
-            </h2>
-            <p className="text-[10px] text-brand-muted font-bold uppercase tracking-widest ml-3.5">Métricas de Crecimiento (Histórico Físico)</p>
+            </ChartHeader>
         </div>
         <div style={{ width: '100%', height: 260 }}>
             <ResponsiveContainer width="100%" height="100%" minWidth={1}>

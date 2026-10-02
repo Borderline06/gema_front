@@ -6,6 +6,7 @@ import { useCatalogos } from '../../../hooks/useCatalogos';
 
 import { MonthAccordion } from '../../../components/Admin/Components-monthly-transactions/MonthAccordion';
 import ConfirmModal from '../../../components/shared/ConfirmModal';
+import PageTitle from '../../../components/shared/PageTitle';
 import { formatLocalToUTC, formatUTCtoLocalInput, consolidarDatosMes, construirFilasExcel } from './cashFlowUtils';
 
 const currentYear = new Date().getFullYear();
@@ -287,15 +288,15 @@ const AdminCashFlow = () => {
             {/* Header del Admin */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
                 <div>
-                    <div className="flex items-center gap-3 mb-1">
-                        <div className="h-8 w-1.5 bg-brand-accent rounded-full"></div>
-                        <h1 className="text-2xl font-black text-brand-heading uppercase tracking-tight italic">
-                            Libro Diario <span className="text-brand-accent">Mensual</span>
-                        </h1>
-                    </div>
-                    <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest opacity-70 ml-4">
-                        Control de caja y reportes financieros por sede
-                    </p>
+                    <PageTitle
+                        title="Libro Diario"
+                        accent="Mensual"
+                        subtitle="Control de caja y reportes financieros por sede"
+                        wrapperClassName="flex items-center gap-3 mb-1"
+                        barClassName="h-8 w-1.5 bg-brand-accent rounded-full"
+                        accentClassName="text-brand-accent"
+                        subtitleClassName="text-slate-500 text-[10px] font-black uppercase tracking-widest opacity-70 ml-4"
+                    />
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
