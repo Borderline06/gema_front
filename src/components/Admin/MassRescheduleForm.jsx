@@ -49,7 +49,7 @@ const MassRescheduleForm = ({ onSuccess }) => {
 
     const fetchHorarios = async () => {
         try {
-            const response = await apiFetch.get(API_ROUTES.HORARIOS.ACTIVOS);
+            const response = await apiFetch.get(API_ROUTES.HORARIOS.BASE);
             const json = await response.json();
             setHorarios(json.data || json || []);
         } catch (error) {

@@ -73,7 +73,6 @@ const AdminStudentsManager = () => {
             const result = await alumnoService.changeStatusHistory({ alumnoId: selectedAlumno.id, estado });
             toast.success(result.message);
             setSelectedAlumno((prev) => ({ ...prev, salud: { ...prev.salud, historial: estado } }));
-            fetchAlumnos();
         } catch (e) {
             toast.error(e.message || 'Error al actualizar el historial');
         }

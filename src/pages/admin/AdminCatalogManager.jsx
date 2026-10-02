@@ -81,6 +81,7 @@ const AdminCatalogManager = () => {
             {/* Barra de Búsqueda y Filtro de Vigencia */}
             <div className="bg-brand-surface p-3 rounded-2xl border border-brand-border shadow-sm flex flex-col md:flex-row gap-4">
                 <SearchInput
+                    value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="BUSCAR NOMBRE O CÓDIGO..."
                     wrapperClassName="flex-1 relative"

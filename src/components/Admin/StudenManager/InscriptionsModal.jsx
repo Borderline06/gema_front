@@ -40,7 +40,7 @@ const InscriptionsModal = ({ isOpen, data, onClose }) => {
         };
 
         fetchCiclos();
-    }, [isOpen, data]);
+    }, [isOpen, data?.id]);
 
     // Reset de la selección al cerrar, para no arrastrar estado a la próxima apertura
     useEffect(() => {

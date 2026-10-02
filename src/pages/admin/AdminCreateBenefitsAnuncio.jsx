@@ -137,7 +137,7 @@ const AdminCreateBenefitsAnuncio = () => {
   const toggleActivo = async (anuncio) => {
     try {
       const response = await apiFetch.patch(`/anuncios-beneficios/${anuncio.id}`, {
-        body: JSON.stringify({ activo: !anuncio.activo })
+        activo: !anuncio.activo
       });
       if (response.ok) {
         toast.success(anuncio.activo ? 'Anuncio Apagado' : 'Anuncio Encendido');

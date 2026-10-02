@@ -1,6 +1,41 @@
 import React, { useState } from 'react';
 import { Fingerprint, MapPin, Phone, Eye, RefreshCw, Zap, ArrowUpDown, Filter, AlertCircle, CreditCard, Search, History, Flame } from 'lucide-react';
 
+// --- SUBCOMPONENTES DE CABECERA ---
+// Declarados a nivel de módulo a propósito: definidos dentro del cuerpo de
+// StudentTable eran un tipo de componente nuevo en cada render, así que React
+// desmontaba y remontaba la cabecera en vez de actualizarla (el popup de búsqueda
+// avanzada perdía el foco al teclear). Lo que antes tomaban por closure
+// (sortConfig/requestSort, filters/setFilters) ahora entra por props.
+const SortableHeader = ({ label, sortKey, align = 'left', sortConfig, requestSort }) => (
+    <th className={`p-4 cursor-pointer hover:bg-brand-surface-alt transition-colors group select-none ${align === 'center' ? 'text-center' : align === 'right' ? 'text-right' : 'text-left'}`} onClick={() => requestSort(sortKey)}>
+        <div className={`flex items-center gap-1.5 ${align === 'center' ? 'justify-center' : align === 'right' ? 'justify-end' : 'justify-start'}`}>
+            {label}
+            <ArrowUpDown size={12} className={`transition-opacity ${sortConfig.key === sortKey ? 'opacity-100 text-brand-primary' : 'opacity-30 group-hover:opacity-100'}`} />
+        </div>
+    </th>
+);
+
+const FilterHeader = ({ label, filterKey, options, align = 'center', filters, setFilters }) => (
+    <th className={`p-4 group ${align === 'center' ? 'text-center' : align === 'right' ? 'text-right' : 'text-left'}`}>
+        <div className={`flex items-center gap-1.5 ${align === 'center' ? 'justify-center' : align === 'right' ? 'justify-end' : 'justify-start'}`}>
+            <span>{label}</span>
+            <div className="relative inline-flex items-center justify-center">
+                <Filter size={12} className={`transition-colors ${filters[filterKey] !== '' ? 'text-brand-accent' : 'text-slate-300 group-hover:text-blue-500'}`} />
+                <select
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    value={filters[filterKey]}
+                    onChange={(e) => setFilters(prev => ({ ...prev, [filterKey]: e.target.value }))}
+                    title={`Filtrar por ${label}`}
+                >
+                    <option value="">Todos</option>
+                    {options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                </select>
+            </div>
+        </div>
+    </th>
+);
+
 const StudentTable = ({
     alumnos,
     sortConfig,
@@ -21,36 +56,6 @@ const StudentTable = ({
 }) => {
     // Solo estado de UI (abrir/cerrar popup) se queda local — no es lógica de filtrado
     const [isTextFilterOpen, setIsTextFilterOpen] = useState(false);
-
-    // --- SUBCOMPONENTES DE CABECERA ---
-    const SortableHeader = ({ label, sortKey, align = 'left' }) => (
-        <th className={`p-4 cursor-pointer hover:bg-brand-surface-alt transition-colors group select-none ${align === 'center' ? 'text-center' : align === 'right' ? 'text-right' : 'text-left'}`} onClick={() => requestSort(sortKey)}>
-            <div className={`flex items-center gap-1.5 ${align === 'center' ? 'justify-center' : align === 'right' ? 'justify-end' : 'justify-start'}`}>
-                {label}
-                <ArrowUpDown size={12} className={`transition-opacity ${sortConfig.key === sortKey ? 'opacity-100 text-brand-primary' : 'opacity-30 group-hover:opacity-100'}`} />
-            </div>
-        </th>
-    );
-
-    const FilterHeader = ({ label, filterKey, options, align = 'center' }) => (
-        <th className={`p-4 group ${align === 'center' ? 'text-center' : align === 'right' ? 'text-right' : 'text-left'}`}>
-            <div className={`flex items-center gap-1.5 ${align === 'center' ? 'justify-center' : align === 'right' ? 'justify-end' : 'justify-start'}`}>
-                <span>{label}</span>
-                <div className="relative inline-flex items-center justify-center">
-                    <Filter size={12} className={`transition-colors ${filters[filterKey] !== '' ? 'text-brand-accent' : 'text-slate-300 group-hover:text-blue-500'}`} />
-                    <select
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                        value={filters[filterKey]}
-                        onChange={(e) => setFilters(prev => ({ ...prev, [filterKey]: e.target.value }))}
-                        title={`Filtrar por ${label}`}
-                    >
-                        <option value="">Todos</option>
-                        {options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                    </select>
-                </div>
-            </div>
-        </th>
-    );
 
     return (
         <div className="bg-brand-surface rounded-[2.5rem] border border-brand-border-soft shadow-xl overflow-visible">
@@ -134,10 +139,10 @@ const StudentTable = ({
                                 </div>
                             </th>
 
-                            <FilterHeader label="Sede" filterKey="sede" options={uniqueSedes} align="left" />
-                            <FilterHeader label="Nivel" filterKey="nivel" options={uniqueNiveles} />
-                            <FilterHeader label="Estado" filterKey="estadoVisual" options={uniqueEstados} />
-                            <SortableHeader label="Deuda Pendiente" sortKey="monto_pendiente" align="right" />
+                            <FilterHeader label="Sede" filterKey="sede" options={uniqueSedes} align="left" filters={filters} setFilters={setFilters} />
+                            <FilterHeader label="Nivel" filterKey="nivel" options={uniqueNiveles} filters={filters} setFilters={setFilters} />
+                            <FilterHeader label="Estado" filterKey="estadoVisual" options={uniqueEstados} filters={filters} setFilters={setFilters} />
+                            <SortableHeader label="Deuda Pendiente" sortKey="monto_pendiente" align="right" sortConfig={sortConfig} requestSort={requestSort} />
                             <th className="p-4 text-center">Gestión</th>
                         </tr>
                     </thead>

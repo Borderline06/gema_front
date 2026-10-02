@@ -26,7 +26,7 @@ const StudentDetails = ({ selectedAlumno, onBack, onStatusHistoryChange }) => {
     const [loadingDetalle, setLoadingDetalle] = useState(true);
 
     useEffect(() => {
-        if (!selectedAlumno) return;
+        if (!selectedAlumno?.id) return;
 
         const fetchDetalle = async () => {
             try {
@@ -46,14 +46,14 @@ const StudentDetails = ({ selectedAlumno, onBack, onStatusHistoryChange }) => {
         };
 
         fetchDetalle();
-    }, [selectedAlumno]);
+    }, [selectedAlumno?.id]);
 
     // /historial-academico/alumno/:id — el backend YA entrega cada tarjeta
     // agrupada por cuenta_id, con fecha_inicio_real / fecha_fin_real calculadas
     // desde clases realmente generadas en registros_asistencia, ordenadas de
     // más reciente a más antigua (las "sin_registros" van al final).
     useEffect(() => {
-        if (!selectedAlumno) return;
+        if (!selectedAlumno?.id) return;
 
         const fetchCiclos = async () => {
             try {
@@ -74,7 +74,7 @@ const StudentDetails = ({ selectedAlumno, onBack, onStatusHistoryChange }) => {
         };
 
         fetchCiclos();
-    }, [selectedAlumno]);
+    }, [selectedAlumno?.id]);
 
     if (!selectedAlumno) return null;
 

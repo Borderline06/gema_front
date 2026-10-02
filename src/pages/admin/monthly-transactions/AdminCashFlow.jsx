@@ -166,18 +166,20 @@ const AdminCashFlow = () => {
         }
     };
 
-    const movimientoDelete = (movimiento) => {
-        setDeleteTarget(movimiento);
+    const movimientoDelete = (movimiento, mesNum) => {
+        setDeleteTarget({ movimiento, mesNum });
     };
 
     const executeMovimientoDelete = async () => {
-        const movimiento = deleteTarget;
+        const { movimiento, mesNum } = deleteTarget;
         setDeleteTarget(null);
         try {
             const response = await apiFetch.delete(`/caja/${movimiento.id}`);
             if (response.ok) {
                 toast.success(`${movimiento.tipo} eliminado correctamente.`)
-                await cargarTodoElAnio();
+                // Solo el mes afectado: recargar el año entero eran 12 peticiones
+                // para refrescar una sola fila.
+                await fetchMes(mesNum, filtroAnio);
             } else {
                 const err = await response.json();
                 toast.error(err.message || 'Error al eliminar.')
@@ -263,7 +265,7 @@ const AdminCashFlow = () => {
                 isOpen={!!deleteTarget}
                 onClose={() => setDeleteTarget(null)}
                 onConfirm={executeMovimientoDelete}
-                title={deleteTarget ? `¿Eliminar ${deleteTarget.tipo}?` : ''}
+                title={deleteTarget ? `¿Eliminar ${deleteTarget.movimiento.tipo}?` : ''}
                 message="Esta acción no se puede deshacer."
                 iconType="danger"
                 confirmText="Sí, eliminar"

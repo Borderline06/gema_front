@@ -14,7 +14,6 @@ export const API_ROUTES = {
   },
   HORARIOS: {
     BASE: "/horarios",
-    ACTIVOS: "/horarios",
     BY_ID: (id) => `/horarios/${id}`,
   },
   USUARIOS: {
@@ -65,7 +64,6 @@ export const API_ROUTES = {
   },
   NIVELES: {
     BASE: "/niveles",
-    ACTIVOS: "/niveles",
     BY_ID: (id) => `/niveles/${id}`,
   },
   TIPOS_BENEFICIO: {

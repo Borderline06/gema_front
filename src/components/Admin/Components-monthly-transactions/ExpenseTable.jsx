@@ -59,7 +59,7 @@ export const ExpenseTable = ({
                                         <button onClick={() => startInlineEdit(m)} className="text-brand-accent font-black uppercase text-[9px] hover:bg-brand-accent-soft px-2 py-1 rounded-lg transition-colors flex items-center justify-center gap-1 mx-auto border border-transparent hover:border-orange-200">
                                             <Edit2 size={12} /> Editar
                                         </button>
-                                        <button onClick={() => movimientoDelete(m)} className="text-red-600 font-black uppercase text-[9px] hover:bg-green-50 px-2 py-1 rounded-lg transition-colors flex items-center justify-center gap-1 mx-auto border border-transparent hover:border-green-200">
+                                        <button onClick={() => movimientoDelete(m, mesNum)} className="text-red-600 font-black uppercase text-[9px] hover:bg-green-50 px-2 py-1 rounded-lg transition-colors flex items-center justify-center gap-1 mx-auto border border-transparent hover:border-green-200">
                                             <Trash2 size={12} /> Eliminar
                                         </button>
                                     </td>

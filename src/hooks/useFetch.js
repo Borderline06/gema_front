@@ -6,6 +6,13 @@ import toast from 'react-hot-toast';
  * inline en cada página: ejecuta `fetcher` al montar (y cuando cambie
  * algo en `deps`, igual que un useEffect normal) y expone refetch()
  * para volver a llamarlo tras un create/update/delete.
+ *
+ * IMPORTANTE — en `deps` pasa SOLO primitivas (strings, números, booleanos).
+ * `refetch` es un useCallback sobre `deps` y el useEffect de abajo depende de
+ * `refetch`, así que un objeto, array o función creada en el render cambia de
+ * identidad en cada render y el efecto entra en BUCLE INFINITO de peticiones.
+ * Si necesitas pasar algo compuesto, estabilízalo antes con useMemo/useCallback
+ * o deriva una primitiva (p. ej. `alumno.id` en vez de `alumno`).
  */
 export function useFetch(fetcher, deps = [], { initialData = null, errorMessage } = {}) {
   const [data, setData] = useState(initialData);
