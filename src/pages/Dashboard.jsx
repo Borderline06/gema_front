@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { roleData } from '../data/mockDashboard';
 import { apiFetch } from '../interceptors/api';
 import { API_ROUTES } from '../constants/apiRoutes';
-import * as XLSX from 'xlsx-js-style';
 import toast from 'react-hot-toast';
 import { Activity } from 'lucide-react';
 
@@ -134,7 +133,7 @@ const Dashboard = ({ role = 'student' }) => {
         }
     }, [role, data, selectedYear]);
 
-    const handleExportExcel = () => {
+    const handleExportExcel = async () => {
         const reportData = reporteFiltrado;
         if (!reportData || reportData.length === 0) {
             toast.error("No hay datos para exportar");
@@ -142,6 +141,9 @@ const Dashboard = ({ role = 'student' }) => {
         }
         try {
             setIsExporting(true);
+            // XLSX se carga con import() dentro del handler: son 870 kB (323 kB gzip) que solo
+            // hacen falta al pulsar el botón de exportar, no al abrir la vista.
+            const XLSX = await import('xlsx-js-style');
             const workbook = XLSX.utils.book_new();
             const ws = XLSX.utils.json_to_sheet(reportData);
             ws['!cols'] = [{ wch: 15 }, { wch: 15 }, { wch: 25 }, { wch: 30 }, { wch: 12 }, { wch: 15 }, { wch: 25 }, { wch: 15 }, { wch: 12 }, { wch: 15 }, { wch: 18 }, { wch: 20 }, { wch: 30 }];

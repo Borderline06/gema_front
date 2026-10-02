@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from '../components/ProtectedRoute';
 import StudentLayout from '../layouts/StudentLayout';
-import DashboardEstudiante from '../pages/DashboardEstudiante';
-import MyRegistrations from '../pages/student/MyRegistrations';
-import Payments from '../pages/student/Payments';
-import Profile from '../pages/student/Profile';
-import Enrollment from '../pages/student/enrollment';
-import StudentInjuries from '../pages/student/StudentInjuries';
-import StudentRecoveries from '../pages/student/StudentRecoveries';
-import StudentNews from '../pages/student/StudentNews';
 import { ROLES } from './roles';
+
+// Un chunk por vista; el <Suspense> que las cubre vive en StudentLayout.
+const DashboardEstudiante = lazy(() => import('../pages/DashboardEstudiante'));
+const MyRegistrations = lazy(() => import('../pages/student/MyRegistrations'));
+const Payments = lazy(() => import('../pages/student/Payments'));
+const Profile = lazy(() => import('../pages/student/Profile'));
+const Enrollment = lazy(() => import('../pages/student/enrollment'));
+const StudentInjuries = lazy(() => import('../pages/student/StudentInjuries'));
+const StudentRecoveries = lazy(() => import('../pages/student/StudentRecoveries'));
+const StudentNews = lazy(() => import('../pages/student/StudentNews'));
 
 // Devuelve el árbol de <Route> del grupo Estudiante. Se llama como función
 // (no como <StudentRoutes/>) porque React Router v6 solo reconoce <Route>/

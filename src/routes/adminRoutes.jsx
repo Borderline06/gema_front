@@ -1,26 +1,31 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Route } from 'react-router-dom';
 import ProtectedRoute from '../components/ProtectedRoute';
 import DashboardLayout from '../layouts/DashboardLayout';
-import Dashboard from '../pages/Dashboard';
-import AdminLocationsManager from '../pages/admin/AdminLocationsManager';
-import AdminLevelsManager from '../pages/admin/AdminLevelsManager';
-import AdminTeachersManager from '../pages/admin/AdminTeachersManager';
-import AdminCatalogManager from '../pages/admin/AdminCatalogManager';
-import AdminSchedulesManager from '../pages/admin/AdminScheduleManager';
-import AdminStudentsManager from '../pages/admin/AdminStudentManager';
-import AdminPaymentManager from '../pages/admin/AdminPaymentManager';
-import AdminSettings from '../pages/admin/AdminSettings';
-import AdminInjuriesManager from '../pages/admin/AdminInjuriesManager';
-import AdminBenefits from '../pages/admin/AdminBenefits';
-import AdminCreateBenefits from '../pages/admin/AdminCreateBenefits';
-import AdminPublications from '../pages/admin/AdminPublications';
-import AdminGuestPasses from '../pages/admin/AdminGuestPasses';
-import AdminReprogramaciones from '../pages/admin/AdminReprogramaciones';
-import AdminDeleteMakeups from '../pages/admin/AdminDeleteMakeups';
-import AdminCreateBenefitsAnuncio from '../pages/admin/AdminCreateBenefitsAnuncio';
-import AdminCashFlow from '../pages/admin/monthly-transactions/AdminCashFlow';
 import { ROLES } from './roles';
+
+// Cada vista admin se carga en su propio chunk. Antes las 18 viajaban en el
+// bundle inicial, así que un alumno que abría /login descargaba también el
+// dashboard financiero completo (recharts incluido). El <Suspense> que cubre
+// estas rutas vive en DashboardLayout, alrededor del <Outlet />.
+const Dashboard = lazy(() => import('../pages/Dashboard'));
+const AdminLocationsManager = lazy(() => import('../pages/admin/AdminLocationsManager'));
+const AdminLevelsManager = lazy(() => import('../pages/admin/AdminLevelsManager'));
+const AdminTeachersManager = lazy(() => import('../pages/admin/AdminTeachersManager'));
+const AdminCatalogManager = lazy(() => import('../pages/admin/AdminCatalogManager'));
+const AdminSchedulesManager = lazy(() => import('../pages/admin/AdminScheduleManager'));
+const AdminStudentsManager = lazy(() => import('../pages/admin/AdminStudentManager'));
+const AdminPaymentManager = lazy(() => import('../pages/admin/AdminPaymentManager'));
+const AdminSettings = lazy(() => import('../pages/admin/AdminSettings'));
+const AdminInjuriesManager = lazy(() => import('../pages/admin/AdminInjuriesManager'));
+const AdminBenefits = lazy(() => import('../pages/admin/AdminBenefits'));
+const AdminCreateBenefits = lazy(() => import('../pages/admin/AdminCreateBenefits'));
+const AdminPublications = lazy(() => import('../pages/admin/AdminPublications'));
+const AdminGuestPasses = lazy(() => import('../pages/admin/AdminGuestPasses'));
+const AdminReprogramaciones = lazy(() => import('../pages/admin/AdminReprogramaciones'));
+const AdminDeleteMakeups = lazy(() => import('../pages/admin/AdminDeleteMakeups'));
+const AdminCreateBenefitsAnuncio = lazy(() => import('../pages/admin/AdminCreateBenefitsAnuncio'));
+const AdminCashFlow = lazy(() => import('../pages/admin/monthly-transactions/AdminCashFlow'));
 
 // Devuelve el árbol de <Route> del grupo Administrador (ver nota en studentRoutes.jsx
 // sobre por qué es una función y no un componente <AdminRoutes/>).

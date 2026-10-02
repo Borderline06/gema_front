@@ -18,6 +18,13 @@ const contentSecurityPolicy = [
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  // NO configurar build.rollupOptions.output.manualChunks aqui.
+  // Medido en este proyecto (Vite 7 / Rollup 4): cualquier entrada en
+  // manualChunks convierte ese chunk en import estatico del entry, aunque solo
+  // se alcance por import() dinamico. Con { recharts } el arranque pasaba de
+  // 384 kB a 790 kB; con { xlsx } arrastraba 850 kB. El troceado automatico ya
+  // deja recharts dentro del chunk async del Dashboard y xlsx en su propio
+  // chunk async, asi que ninguno viaja en la carga inicial.
   preview: {
     allowedHosts: true,
     port: process.env.PORT || 8080,

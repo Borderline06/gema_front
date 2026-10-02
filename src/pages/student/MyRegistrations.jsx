@@ -10,14 +10,13 @@ import { API_ROUTES } from '../../constants/apiRoutes';
 import toast from 'react-hot-toast';
 import ConfirmModal from '../../components/shared/ConfirmModal';
 import { useAuth } from '../../context/AuthContext';
-import dayjs from 'dayjs';
-import 'dayjs/locale/es';
+import { format, parseISO, addDays, addHours } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 // COMPONENTES DE SEGURIDAD Y PAGO
 import OutstandingDebtAlert from '../../components/student/OutstandingDebtAlert';
 import ReportPaymentModal from "../../components/student/Payments/ReportPaymentModal";
 
-dayjs.locale('es');
 
 const DIAS_NOMBRES = { 1: "LUNES", 2: "MARTES", 3: "MIÉRCOLES", 4: "JUEVES", 5: "VIERNES", 6: "SÁBADO", 7: "DOMINGO", 0: "DOMINGO" };
 
@@ -43,8 +42,8 @@ const RenovacionModal = ({ isOpen, onClose, onConfirm, fechasSugeridas }) => {
               <div className="text-left">
                 <p className={`text-[11px] font-black uppercase italic ${etiquetas[idx]?.iconColor}`}>{etiquetas[idx]?.label}</p>
                 <div className="mt-2 flex items-center gap-2">
-                  <div className="bg-brand-primary-dark text-white px-3 py-1 rounded-lg text-[10px] font-black italic uppercase">{dayjs(fecha).format('dddd DD')}</div>
-                  <span className="text-[10px] font-bold text-brand-body uppercase">{dayjs(fecha).format('MMMM')}</span>
+                  <div className="bg-brand-primary-dark text-white px-3 py-1 rounded-lg text-[10px] font-black italic uppercase">{format(parseISO(fecha), 'EEEE dd', { locale: es })}</div>
+                  <span className="text-[10px] font-bold text-brand-body uppercase">{format(parseISO(fecha), 'MMMM', { locale: es })}</span>
                 </div>
               </div>
               <ArrowIcon size={18} className="text-slate-300 group-hover:translate-x-1" />
@@ -230,11 +229,11 @@ const MyRegistrations = () => {
                 <div>
                   <span className="text-[10px] font-bold text-slate-500 bg-brand-surface px-4 py-2 rounded-full border border-brand-border shadow-sm flex items-center gap-2">
                     <Calendar size={12} className="text-blue-500" />
-                    Inicio: {dayjs(pkg.fecha_inicio).add(5, 'hour').format('DD MMM, YYYY')}
+                    Inicio: {format(addHours(parseISO(pkg.fecha_inicio), 5), 'dd MMM, yyyy', { locale: es })}
                   </span>
                   <span className="text-[10px] font-bold text-slate-500 bg-brand-surface px-4 py-2 rounded-full border border-brand-border shadow-sm flex items-center gap-2 mt-1">
                     <Calendar size={12} className="text-blue-500" />
-                    Fin: {dayjs(pkg.fecha_inicio).add(29, 'day').add(5, 'hour').format('DD MMM, YYYY')}
+                    Fin: {format(addHours(addDays(parseISO(pkg.fecha_inicio), 29), 5), 'dd MMM, yyyy', { locale: es })}
                   </span>
                 </div>
               </div>

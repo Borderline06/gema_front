@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Menu, X, Loader2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import Sidebar from '../components/Sidebar';
 import MobileNavbarAdmin from '../components/MobileNavbarAdmin'; // ✅ Importamos la nueva barra
+import LoadingSpinner from '../components/shared/LoadingSpinner';
 import { THEME_ASSETS } from "../config/themeAssets.js";
 
 const DashboardLayout = () => {
@@ -79,7 +80,10 @@ const DashboardLayout = () => {
                     </div>
 
                     <div className="max-w-7xl mx-auto relative z-10">
-                        <Outlet />
+                        {/* Las rutas hijas son lazy: este Suspense cubre su descarga. */}
+                        <Suspense fallback={<LoadingSpinner />}>
+                            <Outlet />
+                        </Suspense>
                     </div>
                 </main>
 

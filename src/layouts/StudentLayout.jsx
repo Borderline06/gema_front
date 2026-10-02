@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import MobileNavbar from '../components/MobileNavbar';
 import { useAuth } from '../context/AuthContext';
 import StudentSidebar from '../components/student/StudentSidebar';
+import LoadingSpinner from '../components/shared/LoadingSpinner';
 
 const StudentLayout = () => {
   const { user, loading } = useAuth();
@@ -15,7 +16,10 @@ const StudentLayout = () => {
     <div className="min-h-screen bg-brand-bg">
       <StudentSidebar />
       <div className="w-full md:pl-64 flex-1 relative min-h-screen">
-        <Outlet />
+        {/* Las rutas hijas son lazy: este Suspense cubre su descarga. */}
+        <Suspense fallback={<LoadingSpinner />}>
+          <Outlet />
+        </Suspense>
       </div>
       <MobileNavbar />
     </div>

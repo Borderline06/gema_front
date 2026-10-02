@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Calendar, FileSpreadsheet } from 'lucide-react';
 import toast from 'react-hot-toast';
-import * as XLSX from 'xlsx';
 import { apiFetch } from '../../../interceptors/api';
 import { API_ROUTES } from '../../../constants/apiRoutes';
 
@@ -190,15 +189,25 @@ const AdminCashFlow = () => {
     }
 
     // 5. Excel: el aplanado de filas vive en cashFlowUtils.js
-    const exportToExcel = () => {
+    const exportToExcel = async () => {
         const dataToExport = construirFilasExcel(datosPorMes, filtroAnio, MESES);
 
         if (dataToExport.length === 0) return toast.error("No hay datos para exportar.");
 
-        const worksheet = XLSX.utils.json_to_sheet(dataToExport);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, `Resumen ${filtroAnio}`);
-        XLSX.writeFile(workbook, `Resumen_Financiero_${filtroAnio}.xlsx`);
+        try {
+            // XLSX se carga con import() dentro del handler: son 870 kB (323 kB gzip) que solo
+            // hacen falta al pulsar el botón de exportar, no al abrir la vista.
+            const XLSX = await import('xlsx-js-style');
+
+            const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, `Resumen ${filtroAnio}`);
+            XLSX.writeFile(workbook, `Resumen_Financiero_${filtroAnio}.xlsx`);
+        } catch {
+            // La carga diferida del chunk puede fallar sin red; sin este catch
+            // seria una promesa rechazada en silencio.
+            toast.error("No se pudo generar el Excel. Revisa tu conexion.");
+        }
     };
 
     // Objeto memoizado

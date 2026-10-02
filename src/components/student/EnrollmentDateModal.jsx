@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { Calendar, ArrowRight, Zap, Star, Info, X, RefreshCw } from 'lucide-react';
-import dayjs from 'dayjs';
+import { format, parseISO, isAfter, addDays } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 const EnrollmentDateModal = ({ isOpen, onClose, previewData, onConfirm }) => {
   if (!isOpen || !previewData) return null;
@@ -21,15 +22,15 @@ const EnrollmentDateModal = ({ isOpen, onClose, previewData, onConfirm }) => {
   }, [previewData]);
 
   const formatDateDetail = (dateStr) => {
-    const d = dayjs(dateStr);
+    const d = parseISO(dateStr);
     // 🧠 Si la fecha es a más de 7 días, es un "enganche" (continuación)
-    const isContinuacion = d.isAfter(dayjs().add(7, 'day')); 
+    const isContinuacion = isAfter(d, addDays(new Date(), 7)); 
     
     return {
       full: dateStr,
-      num: d.format('DD'),
-      mes: d.format('MMM').toUpperCase(),
-      diaNom: d.format('dddd').toUpperCase(),
+      num: format(d, 'dd'),
+      mes: format(d, 'MMM', { locale: es }).toUpperCase(),
+      diaNom: format(d, 'EEEE', { locale: es }).toUpperCase(),
       isContinuacion
     };
   };

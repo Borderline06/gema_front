@@ -5,7 +5,6 @@ import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 import { sedeService } from '../../services/sede.service';
 import { API_ROUTES } from '../../constants/apiRoutes';
-import * as XLSX from 'xlsx';
 import AlumnoAutocomplete from './guest-passes/AlumnoAutocomplete';
 import HorarioFilters from './guest-passes/HorarioFilters';
 import HorarioSelect from './guest-passes/HorarioSelect';
@@ -211,6 +210,9 @@ const AdminGuestPasses = () => {
   const handleExportExcel = async () => {
     try {
       setIsExporting(true);
+      // XLSX se carga con import() dentro del handler: son 870 kB (323 kB gzip) que solo
+      // hacen falta al pulsar el botón de exportar, no al abrir la vista.
+      const XLSX = await import('xlsx-js-style');
       const response = await apiFetch.get(API_ROUTES.INSCRIPCIONES.REPORTE_INDIVIDUALES);
       const result = await response.json();
 

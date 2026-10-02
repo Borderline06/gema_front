@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import TeacherSidebar from '../components/teacher/TeacherSidebar';
 import MobileNavbarTeacher from '../components/MobileNavbarTeacher';
+import LoadingSpinner from '../components/shared/LoadingSpinner';
 import { THEME_ASSETS } from "../config/themeAssets.js";
 
 const TeacherLayout = () => {
@@ -76,7 +77,10 @@ const TeacherLayout = () => {
 
                     {/* CONTENEDOR DE LA PÁGINA: Centrado y con ancho máximo */}
                     <div className="max-w-7xl mx-auto relative z-10">
-                        <Outlet />
+                        {/* Las rutas hijas son lazy: este Suspense cubre su descarga. */}
+                        <Suspense fallback={<LoadingSpinner />}>
+                            <Outlet />
+                        </Suspense>
                     </div>
                 </main>
 
