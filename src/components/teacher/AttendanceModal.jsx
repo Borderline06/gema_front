@@ -62,6 +62,7 @@ const AttendanceModal = ({ clase, onClose, onRefresh }) => {
             onRefresh();
             onClose();
         } catch (error) {
+            console.error('Error en handleSaveAll:', error);
             toast.error("Error al guardar asistencia");
         } finally {
             setIsSaving(false);

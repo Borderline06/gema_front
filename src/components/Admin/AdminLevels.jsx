@@ -40,6 +40,7 @@ const AdminLevels = ({ onBack, initialData }) => {
                 toast.error(result.message || "Error en la operación");
             }
         } catch (error) {
+            console.error('Error en handleSubmit:', error);
             toast.error("Error crítico de conexión");
         } finally {
             setLoading(false);

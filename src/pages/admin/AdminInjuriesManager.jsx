@@ -18,6 +18,7 @@ const AdminInjuriesManager = () => {
             const data = await lesionService.obtenerPendientes();
             setSolicitudes(data);
         } catch (error) {
+            console.error('Error en fetchPendientes:', error);
             toast.error('Error al cargar solicitudes');
         } finally {
             setLoading(false);

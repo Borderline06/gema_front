@@ -30,6 +30,7 @@ const StudentNews = () => {
                 }
             }
         } catch (error) {
+            console.error('Error en fetchPublicaciones:', error);
             toast.error("Error de conexión");
         } finally {
             setLoading(false);

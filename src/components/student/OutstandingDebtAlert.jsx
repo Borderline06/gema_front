@@ -62,7 +62,9 @@ const OutstandingDebtAlert = ({ pendingPayment, onRefresh, onPay }) => {
         toast.success("Reserva eliminada");
         if (onRefresh) await onRefresh();
       }
-    } catch (e) { toast.error("Error de conexión"); }
+    } catch (e) {
+        console.error('Error en executeCancelPackage:', e);
+        toast.error("Error de conexión"); }
     finally { setIsDeleting(false); }
   };
 

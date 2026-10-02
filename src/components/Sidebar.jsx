@@ -32,6 +32,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             toast.success('Sesión cerrada correctamente', { icon: '👋' });
             navigate('/login');
         } catch (error) {
+            console.error('Error en handleLogout:', error);
             toast.error('Error al cerrar sesión');
         }
     };

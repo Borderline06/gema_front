@@ -68,6 +68,7 @@ const FeriadoHistory = ({ onClose }) => {
             await feriadoService.eliminar(id);
             setFeriados(prev => prev.filter(f => f.id !== id));
         } catch (error) {
+            console.error('Error en executeEliminar:', error);
             alert("No se pudo eliminar");
         }
     };

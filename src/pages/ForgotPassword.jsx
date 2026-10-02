@@ -23,6 +23,7 @@ export const ForgotPassword = () => {
                 toast.error(errorData.message || "Error al solicitar recuperación");
             }
         } catch (error) {
+            console.error('Error en handleSubmit:', error);
             toast.error("Error de conexión con el servidor");
         } finally {
             setIsLoading(false);

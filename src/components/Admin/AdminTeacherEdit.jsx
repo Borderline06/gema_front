@@ -37,6 +37,7 @@ const AdminTeacherEdit = ({ teacherData, onBack, onSuccess }) => {
                 toast.error(error.message || "Error al actualizar");
             }
         } catch (error) {
+            console.error('Error en handleUpdate:', error);
             toast.error("Error de conexión");
         } finally {
             setLoading(false);

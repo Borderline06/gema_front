@@ -6,6 +6,7 @@ import { useFetch } from '../../hooks/useFetch';
 import ConfirmModal from '../../components/shared/ConfirmModal';
 import SearchInput from '../../components/shared/SearchInput';
 import toast from 'react-hot-toast';
+import { STATUS_SUCCESS } from '../../config/statusColors';
 
 const AdminLocationsManager = () => {
     const [view, setView] = useState('list');
@@ -114,7 +115,7 @@ const AdminLocationsManager = () => {
                             <div className="p-3 bg-brand-primary-soft text-brand-primary rounded-2xl group-hover:bg-brand-primary group-hover:text-white transition-colors">
                                 <MapPin size={24} />
                             </div>
-                            <span className={`text-[10px] font-black px-3 py-1 rounded-full uppercase ${sede.activo ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
+                            <span className={`text-[10px] font-black px-3 py-1 rounded-full uppercase ${sede.activo ? STATUS_SUCCESS : 'bg-red-100 text-red-600'}`}>
                                 {sede.activo ? 'Activo' : 'Inactivo'}
                             </span>
                         </div>

@@ -155,6 +155,7 @@ const DashboardEstudiante = () => {
             if (!res.ok) return { data: [] }; 
             return await res.json();
           } catch (error) {
+              console.error('Error en fetchSafe:', error);
             // Si el servidor se cae por completo, devolvemos data vacía
             return { data: [] }; 
           }

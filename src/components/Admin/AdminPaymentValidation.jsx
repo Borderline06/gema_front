@@ -7,6 +7,7 @@ import { apiFetch } from '../../interceptors/api';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../constants/apiRoutes';
+import { STATUS_SUCCESS_SOLID } from '../../config/statusColors';
 
 const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
     const { userId } = useAuth();
@@ -113,6 +114,7 @@ const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
                 onBack();
             }
         } catch (e) {
+            console.error('Error en handleVerify:', e);
             toast.error("Error en la validación");
         } finally {
             setLoading(false);
@@ -279,7 +281,7 @@ const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
                 <div className="space-y-6">
                     <div className="bg-brand-surface rounded-[2.5rem] border border-brand-border-soft shadow-xl p-8 space-y-8">
                         <div className="grid grid-cols-2 gap-4">
-                            <button onClick={() => setValidationStatus('APROBADO')} className={`py-5 rounded-2xl font-black uppercase text-[10px] border-2 transition-all ${validationStatus === 'APROBADO' ? 'bg-green-600 border-green-600 text-white shadow-lg' : 'bg-brand-bg border-brand-border-soft text-brand-muted'}`}>APROBAR</button>
+                            <button onClick={() => setValidationStatus('APROBADO')} className={`py-5 rounded-2xl font-black uppercase text-[10px] border-2 transition-all ${validationStatus === 'APROBADO' ? `${STATUS_SUCCESS_SOLID} shadow-lg` : 'bg-brand-bg border-brand-border-soft text-brand-muted'}`}>APROBAR</button>
                             <button onClick={() => setValidationStatus('RECHAZADO')} className={`py-5 rounded-2xl font-black uppercase text-[10px] border-2 transition-all ${validationStatus === 'RECHAZADO' ? 'bg-red-600 border-red-600 text-white shadow-lg' : 'bg-brand-bg border-brand-border-soft text-brand-muted'}`}>RECHAZAR</button>
                         </div>
 

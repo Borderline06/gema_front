@@ -24,6 +24,7 @@ const EditProfileContacts = () => {
       const result = await response.json();
       if (response.ok) setContactos(result.data || []);
     } catch (error) {
+        console.error('Error en cargarContactos:', error);
       toast.error('Error al cargar contactos');
     } finally {
       setLoading(false);

@@ -5,6 +5,7 @@ import { es } from 'date-fns/locale';
 import toast from 'react-hot-toast';
 import { asistenciaService } from '../../../services/asistencia.service';
 import LoadingSpinner from '../../..//components/shared/LoadingSpinner';
+import { STATUS_SUCCESS } from '../../../config/statusColors';
 
 const StudentAttendanceHistory = ({ alumno, onBack }) => {
     const [asistencias, setAsistencias] = useState([]);
@@ -35,7 +36,7 @@ const StudentAttendanceHistory = ({ alumno, onBack }) => {
     const getEstadoAsistenciaBadge = (estado) => {
         switch (estado?.toUpperCase()) {
             case 'PRESENTE':
-                return { bg: 'bg-green-50 text-green-600 border-green-200', icon: <BadgeCheck size={14} />, text: 'ASISTIÓ' };
+                return { bg: STATUS_SUCCESS, icon: <BadgeCheck size={14} />, text: 'ASISTIÓ' };
             case 'FALTA':
                 return { bg: 'bg-red-50 text-red-600 border-red-200', icon: <XCircle size={14} />, text: 'FALTA' };
             case 'PROGRAMADA':

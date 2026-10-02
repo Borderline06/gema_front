@@ -53,6 +53,7 @@ const MassRescheduleForm = ({ onSuccess }) => {
             const json = await response.json();
             setHorarios(json.data || json || []);
         } catch (error) {
+            console.error('Error en fetchHorarios:', error);
             toast.error('No se pudieron cargar los horarios.');
         } finally {
             setIsLoadingHorarios(false);
@@ -82,6 +83,7 @@ const MassRescheduleForm = ({ onSuccess }) => {
             }
             setFechasDisponibles(finalArray);
         } catch (error) {
+            console.error('Error en fetchFechasDisponibles:', error);
             setFechasDisponibles([]);
             toast.error('Error al obtener las fechas');
         } finally {

@@ -92,7 +92,9 @@ const MyRegistrations = () => {
         );
         setPendingPayment(deuda);
       }
-    } catch (error) { toast.error("Error de sincronización"); }
+    } catch (error) {
+        console.error('Error en fetchInitialData:', error);
+        toast.error("Error de sincronización"); }
     finally { setLoading(false); }
   }, [userId]);
 
@@ -110,7 +112,9 @@ const MyRegistrations = () => {
       const data = await res.json();
       toast.dismiss(toastId);
       if (res.ok) setRenovacionModal({ open: true, pkgId, fechasSugeridas: data.fechaSugerida });
-    } catch (error) { toast.dismiss(toastId); toast.error("Error"); }
+    } catch (error) {
+        console.error('Error en handlePrepaymentGroup:', error);
+        toast.dismiss(toastId); toast.error("Error"); }
   };
 
   const confirmarRenovacionMasiva = async (fechaInicio) => {
@@ -121,7 +125,9 @@ const MyRegistrations = () => {
       const res = await apiFetch.post(API_ROUTES.CUENTAS_POR_COBRAR.GENERAR_ADELANTADO(pkgId), { fecha_inicio: fechaInicio });
       if (res.ok) { toast.success("¡Renovado! Paga para activar."); fetchInitialData(); }
       else { const r = await res.json(); toast.error(r.error || "Error"); }
-    } catch (error) { toast.error("Error de red"); } finally { toast.dismiss(toastId); }
+    } catch (error) {
+        console.error('Error en confirmarRenovacionMasiva:', error);
+        toast.error("Error de red"); } finally { toast.dismiss(toastId); }
   };
 
   const handleAction = (reg) => {
@@ -136,7 +142,9 @@ const MyRegistrations = () => {
       const endpoint = isPending ? `/inscripciones/${reg.id}/cancelar-reserva` : `/inscripciones/${reg.id}/separar-finalizar`;
       const res = await apiFetch.patch(endpoint);
       if (res.ok) { toast.success("Actualizado"); fetchInitialData(); }
-    } catch (error) { toast.error("Error"); }
+    } catch (error) {
+        console.error('Error en executeAction:', error);
+        toast.error("Error"); }
   };
 
   const { currentPackages, historyItems } = useMemo(() => {

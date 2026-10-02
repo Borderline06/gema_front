@@ -9,6 +9,7 @@ import ConfirmModal from '../../components/shared/ConfirmModal';
 import SearchInput from '../../components/shared/SearchInput';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import recuperacionService from '../../services/recuperacion.service';
+import { STATUS_SUCCESS } from '../../config/statusColors';
 
 const AdminDeleteMakeups = () => {
     const [recuperaciones, setRecuperaciones] = useState([]);
@@ -192,7 +193,7 @@ const AdminDeleteMakeups = () => {
                                                                         <span className={`px-2 py-0.5 rounded-full text-[8px] font-black tracking-tighter ${
                                                                             recu.estado === 'VENCIDA' ? 'bg-red-100 text-red-600' :
                                                                             recu.estado === 'PENDIENTE' ? 'bg-amber-100 text-amber-600' : 
-                                                                            'bg-emerald-100 text-emerald-600'
+                                                                            STATUS_SUCCESS
                                                                         }`}>
                                                                             {recu.estado}
                                                                         </span>

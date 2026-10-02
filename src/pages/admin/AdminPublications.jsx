@@ -37,6 +37,7 @@ const AdminPublications = () => {
                 toast.error("Error al cargar las publicaciones");
             }
         } catch (error) {
+            console.error('Error en fetchPublicaciones:', error);
             toast.error("Error de conexión con el servidor");
         } finally {
             setLoading(false);
@@ -89,6 +90,7 @@ const AdminPublications = () => {
                 toast.error(errorRes.message || "Error 500");
             }
         } catch (error) {
+            console.error('Error en handleSubmit:', error);
             toast.error("Error de conexión");
         } finally {
             setSubmitting(false);
@@ -109,6 +111,7 @@ const AdminPublications = () => {
                 fetchPublicaciones();
             }
         } catch (error) {
+            console.error('Error en executeDelete:', error);
             toast.error("Error al eliminar");
         }
     };

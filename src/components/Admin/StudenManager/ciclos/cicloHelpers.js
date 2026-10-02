@@ -1,5 +1,6 @@
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { STATUS_SUCCESS } from '../../../../config/statusColors';
 
 // Compartido entre InscriptionsModal y StudentDetails: ambos consumen el mismo
 // endpoint de historial académico y necesitan formatear/clasificar "ciclos" igual.
@@ -31,7 +32,7 @@ export const obtenerRangoCiclo = (fechaInicio, fechaFin) => {
 export const getEstadoPagoBadge = (estado) => {
     switch (estado?.toUpperCase()) {
         case 'PAGADA':
-        case 'PAGADO': return 'bg-green-100 text-green-700 border-green-200';
+        case 'PAGADO': return STATUS_SUCCESS;
         case 'PENDIENTE': return 'bg-orange-100 text-orange-700 border-orange-200';
         case 'VENCIDO': return 'bg-red-100 text-red-700 border-red-200';
         default: return 'bg-brand-surface-alt text-slate-500 border-brand-border';
@@ -42,7 +43,7 @@ export const getEstadoPagoBadge = (estado) => {
 // de la misma tarjeta si el paquete agrupa varias inscripciones.
 export const getEstadoInscripcionBadge = (estado) => {
     switch (estado?.toUpperCase()) {
-        case 'ACTIVO': return 'text-emerald-600 bg-emerald-50 border-emerald-100';
+        case 'ACTIVO': return STATUS_SUCCESS;
         case 'INACTIVO': return 'text-slate-500 bg-brand-bg border-brand-border';
         case 'FINALIZADO': return 'text-slate-500 bg-brand-surface-alt border-brand-border';
         case 'PENDIENTE_PAGO': return 'text-amber-600 bg-amber-50 border-amber-100';

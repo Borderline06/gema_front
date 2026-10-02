@@ -26,6 +26,7 @@ const AdminCreateBenefits = () => {
             // Asegúrate de que tu backend NO filtre por activo:true en el GET global
             if (response.ok) setBeneficios(result.data || result);
         } catch (error) {
+            console.error('Error en fetchBeneficios:', error);
             toast.error("Error al conectar con el catálogo");
         } finally {
             setLoading(false);
@@ -59,6 +60,7 @@ const AdminCreateBenefits = () => {
                 fetchBeneficios();
             }
         } catch (error) {
+            console.error('Error en handleSubmit:', error);
             toast.error("Error al procesar la solicitud");
         } finally {
             setSubmitting(false);
@@ -73,6 +75,7 @@ const AdminCreateBenefits = () => {
                 fetchBeneficios();
             }
         } catch (error) {
+            console.error('Error en handleStatusChange:', error);
             toast.error("Error al cambiar el estado");
         }
     };

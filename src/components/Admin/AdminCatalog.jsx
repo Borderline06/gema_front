@@ -60,6 +60,7 @@ const AdminCatalog = ({ onBack, editData }) => {
                 toast.error("Error al procesar la solicitud");
             }
         } catch (error) {
+            console.error('Error en handleSubmit:', error);
             toast.error("Error de conexión");
         } finally {
             setLoading(false);

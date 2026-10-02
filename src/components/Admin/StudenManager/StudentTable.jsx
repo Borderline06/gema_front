@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Fingerprint, MapPin, Phone, Eye, RefreshCw, Zap, ArrowUpDown, Filter, AlertCircle, CreditCard, Search, History, Flame } from 'lucide-react';
+import { STATUS_SUCCESS } from '../../../config/statusColors';
 
 // --- SUBCOMPONENTES DE CABECERA ---
 // Declarados a nivel de módulo a propósito: definidos dentro del cuerpo de
@@ -215,7 +216,7 @@ const StudentTable = ({
                                             // que ve el filtro de la cabecera, sin duplicar la lógica.
                                             <span className={`px-3 py-1.5 rounded-lg border flex items-center gap-1.5
                                             ${alum.estadoDisplay === 'ACTIVO'
-                                                ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
+                                                ? STATUS_SUCCESS
                                                 : alum.estadoDisplay === 'NO RENOVADO'
                                                     ? 'bg-red-50 text-red-600 border-red-200'
                                                     : 'bg-brand-bg text-slate-500 border-brand-border'}`}

@@ -27,6 +27,7 @@ export const ResetPassword = () => {
                 toast.error(errorData.message || "Error al restablecer");
             }
         } catch (error) {
+            console.error('Error en handleSubmit:', error);
             toast.error("Hubo un problema con la conexión");
         } finally {
             setIsLoading(false);

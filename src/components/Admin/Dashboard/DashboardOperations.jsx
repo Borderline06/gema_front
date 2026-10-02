@@ -122,6 +122,7 @@ const DashboardOperations = ({ reporte = [], onExport, isExporting }) => {
                 setLocalReporte(previousData); // Revertimos si hay error
             }
         } catch (error) {
+            console.error('Error en handleInlineEdit:', error);
             toast.error('Error de conexión');
             setLocalReporte(previousData); // Revertimos si hay error de red
         }

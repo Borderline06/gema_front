@@ -12,6 +12,7 @@ import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../constants/apiRoutes';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import SearchInput from '../../components/shared/SearchInput';
+import { STATUS_SUCCESS } from '../../config/statusColors';
 
 const AdminPaymentManager = () => {
     const [view, setView] = useState('list');
@@ -35,6 +36,7 @@ const AdminPaymentManager = () => {
             const result = await response.json();
             if (response.ok) setPayments(result.data || []);
         } catch (error) {
+            console.error('Error en fetchPayments:', error);
             toast.error("Error al sincronizar ingresos");
         } finally {
             setLoading(false);
@@ -49,6 +51,7 @@ const AdminPaymentManager = () => {
             const result = await response.json();
             if (response.ok) setResumenAnual(result.data || []);
         } catch (error) {
+            console.error('Error en fetchResumenAnual:', error);
             toast.error("Error al cargar el resumen anual");
         } finally {
             setLoadingResumen(false);
@@ -68,6 +71,7 @@ const AdminPaymentManager = () => {
                 toast.error("No se pudo cargar el detalle del paquete");
             }
         } catch (e) {
+            console.error('Error en handleSelectPayment:', e);
             toast.error("Error de conexión al obtener detalles");
         } finally {
             setLoading(false);
@@ -135,7 +139,7 @@ const AdminPaymentManager = () => {
 
     const getStatusStyle = (status) => {
         switch (status) {
-            case 'APROBADO': return 'bg-green-100 text-green-600 border-green-200';
+            case 'APROBADO': return STATUS_SUCCESS;
             case 'RECHAZADO': return 'bg-red-100 text-red-600 border-red-200';
             default: return 'bg-orange-100 text-brand-accent-dark border-orange-200';
         }

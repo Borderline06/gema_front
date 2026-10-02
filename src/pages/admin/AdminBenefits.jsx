@@ -47,6 +47,7 @@ const AdminBenefits = () => {
                     setTiposBeneficio(tiposActivos);
                 }
             } catch (error) {
+                console.error('Error en loadInitialData:', error);
                 toast.error("Error al sincronizar datos");
             } finally {
                 setLoading(false);
@@ -68,6 +69,7 @@ const AdminBenefits = () => {
                 setDeudaPendiente(pendiente);
             }
         } catch (error) {
+            console.error('Error en checkDeudaAlumno:', error);
             console.error("Error al verificar deudas");
         } finally {
             setLoadingDeuda(false);

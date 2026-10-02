@@ -57,6 +57,7 @@ const AdminSchedule = ({ onBack, initialData }) => {
                     }
                 }
             } catch (error) {
+                console.error('Error en loadInitialData:', error);
                 toast.error("Error al cargar datos");
             } finally {
                 setFetchingData(false);
@@ -123,7 +124,9 @@ const AdminSchedule = ({ onBack, initialData }) => {
                 const err = await resultados[0].json();
                 toast.error(err.message || "Error en la operación");
             }
-        } catch (e) { toast.error("Error de conexión"); } finally { setLoading(false); }
+        } catch (e) {
+            console.error('Error en handleSubmit:', e);
+            toast.error("Error de conexión"); } finally { setLoading(false); }
     };
 
     if (fetchingData) return (

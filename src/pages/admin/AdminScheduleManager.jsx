@@ -43,6 +43,7 @@ const AdminSchedulesManager = () => {
             const result = await response.json();
             if (response.ok) setHorarios(result.data);
         } catch (error) {
+            console.error('Error en fetchHorarios:', error);
             toast.error("Error al conectar con el servidor");
         } finally {
             setLoading(false);
@@ -67,6 +68,7 @@ const AdminSchedulesManager = () => {
                 toast.error(err.message || "No se pudo eliminar", { id: loadingToast });
             }
         } catch (error) {
+            console.error('Error en executeDelete:', error);
             toast.error("Error de conexión al eliminar", { id: loadingToast });
         }
     };

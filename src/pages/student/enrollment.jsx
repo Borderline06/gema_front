@@ -57,6 +57,7 @@ const Enrollment = () => {
         setPendingPayment(deuda);
       }
     } catch (e) {
+        console.error('Error en fetchInitialData:', e);
       toast.error("Error de sincronización Gema");
     } finally {
       setLoading(false);
@@ -126,7 +127,9 @@ const Enrollment = () => {
       const result = await response.json();
       if (response.ok) setPreviewModal({ open: true, data: result.data });
       else toast.error(result.message);
-    } catch (e) { toast.error("Error de conexión"); } finally { setSubmitting(false); }
+    } catch (e) {
+        console.error('Error en iniciarProcesoMatricula:', e);
+        toast.error("Error de conexión"); } finally { setSubmitting(false); }
   };
 
   const confirmarMatriculaFinal = async (fechaElectiva) => {
@@ -159,7 +162,9 @@ const Enrollment = () => {
         // Aquí puedes capturar el throw new Error del backend si está "ACTIVO"
         toast.error(result.message || "Error al procesar");
       }
-    } catch (error) { toast.error("Error de servidor"); } finally { setSubmitting(false); }
+    } catch (error) {
+        console.error('Error en confirmarMatriculaFinal:', error);
+        toast.error("Error de servidor"); } finally { setSubmitting(false); }
   };
 
   if (loading) return (

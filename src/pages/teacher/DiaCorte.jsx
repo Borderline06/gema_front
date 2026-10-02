@@ -23,6 +23,7 @@ const DiaCorte = () => {
             const json = await response.json();
             setAlumnos(json.data || []);
         } catch (error) {
+            console.error('Error en fetchAlumnosCorte:', error);
             toast.error("Error al cargar lista de cortes");
         } finally {
             setLoading(false);

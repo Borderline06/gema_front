@@ -55,6 +55,7 @@ const AdminCreateBenefitsAnuncio = () => {
         toast.error('Error al cargar anuncios');
       }
     } catch (error) {
+        console.error('Error en fetchAnuncios:', error);
       toast.error('Error de conexión');
     } finally {
       setLoading(false);
@@ -109,6 +110,7 @@ const AdminCreateBenefitsAnuncio = () => {
         toast.error(res.message || 'Error al guardar');
       }
     } catch (error) {
+        console.error('Error en handleSubmit:', error);
       toast.error('Error de red');
     } finally {
       setIsSubmitting(false);
@@ -132,6 +134,7 @@ const AdminCreateBenefitsAnuncio = () => {
         toast.error('Error al eliminar');
       }
     } catch (error) {
+        console.error('Error en executeDelete:', error);
       toast.error('Error de conexión');
     }
   };
@@ -147,6 +150,7 @@ const AdminCreateBenefitsAnuncio = () => {
         fetchAnuncios();
       }
     } catch (error) {
+        console.error('Error en toggleActivo:', error);
       toast.error('Error de conexión');
     }
   };
@@ -183,7 +187,7 @@ const AdminCreateBenefitsAnuncio = () => {
               
               {/* Overlay de Controles Admin */}
               <div className="absolute top-4 right-4 z-30 flex gap-2">
-                <button onClick={() => toggleActivo(anuncio)} className={`p-2 rounded-full backdrop-blur-md border border-white/20 text-white transition-colors ${anuncio.activo ? 'bg-green-500/80 hover:bg-green-500' : 'bg-red-500/80 hover:bg-red-500'}`} title={anuncio.activo ? "Apagar" : "Encender"}>
+                <button onClick={() => toggleActivo(anuncio)} className={`p-2 rounded-full backdrop-blur-md border border-white/20 text-white transition-colors ${anuncio.activo ? 'bg-emerald-500/80 hover:bg-emerald-500' : 'bg-red-500/80 hover:bg-red-500'}`} title={anuncio.activo ? "Apagar" : "Encender"}>
                   {anuncio.activo ? <Power size={14} /> : <PowerOff size={14} />}
                 </button>
                 <button onClick={() => openModal(anuncio)} className="p-2 bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-md rounded-full text-white border border-white/20 transition-colors">

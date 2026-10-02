@@ -34,6 +34,7 @@ const Payments = () => {
       if (resDebts.ok) setDebts(dataDebts.data || []);
       if (resPayments.ok) setPayments(dataPayments.data || []);
     } catch (error) {
+        console.error('Error en fetchFinancialData:', error);
       toast.error("Error de conexión");
     } finally {
       setLoading(false);

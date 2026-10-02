@@ -18,6 +18,7 @@ const MobileNavbarTeacher = () => {
             toast.success('Sesión cerrada');
             navigate('/login');
         } catch (error) {
+            console.error('Error en handleLogout:', error);
             toast.error('Error al salir');
         }
     };

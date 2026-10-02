@@ -47,6 +47,7 @@ const EditProfileModal = ({ isOpen, onClose, onSuccess }) => {
             });
           }
         } catch (error) {
+            console.error('Error en cargarDatos:', error);
           toast.error("Error al cargar perfil");
         } finally {
           setLoading(false);

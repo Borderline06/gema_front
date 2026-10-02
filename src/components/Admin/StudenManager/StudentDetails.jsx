@@ -42,6 +42,7 @@ const StudentDetails = ({ selectedAlumno, onBack, onStatusHistoryChange }) => {
                     toast.error("No se pudo obtener el detalle del alumno");
                 }
             } catch (error) {
+                console.error('Error en fetchDetalle:', error);
                 toast.error("Error al conectar con el servidor para obtener el detalle");
             } finally {
                 setLoadingDetalle(false);

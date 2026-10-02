@@ -34,6 +34,7 @@ const AdminSettings = () => {
             const result = await response.json();
             if (response.ok) setSettings(result.data || []);
         } catch (error) {
+            console.error('Error en fetchSettings:', error);
             toast.error("Error al sincronizar ajustes");
         } finally {
             setLoading(false);
@@ -56,6 +57,7 @@ const AdminSettings = () => {
                 fetchSettings();
             }
         } catch (error) {
+            console.error('Error en handleSave:', error);
             toast.error("Error de conexión");
         } finally {
             setSubmitting(false);

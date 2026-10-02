@@ -45,6 +45,7 @@ const AdminTeachersManager = () => {
                 setCoordinadores(formattedData);
             }
         } catch (error) {
+            console.error('Error en fetchCoordinadores:', error);
             toast.error("Error al cargar la lista de coordinadores");
         } finally {
             setLoading(false);
