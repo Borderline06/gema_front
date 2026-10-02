@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Loader2 } from 'lucide-react';
-import toast from 'react-hot-toast';
 
-import apiFetch from '../../../interceptors/api';
-import { API_ROUTES } from '../../../constants/apiRoutes';
+import { useHistorialCiclos } from '../../../hooks/useHistorialCiclos';
 import CicloRegularCard from './inscriptions-modal/CicloRegularCard';
 import ClaseSueltaButton from './ciclos/ClaseSueltaButton';
 import CicloSinRegistrosCard from './ciclos/CicloSinRegistrosCard';
@@ -11,49 +9,28 @@ import ClaseSueltaDetailModal from './ciclos/ClaseSueltaDetailModal';
 
 const InscriptionsModal = ({ isOpen, data, onClose }) => {
 
-    // Ya NO se arma desde data.historialInscripciones (pobre en datos).
-    // Ahora pide el mismo endpoint rico que usa StudentDetails, con monto,
-    // profesor, cuenta_id, concepto y fecha de vencimiento por cuenta.
-    const [ciclos, setCiclos] = useState([]);
-    const [loadingCiclos, setLoadingCiclos] = useState(true);
+    // Misma fuente que StudentDetails: el endpoint rico por cuenta (monto,
+    // profesor, cuenta_id, concepto, vencimiento), ahora cacheado y compartido.
+    const { ciclos, loading: loadingCiclos } = useHistorialCiclos(data?.id, { activo: isOpen });
     const [individualSeleccionada, setIndividualSeleccionada] = useState(null);
 
-    useEffect(() => {
-        if (!isOpen || !data?.id) return;
-
-        const fetchCiclos = async () => {
-            try {
-                setLoadingCiclos(true);
-                const res = await apiFetch.get(API_ROUTES.HISTORIAL_ACADEMICO.ALUMNO(data.id));
-                const result = await res.json();
-
-                if (res.ok) {
-                    setCiclos(result.data || []);
-                } else {
-                    toast.error("No se pudo obtener el detalle de inscripciones");
-                }
-            } catch (error) {
-                toast.error("Error al conectar con el servidor para obtener el detalle");
-            } finally {
-                setLoadingCiclos(false);
-            }
-        };
-
-        fetchCiclos();
-    }, [isOpen, data?.id]);
-
-    // Reset de la selección al cerrar, para no arrastrar estado a la próxima apertura
-    useEffect(() => {
-        if (!isOpen) setIndividualSeleccionada(null);
-    }, [isOpen]);
-
-    if (!isOpen || !data) return null;
+    // Reset de la selección al cerrar, para no arrastrar estado a la próxima
+    // apertura. Se hace en el handler y no en un useEffect.
+    const cerrar = () => {
+        setIndividualSeleccionada(null);
+        onClose();
+    };
 
     // Separamos regulares (con clases) vs individuales vs sin_registros,
     // igual que en StudentDetails, para mantener el mismo orden visual.
-    const ciclosRegulares = ciclos.filter(c => !c.sin_registros && !c.es_individual);
-    const ciclosIndividuales = ciclos.filter(c => !c.sin_registros && c.es_individual);
-    const ciclosSinRegistros = ciclos.filter(c => c.sin_registros);
+    // Va antes del early return: los hooks no pueden quedar detras de un return.
+    const { ciclosRegulares, ciclosIndividuales, ciclosSinRegistros } = useMemo(() => ({
+        ciclosRegulares: ciclos.filter(c => !c.sin_registros && !c.es_individual),
+        ciclosIndividuales: ciclos.filter(c => !c.sin_registros && c.es_individual),
+        ciclosSinRegistros: ciclos.filter(c => c.sin_registros),
+    }), [ciclos]);
+
+    if (!isOpen || !data) return null;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-brand-primary-dark/40 backdrop-blur-sm animate-fade-in">
@@ -68,7 +45,7 @@ const InscriptionsModal = ({ isOpen, data, onClose }) => {
                         </p>
                     </div>
                     <button
-                        onClick={onClose}
+                        onClick={cerrar}
                         className="w-10 h-10 bg-brand-surface border border-brand-border rounded-xl flex items-center justify-center text-brand-muted hover:bg-red-50 hover:text-red-500 transition-all"
                     >
                         ✕

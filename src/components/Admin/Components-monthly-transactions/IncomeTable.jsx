@@ -2,10 +2,15 @@ import React from 'react';
 import { TrendingUp, MapPin, Lock, Edit2, Loader2, Check, X, Trash2 } from 'lucide-react';
 
 export const IncomeTable = ({
-    ingresosConsolidados, ingresosManuales, sedes, mesNum, inlineEditId, inlineData, setInlineData,
-    submitting, saveInlineEdit, setInlineEditId, startInlineEdit, addingMonth, addingType,
-    newData, setNewData, startAddNew, saveNewMovimiento, setAddingMonth, setAddingType, movimientoDelete
+    ingresosConsolidados, ingresosManuales, mesNum,
+    // El estado volatil de los formularios llega ya acotado a este mes desde
+    // AdminCashFlow; las acciones vienen en un objeto de identidad estable.
+    acciones, submitting, inlineEditId, inlineData, addingType, newData
 }) => {
+    const {
+        sedes, setInlineData, saveInlineEdit, cancelInlineEdit, startInlineEdit,
+        setNewData, startAddNew, cancelAddNew, saveNewMovimiento, movimientoDelete,
+    } = acciones;
     return (
         <div className="flex flex-col">
             <div className="flex items-center gap-2 mb-3">
@@ -111,7 +116,7 @@ export const IncomeTable = ({
                                     <td className="p-2 text-center">
                                         <div className="flex justify-center gap-1.5">
                                             <button disabled={submitting} onClick={() => saveInlineEdit(m.id, mesNum)} className="text-white bg-brand-primary-dark hover:bg-brand-primary p-1.5 rounded-lg disabled:opacity-50 transition-colors shadow-sm">{submitting ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}</button>
-                                            <button disabled={submitting} onClick={() => setInlineEditId(null)} className="text-slate-500 bg-slate-200 hover:bg-slate-300 p-1.5 rounded-lg transition-colors shadow-sm"><X size={14} /></button>
+                                            <button disabled={submitting} onClick={cancelInlineEdit} className="text-slate-500 bg-slate-200 hover:bg-slate-300 p-1.5 rounded-lg transition-colors shadow-sm"><X size={14} /></button>
                                         </div>
                                     </td>
                                 </tr>
@@ -127,7 +132,7 @@ export const IncomeTable = ({
                                     <td className="p-3 text-right font-black text-green-600 align-top whitespace-nowrap">+ S/ {parseFloat(m.monto).toFixed(2)}</td>
                                     <td className="p-3 text-center align-top">
                                         <div className="flex flex-col gap-1.5">
-                                            <button onClick={() => startInlineEdit(m)} className="text-green-600 font-black uppercase text-[9px] hover:bg-green-50 px-2 py-1.5 rounded-lg transition-colors flex items-center justify-center gap-1 mx-auto border border-transparent hover:border-green-200 w-full">
+                                            <button onClick={() => startInlineEdit(m, mesNum)} className="text-green-600 font-black uppercase text-[9px] hover:bg-green-50 px-2 py-1.5 rounded-lg transition-colors flex items-center justify-center gap-1 mx-auto border border-transparent hover:border-green-200 w-full">
                                                 <Edit2 size={12} /> Editar
                                             </button>
                                             <button onClick={() => movimientoDelete(m, mesNum)} className="text-red-600 font-black uppercase text-[9px] hover:bg-red-50 px-2 py-1.5 rounded-lg transition-colors flex items-center justify-center gap-1 mx-auto border border-transparent hover:border-red-200 w-full">
@@ -139,7 +144,7 @@ export const IncomeTable = ({
                             ))}
 
                             {/* --- FORMULARIO NUEVO INGRESO MANUAL --- */}
-                            {addingMonth === mesNum && addingType === 'INGRESO' && (
+                            {addingType === 'INGRESO' && (
                                 <tr className="bg-green-50/50">
                                     <td className="p-2">
                                         <input type="date" value={newData.fecha} onChange={e => setNewData({ ...newData, fecha: e.target.value })} className="w-full text-[10px] bg-brand-surface border border-green-400 p-2 rounded-lg outline-none font-bold" />
@@ -159,7 +164,7 @@ export const IncomeTable = ({
                                     <td className="p-2 text-center">
                                         <div className="flex justify-center gap-1.5">
                                             <button disabled={submitting} onClick={() => saveNewMovimiento(mesNum)} className="text-white bg-green-600 hover:bg-green-700 p-1.5 rounded-lg shadow-sm disabled:opacity-50 transition-colors">{submitting ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}</button>
-                                            <button disabled={submitting} onClick={() => { setAddingMonth(null); setAddingType(null); }} className="text-slate-500 bg-slate-200 hover:bg-slate-300 p-1.5 rounded-lg shadow-sm transition-colors"><X size={14} /></button>
+                                            <button disabled={submitting} onClick={cancelAddNew} className="text-slate-500 bg-slate-200 hover:bg-slate-300 p-1.5 rounded-lg shadow-sm transition-colors"><X size={14} /></button>
                                         </div>
                                     </td>
                                 </tr>
@@ -173,7 +178,7 @@ export const IncomeTable = ({
                 </div>
 
                 <div className="mt-auto p-3 bg-brand-bg border-t border-brand-border">
-                    {!(addingMonth === mesNum && addingType === 'INGRESO') && (
+                    {addingType !== 'INGRESO' && (
                         <button onClick={() => startAddNew(mesNum, 'INGRESO')} className="w-full p-2.5 text-[10px] font-black uppercase tracking-widest text-brand-heading bg-brand-surface border border-slate-300 hover:border-green-600 hover:text-green-600 hover:bg-green-50 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm">
                             <TrendingUp size={14} /> Ingresar Dinero Manual
                         </button>

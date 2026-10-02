@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Ticket, Loader2, Plus, FileSpreadsheet } from 'lucide-react';
 import { apiFetch } from '../../interceptors/api';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
-import { sedeService } from '../../services/sede.service';
 import { API_ROUTES } from '../../constants/apiRoutes';
+import { useFetch } from '../../hooks/useFetch';
+import { useCatalogos } from '../../hooks/useCatalogos';
 import AlumnoAutocomplete from './guest-passes/AlumnoAutocomplete';
 import HorarioFilters from './guest-passes/HorarioFilters';
 import HorarioSelect from './guest-passes/HorarioSelect';
@@ -28,23 +29,54 @@ const getDayName = (dayNumber) => {
 
 const AdminGuestPasses = () => {
   const { userId } = useAuth();
-  const [loadingConfig, setLoadingConfig] = useState(true);
-  const [creating, setCreating] = useState(false);
-  const [guestUser, setGuestUser] = useState(null);
 
   // Estados para el Formulario de Venta
-  const [alumnos, setAlumnos] = useState([]);
   const [alumnoSelect, setAlumnoSelect] = useState(null);
   const [textoBusqueda, setTextoBusqueda] = useState('');
-  const [horarios, setHorarios] = useState([]);
-  const [sedes, setSedes] = useState([]);
   const [sedeSelect, setSedeSelect] = useState('');
-  const [niveles, setNiveles] = useState([]);
   const [nivelSelect, setNivelSelect] = useState('');
   const [diaSelect, setDiaSelect] = useState('');
-  const [metodosPago, setMetodosPago] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
+  // Sedes, niveles, horarios y metodos de pago vienen de la cache de catalogos:
+  // antes esta vista los pedia uno detras de otro con cinco `await` en cadena,
+  // bloqueando el formulario durante la suma de las cinco latencias (y cada
+  // fallo se tragaba en un console.error, dejando selects vacios sin explicacion).
+  const {
+    sedes: sedesRaw,
+    niveles,
+    horarios: horariosRaw,
+    metodosPago: metodosPagoRaw,
+  } = useCatalogos(['sedes', 'niveles', 'horarios', 'metodosPago']);
+
+  // Lo unico propio de esta vista es la lista de alumnos.
+  const { data: alumnos } = useFetch(
+    async () => {
+      const res = await apiFetch.get(API_ROUTES.USUARIOS.ALUMNOS);
+      const result = await res.json();
+      return result.data || [];
+    },
+    [],
+    { initialData: [], errorMessage: 'Error cargando alumnos' }
+  );
+
+  // Se mantienen los mismos filtros y la misma transformacion que hacia la
+  // version anterior, para no cambiar lo que ve el formulario.
+  const sedes = useMemo(() => sedesRaw.filter(s => s.activo), [sedesRaw]);
+  const metodosPago = useMemo(() => metodosPagoRaw.filter(m => m.activo), [metodosPagoRaw]);
+  const horarios = useMemo(
+    () => horariosRaw
+      .filter(h => h.activo)
+      .map(rh => ({
+        id: rh.id,
+        dia: { id: rh.dia_semana, nombre: getDayName(rh.dia_semana) },
+        hora: `${rh.hora_inicio} - ${rh.hora_fin}`,
+        nivel: rh.nivel,
+        sede: rh.cancha?.sede,
+      })),
+    [horariosRaw]
+  );
 
   // Estado para el botón de Excel
   const [isExporting, setIsExporting] = useState(false);
@@ -58,83 +90,6 @@ const AdminGuestPasses = () => {
     usuario_admin_id: ''
   });
   const [formDataList, setFormDataList] = useState([]);
-
-  const fetchData = async () => {
-    try {
-      setLoadingConfig(true);
-
-      try {
-        const resAlumnos = await apiFetch.get(API_ROUTES.USUARIOS.ALUMNOS);
-        const alumnosResult = await resAlumnos.json();
-        setAlumnos(alumnosResult.data);
-      } catch (e) {
-        console.error("Error cargando alumnos", e)
-      }
-
-      try {
-        const resHorarios = await apiFetch.get('/horarios');
-        const horariosResult = await resHorarios.json();
-        if (resHorarios.ok && horariosResult.data) {
-          const rawHorarios = horariosResult.data.filter(h => h.activo);
-          const transformedHorarios = rawHorarios.map(rh => {
-            return {
-              id: rh.id,
-              dia: {
-                id: rh.dia_semana,
-                nombre: getDayName(rh.dia_semana),
-              },
-              hora: `${rh.hora_inicio} - ${rh.hora_fin}`,
-              nivel: rh.nivel,
-              sede: rh.cancha?.sede,
-
-            }
-          })
-          setHorarios(transformedHorarios);
-        }
-      } catch (e) {
-        console.error("Error cargando horarios", e);
-      }
-
-      try {
-        const sedesResult = await sedeService.getAll();
-        const sedesActivas = sedesResult.data.filter(sr => sr.activo)
-        setSedes(sedesActivas);
-      } catch (e) {
-        console.error("Error cargando sedes", e)
-      }
-
-      try {
-        const resNiveles = await apiFetch.get('/niveles');
-        const nivelesResult = await resNiveles.json();
-        setNiveles(nivelesResult.data);
-      } catch (e) {
-        console.error("Error cargando niveles", e)
-      }
-
-      try {
-        const resMetodos = await apiFetch.get('/metodos-pago');
-        const metodosResult = await resMetodos.json();
-
-        if (resMetodos.ok && metodosResult.data) {
-          setMetodosPago(metodosResult.data.filter(m => m.activo));
-        } else {
-          throw new Error("No hay métodos");
-        }
-      } catch (e) {
-        console.error("Error cargando métodos de pago", e);
-      }
-
-    } catch (error) {
-      console.error(error);
-      toast.error("Error crítico sincronizando el sistema");
-    } finally {
-      setLoadingConfig(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const addInscInd = () => {
     if (!alumnoSelect) {
@@ -193,7 +148,7 @@ const AdminGuestPasses = () => {
       usuario_admin_id: ''
     })
     try {
-      const result = await apiFetch.post('/inscripciones/individual-admin', formDataList);
+      const result = await apiFetch.post(API_ROUTES.INSCRIPCIONES.INDIVIDUAL_ADMIN, formDataList);
       const data = await result.json();
       if (!result.ok) {
         throw new Error(data.message || 'Error en el proceso de inscripción individual')

@@ -29,6 +29,22 @@ const recuperacionService = {
         const result = await parseJsonResponse(response, "Error al obtener historial");
         return result.data;
     },
+
+    // Listado para la pantalla de depuracion de recuperaciones (admin).
+    listarDepuracion: async () => {
+        const response = await apiFetch.get(API_ROUTES.RECUPERACIONES.LISTAR_DEPURACION);
+        const result = await parseJsonResponse(response, "Error al cargar las recuperaciones");
+        return result.data || [];
+    },
+
+    eliminar: async (recuperacionId) => {
+        const response = await apiFetch.delete(API_ROUTES.RECUPERACIONES.ELIMINAR(recuperacionId));
+        if (!response.ok) {
+            const error = await response.json().catch(() => ({}));
+            throw new Error(error.message || "Error al eliminar la recuperacion");
+        }
+        return response.status === 204 ? { success: true } : await response.json();
+    },
 };
 
 export default recuperacionService;

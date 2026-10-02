@@ -3,13 +3,12 @@ import {
     Trash2, User, Calendar, AlertTriangle,
     Filter, History, MapPin, ChevronDown, Stethoscope, ChevronRight
 } from 'lucide-react';
-import { apiFetch } from "../../interceptors/api";
-import { API_ROUTES } from "../../constants/apiRoutes";
 import toast from 'react-hot-toast';
 import { format, addMinutes } from 'date-fns';
 import ConfirmModal from '../../components/shared/ConfirmModal';
 import SearchInput from '../../components/shared/SearchInput';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import recuperacionService from '../../services/recuperacion.service';
 
 const AdminDeleteMakeups = () => {
     const [recuperaciones, setRecuperaciones] = useState([]);
@@ -24,11 +23,9 @@ const AdminDeleteMakeups = () => {
     const fetchRecuperaciones = async () => {
         try {
             setLoading(true);
-            const response = await apiFetch.get(API_ROUTES.RECUPERACIONES.LISTAR_DEPURACION);
-            const json = await response.json();
-            setRecuperaciones(json.data || []);
+            setRecuperaciones(await recuperacionService.listarDepuracion());
         } catch (error) {
-            toast.error("Error al cargar datos");
+            toast.error(error.message || "Error al cargar datos");
         } finally {
             setLoading(false);
         }
@@ -49,11 +46,11 @@ const AdminDeleteMakeups = () => {
         const { id } = deleteTarget;
         setDeleteTarget(null);
         try {
-            await apiFetch.delete(API_ROUTES.RECUPERACIONES.ELIMINAR(id));
+            await recuperacionService.eliminar(id);
             toast.success("Eliminado");
             setRecuperaciones(prev => prev.filter(r => r.id !== id));
         } catch (error) {
-            toast.error("Error al eliminar");
+            toast.error(error.message || "Error al eliminar");
         }
     };
 

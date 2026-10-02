@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Search, Loader2, ChevronRight, ArrowLeft, Plus } from 'lucide-react';
+import React, { useState, useCallback, useMemo, useDeferredValue } from 'react';
+import { Search, ChevronRight, ArrowLeft, Plus } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-import { apiFetch } from '../../interceptors/api';
-import { API_ROUTES } from '../../constants/apiRoutes';
 import alumnoService from '../../services/alumno.service';
+import { useFetch } from '../../hooks/useFetch';
+import { useCatalogos } from '../../hooks/useCatalogos';
+import { invalidarHistorialCiclos } from '../../hooks/useHistorialCiclos';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
 
 // COMPONENTES MODULARIZADOS
 import ChangeLevelStudent from '../../components/Admin/StudenManager/ChangeLevelStudent.jsx';
@@ -17,11 +19,11 @@ import StudentAttendanceHistory from '../../components/Admin/StudenManager/Stude
 const AdminStudentsManager = () => {
     const [view, setView] = useState('list'); // 'list' | 'details' | 'cambio_nivel'
     const [selectedAlumno, setSelectedAlumno] = useState(null);
-    const [alumnos, setAlumnos] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
-    const [sedes, setSedes] = useState([]);
     const [selectedSede, setSelectedSede] = useState('');
+    // Las sedes salen de la cache compartida: antes esta vista pedia
+    // /sedes?activo=true por su cuenta, igual que otras cinco pantallas.
+    const { sedes } = useCatalogos(['sedes']);
     const [modalInscripciones, setModalInscripciones] = useState({ isOpen: false, data: null });
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -35,38 +37,35 @@ const AdminStudentsManager = () => {
     const itemsPerPage = 10;
 
     // --- CARGA Y PROCESAMIENTO DE DATOS ---
-    const fetchAlumnos = async () => {
-        try {
-            setLoading(true);
+    // useFetch centraliza loading/error/toast y expone refetch(). `deps` lleva
+    // solo la primitiva selectedSede (ver la nota de deps en useFetch.js).
+    const { data: alumnos, loading, refetch: refetchAlumnos } = useFetch(
+        async () => {
+            const data = await alumnoService.getResumenTabla(selectedSede);
+            // 🆕 estadoDisplay: campo derivado ÚNICO que combina estadoVisual +
+            // estaVencido en un solo valor real. Antes el badge de la tabla
+            // calculaba "NO RENOVADO" al vuelo con un ternario inline, pero el
+            // filtro de "Estado" leía estadoVisual crudo (solo veía "ACTIVO") —
+            // por eso el dropdown nunca mostraba "NO RENOVADO" como opción y
+            // filtrar por "ACTIVO" mezclaba vencidos con al día. Ahora ambos
+            // (badge y filtro) leen este mismo campo, así siempre coinciden.
+            return data.map(a => ({
+                ...a,
+                estadoDisplay: a.estadoVisual === 'ACTIVO'
+                    ? (a.estaVencido ? 'NO RENOVADO' : 'ACTIVO')
+                    : a.estadoVisual,
+            }));
+        },
+        [selectedSede],
+        { initialData: [], errorMessage: 'Error al sincronizar Base Gema' }
+    );
 
-            // 🆕 Una sola llamada: el backend ya calcula sede/nivel vigente,
-            // deuda pendiente y flag de plan individual. Nada de post-procesamiento
-            // de fechas/vigencia en el frontend.
-            const response = await apiFetch.get(API_ROUTES.HISTORIAL_ACADEMICO.RESUMEN_TABLA(selectedSede));
-            const result = await response.json();
-
-            if (response.ok) {
-                // 🆕 estadoDisplay: campo derivado ÚNICO que combina estadoVisual +
-                // estaVencido en un solo valor real. Antes el badge de la tabla
-                // calculaba "NO RENOVADO" al vuelo con un ternario inline, pero el
-                // filtro de "Estado" leía estadoVisual crudo (solo veía "ACTIVO") —
-                // por eso el dropdown nunca mostraba "NO RENOVADO" como opción y
-                // filtrar por "ACTIVO" mezclaba vencidos con al día. Ahora ambos
-                // (badge y filtro) leen este mismo campo, así siempre coinciden.
-                const dataConEstadoDisplay = result.data.map(a => ({
-                    ...a,
-                    estadoDisplay: a.estadoVisual === 'ACTIVO'
-                        ? (a.estaVencido ? 'NO RENOVADO' : 'ACTIVO')
-                        : a.estadoVisual,
-                }));
-                setAlumnos(dataConEstadoDisplay);
-            }
-        } catch (error) {
-            toast.error("Error al sincronizar Base Gema");
-        } finally {
-            setLoading(false);
-        }
-    };
+    // El pipeline de filtrado corre sobre la lista completa, asi que se usa el
+    // valor diferido del texto: React mantiene la tabla con el resultado
+    // anterior mientras el usuario sigue escribiendo, en vez de recalcular y
+    // reordenar los cientos de alumnos en cada pulsacion.
+    const searchTermDiferido = useDeferredValue(searchTerm);
+    const textFilterDiferido = useDeferredValue(textFilter);
 
     const handleStatusHistory = async (estado) => {
         try {
@@ -78,19 +77,12 @@ const AdminStudentsManager = () => {
         }
     };
 
-    // --- EFECTOS ---
-    useEffect(() => { fetchAlumnos(); }, [selectedSede]);
-    // 🔥 Ahora también resetea la página cuando cambian filtros/texto avanzado/orden de sede-select
-    useEffect(() => { setCurrentPage(1); }, [searchTerm, selectedSede, filters, textFilter]);
-
-    useEffect(() => {
-        const loadSedes = async () => {
-            const res = await apiFetch.get(API_ROUTES.SEDES.ACTIVOS);
-            const result = await res.json();
-            if (res.ok) setSedes(result.data || []);
-        };
-        loadSedes();
-    }, []);
+    // 🔥 Cambiar cualquier filtro devuelve a la página 1. Se hace en los propios
+    // setters en vez de en un useEffect que observase el estado ya cambiado.
+    const cambiarBusqueda = useCallback((valor) => { setSearchTerm(valor); setCurrentPage(1); }, []);
+    const cambiarSede = useCallback((valor) => { setSelectedSede(valor); setCurrentPage(1); }, []);
+    const cambiarFilters = useCallback((siguiente) => { setFilters(siguiente); setCurrentPage(1); }, []);
+    const cambiarTextFilter = useCallback((siguiente) => { setTextFilter(siguiente); setCurrentPage(1); }, []);
 
     // 🔥 Opciones de los selects de filtro: SIEMPRE calculadas sobre la lista
     // COMPLETA de alumnos (no solo los 10 de la página actual), para que no
@@ -123,18 +115,18 @@ const AdminStudentsManager = () => {
         let result = [...alumnos];
 
         // A. Búsqueda simple del buscador superior (nombre o DNI)
-        if (searchTerm) {
-            const lower = searchTerm.toLowerCase();
+        if (searchTermDiferido) {
+            const lower = searchTermDiferido.toLowerCase();
             result = result.filter(a =>
-                a.full_name.toLowerCase().includes(lower) || a.dni.includes(searchTerm)
+                a.full_name.toLowerCase().includes(lower) || a.dni.includes(searchTermDiferido)
             );
         }
 
         // B. Filtro avanzado de texto (nombre / DNI / celular) desde la cabecera de tabla
-        if (textFilter.value) {
-            const lowerValue = textFilter.value.toLowerCase();
+        if (textFilterDiferido.value) {
+            const lowerValue = textFilterDiferido.value.toLowerCase();
             result = result.filter(a => {
-                const val = String(a[textFilter.field] || '').toLowerCase();
+                const val = String(a[textFilterDiferido.field] || '').toLowerCase();
                 return val.includes(lowerValue);
             });
         }
@@ -163,7 +155,7 @@ const AdminStudentsManager = () => {
         }
 
         return result;
-    }, [alumnos, searchTerm, textFilter, filters, sortConfig]);
+    }, [alumnos, searchTermDiferido, textFilterDiferido, filters, sortConfig]);
 
     const currentAlumnos = processedAlumnos.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
     const totalPages = Math.ceil(processedAlumnos.length / itemsPerPage);
@@ -171,14 +163,14 @@ const AdminStudentsManager = () => {
     const hasFilters = filters.sede || filters.nivel || filters.estadoVisual || textFilter.value;
 
     const clearAllFilters = () => {
-        setFilters({ sede: '', nivel: '', estadoVisual: '' });
-        setTextFilter({ field: 'full_name', value: '' });
+        cambiarFilters({ sede: '', nivel: '', estadoVisual: '' });
+        cambiarTextFilter({ field: 'full_name', value: '' });
     };
 
     // --- RENDERIZADOS ---
     if (loading) return (
         <div className="flex flex-col items-center justify-center h-96 gap-4">
-            <Loader2 className="animate-spin text-brand-primary" size={48} />
+            <LoadingSpinner size={48} className="" />
             <p className="font-black text-brand-primary text-xs uppercase italic tracking-widest animate-pulse">Consultando Registros...</p>
         </div>
     );
@@ -192,7 +184,7 @@ const AdminStudentsManager = () => {
     }
 
     if (view === 'cambio_nivel' && selectedAlumno) {
-        return <ChangeLevelStudent alumno={selectedAlumno} onBack={() => { setView('list'); fetchAlumnos(); }} />;
+        return <ChangeLevelStudent alumno={selectedAlumno} onBack={() => { setView('list'); invalidarHistorialCiclos(selectedAlumno?.id); refetchAlumnos(); }} />;
     }
 
     if (view === 'create') {
@@ -233,12 +225,12 @@ const AdminStudentsManager = () => {
                     <input
                         type="text"
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={(e) => cambiarBusqueda(e.target.value)}
                         placeholder="BUSCAR POR NOMBRE, APELLIDO O DNI..."
                         className="w-full bg-brand-surface border-2 border-brand-border-soft rounded-[1.8rem] pl-16 pr-8 py-5 font-black text-xs uppercase tracking-widest outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-brand-primary transition-all shadow-sm"
                     />
                 </div>
-                <select value={selectedSede} onChange={(e) => setSelectedSede(e.target.value)} className="bg-brand-surface border border-brand-border rounded-xl px-4 py-3 text-[10px] font-black uppercase shadow-sm outline-none cursor-pointer focus:ring-2 focus:ring-blue-500">
+                <select value={selectedSede} onChange={(e) => cambiarSede(e.target.value)} className="bg-brand-surface border border-brand-border rounded-xl px-4 py-3 text-[10px] font-black uppercase shadow-sm outline-none cursor-pointer focus:ring-2 focus:ring-blue-500">
                     <option value="">TODAS LAS SEDES</option>
                     {sedes.map(s => <option key={s.id} value={s.id}>SEDE {s.nombre}</option>)}
                 </select>
@@ -250,9 +242,9 @@ const AdminStudentsManager = () => {
                 sortConfig={sortConfig}
                 requestSort={requestSort}
                 filters={filters}
-                setFilters={setFilters}
+                setFilters={cambiarFilters}
                 textFilter={textFilter}
-                setTextFilter={setTextFilter}
+                setTextFilter={cambiarTextFilter}
                 uniqueSedes={uniqueSedes}
                 uniqueNiveles={uniqueNiveles}
                 uniqueEstados={uniqueEstados}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import FteTrendChart from './charts/FteTrendChart';
 import OccupancyChart from './charts/OccupancyChart';
 import AgeDistributionChart from './charts/AgeDistributionChart';
@@ -6,7 +6,7 @@ import GenderChart from './charts/GenderChart';
 import LevelsBySedeChart from './charts/LevelsBySedeChart';
 import RevenueChart from './charts/RevenueChart';
 
-const DashboardCharts = ({ chartData, selectedYear, setSelectedYear, availableYears }) => (
+const DashboardChartsBase = ({ chartData, selectedYear, setSelectedYear, availableYears }) => (
     <div className="mb-16 pt-8 border-t border-brand-border/60">
         <div className="mb-10">
             <h2 className="text-4xl font-black text-brand-primary uppercase tracking-tighter italic">
@@ -38,4 +38,7 @@ const DashboardCharts = ({ chartData, selectedYear, setSelectedYear, availableYe
     </div>
 );
 
-export default DashboardCharts;
+// Memoizado: los 6 SVG de Recharts son lo mas caro de la pagina y antes se
+// repintaban con cualquier re-render del Dashboard (por ejemplo al teclear en
+// la celda de comentarios del Reporte Maestro).
+export default memo(DashboardChartsBase);

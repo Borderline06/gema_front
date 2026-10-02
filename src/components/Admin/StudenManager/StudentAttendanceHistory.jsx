@@ -3,8 +3,7 @@ import { ArrowLeft, Loader2, Calendar, Clock, MapPin, BadgeCheck, XCircle, HelpC
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 import toast from 'react-hot-toast';
-import apiFetch from '../../../interceptors/api';
-import { API_ROUTES } from '../../../constants/apiRoutes';
+import { asistenciaService } from '../../../services/asistencia.service';
 
 const StudentAttendanceHistory = ({ alumno, onBack }) => {
     const [asistencias, setAsistencias] = useState([]);
@@ -14,16 +13,10 @@ const StudentAttendanceHistory = ({ alumno, onBack }) => {
         const fetchHistorialAsistencias = async () => {
             try {
                 setLoading(true);
-                const response = await apiFetch.get(`${API_ROUTES.ASISTENCIAS.ALUMNO_HISTORIAL(alumno.id)}`);
-                const result = await response.json();
-
-                if (response.ok) {
-                    setAsistencias([...(result.data || [])].reverse().slice(0, 30));
-                } else {
-                    toast.error("No se pudo obtener el historial");
-                }
+                const data = await asistenciaService.getHistorialAlumno(alumno.id);
+                setAsistencias([...data].reverse().slice(0, 30));
             } catch (error) {
-                toast.error("Error al conectar con el servidor");
+                toast.error(error.message || "Error al conectar con el servidor");
             } finally {
                 setLoading(false);
             }

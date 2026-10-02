@@ -36,6 +36,9 @@ export const API_ROUTES = {
     ACTUALIZAR_FECHA_PAQUETE: (cuentaId) => `/inscripciones/paquete/fecha/${cuentaId}`,
     HISTORIAL_CICLOS: (alumnoId) => `/inscripciones/alumno/${alumnoId}/historial-ciclos`,
     REPORTE_INDIVIDUALES: "/inscripciones/reportes/individuales",
+    INDIVIDUAL_ADMIN: "/inscripciones/individual-admin",
+    ALUMNO_NO_FINALIZADAS: (alumnoId) => `/inscripciones/alumno-no-finalizadas/${alumnoId}`,
+    HORARIO_INSCRIPCION: "/inscripciones/horario-inscripcion",
   },
   PAGOS: {
     BASE: "/pagos",
@@ -121,6 +124,7 @@ export const API_ROUTES = {
     MI_PERFIL: "/alumno/mi-perfil",
     DIA_CORTE: "/alumno/gestion/resumen-cortes",
     DIA_CORTE_COORDINADOR: "/alumno/gestion/cortes-alumnos",
+    CAMBIAR_HISTORIAL: "/alumno/gestion/cambiar-historial",
     CONTACTOS: {
       BASE: "/alumno/mi-perfil/contactos",
       BY_ID: (id) => `/alumno/mi-perfil/contactos/${id}`,
@@ -147,12 +151,14 @@ export const API_ROUTES = {
   },
   ANUNCIOS_BENEFICIOS: {
     BASE: '/anuncios-beneficios',
-    ACTIVOS: '/anuncios-beneficios/activos'
+    ACTIVOS: '/anuncios-beneficios/activos',
+    BY_ID: (id) => `/anuncios-beneficios/${id}`,
   },
   CAJA: {
     BASE: "/caja",
     RESUMEN: "/caja/resumen",
-     RESUMEN_ANUAL: "/caja/resumen-anual",
+    RESUMEN_ANUAL: "/caja/resumen-anual",
+    BY_ID: (id) => `/caja/${id}`,
   },
       HISTORIAL_ACADEMICO: {
     BASE: "/historial-academico",

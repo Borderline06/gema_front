@@ -2,10 +2,15 @@ import React from 'react';
 import { TrendingDown, MapPin, Edit2, Loader2, Check, X, Trash2 } from 'lucide-react';
 
 export const ExpenseTable = ({
-    egresos, sedes, mesNum, inlineEditId, inlineData, setInlineData,
-    submitting, saveInlineEdit, setInlineEditId, startInlineEdit, addingMonth, addingType,
-    newData, setNewData, startAddNew, saveNewMovimiento, setAddingMonth, setAddingType, movimientoDelete
+    egresos, mesNum,
+    // El estado volatil de los formularios llega ya acotado a este mes desde
+    // AdminCashFlow; las acciones vienen en un objeto de identidad estable.
+    acciones, submitting, inlineEditId, inlineData, addingType, newData
 }) => {
+    const {
+        sedes, setInlineData, saveInlineEdit, cancelInlineEdit, startInlineEdit,
+        setNewData, startAddNew, cancelAddNew, saveNewMovimiento, movimientoDelete,
+    } = acciones;
     return (
         <div className="flex flex-col">
             <div className="flex items-center gap-2 mb-3">
@@ -45,7 +50,7 @@ export const ExpenseTable = ({
                                     <td className="p-2 text-center">
                                         <div className="flex justify-center gap-1.5">
                                             <button disabled={submitting} onClick={() => saveInlineEdit(m.id, mesNum)} className="text-white bg-brand-primary-dark hover:bg-brand-primary p-1.5 rounded-lg disabled:opacity-50">{submitting ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}</button>
-                                            <button disabled={submitting} onClick={() => setInlineEditId(null)} className="text-slate-500 bg-slate-200 hover:bg-slate-300 p-1.5 rounded-lg"><X size={14} /></button>
+                                            <button disabled={submitting} onClick={cancelInlineEdit} className="text-slate-500 bg-slate-200 hover:bg-slate-300 p-1.5 rounded-lg"><X size={14} /></button>
                                         </div>
                                     </td>
                                 </tr>
@@ -56,7 +61,7 @@ export const ExpenseTable = ({
                                     <td className="p-3 text-brand-heading font-black uppercase">{m.concepto}</td>
                                     <td className="p-3 text-right font-black text-red-500">- S/ {parseFloat(m.monto).toFixed(2)}</td>
                                     <td className="p-3 text-center">
-                                        <button onClick={() => startInlineEdit(m)} className="text-brand-accent font-black uppercase text-[9px] hover:bg-brand-accent-soft px-2 py-1 rounded-lg transition-colors flex items-center justify-center gap-1 mx-auto border border-transparent hover:border-orange-200">
+                                        <button onClick={() => startInlineEdit(m, mesNum)} className="text-brand-accent font-black uppercase text-[9px] hover:bg-brand-accent-soft px-2 py-1 rounded-lg transition-colors flex items-center justify-center gap-1 mx-auto border border-transparent hover:border-orange-200">
                                             <Edit2 size={12} /> Editar
                                         </button>
                                         <button onClick={() => movimientoDelete(m, mesNum)} className="text-red-600 font-black uppercase text-[9px] hover:bg-green-50 px-2 py-1 rounded-lg transition-colors flex items-center justify-center gap-1 mx-auto border border-transparent hover:border-green-200">
@@ -66,7 +71,7 @@ export const ExpenseTable = ({
                                 </tr>
                             ))}
 
-                            {addingMonth === mesNum && addingType === 'EGRESO' && (
+                            {addingType === 'EGRESO' && (
                                 <tr className="bg-brand-accent-soft/50">
                                     <td className="p-2">
                                         <input type="date" value={newData.fecha} onChange={e => setNewData({ ...newData, fecha: e.target.value })} className="w-full text-[10px] bg-brand-surface border border-orange-400 p-2 rounded-lg outline-none font-bold" />
@@ -86,7 +91,7 @@ export const ExpenseTable = ({
                                     <td className="p-2 text-center">
                                         <div className="flex justify-center gap-1.5">
                                             <button disabled={submitting} onClick={() => saveNewMovimiento(mesNum)} className="text-white bg-brand-accent hover:bg-brand-accent-dark p-1.5 rounded-lg shadow-sm disabled:opacity-50">{submitting ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}</button>
-                                            <button disabled={submitting} onClick={() => { setAddingMonth(null); setAddingType(null); }} className="text-slate-500 bg-slate-200 hover:bg-slate-300 p-1.5 rounded-lg shadow-sm"><X size={14} /></button>
+                                            <button disabled={submitting} onClick={cancelAddNew} className="text-slate-500 bg-slate-200 hover:bg-slate-300 p-1.5 rounded-lg shadow-sm"><X size={14} /></button>
                                         </div>
                                     </td>
                                 </tr>
@@ -100,7 +105,7 @@ export const ExpenseTable = ({
                 </div>
 
                 <div className="mt-auto p-3 bg-brand-bg border-t border-brand-border">
-                    {!(addingMonth === mesNum && addingType === 'EGRESO') && (
+                    {addingType !== 'EGRESO' && (
                         <button onClick={() => startAddNew(mesNum, 'EGRESO')} className="w-full p-2 text-[10px] font-black uppercase tracking-widest text-brand-heading bg-brand-surface border border-slate-300 hover:border-brand-accent hover:text-brand-accent rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm">
                             <TrendingDown size={14} className="text-brand-accent" /> Registrar Nuevo Gasto
                         </button>

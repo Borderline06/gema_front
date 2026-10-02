@@ -1,9 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { Tag, Edit3, Filter } from 'lucide-react'; // Quitamos Plus de los imports
-import { apiFetch } from '../../interceptors/api';
 import AdminCatalog from './AdminCatalog';
-import { API_ROUTES } from '../../constants/apiRoutes';
 import { useFetch } from '../../hooks/useFetch';
+import { catalogoService } from '../../services/catalogo.service';
 import SearchInput from '../../components/shared/SearchInput';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import EmptyState from '../../components/shared/EmptyState';
@@ -19,12 +18,7 @@ const AdminCatalogManager = () => {
         loading,
         refetch: fetchCatalog,
     } = useFetch(
-        async () => {
-            const response = await apiFetch.get(API_ROUTES.CATALOGO.BASE);
-            const result = await response.json();
-            if (!response.ok) throw new Error(result.message || "Error al obtener el catálogo");
-            return result.data || [];
-        },
+        () => catalogoService.getAll(),
         [],
         { initialData: [], errorMessage: "Error al cargar el catálogo" }
     );

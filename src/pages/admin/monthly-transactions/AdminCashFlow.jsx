@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { Calendar, FileSpreadsheet } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { apiFetch } from '../../../interceptors/api';
-import { API_ROUTES } from '../../../constants/apiRoutes';
+import cajaService from '../../../services/caja.service';
+import { useCatalogos } from '../../../hooks/useCatalogos';
 
 import { MonthAccordion } from '../../../components/Admin/Components-monthly-transactions/MonthAccordion';
 import ConfirmModal from '../../../components/shared/ConfirmModal';
@@ -14,187 +14,235 @@ const MESES = [
     "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
 ];
 
+// Identidad estable: se pasa a los meses que NO se estan editando para que
+// React.memo pueda saltarselos (ver nota sobre el churn de props mas abajo).
+const FORM_VACIO = { concepto: '', monto: '', fecha: '', sede_id: '' };
+
 const AdminCashFlow = () => {
+    // Detalle por mes, rellenado SOLO para los meses que el usuario abre.
     const [datosPorMes, setDatosPorMes] = useState({});
+    // Agregados de los 12 meses (1 peticion) para las cabeceras de los acordeones.
+    const [resumenAnual, setResumenAnual] = useState([]);
     const [loadingMeses, setLoadingMeses] = useState({});
-    const [sedes, setSedes] = useState([]);
+
+    const { sedes } = useCatalogos(['sedes']);
 
     const [filtroAnio, setFiltroAnio] = useState(currentYear);
     const [mesesAbiertos, setMesesAbiertos] = useState([]);
 
     // Estados de edición y creación
     const [inlineEditId, setInlineEditId] = useState(null);
-    const [inlineData, setInlineData] = useState({ concepto: '', monto: '', fecha: '', sede_id: '' });
+    const [inlineEditMes, setInlineEditMes] = useState(null);
+    const [inlineData, setInlineData] = useState(FORM_VACIO);
     const [addingMonth, setAddingMonth] = useState(null);
     const [addingType, setAddingType] = useState(null);
-    const [newData, setNewData] = useState({ concepto: '', monto: '', fecha: '', sede_id: '' });
+    const [newData, setNewData] = useState(FORM_VACIO);
     const [submitting, setSubmitting] = useState(false);
     const [deleteTarget, setDeleteTarget] = useState(null); // movimiento pendiente de eliminar
+    const [isExporting, setIsExporting] = useState(false);
 
-    // 1. Cargar las sedes al iniciar
-    useEffect(() => {
-        const fetchSedes = async () => {
-            try {
-                const response = await apiFetch.get(API_ROUTES.SEDES.ACTIVOS);
-                if (response.ok) {
-                    const data = await response.json();
-                    setSedes(data.data || []);
-                }
-            } catch (error) {
-                console.error("No se pudieron cargar las sedes", error);
-            }
-        };
-        fetchSedes();
-    }, []);
+    // Espejos en ref de los formularios: permiten que los handlers de guardado
+    // tengan identidad ESTABLE (useCallback sin `inlineData`/`newData` en deps)
+    // sin dejar de leer el valor mas reciente. Mismo patron que `fetcherRef`
+    // en src/hooks/useFetch.js.
+    const inlineDataRef = useRef(inlineData);
+    inlineDataRef.current = inlineData;
+    const newDataRef = useRef(newData);
+    newDataRef.current = newData;
+    const addingTypeRef = useRef(addingType);
+    addingTypeRef.current = addingType;
+    const sedesRef = useRef(sedes);
+    sedesRef.current = sedes;
+    // Meses cuyo detalle ya se pidio en este año, para no repetir la peticion.
+    const mesesPedidos = useRef(new Set());
+    // Espejo de los acordeones abiertos: permite que toggleMes sea estable.
+    const mesesAbiertosRef = useRef(mesesAbiertos);
+    mesesAbiertosRef.current = mesesAbiertos;
 
-    // 2. Fetch de un mes: la consolidación de la respuesta cruda vive en cashFlowUtils.js
-    const fetchMes = async (mesNum, anio, mostrarError = true) => {
+    // Detalle de UN mes. Antes se llamaban los 12 al entrar; ahora solo el mes
+    // que se abre, porque las cabeceras ya salen del resumen anual.
+    const fetchMes = useCallback(async (mesNum, anio, mostrarError = true) => {
         try {
             setLoadingMeses(prev => ({ ...prev, [mesNum]: true }));
-            const url = API_ROUTES.CAJA ? `${API_ROUTES.CAJA.RESUMEN}?mes=${mesNum}&anio=${anio}` : `/caja/resumen?mes=${mesNum}&anio=${anio}`;
-
-            const response = await apiFetch.get(url);
-            const data = await response.json();
-
-            if (response.ok && data.success && data.data) {
-                setDatosPorMes(prev => ({
-                    ...prev,
-                    [mesNum]: consolidarDatosMes(data.data)
-                }));
-            } else {
-                if (mostrarError) toast.error(data.message || `Error al cargar mes ${mesNum}`);
+            const data = await cajaService.obtenerResumenMes(mesNum, anio);
+            if (data) {
+                setDatosPorMes(prev => ({ ...prev, [mesNum]: consolidarDatosMes(data) }));
             }
+            return data;
         } catch (error) {
-            if (mostrarError) toast.error(`Error al cargar el mes ${mesNum}`);
+            if (mostrarError) toast.error(error.message || `Error al cargar el mes ${mesNum}`);
+            return null;
         } finally {
             setLoadingMeses(prev => ({ ...prev, [mesNum]: false }));
         }
-    };
+    }, []);
 
-    // 3. Cargar todo el año
-    const cargarTodoElAnio = async () => {
-        setDatosPorMes({});
-        const promesas = MESES.map((_, index) => fetchMes(index + 1, filtroAnio, false));
-        await Promise.all(promesas);
-
-        const mesActual = new Date().getMonth() + 1;
-        setMesesAbiertos([mesActual]);
-    };
-
+    // Carga del año: 1 peticion de agregados + el detalle del unico mes que
+    // arranca abierto. Antes eran 12 peticiones de detalle.
     useEffect(() => {
-        cargarTodoElAnio();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filtroAnio]);
+        let cancelado = false;
 
-    const toggleMes = (mesNum) => {
-        setMesesAbiertos(prev => prev.includes(mesNum) ? prev.filter(m => m !== mesNum) : [...prev, mesNum]);
-    };
+        const cargarAnio = async () => {
+            setDatosPorMes({});
+            mesesPedidos.current = new Set();
+            const mesActual = new Date().getMonth() + 1;
+            setMesesAbiertos([mesActual]);
 
-    // 4. Lógicas de Edición
-    const startInlineEdit = (movimiento) => {
+            try {
+                const resumen = await cajaService.obtenerResumenAnual(filtroAnio);
+                if (!cancelado) setResumenAnual(resumen);
+            } catch (error) {
+                if (!cancelado) {
+                    setResumenAnual([]);
+                    toast.error(error.message || 'Error al cargar el resumen anual');
+                }
+            }
+
+            if (!cancelado) {
+                mesesPedidos.current.add(mesActual);
+                fetchMes(mesActual, filtroAnio, false);
+            }
+        };
+
+        cargarAnio();
+        return () => { cancelado = true; };
+    }, [filtroAnio, fetchMes]);
+
+    // Al abrir un mes se pide su detalle una sola vez. El fetch va FUERA del
+    // updater de estado: React puede invocar los updaters dos veces en modo
+    // estricto, y ahi dentro acabaria duplicando la peticion.
+    const toggleMes = useCallback((mesNum) => {
+        const estabaAbierto = mesesAbiertosRef.current.includes(mesNum);
+        setMesesAbiertos(prev => (estabaAbierto ? prev.filter(m => m !== mesNum) : [...prev, mesNum]));
+
+        if (!estabaAbierto && !mesesPedidos.current.has(mesNum)) {
+            mesesPedidos.current.add(mesNum);
+            fetchMes(mesNum, filtroAnio, false);
+        }
+    }, [fetchMes, filtroAnio]);
+
+    // --- Lógicas de Edición ---
+    const startInlineEdit = useCallback((movimiento, mesNum) => {
         setInlineEditId(movimiento.id);
-        const sedeEncontrada = sedes.find(s => s.nombre === movimiento.sede);
+        setInlineEditMes(mesNum);
+        const sedeEncontrada = sedesRef.current.find(s => s.nombre === movimiento.sede);
         setInlineData({
             concepto: movimiento.concepto,
             monto: movimiento.monto,
             fecha: formatUTCtoLocalInput(movimiento.fecha),
             sede_id: sedeEncontrada ? sedeEncontrada.id : ''
         });
-    };
+    }, []);
 
-    const saveInlineEdit = async (id, mesNum) => {
-        if (!inlineData.concepto || !inlineData.monto) return toast.error("Complete concepto y monto");
+    const cancelInlineEdit = useCallback(() => {
+        setInlineEditId(null);
+        setInlineEditMes(null);
+    }, []);
+
+    const saveInlineEdit = useCallback(async (id, mesNum) => {
+        const datos = inlineDataRef.current;
+        if (!datos.concepto || !datos.monto) return toast.error("Complete concepto y monto");
         try {
             setSubmitting(true);
-            const endpoint = `${API_ROUTES.CAJA?.BASE || '/caja'}/${id}`;
-            const payload = {
-                concepto: inlineData.concepto,
-                monto: parseFloat(inlineData.monto),
-                fecha_movimiento: formatLocalToUTC(inlineData.fecha),
-                sede_id: inlineData.sede_id ? parseInt(inlineData.sede_id) : null
-            };
-            const response = await apiFetch.put(endpoint, payload);
-            if (response.ok) {
-                toast.success("Movimiento actualizado");
-                setInlineEditId(null);
-                await fetchMes(mesNum, filtroAnio);
-            } else {
-                const err = await response.json();
-                toast.error(err.message || "Error al actualizar");
-            }
+            await cajaService.actualizar(id, {
+                concepto: datos.concepto,
+                monto: parseFloat(datos.monto),
+                fecha_movimiento: formatLocalToUTC(datos.fecha),
+                sede_id: datos.sede_id ? parseInt(datos.sede_id) : null
+            });
+            toast.success("Movimiento actualizado");
+            setInlineEditId(null);
+            setInlineEditMes(null);
+            await fetchMes(mesNum, filtroAnio);
         } catch (error) {
-            toast.error("Error de conexión");
+            toast.error(error.message || "Error al actualizar");
         } finally {
             setSubmitting(false);
         }
-    };
+    }, [fetchMes, filtroAnio]);
 
-    const startAddNew = (mesNum, tipoMovimiento) => {
+    const startAddNew = useCallback((mesNum, tipoMovimiento) => {
         const mesStr = String(mesNum).padStart(2, '0');
         setAddingMonth(mesNum);
         setAddingType(tipoMovimiento);
         setNewData({ concepto: '', monto: '', fecha: `${filtroAnio}-${mesStr}-01`, sede_id: '' });
-    };
+    }, [filtroAnio]);
 
-    const saveNewMovimiento = async (mesNum) => {
-        if (!newData.concepto || !newData.monto || !newData.fecha) return toast.error("Complete los datos requeridos");
+    const cancelAddNew = useCallback(() => {
+        setAddingMonth(null);
+        setAddingType(null);
+    }, []);
+
+    const saveNewMovimiento = useCallback(async (mesNum) => {
+        const datos = newDataRef.current;
+        if (!datos.concepto || !datos.monto || !datos.fecha) return toast.error("Complete los datos requeridos");
+        const tipo = addingTypeRef.current;
         try {
             setSubmitting(true);
-            const endpoint = API_ROUTES.CAJA?.BASE || '/caja';
-            const payload = {
-                tipo_movimiento: addingType,
-                concepto: newData.concepto,
-                monto: parseFloat(newData.monto),
-                fecha_movimiento: formatLocalToUTC(newData.fecha),
-                sede_id: newData.sede_id ? parseInt(newData.sede_id) : null
-            };
-            const response = await apiFetch.post(endpoint, payload);
-            if (response.ok) {
-                toast.success(`${addingType} registrado correctamente`);
-                setAddingMonth(null);
-                setAddingType(null);
-                await fetchMes(mesNum, filtroAnio);
-            } else {
-                const err = await response.json();
-                toast.error(err.message || "Error al registrar");
-            }
+            await cajaService.crear({
+                tipo_movimiento: tipo,
+                concepto: datos.concepto,
+                monto: parseFloat(datos.monto),
+                fecha_movimiento: formatLocalToUTC(datos.fecha),
+                sede_id: datos.sede_id ? parseInt(datos.sede_id) : null
+            });
+            toast.success(`${tipo} registrado correctamente`);
+            setAddingMonth(null);
+            setAddingType(null);
+            await fetchMes(mesNum, filtroAnio);
         } catch (error) {
-            toast.error("Error de conexión");
+            toast.error(error.message || "Error al registrar");
         } finally {
             setSubmitting(false);
         }
-    };
+    }, [fetchMes, filtroAnio]);
 
-    const movimientoDelete = (movimiento, mesNum) => {
+    const movimientoDelete = useCallback((movimiento, mesNum) => {
         setDeleteTarget({ movimiento, mesNum });
-    };
+    }, []);
 
-    const executeMovimientoDelete = async () => {
+    const executeMovimientoDelete = useCallback(async () => {
         const { movimiento, mesNum } = deleteTarget;
         setDeleteTarget(null);
         try {
-            const response = await apiFetch.delete(`/caja/${movimiento.id}`);
-            if (response.ok) {
-                toast.success(`${movimiento.tipo} eliminado correctamente.`)
-                // Solo el mes afectado: recargar el año entero eran 12 peticiones
-                // para refrescar una sola fila.
-                await fetchMes(mesNum, filtroAnio);
-            } else {
-                const err = await response.json();
-                toast.error(err.message || 'Error al eliminar.')
-            }
+            await cajaService.eliminar(movimiento.id);
+            toast.success(`${movimiento.tipo} eliminado correctamente.`);
+            // Solo el mes afectado: recargar el año entero eran 12 peticiones
+            // para refrescar una sola fila.
+            await fetchMes(mesNum, filtroAnio);
         } catch (e) {
-            toast.error(e.message || 'Internal Error Server')
+            toast.error(e.message || 'Error al eliminar.');
         }
-    }
+    }, [deleteTarget, fetchMes, filtroAnio]);
 
-    // 5. Excel: el aplanado de filas vive en cashFlowUtils.js
-    const exportToExcel = async () => {
-        const dataToExport = construirFilasExcel(datosPorMes, filtroAnio, MESES);
-
-        if (dataToExport.length === 0) return toast.error("No hay datos para exportar.");
-
+    // Excel: el aplanado de filas vive en cashFlowUtils.js y recorre TODOS los
+    // meses, asi que con la carga diferida hay que completar los que falten
+    // antes de construirlo (si no, el reporte saldria solo con los abiertos).
+    const exportToExcel = useCallback(async () => {
         try {
+            setIsExporting(true);
+            const faltantes = MESES
+                .map((_, i) => i + 1)
+                .filter(mes => datosPorMes[mes] === undefined);
+
+            let completo = datosPorMes;
+            if (faltantes.length > 0) {
+                const cargados = await Promise.all(
+                    faltantes.map(async (mes) => [mes, await cajaService.obtenerResumenMes(mes, filtroAnio).catch(() => null)])
+                );
+                completo = { ...datosPorMes };
+                for (const [mes, data] of cargados) {
+                    if (data) {
+                        completo[mes] = consolidarDatosMes(data);
+                        mesesPedidos.current.add(mes);
+                    }
+                }
+                setDatosPorMes(completo);
+            }
+
+            const dataToExport = construirFilasExcel(completo, filtroAnio, MESES);
+            if (dataToExport.length === 0) return toast.error("No hay datos para exportar.");
+
             // XLSX se carga con import() dentro del handler: son 870 kB (323 kB gzip) que solo
             // hacen falta al pulsar el botón de exportar, no al abrir la vista.
             const XLSX = await import('xlsx-js-style');
@@ -207,15 +255,32 @@ const AdminCashFlow = () => {
             // La carga diferida del chunk puede fallar sin red; sin este catch
             // seria una promesa rechazada en silencio.
             toast.error("No se pudo generar el Excel. Revisa tu conexion.");
+        } finally {
+            setIsExporting(false);
         }
-    };
+    }, [datosPorMes, filtroAnio]);
 
-    // Objeto memoizado
-    const tableProps = useMemo(() => ({
-        sedes, inlineEditId, inlineData, setInlineData, submitting, saveInlineEdit,
-        setInlineEditId, startInlineEdit, addingMonth, addingType, newData,
-        setNewData, startAddNew, saveNewMovimiento, setAddingMonth, setAddingType, movimientoDelete
-    }), [sedes, inlineEditId, inlineData, submitting, addingMonth, addingType, newData]);
+    // Acciones y datos estables: identidad constante entre renders, para que
+    // React.memo(MonthAccordion) pueda descartar los meses no afectados.
+    const acciones = useMemo(() => ({
+        sedes,
+        setInlineData,
+        saveInlineEdit,
+        cancelInlineEdit,
+        startInlineEdit,
+        setNewData,
+        startAddNew,
+        cancelAddNew,
+        saveNewMovimiento,
+        movimientoDelete,
+    }), [sedes, saveInlineEdit, cancelInlineEdit, startInlineEdit, startAddNew, cancelAddNew, saveNewMovimiento, movimientoDelete]);
+
+    // Agregados indexados por mes, para la cabecera de cada acordeón.
+    const totalesPorMes = useMemo(() => {
+        const mapa = {};
+        for (const m of resumenAnual) mapa[m.mes] = m;
+        return mapa;
+    }, [resumenAnual]);
 
     return (
         <div className="space-y-6 animate-fade-in-up p-2 max-w-[1400px] mx-auto">
@@ -248,26 +313,39 @@ const AdminCashFlow = () => {
                         </select>
                     </div>
 
-                    <button onClick={exportToExcel} className="bg-brand-accent hover:bg-brand-accent-dark text-white px-5 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-brand-accent/30 transition-all flex items-center gap-2">
-                        <FileSpreadsheet size={16} /> Descargar Excel
+                    <button onClick={exportToExcel} disabled={isExporting} className="bg-brand-accent hover:bg-brand-accent-dark text-white px-5 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-brand-accent/30 transition-all flex items-center gap-2 disabled:opacity-60">
+                        <FileSpreadsheet size={16} /> {isExporting ? 'Generando...' : 'Descargar Excel'}
                     </button>
                 </div>
             </div>
 
             {/* Listado de Meses */}
             <div className="space-y-3">
-                {MESES.map((nombre, index) => (
-                    <MonthAccordion
-                        key={index + 1}
-                        mesNum={index + 1}
-                        mesNombre={nombre}
-                        isOpen={mesesAbiertos.includes(index + 1)}
-                        isLoading={loadingMeses[index + 1]}
-                        toggleMes={toggleMes}
-                        datosMes={datosPorMes[index + 1]}
-                        tableProps={tableProps}
-                    />
-                ))}
+                {MESES.map((nombre, index) => {
+                    const mesNum = index + 1;
+                    return (
+                        <MonthAccordion
+                            key={mesNum}
+                            mesNum={mesNum}
+                            mesNombre={nombre}
+                            isOpen={mesesAbiertos.includes(mesNum)}
+                            isLoading={!!loadingMeses[mesNum]}
+                            toggleMes={toggleMes}
+                            datosMes={datosPorMes[mesNum]}
+                            totalesMes={totalesPorMes[mesNum]}
+                            acciones={acciones}
+                            submitting={submitting}
+                            /* El estado volátil de los formularios solo baja al mes que
+                               se está editando. Los demás reciben siempre la misma
+                               identidad (null / FORM_VACIO), así que React.memo los
+                               descarta y no se re-renderizan en cada pulsación. */
+                            inlineEditId={inlineEditMes === mesNum ? inlineEditId : null}
+                            inlineData={inlineEditMes === mesNum ? inlineData : FORM_VACIO}
+                            addingType={addingMonth === mesNum ? addingType : null}
+                            newData={addingMonth === mesNum ? newData : FORM_VACIO}
+                        />
+                    );
+                })}
             </div>
 
             <ConfirmModal

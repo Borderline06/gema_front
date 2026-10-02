@@ -1,11 +1,13 @@
 import apiFetch from '../interceptors/api';
 import { API_ROUTES } from '../constants/apiRoutes';
+import { parseJsonResponse } from './httpHelpers';
 
 export const catalogoService = {
     // Obtener todos los conceptos (Admin)
     getAll: async () => {
         const response = await apiFetch.get(API_ROUTES.CATALOGO.BASE);
-        return await response.json();
+        const result = await parseJsonResponse(response, 'Error al obtener el catálogo');
+        return result.data || [];
     },
 
     // Obtener solo los planes vigentes (Landing/Público)

@@ -1,21 +1,55 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { memo, useCallback, useState, useMemo, useRef, useEffect } from 'react';
 import { FileSpreadsheet, Filter, X, RotateCcw, ChevronLeft, ChevronRight, Check } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { apiFetch } from '../../../interceptors/api';
 import { API_ROUTES } from '../../../constants/apiRoutes';
 
-const DashboardOperations = ({ reporte = [], handleExportExcel, isExporting, setReporteFiltrado }) => {
-    // 1. NUEVO: Creamos un estado local para poder modificar la tabla al instante
+// A nivel de modulo: antes se reconstruian en cada render.
+const MESES = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+const SELECT_FILTER_COLS = ['Estado Deuda', 'Validación Admin', 'Nivel', 'Medio de pago', 'Sede'];
+const ROWS_PER_PAGE = 15;
+
+/**
+ * Celda de comentario con estado propio.
+ *
+ * Antes cada pulsacion hacia setLocalReporte sobre el array completo, lo que
+ * re-filtraba todo el dataset, empujaba el resultado al padre y repintaba los 6
+ * graficos de Recharts. Ahora el texto vive aqui y solo se confirma al salir del
+ * campo, que es cuando ya se llamaba a la API.
+ */
+const ComentarioCell = memo(({ valor, onCommit }) => {
+    const [texto, setTexto] = useState(String(valor ?? ''));
+    const [valorPrevio, setValorPrevio] = useState(valor);
+
+    // Si el valor cambia por fuera (recarga, rollback de un error), se adopta.
+    // Ajuste en render en vez de useEffect: es el patron que recomienda React
+    // para resincronizar estado con una prop, y evita el repintado extra.
+    if (valor !== valorPrevio) {
+        setValorPrevio(valor);
+        setTexto(String(valor ?? ''));
+    }
+
+    return (
+        <input
+            type="text"
+            value={texto}
+            placeholder="Añadir comentario..."
+            className="w-full p-2 border border-transparent hover:border-slate-300 focus:border-blue-500 rounded bg-transparent focus:bg-brand-surface outline-none transition-all font-medium text-slate-600"
+            onChange={(e) => setTexto(e.target.value)}
+            onBlur={() => { if (texto !== String(valor ?? '')) onCommit(texto); }}
+            onKeyDown={(e) => { if (e.key === 'Enter') e.target.blur(); }}
+        />
+    );
+});
+
+const DashboardOperations = ({ reporte = [], onExport, isExporting }) => {
+    // Copia local para la edicion optimista de la tabla.
     const [localReporte, setLocalReporte] = useState([]);
-    
+
     const [filterState, setFilterState] = useState({});
     const [activeCol, setActiveCol] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const popoverRef = useRef(null);
-    const rowsPerPage = 15;
-
-    const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    const selectFilterCols = ['Estado Deuda', 'Validación Admin', 'Nivel', 'Medio de pago', 'Sede'];
 
     // 2. NUEVO: Sincronizamos los datos del prop 'reporte' con nuestro estado local
     useEffect(() => {
@@ -30,7 +64,7 @@ const DashboardOperations = ({ reporte = [], handleExportExcel, isExporting, set
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    // 3. CAMBIO: Ahora filtramos basándonos en 'localReporte' en lugar de 'reporte'
+
     const processedData = useMemo(() => {
         return localReporte.filter(item => {
             return Object.entries(filterState).every(([key, val]) => {
@@ -43,7 +77,7 @@ const DashboardOperations = ({ reporte = [], handleExportExcel, isExporting, set
                 if (key.includes('Fecha')) {
                     const dateParts = String(item[key]).split('/');
                     const monthIndex = parseInt(dateParts[1]) - 1;
-                    return meses[monthIndex] === val;
+                    return MESES[monthIndex] === val;
                 }
                 if (key === 'Monto') {
                     const num = parseFloat(item[key]);
@@ -55,22 +89,21 @@ const DashboardOperations = ({ reporte = [], handleExportExcel, isExporting, set
         });
     }, [localReporte, filterState]);
 
+    // Solo los filtros devuelven a la pagina 1. Antes este efecto dependia de
+    // processedData, asi que cualquier edicion optimista (teclear un comentario)
+    // tambien te sacaba de la pagina en la que estabas.
     useEffect(() => {
-        if (setReporteFiltrado) {
-            setReporteFiltrado(processedData);
-        }
         setCurrentPage(1);
-    }, [processedData, setReporteFiltrado]);
+    }, [filterState]);
 
-    // 4. CAMBIO: Actualización Optimista para que la UI reaccione instantáneamente
-    const handleInlineEdit = async (id, campo, valor) => {
-        // Guardamos el estado anterior por si la API falla y necesitamos revertirlo
-        const previousData = [...localReporte];
-
-        // ACTUALIZACIÓN VISUAL INSTANTÁNEA
-        setLocalReporte(prev => prev.map(item => 
-            item.id === id ? { ...item, [campo]: valor } : item
-        ));
+    // Actualización optimista. useCallback + setLocalReporte funcional para no
+    // depender de localReporte y mantener identidad estable.
+    const handleInlineEdit = useCallback(async (id, campo, valor) => {
+        let previousData = [];
+        setLocalReporte(prev => {
+            previousData = prev;
+            return prev.map(item => (item.id === id ? { ...item, [campo]: valor } : item));
+        });
 
         try {
             const url = API_ROUTES.USUARIOS.EDIT_PAGO(id);
@@ -89,10 +122,13 @@ const DashboardOperations = ({ reporte = [], handleExportExcel, isExporting, set
             toast.error('Error de conexión');
             setLocalReporte(previousData); // Revertimos si hay error de red
         }
-    };
+    }, []);
 
-    const totalPages = Math.ceil(processedData.length / rowsPerPage);
-    const paginatedData = processedData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+    const totalPages = Math.ceil(processedData.length / ROWS_PER_PAGE);
+    const paginatedData = useMemo(
+        () => processedData.slice((currentPage - 1) * ROWS_PER_PAGE, currentPage * ROWS_PER_PAGE),
+        [processedData, currentPage]
+    );
 
     return (
         <div className="pt-10 mt-10">
@@ -113,7 +149,7 @@ const DashboardOperations = ({ reporte = [], handleExportExcel, isExporting, set
                         <button onClick={() => setFilterState({})} className="text-[10px] font-black text-brand-muted hover:text-red-500 uppercase flex items-center gap-1">
                             <RotateCcw size={12} /> Limpiar
                         </button>
-                        <button onClick={handleExportExcel} disabled={isExporting} className="bg-emerald-600 text-white px-6 py-2 rounded-xl font-black uppercase text-[10px] hover:bg-emerald-700 transition-colors">
+                        <button onClick={() => onExport(processedData)} disabled={isExporting} className="bg-emerald-600 text-white px-6 py-2 rounded-xl font-black uppercase text-[10px] hover:bg-emerald-700 transition-colors">
                             <FileSpreadsheet size={12} className="inline mr-1" /> Exportar Excel
                         </button>
                     </div>
@@ -134,7 +170,7 @@ const DashboardOperations = ({ reporte = [], handleExportExcel, isExporting, set
                                                 <div ref={popoverRef} className="absolute top-12 left-0 w-64 bg-brand-surface p-4 shadow-2xl rounded-2xl border z-[9999] font-normal text-slate-600">
                                                     <p className="text-[10px] font-bold mb-3 text-brand-muted uppercase">FILTRAR POR {key}</p>
                                                     
-                                                    {selectFilterCols.includes(key) ? (
+                                                    {SELECT_FILTER_COLS.includes(key) ? (
                                                         <div className="flex flex-col gap-1 max-h-48 overflow-y-auto">
                                                             {/* CAMBIO: Usamos localReporte */}
                                                             {[...new Set(localReporte.map(item => item[key]))].filter(Boolean).map(opt => (
@@ -145,7 +181,7 @@ const DashboardOperations = ({ reporte = [], handleExportExcel, isExporting, set
                                                         </div>
                                                     ) : key.includes('Fecha') ? (
                                                         <div className="grid grid-cols-2 gap-1">
-                                                            {meses.map(m => (
+                                                            {MESES.map(m => (
                                                                 <button key={m} onClick={() => setFilterState({...filterState, [key]: m})} className={`p-2 text-[10px] rounded-lg border transition-colors ${filterState[key] === m ? 'bg-brand-primary text-white border-brand-primary' : 'hover:bg-brand-bg'}`}>
                                                                     {m}
                                                                 </button>
@@ -215,22 +251,9 @@ const DashboardOperations = ({ reporte = [], handleExportExcel, isExporting, set
                                             if (key === 'Comentarios') {
                                                 return (
                                                     <td key={i} className="p-4 min-w-[200px]">
-                                                        <input 
-                                                            type="text" 
-                                                            value={String(val || '')} // CAMBIADO: A 'value' en lugar de 'defaultValue'
-                                                            placeholder="Añadir comentario..."
-                                                            className="w-full p-2 border border-transparent hover:border-slate-300 focus:border-blue-500 rounded bg-transparent focus:bg-brand-surface outline-none transition-all font-medium text-slate-600"
-                                                            onChange={(e) => { // NUEVO: Para actualizar al tipear
-                                                                setLocalReporte(prev => prev.map(row => 
-                                                                    row.id === item.id ? { ...row, [key]: e.target.value } : row
-                                                                ));
-                                                            }}
-                                                            onBlur={(e) => {
-                                                                handleInlineEdit(item.id, key, e.target.value);
-                                                            }}
-                                                            onKeyDown={(e) => {
-                                                                if (e.key === 'Enter') e.target.blur();
-                                                            }}
+                                                        <ComentarioCell
+                                                            valor={val}
+                                                            onCommit={(texto) => handleInlineEdit(item.id, key, texto)}
                                                         />
                                                     </td>
                                                 );

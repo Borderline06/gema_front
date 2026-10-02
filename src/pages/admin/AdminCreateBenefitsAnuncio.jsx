@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Loader2, RefreshCcw, Users, HeartPulse, Gift, Sparkles, Zap, Star, Trophy, Power, PowerOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { apiFetch } from '../../interceptors/api';
+import { API_ROUTES } from '../../constants/apiRoutes';
 import ConfirmModal from '../../components/shared/ConfirmModal';
 
 // 🎨 Mapeo de Iconos Disponibles
@@ -44,7 +45,7 @@ const AdminCreateBenefitsAnuncio = () => {
     try {
       setLoading(true);
       // Asume que tu ruta base es /api/anuncios-beneficios
-      const response = await apiFetch.get('/anuncios-beneficios'); 
+      const response = await apiFetch.get(API_ROUTES.ANUNCIOS_BENEFICIOS.BASE); 
       const result = await response.json();
       if (response.ok) {
         setAnuncios(result.data);
@@ -89,7 +90,7 @@ const AdminCreateBenefitsAnuncio = () => {
 
     try {
       const isEdit = payload.id !== null;
-      const url = isEdit ? `/anuncios-beneficios/${payload.id}` : '/anuncios-beneficios';
+      const url = isEdit ? API_ROUTES.ANUNCIOS_BENEFICIOS.BY_ID(payload.id) : API_ROUTES.ANUNCIOS_BENEFICIOS.BASE;
       const method = isEdit ? 'PATCH' : 'POST';
 
       const response = await apiFetch(url, {
@@ -121,7 +122,7 @@ const AdminCreateBenefitsAnuncio = () => {
     const id = deleteTargetId;
     setDeleteTargetId(null);
     try {
-      const response = await apiFetch.delete(`/anuncios-beneficios/${id}`);
+      const response = await apiFetch.delete(API_ROUTES.ANUNCIOS_BENEFICIOS.BY_ID(id));
       if (response.ok) {
         toast.success('Anuncio eliminado');
         fetchAnuncios();
@@ -136,7 +137,7 @@ const AdminCreateBenefitsAnuncio = () => {
   // 4. TOGGLE ACTIVO/INACTIVO RÁPIDO
   const toggleActivo = async (anuncio) => {
     try {
-      const response = await apiFetch.patch(`/anuncios-beneficios/${anuncio.id}`, {
+      const response = await apiFetch.patch(API_ROUTES.ANUNCIOS_BENEFICIOS.BY_ID(anuncio.id), {
         activo: !anuncio.activo
       });
       if (response.ok) {

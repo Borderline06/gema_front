@@ -3,6 +3,18 @@ import { API_ROUTES } from '../constants/apiRoutes';
 
 export const asistenciaService = {
     /**
+     * Historial de asistencias de un alumno (ultimos registros).
+     */
+    getHistorialAlumno: async (alumnoId) => {
+        const response = await apiFetch.get(API_ROUTES.ASISTENCIAS.ALUMNO_HISTORIAL(alumnoId));
+        if (!response.ok) {
+            throw new Error('No se pudo obtener el historial de asistencias');
+        }
+        const result = await response.json();
+        return result.data || [];
+    },
+
+    /**
      * Obtiene la agenda general para el coordinador logueado.
      */
     getAgenda: async () => {

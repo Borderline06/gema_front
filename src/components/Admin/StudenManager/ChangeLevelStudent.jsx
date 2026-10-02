@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, AlertCircle, Loader2, Save, ArrowRightLeft, Filter } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { apiFetch } from '../../../interceptors/api.js';
+import { API_ROUTES } from '../../../constants/apiRoutes';
+import horarioService from '../../../services/horario.service';
 import { useAuth } from '../../../context/AuthContext';
 import CurrentScheduleCard from './schedule-change/CurrentScheduleCard';
 import AvailableScheduleCard from './schedule-change/AvailableScheduleCard';
@@ -26,7 +28,7 @@ const ChangeLevelStudent = ({ alumno, onBack }) => {
     const fetchHorariosAlumno = async () => {
         try {
             setLoadingActuales(true);
-            const response = await apiFetch.get(`/inscripciones/alumno-no-finalizadas/${alumno.id}`);
+            const response = await apiFetch.get(API_ROUTES.INSCRIPCIONES.ALUMNO_NO_FINALIZADAS(alumno.id));
             if (response.ok) {
                 const result = await response.json();
                 setHorariosActuales(result.data);
@@ -49,11 +51,7 @@ const ChangeLevelStudent = ({ alumno, onBack }) => {
         const fetchHorariosDisponibles = async () => {
             try {
                 setLoadingDisponibles(true);
-                const response = await apiFetch.get(`/horarios`);
-                if (response.ok) {
-                    const result = await response.json();
-                    setHorariosDisponibles(result.data);
-                }
+                setHorariosDisponibles(await horarioService.obtenerDisponibles());
 
             } catch (error) {
                 toast.error("Error al cargar los horarios disponibles");
@@ -78,7 +76,7 @@ const ChangeLevelStudent = ({ alumno, onBack }) => {
     const handleConfirmarCambio = async () => {
         try {
             setSaving(true);
-            const response = await apiFetch.put(`/inscripciones/horario-inscripcion`, {
+            const response = await apiFetch.put(API_ROUTES.INSCRIPCIONES.HORARIO_INSCRIPCION, {
                 alumnoId: selectedHorarioActual.alumno_id,
                 inscripcionId: selectedHorarioActual.id,
                 horarioId: selectedHorarioNuevo.id,

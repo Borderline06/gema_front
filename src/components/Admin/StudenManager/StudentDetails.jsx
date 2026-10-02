@@ -10,11 +10,13 @@ import StudentHealthCard from './student-details/StudentHealthCard';
 import EmergencyContactCard from './student-details/EmergencyContactCard';
 import CicloHistoryPanel from './student-details/CicloHistoryPanel';
 import ClaseSueltaDetailModal from './ciclos/ClaseSueltaDetailModal';
+import { useHistorialCiclos } from '../../../hooks/useHistorialCiclos';
 
 const StudentDetails = ({ selectedAlumno, onBack, onStatusHistoryChange }) => {
     const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
-    const [ciclos, setCiclos] = useState([]);
-    const [loadingCiclos, setLoadingCiclos] = useState(true);
+    // Fuente unica del historial: compartida con InscriptionsModal (antes cada
+    // uno pedia el mismo endpoint y guardaba su propia copia).
+    const { ciclos, loading: loadingCiclos } = useHistorialCiclos(selectedAlumno?.id);
 
     // Clase individual seleccionada para ver su resumen en modal aparte
     const [claseIndividualSeleccionada, setClaseIndividualSeleccionada] = useState(null);
@@ -48,33 +50,7 @@ const StudentDetails = ({ selectedAlumno, onBack, onStatusHistoryChange }) => {
         fetchDetalle();
     }, [selectedAlumno?.id]);
 
-    // /historial-academico/alumno/:id — el backend YA entrega cada tarjeta
-    // agrupada por cuenta_id, con fecha_inicio_real / fecha_fin_real calculadas
-    // desde clases realmente generadas en registros_asistencia, ordenadas de
-    // más reciente a más antigua (las "sin_registros" van al final).
-    useEffect(() => {
-        if (!selectedAlumno?.id) return;
-
-        const fetchCiclos = async () => {
-            try {
-                setLoadingCiclos(true);
-                const res = await apiFetch.get(API_ROUTES.HISTORIAL_ACADEMICO.ALUMNO(selectedAlumno.id));
-                const result = await res.json();
-
-                if (res.ok) {
-                    setCiclos(result.data || []);
-                } else {
-                    toast.error("No se pudo obtener el historial académico");
-                }
-            } catch (error) {
-                toast.error("Error al conectar con el servidor para obtener el historial");
-            } finally {
-                setLoadingCiclos(false);
-            }
-        };
-
-        fetchCiclos();
-    }, [selectedAlumno?.id]);
+    // El historial (/historial-academico/alumno/:id) lo resuelve useHistorialCiclos.
 
     if (!selectedAlumno) return null;
 

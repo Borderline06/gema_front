@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { roleData } from '../data/mockDashboard';
 import { apiFetch } from '../interceptors/api';
 import { API_ROUTES } from '../constants/apiRoutes';
@@ -14,25 +14,21 @@ import { BRAND_COLORS } from "../config/themeColors.js";
 const Dashboard = ({ role = 'student' }) => {
     const data = roleData[role];
     const [stats, setStats] = useState(data?.stats || []);
-    const [actividad, setActividad] = useState(data?.activity || []);
     const [isExporting, setIsExporting] = useState(false);
 
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-    const currentYear = new Date().getFullYear();
-    const availableYears = [currentYear - 2, currentYear - 1, currentYear, currentYear + 1];
+    const availableYears = useMemo(() => {
+        const currentYear = new Date().getFullYear();
+        return [currentYear - 2, currentYear - 1, currentYear, currentYear + 1];
+    }, []);
 
     const [reporteMaestro, setReporteMaestro] = useState([]);
-    const [reporteFiltrado, setReporteFiltrado] = useState([]);
 
     const [chartData, setChartData] = useState({
         ingresos: [], sedes: [], metodosPago: [], alumnosGenero: [], alumnosEdades: [],
         totalAlumnos: 0, vigentesPorSedeNivel: [], activosPorMes: [],
         alumnosMultiSede: 0 // 🚩 NUEVO
     });
-
-    useEffect(() => {
-        setReporteFiltrado(reporteMaestro);
-    }, [reporteMaestro]);
 
     useEffect(() => {
         const fetchMovimientos = async () => {
@@ -85,7 +81,6 @@ const Dashboard = ({ role = 'student' }) => {
                         }
                     }));
 
-                    if (statsData.actividadReciente) setActividad(statsData.actividadReciente);
 
                     // 🔥 1. RESCATE DE GÉNEROS PERDIDOS (Añadimos "Sin Especificar" para que cuadre el FTE total)
                     // 🔥 1. GÉNEROS: USAMOS CABEZAS FÍSICAS COMO PRINCIPAL Y FTE COMO SECUNDARIO
@@ -133,8 +128,7 @@ const Dashboard = ({ role = 'student' }) => {
         }
     }, [role, data, selectedYear]);
 
-    const handleExportExcel = async () => {
-        const reportData = reporteFiltrado;
+    const handleExportExcel = useCallback(async (reportData) => {
         if (!reportData || reportData.length === 0) {
             toast.error("No hay datos para exportar");
             return;
@@ -156,7 +150,7 @@ const Dashboard = ({ role = 'student' }) => {
         } finally {
             setIsExporting(false);
         }
-    };
+    }, []);
 
     if (!data) return <div className="flex h-96 items-center justify-center">Cargando...</div>;
 
@@ -174,11 +168,8 @@ const Dashboard = ({ role = 'student' }) => {
             </div>
             <DashboardCharts chartData={chartData} selectedYear={selectedYear} setSelectedYear={setSelectedYear} availableYears={availableYears} />
             <DashboardOperations
-                actividad={actividad}
-                data={data}
                 reporte={reporteMaestro}
-                setReporteFiltrado={setReporteFiltrado}
-                handleExportExcel={handleExportExcel}
+                onExport={handleExportExcel}
                 isExporting={isExporting}
             />
         </div>
