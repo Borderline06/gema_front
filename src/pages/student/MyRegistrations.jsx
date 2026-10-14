@@ -16,6 +16,7 @@ import { es } from 'date-fns/locale';
 // COMPONENTES DE SEGURIDAD Y PAGO
 import OutstandingDebtAlert from '../../components/student/OutstandingDebtAlert';
 import ReportPaymentModal from "../../components/student/Payments/ReportPaymentModal";
+import RenovarPlanHistoricoModal from '../../components/student/RenovarPlanHistoricoModal';
 
 
 const DIAS_NOMBRES = { 1: "LUNES", 2: "MARTES", 3: "MIÉRCOLES", 4: "JUEVES", 5: "VIERNES", 6: "SÁBADO", 7: "DOMINGO", 0: "DOMINGO" };
@@ -66,6 +67,8 @@ const MyRegistrations = () => {
   const [isPayModalOpen, setIsPayModalOpen] = useState(false);
   const [selectedDebtForPay, setSelectedDebtForPay] = useState(null);
   const [renovacionModal, setRenovacionModal] = useState({ open: false, pkgId: null, fechasSugeridas: null });
+  const [planesHistoricos, setPlanesHistoricos] = useState([]);
+  const [planARenovar, setPlanARenovar] = useState(null);
   const [actionTarget, setActionTarget] = useState(null); // reg pendiente de confirmar borrado/finalización
 
   const formatTimeSafe = useCallback((timeStr) => {
@@ -84,6 +87,15 @@ const MyRegistrations = () => {
       ]);
       const dataI = await resI.json();
       const dataC = await resC.json();
+
+      try {
+        const resP = await apiFetch.get(API_ROUTES.INSCRIPCIONES.PLANES_HISTORICOS(userId));
+        const dataP = await resP.json();
+        setPlanesHistoricos(resP.ok ? (dataP.data || []) : []);
+      } catch (e) {
+        console.error('Error cargando planes históricos:', e);
+        setPlanesHistoricos([]);
+      }
 
       if (resI.ok) setRegistrations(dataI.data || []);
       if (resC.ok) {
@@ -294,7 +306,7 @@ const MyRegistrations = () => {
         </div>
 
         {/* HISTORIAL SEGMENTADO */}
-        {historyItems.length > 0 && (
+        {(historyItems.length > 0 || planesHistoricos.length > 0) && (
           <div className="mt-20 bg-brand-bg/80 rounded-[3.5rem] p-6 md:p-10 border-2 border-dashed border-brand-border transition-all hover:border-slate-300">
             <button onClick={() => setShowHistory(!showHistory)} className="flex items-center justify-between w-full text-brand-primary group transition-all">
               <div className="flex items-center gap-4">
@@ -308,6 +320,41 @@ const MyRegistrations = () => {
                 <ChevronDown size={24} className="text-brand-muted" />
               </div>
             </button>
+
+            {showHistory && planesHistoricos.length > 0 && (
+              <div className="mt-10 space-y-3">
+                <p className="text-[10px] font-black text-brand-muted uppercase tracking-widest">Planes anteriores</p>
+                {planesHistoricos.map(plan => (
+                  <div key={plan.cuenta_id} className="bg-brand-surface p-5 rounded-[2rem] border border-brand-border-soft shadow-sm space-y-3">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                      <div>
+                        <p className="text-[13px] font-black text-brand-primary italic uppercase">{plan.concepto?.nombre || 'Plan'}</p>
+                        <p className="text-[10px] font-bold text-brand-muted uppercase">
+                          {plan.fecha_inicio_ciclo ? format(parseISO(String(plan.fecha_inicio_ciclo).split('T')[0]), 'dd MMM yyyy', { locale: es }) : '---'}
+                          {' - '}
+                          {plan.fecha_fin_ciclo ? format(parseISO(String(plan.fecha_fin_ciclo).split('T')[0]), 'dd MMM yyyy', { locale: es }) : '---'}
+                        </p>
+                      </div>
+                      {plan.puede_renovar && (
+                        <button onClick={() => setPlanARenovar(plan)} className="px-5 py-2.5 bg-brand-primary text-white rounded-xl text-[10px] font-black uppercase italic hover:bg-brand-accent transition-all flex items-center gap-2 active:scale-95">
+                          <Zap size={14} fill="white" /> Renovar
+                        </button>
+                      )}
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {(plan.horarios || []).map(h => (
+                        <span key={h.id} className="text-[10px] font-bold text-slate-600 bg-brand-bg border border-brand-border-soft px-3 py-1.5 rounded-lg uppercase">
+                          {DIAS_NOMBRES[h.dia_semana]} {formatTimeSafe(h.hora_inicio)}-{formatTimeSafe(h.hora_fin)} · {h.cancha?.sede?.nombre}
+                        </span>
+                      ))}
+                    </div>
+                    {!plan.puede_renovar && plan.motivo_no_renovable && (
+                      <p className="text-[10px] font-bold text-brand-muted italic">{plan.motivo_no_renovable}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
 
             {showHistory && (
               <div className="mt-10 space-y-3 animate-in slide-in-from-top-4 duration-500">
@@ -342,6 +389,15 @@ const MyRegistrations = () => {
         </div>
       )}
       <RenovacionModal isOpen={renovacionModal.open} fechasSugeridas={renovacionModal.fechasSugeridas} onClose={() => setRenovacionModal({ open: false, pkgId: null, fechasSugeridas: null })} onConfirm={confirmarRenovacionMasiva} />
+
+      {planARenovar && (
+        <RenovarPlanHistoricoModal
+          plan={planARenovar}
+          alumnoId={userId}
+          onClose={() => setPlanARenovar(null)}
+          onSuccess={() => { setPlanARenovar(null); fetchInitialData(); }}
+        />
+      )}
 
       <ConfirmModal
         isOpen={!!actionTarget}

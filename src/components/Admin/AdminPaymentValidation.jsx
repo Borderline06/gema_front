@@ -8,11 +8,13 @@ import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../constants/apiRoutes';
 import { STATUS_SUCCESS_SOLID } from '../../config/statusColors';
+import AjusteFechaInicioModal from './AjusteFechaInicioModal';
 
 const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
     const { userId } = useAuth();
     const [loading, setLoading] = useState(false);
     const [showDateModal, setShowDateModal] = useState(false);
+    const [showAjusteModal, setShowAjusteModal] = useState(false);
 
     const [validationStatus, setValidationStatus] = useState(paymentData?.estado_validacion || 'PENDIENTE');
     const [notas, setNotas] = useState(paymentData?.notas_validacion || '');
@@ -126,6 +128,14 @@ const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
     return (
         <div className="space-y-6 animate-fade-in-up pb-20 relative">
 
+            {showAjusteModal && (
+                <AjusteFechaInicioModal
+                    cuentaId={paymentData.cuenta_id}
+                    onClose={() => setShowAjusteModal(false)}
+                    onSuccess={() => { if (onSuccess) onSuccess(); }}
+                />
+            )}
+
             {showDateModal && (
                 <div className="fixed inset-0 z-modal flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-sm">
                     <div className="bg-brand-surface rounded-[3rem] p-10 w-full max-w-md shadow-2xl border-t-[12px] border-brand-accent animate-bounce-in">
@@ -197,7 +207,12 @@ const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
                             </div>
 
                             {/* 🚩 REGLA DE ORO: Solo mostramos el botón si NO hay abonos previos */}
-                            {infoFinanciera.esPrimerPago ? (
+                            {paymentData?.estado_validacion === 'APROBADO' && paymentData?.cuenta_id && (
+                                <button onClick={() => setShowAjusteModal(true)} className="bg-brand-primary text-white px-6 py-3.5 rounded-2xl text-[10px] font-black uppercase italic hover:bg-brand-accent transition-all flex items-center gap-2 shadow-lg">
+                                    <Calendar size={14} /> Ajustar fecha de inicio
+                                </button>
+                            )}
+                            {paymentData?.estado_validacion === 'APROBADO' ? null : infoFinanciera.esPrimerPago ? (
                                 <button onClick={() => setShowDateModal(true)} className="bg-brand-accent text-white px-6 py-3.5 rounded-2xl text-[10px] font-black uppercase italic hover:bg-brand-primary-dark transition-all flex items-center gap-2 shadow-lg shadow-orange-200">
                                     <Calendar size={14} /> AJUSTAR FECHA DE INICIO
                                 </button>
