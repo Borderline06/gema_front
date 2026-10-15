@@ -10,14 +10,13 @@ import StudentHealthCard from './student-details/StudentHealthCard';
 import EmergencyContactCard from './student-details/EmergencyContactCard';
 import CicloHistoryPanel from './student-details/CicloHistoryPanel';
 import ClaseSueltaDetailModal from './ciclos/ClaseSueltaDetailModal';
-import { useHistorialCiclos } from '../../../hooks/useHistorialCiclos';
+import { useHistorialCiclosPorMes } from '../../../hooks/useHistorialCiclos';
 import LoadingSpinner from '../../..//components/shared/LoadingSpinner';
 
 const StudentDetails = ({ selectedAlumno, onBack, onStatusHistoryChange }) => {
     const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
-    // Fuente unica del historial: compartida con InscriptionsModal (antes cada
-    // uno pedia el mismo endpoint y guardaba su propia copia).
-    const { ciclos, loading: loadingCiclos } = useHistorialCiclos(selectedAlumno?.id);
+    // BL-012: historial de ciclos del mes elegido (con selector de mes y desglose).
+    const { historial, loading: loadingCiclos, seleccionarMes } = useHistorialCiclosPorMes(selectedAlumno?.id);
 
     // Clase individual seleccionada para ver su resumen en modal aparte
     const [claseIndividualSeleccionada, setClaseIndividualSeleccionada] = useState(null);
@@ -51,8 +50,6 @@ const StudentDetails = ({ selectedAlumno, onBack, onStatusHistoryChange }) => {
 
         fetchDetalle();
     }, [selectedAlumno?.id]);
-
-    // El historial (/historial-academico/alumno/:id) lo resuelve useHistorialCiclos.
 
     if (!selectedAlumno) return null;
 
@@ -98,8 +95,9 @@ const StudentDetails = ({ selectedAlumno, onBack, onStatusHistoryChange }) => {
                 <div className="lg:col-span-1 space-y-6">
                     <EmergencyContactCard contacto={detalle.contactoEmergencia} />
                     <CicloHistoryPanel
-                        ciclos={ciclos}
+                        historial={historial}
                         loadingCiclos={loadingCiclos}
+                        onSelectMes={seleccionarMes}
                         onSelectIndividual={setClaseIndividualSeleccionada}
                     />
                 </div>

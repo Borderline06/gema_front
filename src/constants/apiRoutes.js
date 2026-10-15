@@ -35,6 +35,9 @@ export const API_ROUTES = {
     SEPARAR_FINALIZAR: (id) => `/inscripciones/${id}/separar-finalizar`,
     ACTUALIZAR_FECHA_PAQUETE: (cuentaId) => `/inscripciones/paquete/fecha/${cuentaId}`,
     HISTORIAL_CICLOS: (alumnoId) => `/inscripciones/alumno/${alumnoId}/historial-ciclos`,
+    // BL-012: mes y anio son obligatorios (400 si faltan).
+    HISTORIAL_CICLOS_POR_MES: (alumnoId, mes, anio) =>
+      `/inscripciones/alumno/${alumnoId}/historial-ciclos/por-mes?mes=${mes}&anio=${anio}`,
     REPORTE_INDIVIDUALES: "/inscripciones/reportes/individuales",
     INDIVIDUAL_ADMIN: "/inscripciones/individual-admin",
     ALUMNO_NO_FINALIZADAS: (alumnoId) => `/inscripciones/alumno-no-finalizadas/${alumnoId}`,
