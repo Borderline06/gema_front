@@ -15,6 +15,9 @@ export const API_ROUTES = {
   HORARIOS: {
     BASE: "/horarios",
     BY_ID: (id) => `/horarios/${id}`,
+    // BL-003: disponibilidad por fecha para Clase Única
+    // → [{ fecha: 'YYYY-MM-DD', ocupados, capacidad_max, disponible, es_feriado }]
+    DISPONIBILIDAD: (id, desde, hasta) => `/horarios/${id}/disponibilidad?desde=${desde}&hasta=${hasta}`,
   },
   USUARIOS: {
     BASE: "/usuarios",
