@@ -170,6 +170,8 @@ export const API_ROUTES = {
     RESUMEN_TABLA: (sedeId) => sedeId
       ? `/historial-academico/resumen-tabla?sede_id=${sedeId}`
       : `/historial-academico/resumen-tabla`,
+    // BL-013: las llaves de cada fila ya son los encabezados del Excel.
+    EXPORTAR_ALUMNOS: "/historial-academico/exportar-alumnos",
     RESUMEN_INDIVIDUAL: (sedeId) => sedeId
       ? `/historial-academico/resumen-individual?sede_id=${sedeId}`
       : `/historial-academico/resumen-individual`,
