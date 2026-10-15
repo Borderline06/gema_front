@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom'; // 👈 IMPORTANTE: Agregado para el botón del Empty State
 import {
-  Clock, Trash2, Loader2, Calendar, Trophy, Receipt,
+  Clock, Trash2, Loader2, Calendar, Trophy,
   Zap, History, ChevronDown, Dumbbell, MapPin, Activity,
   ArrowRight as ArrowIcon, AlertTriangle, CalendarSearch, Rocket
 } from 'lucide-react';
@@ -10,15 +10,20 @@ import { API_ROUTES } from '../../constants/apiRoutes';
 import toast from 'react-hot-toast';
 import ConfirmModal from '../../components/shared/ConfirmModal';
 import { useAuth } from '../../context/AuthContext';
-import { format, parseISO, addDays, addHours } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 
+import PackageHeader from '../../components/student/PackageHeader';
 // COMPONENTES DE SEGURIDAD Y PAGO
 import OutstandingDebtAlert from '../../components/student/OutstandingDebtAlert';
 import ReportPaymentModal from "../../components/student/Payments/ReportPaymentModal";
 
 
 const DIAS_NOMBRES = { 1: "LUNES", 2: "MARTES", 3: "MIÉRCOLES", 4: "JUEVES", 5: "VIERNES", 6: "SÁBADO", 7: "DOMINGO", 0: "DOMINGO" };
+
+const esClaseUnica = (reg) => reg.tipo_inscripcion === 'INDIVIDUAL';
+// El link de deuda guarda la fecha exacta de la clase (inicio = fin); fecha_inscripcion es solo respaldo.
+const fechaClaseUnica = (reg) => reg.inscripciones_deudas_link?.[0]?.fecha_inicio_ciclo ?? reg.fecha_inscripcion;
 
 // --- MODAL DE RENOVACIÓN ---
 const RenovacionModal = ({ isOpen, onClose, onConfirm, fechasSugeridas }) => {
@@ -151,13 +156,20 @@ const MyRegistrations = () => {
     const packages = {};
     const history = [];
     registrations.forEach(reg => {
-      const isHistory = !reg.id_grupo_transaccion || ['FINALIZADO'].includes(reg.estado);
-      if (isHistory) history.push(reg);
-      else {
-        const gid = reg.id_grupo_transaccion;
-        if (!packages[gid]) packages[gid] = { id: gid, fecha_inicio: reg.fecha_inscripcion, items: [] };
-        packages[gid].items.push(reg);
+      if (reg.estado === 'FINALIZADO') { history.push(reg); return; }
+
+      // Clase única: nace sin id_grupo_transaccion, así que va como paquete propio
+      // (una tarjeta por clase) con la fecha exacta del link de deuda.
+      if (esClaseUnica(reg)) {
+        const id = `unica-${reg.id}`;
+        packages[id] = { id, tipo: 'INDIVIDUAL', fecha_clase: fechaClaseUnica(reg), items: [reg] };
+        return;
       }
+
+      if (!reg.id_grupo_transaccion) { history.push(reg); return; }
+      const gid = reg.id_grupo_transaccion;
+      if (!packages[gid]) packages[gid] = { id: gid, tipo: 'MENSUAL', fecha_inicio: reg.fecha_inscripcion, items: [] };
+      packages[gid].items.push(reg);
     });
     return { currentPackages: Object.values(packages), historyItems: history };
   }, [registrations]);
@@ -229,22 +241,7 @@ const MyRegistrations = () => {
         <div className="space-y-12">
           {currentPackages.map((pkg) => (
             <div key={pkg.id} className="bg-brand-surface rounded-[3.5rem] border border-brand-border-soft shadow-xl overflow-hidden group hover:shadow-2xl transition-shadow duration-500">
-              <div className="p-5 bg-brand-bg/50 border-b border-brand-border-soft flex flex-col md:flex-row justify-between items-start md:items-center gap-4 px-8">
-                <div className="flex items-center gap-3">
-                  <Receipt size={16} className="text-brand-accent" />
-                  <span className="text-[11px] font-black text-brand-primary uppercase italic tracking-tighter">CONTRATO: {pkg.id.slice(0, 10)}...</span>
-                </div>
-                <div>
-                  <span className="text-[10px] font-bold text-slate-500 bg-brand-surface px-4 py-2 rounded-full border border-brand-border shadow-sm flex items-center gap-2">
-                    <Calendar size={12} className="text-blue-500" />
-                    Inicio: {format(addHours(parseISO(pkg.fecha_inicio), 5), 'dd MMM, yyyy', { locale: es })}
-                  </span>
-                  <span className="text-[10px] font-bold text-slate-500 bg-brand-surface px-4 py-2 rounded-full border border-brand-border shadow-sm flex items-center gap-2 mt-1">
-                    <Calendar size={12} className="text-blue-500" />
-                    Fin: {format(addHours(addDays(parseISO(pkg.fecha_inicio), 29), 5), 'dd MMM, yyyy', { locale: es })}
-                  </span>
-                </div>
-              </div>
+              <PackageHeader pkg={pkg} />
 
               <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-6 bg-brand-surface">
                 {pkg.items.map((reg) => (
@@ -284,11 +281,14 @@ const MyRegistrations = () => {
                 ))}
               </div>
 
-              <div className="p-6 bg-brand-bg/80 flex justify-center border-t border-brand-border-soft">
-                <button onClick={() => handlePrepaymentGroup(pkg.id)} className="w-full max-w-md py-4 bg-brand-primary text-white rounded-2xl text-[11px] font-black uppercase italic hover:bg-brand-accent transition-all shadow-xl shadow-brand-primary/20 flex items-center justify-center gap-3 active:scale-95">
-                  <Zap size={16} fill="white" /> Renovar Paquete Completo
-                </button>
-              </div>
+              {/* Una clase única no se renueva */}
+              {pkg.tipo !== 'INDIVIDUAL' && (
+                <div className="p-6 bg-brand-bg/80 flex justify-center border-t border-brand-border-soft">
+                  <button onClick={() => handlePrepaymentGroup(pkg.id)} className="w-full max-w-md py-4 bg-brand-primary text-white rounded-2xl text-[11px] font-black uppercase italic hover:bg-brand-accent transition-all shadow-xl shadow-brand-primary/20 flex items-center justify-center gap-3 active:scale-95">
+                    <Zap size={16} fill="white" /> Renovar Paquete Completo
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -321,8 +321,10 @@ const MyRegistrations = () => {
                         <span>{formatTimeSafe(item.horarios_clases?.hora_inicio)} - {formatTimeSafe(item.horarios_clases?.hora_fin)}</span>
                       </div>
                     </div>
-                    <span className="text-[9px] font-black text-brand-muted border-brand-border-soft px-4 py-2 rounded-xluppercase italic transition-colors">
-                      {item.tipo_inscripcion}
+                    <span className="text-[9px] font-black text-brand-muted border-brand-border-soft px-4 py-2 rounded-xl uppercase italic transition-colors">
+                      {esClaseUnica(item)
+                        ? `CLASE ÚNICA · ${format(parseISO(fechaClaseUnica(item)), 'dd MMM yyyy', { locale: es })}`
+                        : item.tipo_inscripcion}
                     </span>
                     <span className="text-[9px] font-black text-brand-muted border-2 border-brand-border-soft px-4 py-2 rounded-xl group-hover:border-slate-700 group-hover:text-slate-300 uppercase italic transition-colors">
                       {item.estado}
@@ -347,7 +349,7 @@ const MyRegistrations = () => {
         isOpen={!!actionTarget}
         onClose={() => setActionTarget(null)}
         onConfirm={executeAction}
-        title={actionTarget ? (actionTarget.estado === 'PENDIENTE_PAGO' ? '¿Borrar reserva?' : '¿Finalizar horario?') : ''}
+        title={actionTarget ? (actionTarget.estado === 'PENDIENTE_PAGO' ? '¿Borrar reserva?' : esClaseUnica(actionTarget) ? '¿Cancelar clase única?' : '¿Finalizar horario?') : ''}
         message="Se liberará el cupo en este horario."
         iconType="danger"
         confirmText="Confirmar"

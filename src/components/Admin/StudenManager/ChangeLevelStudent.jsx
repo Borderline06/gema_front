@@ -1,100 +1,78 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowLeft, AlertCircle, Loader2, Save, ArrowRightLeft, Filter } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { ArrowLeft, AlertCircle, Loader2, Save, ArrowRightLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { apiFetch } from '../../../interceptors/api.js';
-import { API_ROUTES } from '../../../constants/apiRoutes';
 import horarioService from '../../../services/horario.service';
+import { inscripcionService } from '../../../services/inscripcion.service';
+import { useFetch } from '../../../hooks/useFetch';
 import LoadingSpinner from '../../..//components/shared/LoadingSpinner';
 import { useAuth } from '../../../context/AuthContext';
 import CurrentScheduleCard from './schedule-change/CurrentScheduleCard';
-import AvailableScheduleCard from './schedule-change/AvailableScheduleCard';
-import ScheduleFilters from './schedule-change/ScheduleFilters';
+import MonthlyTargetPanel from './schedule-change/MonthlyTargetPanel';
+import SingleClassTargetPanel from './schedule-change/SingleClassTargetPanel';
 import ChangeScheduleConfirmToast from './schedule-change/ChangeScheduleConfirmToast';
+import { esClaseUnica, filtrarCambiables } from './schedule-change/scheduleChangeUtils';
 import { BRAND_COLORS } from "../../../config/themeColors.js";
 
+const UNICA_VACIA = { fecha: null, horarioId: null };
+
 const ChangeLevelStudent = ({ alumno, onBack }) => {
-    const [horariosActuales, setHorariosActuales] = useState([]);
     const [selectedHorarioActual, setSelectedHorarioActual] = useState(null);
-    const [loadingActuales, setLoadingActuales] = useState(true);
-
-    const [horariosDisponibles, setHorariosDisponibles] = useState([]);
+    // Destino MENSUAL: un horario de la lista. Destino CLASE ÚNICA: fecha exacta + horario (misma forma que UnicaSchedule).
     const [selectedHorarioNuevo, setSelectedHorarioNuevo] = useState(null);
-    const [loadingDisponibles, setLoadingDisponibles] = useState(false);
-
-    const [filtroSede, setFiltroSede] = useState('');
-    const [filtroNivel, setFiltroNivel] = useState('');
+    const [unica, setUnica] = useState(UNICA_VACIA);
     const [saving, setSaving] = useState(false);
     const { user } = useAuth();
 
-    const fetchHorariosAlumno = async () => {
-        try {
-            setLoadingActuales(true);
-            const response = await apiFetch.get(API_ROUTES.INSCRIPCIONES.ALUMNO_NO_FINALIZADAS(alumno.id));
-            if (response.ok) {
-                const result = await response.json();
-                setHorariosActuales(result.data);
-            }
-        } catch (error) {
-            toast.error("Error al cargar los horarios del alumno");
-            console.error(error);
-        } finally {
-            setLoadingActuales(false);
-        }
+    const { data: inscripciones, loading: loadingActuales, refetch: refetchActuales } = useFetch(
+        () => inscripcionService.listarNoFinalizadas(alumno.id),
+        [alumno.id],
+        { initialData: [], errorMessage: 'Error al cargar los horarios del alumno' }
+    );
+
+    const { data: horariosDisponibles, loading: loadingDisponibles } = useFetch(
+        () => horarioService.obtenerDisponibles(),
+        [],
+        { initialData: [], errorMessage: 'Error al cargar los horarios disponibles' }
+    );
+
+    // Solo inscripciones ACTIVO / PENDIENTE_PAGO; las vencidas o anuladas no se pueden cambiar.
+    const horariosActuales = useMemo(() => filtrarCambiables(inscripciones), [inscripciones]);
+
+    // El modo de la columna derecha se deriva de la tarjeta elegida: no es estado, no puede desincronizarse.
+    const modo = !selectedHorarioActual ? null : esClaseUnica(selectedHorarioActual) ? 'UNICA' : 'MENSUAL';
+
+    const horarioUnicaElegido = modo === 'UNICA'
+        ? horariosDisponibles.find(h => h.id === unica.horarioId) ?? null
+        : null;
+    const horarioDestino = modo === 'UNICA' ? horarioUnicaElegido : selectedHorarioNuevo;
+    const destinoListo = modo === 'UNICA' ? Boolean(unica.fecha && horarioUnicaElegido) : Boolean(selectedHorarioNuevo);
+
+    const handleSelectActual = (horario) => {
+        setSelectedHorarioActual(horario);
+        setSelectedHorarioNuevo(null);
+        setUnica(UNICA_VACIA);
     };
 
-    useEffect(() => {
-        if (alumno.id) {
-            fetchHorariosAlumno();
-        }
-    }, [alumno.id]);
-
-    useEffect(() => {
-        const fetchHorariosDisponibles = async () => {
-            try {
-                setLoadingDisponibles(true);
-                setHorariosDisponibles(await horarioService.obtenerDisponibles());
-
-            } catch (error) {
-                toast.error("Error al cargar los horarios disponibles");
-                console.error(error);
-            } finally {
-                setLoadingDisponibles(false);
-            }
-        };
-
-        fetchHorariosDisponibles();
-    }, []);
-
-    const sedesUnicas = [...new Set(horariosDisponibles.map(h => h.cancha?.sede?.nombre).filter(Boolean))];
-    const nivelesUnicos = [...new Set(horariosDisponibles.map(h => h.nivel?.nombre).filter(Boolean))];
-
-    const horariosFiltrados = horariosDisponibles.filter(horario => {
-        const matchSede = filtroSede === '' || horario.cancha?.sede?.nombre === filtroSede;
-        const matchNivel = filtroNivel === '' || horario.nivel?.nombre === filtroNivel;
-        return matchSede && matchNivel;
-    });
+    const handleSelectFechaUnica = (fecha, horarioId) => setUnica({ fecha, horarioId });
+    const handleSelectHorarioUnica = (horarioId) => setUnica(prev => ({ ...prev, horarioId }));
 
     const handleConfirmarCambio = async () => {
         try {
             setSaving(true);
-            const response = await apiFetch.put(API_ROUTES.INSCRIPCIONES.HORARIO_INSCRIPCION, {
+            const result = await inscripcionService.cambiarHorario({
                 alumnoId: selectedHorarioActual.alumno_id,
                 inscripcionId: selectedHorarioActual.id,
-                horarioId: selectedHorarioNuevo.id,
-                adminId: user.id
+                horarioId: horarioDestino.id,
+                fechaClase: modo === 'UNICA' ? unica.fecha : undefined,
+                adminId: user.id,
             });
-
-            const data = await response.json();
-            if (response.ok) {
-                toast.success(data.message || "Horario intercambiado correctamente");
-                await fetchHorariosAlumno();
-                setSelectedHorarioActual(null);
-                setSelectedHorarioNuevo(null);
-            } else {
-                toast.error(data.message || "Error al procesar el cambio");
-            }
+            toast.success(result.message || "Horario intercambiado correctamente");
+            await refetchActuales();
+            setSelectedHorarioActual(null);
+            setSelectedHorarioNuevo(null);
+            setUnica(UNICA_VACIA);
         } catch (error) {
-            toast.error("Error de conexión");
+            toast.error(error.message || "Error al procesar el cambio");
             console.error(error);
         } finally {
             setSaving(false);
@@ -106,15 +84,16 @@ const ChangeLevelStudent = ({ alumno, onBack }) => {
             toast.error("Por favor selecciona el horario actual que deseas cambiar");
             return;
         }
-        if (!selectedHorarioNuevo) {
-            toast.error("Por favor selecciona el horario destino");
+        if (!destinoListo) {
+            toast.error(modo === 'UNICA' ? "Por favor selecciona la fecha y el horario destino" : "Por favor selecciona el horario destino");
             return;
         }
         toast((t) => (
             <ChangeScheduleConfirmToast
                 t={t}
                 selectedHorarioActual={selectedHorarioActual}
-                selectedHorarioNuevo={selectedHorarioNuevo}
+                selectedHorarioNuevo={horarioDestino}
+                fechaDestino={modo === 'UNICA' ? unica.fecha : null}
                 onConfirm={handleConfirmarCambio}
             />
         ), {
@@ -166,7 +145,7 @@ const ChangeLevelStudent = ({ alumno, onBack }) => {
 
                 <button
                     onClick={confirmarRecuperacion}
-                    disabled={!selectedHorarioActual || !selectedHorarioNuevo || saving}
+                    disabled={!selectedHorarioActual || !destinoListo || saving}
                     className="hidden sm:flex items-center gap-2 bg-brand-primary hover:bg-brand-primary text-white px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-lg shadow-brand-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
@@ -199,14 +178,14 @@ const ChangeLevelStudent = ({ alumno, onBack }) => {
                                     key={horario.id}
                                     horario={horario}
                                     isSelected={selectedHorarioActual?.id === horario.id}
-                                    onSelect={() => setSelectedHorarioActual(horario)}
+                                    onSelect={() => handleSelectActual(horario)}
                                 />
                             ))}
                         </div>
                     )}
                 </div>
 
-                {/* Horarios Disponibles */}
+                {/* Destino: depende del tipo de la inscripción elegida */}
                 <div className="bg-brand-surface rounded-3xl border border-brand-border shadow-sm overflow-hidden p-6 relative">
                     {!selectedHorarioActual && (
                         <div className="absolute inset-0 z-10 bg-white/60 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center">
@@ -219,43 +198,30 @@ const ChangeLevelStudent = ({ alumno, onBack }) => {
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black ${selectedHorarioActual ? 'bg-brand-primary text-white' : 'bg-brand-surface-alt text-brand-muted'}`}>2</div>
                         <div>
                             <h2 className={`text-sm font-black uppercase italic tracking-tighter ${selectedHorarioActual ? 'text-brand-primary' : 'text-brand-muted'}`}>
-                                Horarios Disponibles
+                                {modo === 'UNICA' ? 'Nueva Fecha y Horario' : 'Horarios Disponibles'}
                             </h2>
-                            <p className="text-[10px] text-brand-muted font-bold uppercase tracking-widest">Seleccione el nuevo horario</p>
+                            <p className="text-[10px] text-brand-muted font-bold uppercase tracking-widest">
+                                {modo === 'UNICA' ? 'Seleccione la fecha exacta de la clase' : 'Seleccione el nuevo horario'}
+                            </p>
                         </div>
                     </div>
 
-                    <ScheduleFilters
-                        filtroSede={filtroSede}
-                        setFiltroSede={setFiltroSede}
-                        sedesUnicas={sedesUnicas}
-                        filtroNivel={filtroNivel}
-                        setFiltroNivel={setFiltroNivel}
-                        nivelesUnicos={nivelesUnicos}
-                    />
-
-                    {horariosDisponibles.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center flex-1 p-8 bg-brand-bg rounded-2xl border border-brand-border-soft border-dashed">
-                            <AlertCircle size={32} className="text-slate-300 mb-3" />
-                            <p className="text-slate-500 font-bold uppercase text-xs text-center tracking-wide">No hay horarios disponibles</p>
-                        </div>
-                    ) : horariosFiltrados.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center flex-1 p-8 bg-brand-bg rounded-2xl border border-brand-border-soft border-dashed">
-                            <Filter size={32} className="text-slate-300 mb-3" />
-                            <p className="text-slate-500 font-bold uppercase text-xs text-center tracking-wide">No hay resultados para estos filtros</p>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 gap-4 overflow-y-auto pr-2 custom-scrollbar" style={{ maxHeight: 'calc(100vh - 400px)', minHeight: '300px' }}>
-
-                            {horariosFiltrados.map((horario) => (
-                                <AvailableScheduleCard
-                                    key={horario.id}
-                                    horario={horario}
-                                    isSelected={selectedHorarioNuevo?.id === horario.id}
-                                    onSelect={() => setSelectedHorarioNuevo(horario)}
-                                />
-                            ))}
-                        </div>
+                    {modo === 'UNICA' && (
+                        <SingleClassTargetPanel
+                            key={selectedHorarioActual.id}
+                            inscripcionActual={selectedHorarioActual}
+                            horariosDisponibles={horariosDisponibles}
+                            unica={unica}
+                            onSelectFecha={handleSelectFechaUnica}
+                            onSelectHorario={handleSelectHorarioUnica}
+                        />
+                    )}
+                    {modo !== 'UNICA' && (
+                        <MonthlyTargetPanel
+                            horariosDisponibles={horariosDisponibles}
+                            selectedHorarioNuevo={selectedHorarioNuevo}
+                            onSelect={setSelectedHorarioNuevo}
+                        />
                     )}
                 </div>
             </div>
@@ -264,7 +230,7 @@ const ChangeLevelStudent = ({ alumno, onBack }) => {
             <div className="sm:hidden mt-6">
                 <button
                     onClick={confirmarRecuperacion}
-                    disabled={!selectedHorarioActual || !selectedHorarioNuevo || saving}
+                    disabled={!selectedHorarioActual || !destinoListo || saving}
                     className="w-full flex justify-center items-center gap-2 bg-brand-primary hover:bg-brand-primary text-white px-6 py-4 rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-lg shadow-brand-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
