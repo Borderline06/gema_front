@@ -26,6 +26,8 @@ const AdminReprogramaciones = lazy(() => import('../pages/admin/AdminReprogramac
 const AdminDeleteMakeups = lazy(() => import('../pages/admin/AdminDeleteMakeups'));
 const AdminCreateBenefitsAnuncio = lazy(() => import('../pages/admin/AdminCreateBenefitsAnuncio'));
 const AdminCashFlow = lazy(() => import('../pages/admin/monthly-transactions/AdminCashFlow'));
+const AdminMerchManager = lazy(() => import('../pages/admin/AdminMerchManager'));
+const AdminMerchDeliveries = lazy(() => import('../pages/admin/AdminMerchDeliveries'));
 
 // Devuelve el árbol de <Route> del grupo Administrador (ver nota en studentRoutes.jsx
 // sobre por qué es una función y no un componente <AdminRoutes/>).
@@ -51,6 +53,8 @@ export const getAdminRoutes = () => (
             <Route path="admin/payment-validation" element={<AdminPaymentManager />} />
             <Route path="admin/guest-passes" element={<AdminGuestPasses />} />
             <Route path="admin/cash-flow" element={<AdminCashFlow />} />
+            <Route path="admin/merch" element={<AdminMerchManager />} />
+            <Route path="admin/entregas-merch" element={<AdminMerchDeliveries />} />
 
             {/* Configuración */}
             <Route path="admin/settings" element={<AdminSettings />} />

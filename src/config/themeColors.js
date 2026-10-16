@@ -29,6 +29,11 @@ export const BRAND_COLORS = {
   'accent-dark': '#ea580c',  // = orange-600 · hover
   'accent-soft': '#fff7ed',  // = orange-50  · fondos de badge/pill
 
+  // Dorado — coleccionables / Tienda GEMA (token nuevo, no sustituye a ningún color existente)
+  gold: '#d4a017',           // · iconos, bordes y badges de merch
+  'gold-dark': '#a67c00',    // · texto sobre fondos claros
+  'gold-soft': '#fef9e7',    // · fondos de badge/pill
+
   // Neutros estructurales
   bg: '#f8fafc',             // = slate-50   · fondo de página
   surface: '#ffffff',        // = white      · tarjetas, modales

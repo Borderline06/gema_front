@@ -1,19 +1,28 @@
 import React from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { MODALIDAD } from '../../../../hooks/useEnrollmentWizard';
-import { MERCH } from '../../../../config/merch';
-import TshirtOption from '../../../merch/TshirtOption';
+import { cartLines, withQty } from '../../../../utils/merchCart';
+import MerchAddOnsSlider from '../../../merch/MerchAddOnsSlider';
+import PickupSedeSelect from '../../../merch/PickupSedeSelect';
 import EnrollmentSummary from '../EnrollmentSummary';
 
-const StepCheckout = ({ state, derived, extras, onExtrasChange, precioBase, submitError, onBack }) => {
+const StepCheckout = ({ state, derived, extras, onExtrasChange, catalogoMerch, ownedMerchCounts, sedes, sedeRecojoId, precioBase, submitError, onBack }) => {
   const esMensual = state.modalidad === MODALIDAD.MENSUAL;
   const nivelNombre = derived.niveles.find(n => n.id === state.nivelId)?.nombre;
   const horarioUnico = derived.horariosFiltrados.find(h => h.id === state.unica.horarioId);
 
-  // La camiseta solo se ofrece en matrícula mensual (regla de negocio vigente).
-  const extrasElegidos = esMensual && extras.camiseta
-    ? [{ label: 'Camiseta', price: MERCH.camiseta.price }]
+  // El merch solo se ofrece en matrícula mensual (regla de negocio vigente).
+  // El TOTAL del resumen = precioBase + suma de estos extras.
+  const extrasElegidos = esMensual
+    ? cartLines(catalogoMerch, extras.merchQty).map(({ item, qty, subtotal }) => ({
+        label: qty > 1 ? `${item.nombre} × ${qty}` : item.nombre,
+        price: subtotal,
+      }))
     : [];
+
+  const esMerchSeleccionado = extrasElegidos.length > 0;
+
+  const changeQty = (id, qty) => onExtrasChange({ ...extras, merchQty: withQty(extras.merchQty, id, qty) });
 
   return (
     <div className="space-y-8 max-w-2xl mx-auto">
@@ -51,10 +60,20 @@ const StepCheckout = ({ state, derived, extras, onExtrasChange, precioBase, subm
       />
 
       {esMensual && (
-        <TshirtOption
-          checked={extras.camiseta}
-          onChange={(camiseta) => onExtrasChange({ ...extras, camiseta })}
-          price={MERCH.camiseta.price}
+        <MerchAddOnsSlider
+          items={catalogoMerch}
+          quantities={extras.merchQty}
+          onQtyChange={changeQty}
+          ownedCounts={ownedMerchCounts}
+        />
+      )}
+
+      {/* La sede de recojo solo importa si se eligió algún producto */}
+      {esMerchSeleccionado && (
+        <PickupSedeSelect
+          sedes={sedes}
+          value={sedeRecojoId}
+          onChange={(sedeId) => onExtrasChange({ ...extras, sedeId })}
         />
       )}
     </div>

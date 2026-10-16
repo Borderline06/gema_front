@@ -13,6 +13,7 @@ const Enrollment = lazy(() => import('../pages/student/enrollment'));
 const StudentInjuries = lazy(() => import('../pages/student/StudentInjuries'));
 const StudentRecoveries = lazy(() => import('../pages/student/StudentRecoveries'));
 const StudentNews = lazy(() => import('../pages/student/StudentNews'));
+const StudentMerch = lazy(() => import('../pages/student/StudentMerch'));
 
 // Devuelve el árbol de <Route> del grupo Estudiante. Se llama como función
 // (no como <StudentRoutes/>) porque React Router v6 solo reconoce <Route>/
@@ -28,6 +29,7 @@ export const getStudentRoutes = () => (
             <Route path="student/injuries" element={<StudentInjuries />} />
             <Route path="student/recoveries" element={<StudentRecoveries />} />
             <Route path="student/news" element={<StudentNews />} />
+            <Route path="student/merch" element={<StudentMerch />} />
             <Route index element={<Navigate to="/dashboard/student" replace />} />
         </Route>
     </Route>

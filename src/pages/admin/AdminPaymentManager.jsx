@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch } from '../../interceptors/api';
 import AdminPaymentValidation from '../../components/Admin/AdminPaymentValidation';
 import AdminPaymentStats from '../../components/Admin/AdminPaymentStats';
+import PaymentConcept from '../../components/Admin/PaymentConcept';
 import PageTitle from '../../components/shared/PageTitle';
 import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../constants/apiRoutes';
@@ -241,6 +242,7 @@ const AdminPaymentManager = () => {
                                     </div>
 
                                     <div className="space-y-4">
+                                        <PaymentConcept pago={p} compact />
                                         <div className="flex items-start gap-4">
                                             <div className={`p-3 rounded-2xl transition-colors duration-300 shrink-0 bg-brand-primary-soft text-brand-primary group-hover:bg-brand-primary group-hover:text-white`}>
                                                 <User size={22} />

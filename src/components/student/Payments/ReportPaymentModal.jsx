@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { X, Send, Loader2, Banknote, Upload, Coins, Copy, CheckCircle2, Landmark, CreditCard, ChevronDown } from "lucide-react";
 import apiFetch from "../../../interceptors/api.js";
 import toast from "react-hot-toast";
 import { API_ROUTES } from "../../../constants/apiRoutes.js";
 
-const ReportPaymentModal = ({ isOpen, onClose, debt, onSuccess }) => {
+// `monto` (opcional) fija el importe a pagar. Sin él se usa el saldo restante o el
+// monto final de la deuda. Si hay un importe válido el campo es de solo lectura
+// (evita errores de tipeo); si no se puede determinar, queda editable como respaldo.
+const ReportPaymentModal = ({ isOpen, onClose, debt, monto, onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [voucherFile, setVoucherFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -13,6 +16,10 @@ const ReportPaymentModal = ({ isOpen, onClose, debt, onSuccess }) => {
     metodo_pago: "YAPE",
     monto: ""
   });
+
+  const montoCalculado = Number(monto ?? debt?.saldoRestante ?? debt?.monto_final);
+  const montoFijo = Number.isFinite(montoCalculado) && montoCalculado > 0 ? montoCalculado : null;
+  const montoAPagar = montoFijo ?? formData.monto;
 
   const CLUB_PHONE = "902585995";
   const BCP_CUENTA = "19411410110063";
@@ -29,18 +36,11 @@ const ReportPaymentModal = ({ isOpen, onClose, debt, onSuccess }) => {
     setTimeout(() => setCopiedField(""), 2000);
   };
 
-  useEffect(() => {
-    if (debt) {
-      const montoSugerido = debt.saldoRestante !== undefined ? debt.saldoRestante : debt.monto_final;
-      setFormData(prev => ({ ...prev, monto: montoSugerido }));
-    }
-  }, [debt]);
-
   if (!isOpen || !debt) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.monto || parseFloat(formData.monto) <= 0) return toast.error("Ingresa un monto válido");
+    if (!montoAPagar || parseFloat(montoAPagar) <= 0) return toast.error("Ingresa un monto válido");
 
     // Todos requieren voucher excepto Efectivo
     if (!esEfectivo && !voucherFile) {
@@ -51,7 +51,7 @@ const ReportPaymentModal = ({ isOpen, onClose, debt, onSuccess }) => {
     try {
       const paymentData = new FormData();
       paymentData.append('deuda_id', parseInt(debt.id));
-      paymentData.append('monto', parseFloat(formData.monto));
+      paymentData.append('monto', parseFloat(montoAPagar));
       paymentData.append('metodo_pago', formData.metodo_pago);
 
       // 🚩 HARDCODEO DE CÓDIGO DE OPERACIÓN PARA LA BASE DE DATOS
@@ -102,8 +102,11 @@ const ReportPaymentModal = ({ isOpen, onClose, debt, onSuccess }) => {
                 <label className="text-[9px] font-black text-brand-muted uppercase tracking-widest ml-1 flex items-center gap-2">
                   <Banknote size={12} className="text-brand-accent" /> Monto (S/)
                 </label>
-                <input type="number" step="0.01" value={formData.monto} onChange={(e) => setFormData({ ...formData, monto: e.target.value })}
-                  className="w-full bg-brand-bg border-2 border-brand-border-soft rounded-xl px-4 py-2.5 text-lg font-black text-brand-primary outline-none focus:border-brand-accent transition-all" />
+                <input type="number" step="0.01"
+                  value={montoFijo !== null ? montoFijo.toFixed(2) : formData.monto}
+                  readOnly={montoFijo !== null}
+                  onChange={(e) => setFormData({ ...formData, monto: e.target.value })}
+                  className={`w-full border-2 border-brand-border-soft rounded-xl px-4 py-2.5 text-lg font-black text-brand-primary outline-none transition-all ${montoFijo !== null ? 'bg-brand-surface-alt cursor-not-allowed' : 'bg-brand-bg focus:border-brand-accent'}`} />
               </div>
 
               {/* MÉTODO DE PAGO CON FLECHITA */}

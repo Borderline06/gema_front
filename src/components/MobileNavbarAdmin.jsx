@@ -5,7 +5,7 @@ import {
     MapPin, CalendarRange, BarChart3, TicketPercent,
     UserCog, GraduationCap, DollarSign, Activity, Settings, LogOut, History,
     Megaphone, Ticket, Sparkles, Layers,
-    Receipt
+    Receipt, Gift, PackageCheck
 } from 'lucide-react';
 import { logoutService } from '../services/auth.service';
 import toast from 'react-hot-toast';
@@ -65,6 +65,7 @@ const MobileNavbarAdmin = () => {
                             <div className="space-y-1">
                                 <p className="px-3 text-[9px] font-black text-blue-300/40 uppercase tracking-[0.3em] mb-2">Operaciones</p>
                                 <NavLink to="/dashboard/admin/students" onClick={toggleMenu} className="flex items-center gap-4 text-blue-100/70 px-3 py-2.5 rounded-xl hover:bg-white/5 text-[12px] font-bold uppercase tracking-wide"><GraduationCap size={16} className="text-blue-400" /> Alumnos</NavLink>
+                                <NavLink to="/dashboard/admin/entregas-merch" onClick={toggleMenu} className="flex items-center gap-4 text-blue-100/70 px-3 py-2.5 rounded-xl hover:bg-white/5 text-[12px] font-bold uppercase tracking-wide"><PackageCheck size={16} className="text-blue-400" /> Entregas Merch</NavLink>
                                 <NavLink to="/dashboard/admin/teachers" onClick={toggleMenu} className="flex items-center gap-4 text-blue-100/70 px-3 py-2.5 rounded-xl hover:bg-white/5 text-[12px] font-bold uppercase tracking-wide"><UserCog size={16} className="text-blue-400" /> Coordinadores</NavLink>
                             </div>
 
@@ -74,6 +75,7 @@ const MobileNavbarAdmin = () => {
                                 <NavLink to="/dashboard/admin/reprogramaciones" onClick={toggleMenu} className="flex items-center gap-4 text-blue-100/70 px-3 py-2.5 rounded-xl hover:bg-white/5 text-[12px] font-bold uppercase tracking-wide"><Layers size={16} /> Reprogramar</NavLink>
                                 <NavLink to="/dashboard/admin/locations" onClick={toggleMenu} className="flex items-center gap-4 text-blue-100/70 px-3 py-2.5 rounded-xl hover:bg-white/5 text-[12px] font-bold uppercase tracking-wide"><MapPin size={16} /> Sedes</NavLink>
                                 <NavLink to="/dashboard/admin/levels" onClick={toggleMenu} className="flex items-center gap-4 text-blue-100/70 px-3 py-2.5 rounded-xl hover:bg-white/5 text-[12px] font-bold uppercase tracking-wide"><BarChart3 size={16} /> Niveles</NavLink>
+                                <NavLink to="/dashboard/admin/merch" onClick={toggleMenu} className="flex items-center gap-4 text-blue-100/70 px-3 py-2.5 rounded-xl hover:bg-white/5 text-[12px] font-bold uppercase tracking-wide"><Gift size={16} /> Gestión Merch</NavLink>
                                 <NavLink to="/dashboard/admin/cash-flow" onClick={toggleMenu} className="flex items-center gap-4 text-blue-100/70 px-3 py-2.5 rounded-xl hover:bg-white/5 text-[12px] font-bold uppercase tracking-wide"><Receipt size={16} /> Balance</NavLink>
                             </div>
 

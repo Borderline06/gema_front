@@ -10,6 +10,9 @@ import PaymentMethodCard from "../../components/student/Payments/PaymentMethodCa
 import DebtItem from "../../components/student/Payments/DebtItem";
 import PaymentHistoryItem from "../../components/student/Payments/PaymentHistoryItem";
 import ReportPaymentModal from "../../components/student/Payments/ReportPaymentModal";
+import ConfirmModal from "../../components/shared/ConfirmModal";
+import { merchService } from "../../services/merch.service";
+import { getDebtTitle } from "../../utils/debtInfo";
 
 const Payments = () => {
   const { userId } = useAuth();
@@ -19,6 +22,8 @@ const Payments = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDebt, setSelectedDebt] = useState(null);
+  const [debtToCancel, setDebtToCancel] = useState(null);
+  const [cancelling, setCancelling] = useState(false);
 
   const fetchFinancialData = useCallback(async () => {
     try {
@@ -44,6 +49,20 @@ const Payments = () => {
   useEffect(() => {
     if (userId) fetchFinancialData();
   }, [userId, fetchFinancialData]);
+
+  const handleCancelOrder = async () => {
+    setCancelling(true);
+    try {
+      await merchService.cancelarOrden(debtToCancel.id);
+      toast.success("Orden cancelada");
+      setDebtToCancel(null);
+      await fetchFinancialData();
+    } catch (error) {
+      toast.error(error.message || "No se pudo cancelar la orden");
+    } finally {
+      setCancelling(false);
+    }
+  };
 
   const activeDebts = debts.filter((d) =>
     ["PENDIENTE", "PARCIAL"].includes(d.estado)
@@ -133,6 +152,7 @@ const Payments = () => {
                   key={d.id}
                   debt={{ ...d, saldoRestante: saldo, montoPagadoYa: pagado, esParcial: pagado > 0 }}
                   onReport={(debt) => { setSelectedDebt(debt); setIsModalOpen(true); }}
+                  onCancel={setDebtToCancel}
                 />
               );
             })}
@@ -171,6 +191,16 @@ const Payments = () => {
           )}
         </section>
       </div>
+
+      <ConfirmModal
+        isOpen={Boolean(debtToCancel)}
+        onClose={() => !cancelling && setDebtToCancel(null)}
+        onConfirm={handleCancelOrder}
+        iconType="danger"
+        title="¿Cancelar esta orden?"
+        message={`Se eliminará "${debtToCancel ? getDebtTitle(debtToCancel) : ''}" y se liberarán los ítems reservados.`}
+        confirmText={cancelling ? 'Cancelando...' : 'Cancelar orden'}
+      />
 
       <ReportPaymentModal
         isOpen={isModalOpen}

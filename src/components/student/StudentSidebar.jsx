@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Home, CreditCard, User, LogOut, Activity, Ticket,
-  ChevronDown, LayoutDashboard, Megaphone, UserPlus, Calendar // Importación de Calendar para el nuevo icono
+  ChevronDown, LayoutDashboard, Megaphone, UserPlus, Calendar, Star // Importación de Calendar para el nuevo icono
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { apiFetch } from "../../interceptors/api";
@@ -71,6 +71,13 @@ const StudentSidebar = () => {
       hasAlert: hasNewNews
     },
     {
+      title: "Club Merch",
+      type: "link",
+      icon: Star,
+      path: "/dashboard/student/merch",
+      gold: true
+    },
+    {
       title: "Salud y Rendimiento",
       type: "dropdown",
       items: [
@@ -133,12 +140,16 @@ const StudentSidebar = () => {
                 <Link
                   to={group.path}
                   className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all group/link ${location.pathname === group.path
-                    ? 'bg-blue-500/20 text-white shadow-inner border border-blue-400/20'
-                    : 'text-blue-100/60 hover:bg-white/5 hover:text-white'
+                    ? (group.gold
+                      ? 'bg-brand-gold/10 text-white shadow-inner border border-brand-gold/60'
+                      : 'bg-blue-500/20 text-white shadow-inner border border-blue-400/20')
+                    : (group.gold
+                      ? 'text-blue-100/70 border border-brand-gold/25 hover:border-brand-gold/60 hover:bg-white/5 hover:text-white'
+                      : 'text-blue-100/60 hover:bg-white/5 hover:text-white')
                     }`}
                 >
                   <div className="flex items-center gap-3">
-                    <group.icon size={18} className={location.pathname === group.path ? 'text-blue-400' : 'group-hover/link:text-orange-400 transition-colors'} />
+                    <group.icon size={18} className={group.gold ? 'text-brand-gold' : location.pathname === group.path ? 'text-blue-400' : 'group-hover/link:text-orange-400 transition-colors'} />
                     <span className="text-[12px] font-bold uppercase tracking-wider">{group.title}</span>
                   </div>
 

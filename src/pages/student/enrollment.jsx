@@ -78,6 +78,7 @@ const Enrollment = () => {
             isOpen={isPayModalOpen}
             onClose={() => setIsPayModalOpen(false)}
             debt={selectedDebtForPay}
+            monto={selectedDebtForPay?.saldoRestante ?? selectedDebtForPay?.monto_final}
             onSuccess={() => { setIsPayModalOpen(false); refetchDeuda(); }}
           />
         </div>

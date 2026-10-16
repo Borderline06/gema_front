@@ -164,6 +164,20 @@ export const API_ROUTES = {
     ACTIVOS: '/anuncios-beneficios/activos',
     BY_ID: (id) => `/anuncios-beneficios/${id}`,
   },
+  MERCH: {
+    CATALOGO: "/merch",
+    CATALOGO_COMPLETO: "/merch?incluir_inactivos=true", // solo Administrador
+    BY_ID: (id) => `/merch/${id}`,
+    COLECCION_ALUMNO: (alumnoId) => `/merch/alumno/${alumnoId}`,
+    COMPRAR: "/merch/comprar", // solo Administrador
+    ORDEN: "/merch/orden",     // compra del alumno: genera una deuda pendiente (contrato asumido)
+    ORDEN_BY_ID: (cuentaId) => `/merch/orden/${cuentaId}`, // cancelar orden pendiente (contrato asumido)
+    // Logística de recepción
+    LOGISTICA: "/merch/logistica",                                        // ?sede_id= & ?busqueda=
+    ENTREGAR_ITEM: (itemId) => `/merch/logistica/${itemId}/entregar`,
+    REVERTIR_ENTREGA: (itemId) => `/merch/logistica/${itemId}/revertir`,
+    ESTADO_ITEM: (itemId) => `/merch/items/${itemId}/estado`,
+  },
   CAJA: {
     BASE: "/caja",
     RESUMEN: "/caja/resumen",

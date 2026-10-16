@@ -1,8 +1,11 @@
 import React from 'react';
-import { ArrowRight, AlertCircle } from 'lucide-react';
+import { ArrowRight, Trash2 } from 'lucide-react';
+import { getDebtTitle, isMerchOrder } from '../../../utils/debtInfo';
 
-const DebtItem = ({ debt, onReport }) => {
+// `onCancel` es opcional: solo se ofrece en órdenes de merch sin pagos reportados.
+const DebtItem = ({ debt, onReport, onCancel }) => {
   const isPendingValidation = debt.estado === 'POR_VALIDAR';
+  const canCancel = Boolean(onCancel) && isMerchOrder(debt) && !debt.esParcial && !isPendingValidation;
 
   return (
     <div className="relative p-8 rounded-[2.5rem] border border-brand-border-soft bg-brand-surface shadow-xl shadow-slate-200/50 group transition-all">
@@ -10,7 +13,7 @@ const DebtItem = ({ debt, onReport }) => {
         <div className="flex justify-between items-center gap-4">
           <div className="flex-1">
             <h3 className="font-black text-brand-primary uppercase tracking-tighter text-2xl leading-none italic group-hover:text-brand-accent transition-colors">
-              {debt.catalogo_conceptos?.nombre}
+              {getDebtTitle(debt)}
             </h3>
           </div>
           <div className="text-right">
@@ -53,6 +56,16 @@ const DebtItem = ({ debt, onReport }) => {
           {isPendingValidation ? 'PAGO EN VALIDACIÓN' : debt.esParcial ? 'COMPLETAR DEUDA' : 'REPORTAR PAGO OFICIAL'}
           {!isPendingValidation && <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />}
         </button>
+
+        {canCancel && (
+          <button
+            type="button"
+            onClick={() => onCancel(debt)}
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl border-2 border-red-200 text-red-500 font-black uppercase italic tracking-widest text-[11px] hover:bg-red-50 active:scale-95 transition-all"
+          >
+            <Trash2 size={14} /> Cancelar orden
+          </button>
+        )}
       </div>
     </div>
   );

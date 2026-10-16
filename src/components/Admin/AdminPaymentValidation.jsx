@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../constants/apiRoutes';
 import { STATUS_SUCCESS_SOLID } from '../../config/statusColors';
 import AjusteFechaInicioModal from './AjusteFechaInicioModal';
+import PaymentConcept from './PaymentConcept';
 
 const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
     const { userId } = useAuth();
@@ -22,7 +23,7 @@ const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
 
     const hoyLocal = new Date().toLocaleDateString('sv-SE');
     const [fechaInicioClases, setFechaInicioClases] = useState(
-        paymentData?.cuentas_por_cobrar?.inscripciones_deudas_link[0]?.inscripciones?.fecha_inscripcion || hoyLocal
+        paymentData?.cuentas_por_cobrar?.inscripciones_deudas_link?.[0]?.inscripciones?.fecha_inscripcion || hoyLocal
     );
 
     const [inscripcionesVinculadas, setInscripcionesVinculadas] = useState(
@@ -94,7 +95,8 @@ const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
         setLoading(true);
         try {
             // Solo intentamos actualizar la fecha si es el primer pago
-            if (validationStatus === 'APROBADO' && infoFinanciera.esPrimerPago) {
+            // (una orden de merch no tiene inscripciones: no hay fecha de ciclo que ajustar)
+            if (validationStatus === 'APROBADO' && infoFinanciera.esPrimerPago && inscripcionesVinculadas.length > 0) {
                 await apiFetch.patch(
                     API_ROUTES.INSCRIPCIONES.ACTUALIZAR_FECHA_PAQUETE(paymentData.cuenta_id),
                     { nuevaFecha: fechaInicioClases }
@@ -199,6 +201,10 @@ const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
                         </div>
                     </div>
 
+                    <PaymentConcept pago={paymentData} />
+
+                    {/* Una orden de solo merch no tiene inscripciones: no hay ciclo que mostrar ni ajustar */}
+                    {inscripcionesVinculadas.length > 0 && (
                     <div className="bg-brand-surface p-8 rounded-[3rem] border border-brand-border-soft shadow-sm relative overflow-hidden">
                         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4 border-b border-slate-50 pb-6">
                             <div>
@@ -285,6 +291,7 @@ const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
                             })}
                         </div>
                     </div>
+                    )}
 
                     <div className="bg-brand-surface rounded-[3rem] border border-brand-border-soft shadow-sm p-8 text-center relative overflow-hidden">
                         <p className="text-[10px] font-black text-brand-muted uppercase tracking-[0.3em] mb-4 italic">Evidencia de Operación</p>

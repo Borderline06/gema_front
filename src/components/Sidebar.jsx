@@ -4,7 +4,7 @@ import {
     LayoutDashboard, GraduationCap, UserCog, CalendarRange,
     Settings, LogOut, MapPin, BarChart3, DollarSign,
     ChevronDown, History, CheckCircle, Activity,
-    TicketPercent, Megaphone, Ticket, ShieldAlert, Sparkles, Layers
+    TicketPercent, Megaphone, Ticket, ShieldAlert, Sparkles, Layers, Gift, PackageCheck
 } from 'lucide-react';
 import { logoutService } from '../services/auth.service';
 import toast from 'react-hot-toast';
@@ -53,6 +53,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 { icon: UserCog, label: 'Coordinadores', path: '/dashboard/admin/teachers' },
                 { icon: CheckCircle, label: 'Validar Pagos', path: '/dashboard/admin/payment-validation' },
                 { icon: DollarSign, label: 'Balance', path: '/dashboard/admin/cash-flow' },
+                { icon: PackageCheck, label: 'Entregas Merch', path: '/dashboard/admin/entregas-merch' },
             ]
         },
         {
@@ -63,6 +64,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 { icon: Layers, label: 'Reprogramaciones', path: '/dashboard/admin/reprogramaciones' },
                 { icon: MapPin, label: 'Sedes y Canchas', path: '/dashboard/admin/locations' },
                 { icon: BarChart3, label: 'Niveles', path: '/dashboard/admin/levels' },
+                { icon: Gift, label: 'Gestión Merch', path: '/dashboard/admin/merch' },
             ]
         },
         {

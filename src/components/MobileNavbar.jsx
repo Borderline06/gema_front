@@ -3,7 +3,7 @@ import { NavLink, useLocation, Link } from 'react-router-dom';
 import { 
   LayoutDashboard, CreditCard, User, 
   Menu, X, Activity, Ticket, LogOut, 
-  Megaphone, UserPlus, Calendar
+  Megaphone, UserPlus, Calendar, Star
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from "../interceptors/api";
@@ -109,6 +109,10 @@ const MobileNavbar = () => {
                       <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-accent shadow-accent-dot"></span>
                     </div>
                   )}
+                </NavLink>
+
+                <NavLink to="/dashboard/student/merch" onClick={toggleMenu} className="flex items-center gap-4 text-blue-100/70 border border-brand-gold/25 hover:border-brand-gold/60 hover:text-white py-2.5 px-3 rounded-xl hover:bg-white/5 transition-colors font-bold text-[13px] uppercase tracking-wide">
+                  <Star size={18} className="text-brand-gold"/> Club Merch
                 </NavLink>
               </div>
 

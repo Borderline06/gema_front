@@ -7,6 +7,9 @@ import { useEnrollmentWizard, MODALIDAD } from '../../../hooks/useEnrollmentWiza
 import { catalogoService } from '../../../services/catalogo.service';
 import { feriadoService } from '../../../services/feriado.service';
 import { enrollmentService } from '../../../services/enrollment.service';
+import { merchService } from '../../../services/merch.service';
+import { ESTADO_COLECCION } from '../../../config/merch';
+import { qtyMapToIds } from '../../../utils/merchCart';
 import { precioClaseUnica, precioMensual } from '../../../utils/enrollmentPricing';
 import LoadingSpinner from '../../shared/LoadingSpinner';
 import StepIndicator from './StepIndicator';
@@ -15,14 +18,15 @@ import StepHorarioFechas from './steps/StepHorarioFechas';
 import StepCheckout from './steps/StepCheckout';
 
 const EnrollmentStepper = ({ userId, onSuccess }) => {
-  const { horarios: horariosRaw, loading: loadingHorarios } = useCatalogos(['horarios']);
+  const { horarios: horariosRaw, sedes, loading: loadingHorarios } = useCatalogos(['horarios', 'sedes']);
   const horarios = useMemo(() => horariosRaw.filter(h => h.activo), [horariosRaw]);
 
   const { state, actions, derived } = useEnrollmentWizard(horarios);
 
-  // Extras (camiseta): estado propio, FUERA del wizard, para que la sección
-  // global de Merch pueda reutilizar TshirtOption sin tocar la matrícula.
-  const [extras, setExtras] = useState({ camiseta: false });
+  // Extras (merch elegido en "Añade a tu plan"): estado propio, FUERA del wizard,
+  // para que el módulo de Merch evolucione sin tocar la matrícula.
+  // merchQty = { [merchId]: cantidad } · sedeId = sede de recojo elegida (null = la de la matrícula).
+  const [extras, setExtras] = useState({ merchQty: {}, sedeId: null });
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
@@ -36,6 +40,31 @@ const EnrollmentStepper = ({ userId, onSuccess }) => {
     [],
     { initialData: [], errorMessage: 'No se pudieron cargar los precios' }
   );
+
+  // Si el merch falla al cargar, la matrícula sigue funcionando sin el slider.
+  const { data: catalogoMerch } = useFetch(
+    () => merchService.getCatalogo(),
+    [],
+    { initialData: [], errorMessage: 'No se pudo cargar el catálogo de merch' }
+  );
+  const { data: coleccionMerch } = useFetch(
+    () => (userId ? merchService.getColeccion(userId) : []),
+    [userId],
+    { initialData: [] }
+  );
+  const ownedMerchCounts = useMemo(
+    () => coleccionMerch
+      .filter(c => c.estado !== ESTADO_COLECCION.PERDIDO)
+      .reduce((acc, c) => ({ ...acc, [c.merch_id]: (acc[c.merch_id] || 0) + 1 }), {}),
+    [coleccionMerch]
+  );
+
+  // Sede de recojo: la elegida o, por defecto, la sede donde se matricula.
+  const sedeRecojoId = extras.sedeId
+    ?? sedes.find(s => s.nombre === state.sede)?.id
+    ?? null;
+  const hayMerch = qtyMapToIds(extras.merchQty).length > 0;
+  const faltaSedeRecojo = state.modalidad === MODALIDAD.MENSUAL && hayMerch && !sedeRecojoId;
 
   const precioBase = state.modalidad === MODALIDAD.MENSUAL
     ? precioMensual(planes, derived.horariosElegidos.length)
@@ -59,7 +88,7 @@ const EnrollmentStepper = ({ userId, onSuccess }) => {
           alumnoId: userId,
           horarioIds: state.mensual.horarioIds,
           fechaInicio: state.mensual.fechaInicio,
-          extras,
+          extras: { ...extras, sedeId: sedeRecojoId },
         });
       } else {
         await enrollmentService.inscribirUnica({
@@ -94,7 +123,7 @@ const EnrollmentStepper = ({ userId, onSuccess }) => {
 
       {state.step === 1 && <StepModalidadSede state={state} derived={derived} actions={actions} />}
       {state.step === 2 && <StepHorarioFechas state={state} derived={derived} actions={actions} userId={userId} feriados={feriados} />}
-      {state.step === 3 && <StepCheckout state={state} derived={derived} extras={extras} onExtrasChange={setExtras} precioBase={precioBase} submitError={submitError} onBack={volver} />}
+      {state.step === 3 && <StepCheckout state={state} derived={derived} extras={extras} onExtrasChange={setExtras} catalogoMerch={catalogoMerch} ownedMerchCounts={ownedMerchCounts} sedes={sedes} sedeRecojoId={sedeRecojoId} precioBase={precioBase} submitError={submitError} onBack={volver} />}
 
       <div className="fixed bottom-10 inset-x-0 flex justify-center gap-3 z-[150] px-4 pointer-events-none">
         {state.step > 1 && (
@@ -123,8 +152,8 @@ const EnrollmentStepper = ({ userId, onSuccess }) => {
           <button
             type="button"
             onClick={confirmar}
-            disabled={submitting}
-            className="pointer-events-auto flex items-center justify-center gap-4 px-12 py-5 rounded-full font-black uppercase italic transition-all duration-500 shadow-2xl bg-brand-accent text-white hover:scale-105 active:scale-95 border-4 border-white w-full max-w-sm disabled:opacity-50"
+            disabled={submitting || faltaSedeRecojo}
+            className="pointer-events-auto flex items-center justify-center gap-4 px-12 py-5 rounded-full font-black uppercase italic transition-all duration-500 shadow-2xl bg-brand-accent text-white hover:scale-105 active:scale-95 border-4 border-white w-full max-w-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
             {submitting ? <Loader2 className="animate-spin" size={24} /> : <Send size={24} />}
             <span className="tracking-widest text-[12px]">Confirmar matrícula</span>
