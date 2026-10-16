@@ -1,333 +1,110 @@
-import React, { useState, useEffect, useMemo } from "react";
-import {
-  Calendar, Filter, Loader2, Sparkles,
-  ChevronRight, ChevronLeft, RefreshCcw,
-  Users, Gift, HeartPulse, BellOff, Zap, Star, Trophy, Eye, EyeOff
-} from "lucide-react";
+import React, { useState, useRef } from "react";
+import { CalendarDays, ChevronDown } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-import { apiFetch } from "../interceptors/api";
-import { API_ROUTES } from "../constants/apiRoutes";
+import { useFetch } from "../hooks/useFetch";
+import { useStudentAgenda } from "../hooks/useStudentAgenda";
+import { useStudentFinance } from "../hooks/useStudentFinance";
+import { useStudentNotifications } from "../hooks/useStudentNotifications";
+import { anuncioService } from "../services/anuncio.service";
+import { FINANCE_LEVEL } from "../utils/financeAlert";
 
-import StudentSchedule from "../components/student/StudentSchedule";
-import StudentPayments from "../components/student/StudentPayments";
+import LoadingSpinner from "../components/shared/LoadingSpinner";
 import MonthlyCalendarDashboard from "../components/student/MonthlyCalendarDashboard";
-import NotificationBell from "../components/student/Notifications/NotificationBell";
+import DashboardHeader from "../components/student/dashboard/DashboardHeader";
+import BenefitsCarousel from "../components/student/dashboard/BenefitsCarousel";
+import NextClassHero from "../components/student/dashboard/NextClassHero";
+import UpcomingAgenda from "../components/student/dashboard/UpcomingAgenda";
+import FinanceAlertBanner from "../components/student/dashboard/FinanceAlertBanner";
+import FinanceSummaryStrip from "../components/student/dashboard/FinanceSummaryStrip";
 
-// 🎨 Mapeo de Iconos: Convierte el texto de la DB en el componente visual
-const IconMap = {
-  RefreshCcw: <RefreshCcw size={24} />,
-  Users: <Users size={24} />,
-  HeartPulse: <HeartPulse size={24} />,
-  Gift: <Gift size={24} />,
-  Sparkles: <Sparkles size={24} />,
-  Zap: <Zap size={24} />,
-  Star: <Star size={24} />,
-  Trophy: <Trophy size={24} />
-};
-
-// --- COMPONENTE CARRUSEL DINÁMICO ---
-const StudentAnnouncements = ({ anuncios = [] }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    if (!anuncios || anuncios.length <= 1) return;
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev === anuncios.length - 1 ? 0 : prev + 1));
-    }, 6000);
-    return () => clearInterval(interval);
-  }, [anuncios, currentIndex]);
-
-  if (!anuncios || anuncios.length === 0) return null;
-
-  const item = anuncios[currentIndex];
-
-  return (
-    <div className="w-full mb-8">
-      <div className="flex items-center gap-2 mb-3 px-1">
-        <Gift size={16} className="text-brand-accent" />
-        <h2 className="font-black uppercase tracking-widest text-[9px] italic text-slate-500">Beneficios Exclusivos Gema</h2>
-      </div>
-
-      <div 
-        key={item.id} 
-        className="relative overflow-hidden rounded-[2rem] shadow-xl shadow-brand-primary/10 h-36 md:h-40 border border-white/50 animate-in fade-in slide-in-from-right-4 duration-700"
-      >
-        <div className={`absolute inset-0 bg-gradient-to-r ${item.gradiente} transition-all duration-1000`}></div>
-
-        <div className="relative z-10 p-5 text-white flex flex-col justify-center h-full">
-          <div className="flex justify-between items-start w-full">
-            <div className="flex-1 pr-4">
-               <span className="text-[8px] font-black bg-white/20 px-2 py-1 rounded-md mb-2 inline-block tracking-widest uppercase">
-                 {item.badge}
-               </span>
-               <h3 className="text-xl md:text-2xl font-black italic uppercase leading-none mb-1.5 tracking-tighter drop-shadow-md">
-                 {item.titulo}
-               </h3>
-               <p className="text-[10px] md:text-xs font-medium opacity-90 leading-snug line-clamp-2">
-                 {item.descripcion}
-               </p>
-            </div>
-            
-            <div className="flex flex-col gap-2 shrink-0 relative">
-               {anuncios.length > 1 && (
-                 <div className="flex gap-1 mb-2">
-                   <button onClick={(e) => { e.stopPropagation(); setCurrentIndex(currentIndex === 0 ? anuncios.length - 1 : currentIndex - 1); }} className="p-1.5 bg-white/10 hover:bg-white/20 rounded-lg backdrop-blur-sm transition-colors">
-                      <ChevronLeft size={14} />
-                   </button>
-                   <button onClick={(e) => { e.stopPropagation(); setCurrentIndex(currentIndex === anuncios.length - 1 ? 0 : currentIndex + 1); }} className="p-1.5 bg-white/10 hover:bg-white/20 rounded-lg backdrop-blur-sm transition-colors">
-                      <ChevronRight size={14} />
-                   </button>
-                 </div>
-               )}
-               <div className="opacity-20 flex justify-end scale-[2.5] origin-right pointer-events-none">
-                  {IconMap[item.icono] || <Gift size={24} />}
-               </div>
-            </div>
-          </div>
-        </div>
-
-        {anuncios.length > 1 && (
-          <div className="absolute bottom-0 left-0 h-1 bg-black/20 w-full">
-            <div 
-              key={`progress-${currentIndex}`}
-              className="h-full bg-white/60 transition-all ease-linear"
-              style={{ animation: 'progress-animation 6000ms linear forwards' }}
-            />
-          </div>
-        )}
-      </div>
-
-      <style>{`@keyframes progress-animation { from { width: 0%; } to { width: 100%; } }`}</style>
-    </div>
-  );
-};
-
-// --- DASHBOARD PRINCIPAL ---
+// Orden de lectura: qué sigue -> qué viene -> cómo me fue -> (al final) pagos.
+// La lógica de fechas y estados vive en hooks/utils; esta página solo compone.
 const DashboardEstudiante = () => {
   const { user, userId } = useAuth();
-
-  const [attendance, setAttendance] = useState([]);
-  const [debts, setDebts] = useState([]);
-  const [payments, setPayments] = useState([]);
-  const [benefits, setBenefits] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // 🚩 ESTADO PARA CONTROLAR EL CALENDARIO MENSUAL
+  // Cerrado por defecto: lo primero que se lee es la lista de próximas clases;
+  // el calendario se abre a demanda con el botón naranja.
   const [showCalendar, setShowCalendar] = useState(false);
+  const calendarRef = useRef(null);
 
-  const [notifications, setNotifications] = useState([]);
-  const [showNotifList, setShowNotifList] = useState(false);
-  const [unreadCountDB, setUnreadCountDB] = useState(0);
-
-  const [filtroMes, setFiltroMes] = useState("TODOS");
-  const [filtroAnio, setFiltroAnio] = useState(new Date().getFullYear().toString());
-  
-  const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-  
-  // 🚩 Opciones dinámicas para el año (Año anterior, actual, próximo)
-  const aniosOpciones = useMemo(() => {
-    const currentYear = new Date().getFullYear();
-    return [(currentYear - 1).toString(), currentYear.toString(), (currentYear + 1).toString()];
-  }, []);
-
-  const fetchNotifications = async () => {
-    try {
-      const res = await apiFetch.get(API_ROUTES.NOTIFICACIONES?.BASE || "/notificaciones");
-      const result = await res.json();
-      if (result.success && result.data) setNotifications(result.data);
-      
-      const resCount = await apiFetch.get((API_ROUTES.NOTIFICACIONES?.BASE || "/notificaciones") + "/conteo-no-leidas");
-      const countResult = await resCount.json();
-      if (countResult.success) setUnreadCountDB(countResult.data || 0);
-    } catch (error) { console.error("Error notificaciones:", error); }
+  const handleVerCalendario = () => {
+    setShowCalendar(true);
+    calendarRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  useEffect(() => {
-    const loadDashboardData = async () => {
-      try {
-        setLoading(true);
+  const { sesiones, proximas, pasadas, nextClass, now, loading } = useStudentAgenda(userId);
+  const finance = useStudentFinance(userId);
+  const { notifications, unreadCount, markAsRead } = useStudentNotifications(userId);
 
-        // 🛡️ CHALECO ANTIBALAS: Función segura que evita el error "Unexpected token '<'"
-        const fetchSafe = async (url) => {
-          try {
-            const res = await apiFetch.get(url);
-            // Si la respuesta no es 200 OK (ej. 404), no intentamos parsear HTML
-            if (!res.ok) return { data: [] }; 
-            return await res.json();
-          } catch (error) {
-              console.error('Error en fetchSafe:', error);
-            // Si el servidor se cae por completo, devolvemos data vacía
-            return { data: [] }; 
-          }
-        };
-
-        // Pedimos todo en paralelo usando nuestro fetch seguro
-        const [dataAsist, dataRecu, dataDebts, dataPay, dataBen] = await Promise.all([
-          fetchSafe(API_ROUTES.ASISTENCIAS.ALUMNO_HISTORIAL(userId)),
-          // ⚠️ Revertido a HISTORIAL (El backend seguro lee el Token de aquí)
-          fetchSafe(API_ROUTES.RECUPERACIONES.HISTORIAL), 
-          fetchSafe(API_ROUTES.CUENTAS_POR_COBRAR.HISTORIAL(userId)),
-          fetchSafe(API_ROUTES.PAGOS.ALUMNO_HISTORIAL(userId)),
-          fetchSafe(API_ROUTES.ANUNCIOS_BENEFICIOS.ACTIVOS)
-        ]);
-
-        setAttendance([...(dataAsist.data || []), ...(dataRecu.data?.map(r => ({ ...r, isRecuperacion: true })) || [])]);
-        setDebts(dataDebts.data || []);
-        setPayments(dataPay.data || []);
-        setBenefits(dataBen.data || []);
-        
-      } catch (error) {
-        console.error("Error crítico en Dashboard:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (userId) {
-      loadDashboardData();
-      fetchNotifications();
-      const interval = setInterval(fetchNotifications, 300000);
-      return () => clearInterval(interval);
-    }
-  }, [userId]);
-
-  const handleMarkAsRead = async (id) => {
-    setNotifications(prev => prev.map(n => n.id === id ? { ...n, leido: true } : n));
-    setUnreadCountDB(prev => Math.max(0, prev - 1));
-    try {
-      await apiFetch.patch((API_ROUTES.NOTIFICACIONES?.BASE || "/notificaciones") + `/${id}/leer`);
-    } catch (error) { console.error(error); }
-  };
+  // Los beneficios son decorativos: si fallan, el dashboard sigue sin ellos.
+  const { data: benefits } = useFetch(
+    () => anuncioService.listarActivos().catch(() => []),
+    [],
+    { initialData: [] },
+  );
 
   const firstName = user?.user?.nombres?.split(' ')[0] || "Campeón";
-  const initial = firstName.charAt(0).toUpperCase();
 
   if (loading) return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-brand-surface-alt">
-      <Loader2 className="animate-spin text-brand-accent mb-4" size={48} />
-      <p className="font-black text-brand-primary uppercase italic text-[10px] tracking-widest text-center animate-pulse">Sincronizando Club Gema...</p>
-    </div>
+    <LoadingSpinner
+      size={48}
+      className="min-h-screen flex flex-col items-center justify-center bg-brand-surface-alt"
+      colorClassName="text-brand-accent mb-4"
+      label="Sincronizando Club Gema..."
+      labelClassName="font-black text-brand-primary uppercase italic text-[10px] tracking-widest text-center animate-pulse"
+    />
   );
 
   return (
     <div className="min-h-screen bg-brand-bg flex justify-center relative overflow-hidden">
       <div className="w-full max-w-lg md:max-w-6xl p-4 pb-28 relative z-10">
 
-        {/* 1. HEADER MÓVIL OPTIMIZADO */}
-        <header className="flex justify-between items-center mb-6 mt-2 relative">
-          <div>
-            <h1 className="text-3xl md:text-4xl font-black text-brand-primary tracking-tighter uppercase italic leading-none">
-              Hola, <span className="text-brand-accent">{firstName}</span> 👋
-            </h1>
-            <p className="text-[9px] md:text-xs text-brand-muted font-black mt-2 italic uppercase tracking-widest flex items-center gap-1.5">
-              <Sparkles size={12} className="text-orange-400" /> ¡Bienvenido al Club!
-            </p>
-          </div>
+        <DashboardHeader
+          firstName={firstName}
+          notifications={notifications}
+          unreadCount={unreadCount}
+          onMarkAsRead={markAsRead}
+        />
 
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <NotificationBell count={unreadCountDB} onClick={() => setShowNotifList(!showNotifList)} />
-              {showNotifList && (
-                <div className="absolute right-0 top-14 w-[280px] md:w-96 bg-brand-surface rounded-[2rem] shadow-2xl border border-brand-border-soft z-50 overflow-hidden animate-in fade-in slide-in-from-top-2">
-                  <div className="p-4 border-b border-slate-50 flex justify-between items-center bg-brand-bg/80">
-                    <h3 className="font-black text-brand-primary text-[10px] uppercase italic tracking-widest">Alertas</h3>
-                    {unreadCountDB > 0 && <span className="text-[8px] bg-orange-100 text-brand-accent-dark px-2 py-0.5 rounded-full font-black tracking-widest">{unreadCountDB} NUEVAS</span>}
-                  </div>
-                  <div className="max-h-[300px] overflow-y-auto custom-scrollbar">
-                    {notifications.length > 0 ? (
-                      <div className="flex flex-col">
-                        {notifications.filter(n => !n.leido).map((n) => (
-                          <div key={n.id} className="p-4 border-b border-slate-50 bg-brand-surface" onClick={() => handleMarkAsRead(n.id)}>
-                            <div className="flex items-start gap-3">
-                              <div className="w-2 h-2 rounded-full mt-1 shrink-0 bg-brand-accent animate-pulse shadow-accent-dot-sm" />
-                              <div>
-                                <h4 className="font-black text-brand-primary text-[11px] uppercase tracking-tight leading-none mb-1">{n.titulo}</h4>
-                                <p className="text-[10px] text-slate-600 font-medium leading-snug">{n.mensaje}</p>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="p-8 text-center flex flex-col items-center gap-2">
-                        <BellOff size={24} className="text-slate-300" />
-                        <p className="text-[9px] font-black text-brand-muted uppercase tracking-widest italic">Sin notificaciones</p>
-                      </div>
-                    )}
-                  </div>
+        {finance.level === FINANCE_LEVEL.CRITICAL && (
+          <FinanceAlertBanner debt={finance.debt} rejected={finance.rejected} />
+        )}
+
+        <NextClassHero nextClass={nextClass} now={now} />
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+
+          <div className="lg:col-span-2 space-y-6">
+            {/* El calendario va ARRIBA de la lista: abierto, es lo que manda en pantalla. */}
+            <div ref={calendarRef} className="relative z-0 scroll-mt-4">
+              <div className="flex items-center justify-between gap-3 px-1">
+                <h2 className="font-black uppercase tracking-widest text-[9px] italic text-slate-500">Mi Calendario</h2>
+                <button
+                  type="button"
+                  onClick={() => setShowCalendar(!showCalendar)}
+                  aria-expanded={showCalendar}
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 ${showCalendar ? 'bg-brand-surface text-brand-accent border-2 border-brand-accent shadow-sm' : 'bg-brand-accent text-white shadow-accent-glow hover:shadow-accent-glow-hover'}`}
+                >
+                  <CalendarDays size={16} />
+                  {showCalendar ? 'Ocultar calendario' : 'Ver calendario'}
+                  <ChevronDown size={14} className={`transition-transform ${showCalendar ? 'rotate-180' : ''}`} />
+                </button>
+              </div>
+
+              {showCalendar && (
+                <div className="mt-4 animate-in fade-in zoom-in-95 duration-300">
+                  <MonthlyCalendarDashboard sesiones={sesiones} now={now} />
                 </div>
               )}
             </div>
-            <div className="w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br from-[#1e40af] to-brand-primary-dark rounded-[1rem] flex items-center justify-center text-white font-black border-2 border-white shadow-lg text-lg">
-              {initial}
-            </div>
-          </div>
-        </header>
 
-        {/* 2. CARRUSEL DINÁMICO */}
-        <StudentAnnouncements anuncios={benefits} />
-
-        {/* 3. CALENDARIO SEMANAL VISUAL (Con Botón Toggle) */}
-        <div className="mb-8 relative z-0">
-          <div className="flex items-center justify-between mb-4 px-1">
-            <h2 className="font-black uppercase tracking-widest text-[9px] italic text-slate-500">Mi Agenda de la Semana</h2>
-            <button 
-              onClick={() => setShowCalendar(!showCalendar)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${showCalendar ? 'bg-brand-accent text-white' : 'bg-brand-surface text-brand-primary shadow-sm border border-brand-border-soft'}`}
-            >
-              {showCalendar ? (
-                <><EyeOff size={14} /> Ocultar Calendario</>
-              ) : (
-                <><Eye size={14} /> Ver Calendario Completo</>
-              )}
-            </button>
-          </div>
-          
-          {/* Renderizado Condicional del Calendario */}
-          {showCalendar && (
-            <div className="animate-in fade-in zoom-in-95 duration-300">
-              <MonthlyCalendarDashboard />
-            </div>
-          )}
-        </div>
-
-        {/* 4. GRID: CLASES Y PAGOS (REORDENADO CON CSS ORDER) */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-          
-          {/* 🥇 SECCIÓN PAGOS: Aparece PRIMERO en celular (order-1), a la DERECHA en PC (lg:order-2) */}
-          <div className="space-y-4 order-1 lg:order-2">
-            <div className="bg-brand-surface p-5 rounded-[2rem] shadow-xl shadow-brand-primary/5 border-2 border-white overflow-hidden relative">
-              <div className="flex items-center gap-2 mb-6">
-                <div className="w-1 h-3 bg-brand-accent rounded-full"></div>
-                <h2 className="font-black text-brand-primary uppercase tracking-widest italic text-[10px]">Mis Finanzas 💎</h2>
-              </div>
-              <StudentPayments debts={debts} payments={payments} />
-            </div>
+            <UpcomingAgenda proximas={proximas} pasadas={pasadas} now={now} onVerCalendario={handleVerCalendario} />
           </div>
 
-          {/* 🥈 SECCIÓN CLASES: Aparece SEGUNDO en celular (order-2), a la IZQUIERDA en PC (lg:order-1) */}
-          <div className="lg:col-span-2 space-y-4 order-2 lg:order-1">
-            {/* Filtros Compactos con Menú de Año Mejorado */}
-            <div className="flex items-center justify-between bg-brand-surface p-3 rounded-[1.5rem] border border-brand-border-soft shadow-sm flex-wrap gap-3">
-              <div className="flex items-center gap-2 bg-brand-bg px-3 py-1.5 rounded-xl border border-brand-border-soft">
-                <Filter size={12} className="text-brand-accent" />
-                <select value={filtroMes} onChange={(e) => setFiltroMes(e.target.value)} className="text-[9px] font-black uppercase tracking-widest text-brand-primary outline-none bg-transparent cursor-pointer">
-                  <option value="TODOS">TODO EL AÑO</option>
-                  {meses.map((mes, idx) => <option key={idx} value={idx.toString()}>{mes.toUpperCase()}</option>)}
-                </select>
-              </div>
-              
-              <div className="flex items-center gap-2 bg-brand-bg px-3 py-1.5 rounded-xl border border-brand-border-soft">
-                <Calendar size={12} className="text-blue-500" />
-                <select value={filtroAnio} onChange={(e) => setFiltroAnio(e.target.value)} className="text-[9px] font-black uppercase tracking-widest text-slate-500 outline-none bg-transparent cursor-pointer">
-                  {aniosOpciones.map(anio => <option key={anio} value={anio}>CICLO {anio}</option>)}
-                </select>
-              </div>
-            </div>
-
-            <div className="bg-brand-surface rounded-[2rem] shadow-lg shadow-slate-200/50 overflow-hidden border border-brand-border-soft">
-               <StudentSchedule attendance={attendance} filtroMes={filtroMes} filtroAnio={filtroAnio} />
-            </div>
+          <div className="space-y-6">
+            <BenefitsCarousel anuncios={benefits || []} />
+            {!finance.loading && (
+              <FinanceSummaryStrip level={finance.level} pendingCount={finance.pendingCount} />
+            )}
           </div>
 
         </div>

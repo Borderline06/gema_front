@@ -3,6 +3,13 @@ import { API_ROUTES } from '../constants/apiRoutes';
 import { parseJsonResponse } from './httpHelpers';
 
 export const inscripcionService = {
+    /** Todas las inscripciones del alumno, con su estado (ACTIVO, PENDIENTE_PAGO, FINALIZADO...). */
+    listarPorAlumno: async (alumnoId) => {
+        const response = await apiFetch.get(API_ROUTES.INSCRIPCIONES.ALUMNO(alumnoId));
+        const result = await parseJsonResponse(response, 'Error al cargar las inscripciones');
+        return result.data || [];
+    },
+
     /** Inscripciones del alumno que no están FINALIZADAS (incluye el link de deuda con la fecha exacta). */
     listarNoFinalizadas: async (alumnoId) => {
         const response = await apiFetch.get(API_ROUTES.INSCRIPCIONES.ALUMNO_NO_FINALIZADAS(alumnoId));

@@ -43,6 +43,7 @@ export const API_ROUTES = {
       `/inscripciones/alumno/${alumnoId}/historial-ciclos/por-mes?mes=${mes}&anio=${anio}`,
     REPORTE_INDIVIDUALES: "/inscripciones/reportes/individuales",
     INDIVIDUAL_ADMIN: "/inscripciones/individual-admin",
+    ALUMNO: (alumnoId) => `/inscripciones/alumno/${alumnoId}`,
     ALUMNO_NO_FINALIZADAS: (alumnoId) => `/inscripciones/alumno-no-finalizadas/${alumnoId}`,
     HORARIO_INSCRIPCION: "/inscripciones/horario-inscripcion",
   },
