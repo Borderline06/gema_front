@@ -15,6 +15,9 @@ export const API_ROUTES = {
   HORARIOS: {
     BASE: "/horarios",
     BY_ID: (id) => `/horarios/${id}`,
+    // BL-003: disponibilidad por fecha para Clase Única
+    // → [{ fecha: 'YYYY-MM-DD', ocupados, capacidad_max, disponible, es_feriado }]
+    DISPONIBILIDAD: (id, desde, hasta) => `/horarios/${id}/disponibilidad?desde=${desde}&hasta=${hasta}`,
   },
   USUARIOS: {
     BASE: "/usuarios",
@@ -38,8 +41,12 @@ export const API_ROUTES = {
     AJUSTE_FECHA: (cuentaId) => `/inscripciones/paquete/${cuentaId}/ajuste-fecha`,
     PLANES_HISTORICOS: (alumnoId) => `/inscripciones/alumno/${alumnoId}/planes-historicos`,
     RENOVAR_HISTORICO: (alumnoId, cuentaId) => `/inscripciones/alumno/${alumnoId}/renovar/${cuentaId}`,
+    // BL-012: mes y anio son obligatorios (400 si faltan).
+    HISTORIAL_CICLOS_POR_MES: (alumnoId, mes, anio) =>
+      `/inscripciones/alumno/${alumnoId}/historial-ciclos/por-mes?mes=${mes}&anio=${anio}`,
     REPORTE_INDIVIDUALES: "/inscripciones/reportes/individuales",
     INDIVIDUAL_ADMIN: "/inscripciones/individual-admin",
+    ALUMNO: (alumnoId) => `/inscripciones/alumno/${alumnoId}`,
     ALUMNO_NO_FINALIZADAS: (alumnoId) => `/inscripciones/alumno-no-finalizadas/${alumnoId}`,
     HORARIO_INSCRIPCION: "/inscripciones/horario-inscripcion",
   },
@@ -170,6 +177,8 @@ export const API_ROUTES = {
     RESUMEN_TABLA: (sedeId) => sedeId
       ? `/historial-academico/resumen-tabla?sede_id=${sedeId}`
       : `/historial-academico/resumen-tabla`,
+    // BL-013: las llaves de cada fila ya son los encabezados del Excel.
+    EXPORTAR_ALUMNOS: "/historial-academico/exportar-alumnos",
     RESUMEN_INDIVIDUAL: (sedeId) => sedeId
       ? `/historial-academico/resumen-individual?sede_id=${sedeId}`
       : `/historial-academico/resumen-individual`,

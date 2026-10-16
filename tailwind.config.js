@@ -1,4 +1,4 @@
-import { BRAND_COLORS, alpha } from './src/config/themeColors.js';
+import { BRAND_COLORS,LOGIN_COLORS, alpha } from './src/config/themeColors.js';
 
 /** @type {import('tailwindcss').Config} */
 
@@ -16,6 +16,7 @@ export default {
     extend: {
       colors: {
         brand: BRAND_COLORS,
+        login: LOGIN_COLORS,
       },
 
       // ───────────────────────────────────────────────────────────────────

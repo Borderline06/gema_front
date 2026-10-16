@@ -36,14 +36,52 @@ const pedir = (alumnoId) => {
   return promesa;
 };
 
+// BL-012: variante por mes (/inscripciones/alumno/:id/historial-ciclos/por-mes).
+// Misma estrategia de caché/deduplicación, pero con clave alumno + mes + año.
+const cachePorMes = new Map();
+const enVueloPorMes = new Map();
+const claveMes = (alumnoId, mes, anio) => `${alumnoId}:${mes ?? ''}:${anio ?? ''}`;
+
+const pedirPorMes = (alumnoId, mes, anio) => {
+  const clave = claveMes(alumnoId, mes, anio);
+  if (cachePorMes.has(clave)) return Promise.resolve(cachePorMes.get(clave));
+  if (enVueloPorMes.has(clave)) return enVueloPorMes.get(clave);
+
+  const promesa = (async () => {
+    const res = await apiFetch.get(API_ROUTES.INSCRIPCIONES.HISTORIAL_CICLOS_POR_MES(alumnoId, mes, anio));
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.message || 'No se pudo obtener el historial de ciclos');
+    const data = result.data || null;
+    cachePorMes.set(clave, data);
+    return data;
+  })().finally(() => {
+    enVueloPorMes.delete(clave);
+  });
+
+  enVueloPorMes.set(clave, promesa);
+  return promesa;
+};
+
+const borrarPorMes = (alumnoId) => {
+  const prefijo = `${alumnoId}:`;
+  for (const mapa of [cachePorMes, enVueloPorMes]) {
+    for (const clave of [...mapa.keys()]) {
+      if (clave.startsWith(prefijo)) mapa.delete(clave);
+    }
+  }
+};
+
 export const invalidarHistorialCiclos = (alumnoId) => {
   if (alumnoId === undefined) {
     cache.clear();
     enVuelo.clear();
+    cachePorMes.clear();
+    enVueloPorMes.clear();
     return;
   }
   cache.delete(alumnoId);
   enVuelo.delete(alumnoId);
+  borrarPorMes(alumnoId);
 };
 
 export function useHistorialCiclos(alumnoId, { activo = true } = {}) {
@@ -93,4 +131,57 @@ export function useHistorialCiclos(alumnoId, { activo = true } = {}) {
   }, [alumnoId, cargar]);
 
   return { ciclos, loading, error, refetch };
+}
+
+/**
+ * Historial de ciclos de un alumno para un mes concreto (BL-012).
+ * `historial` es el objeto `data` del backend: { mes, anio, etiqueta_mes,
+ * meses_disponibles, resumen_mes, ciclos, ... }. Mientras no se elija un mes
+ * se pide el mes actual (mes y anio son obligatorios en el backend).
+ */
+export function useHistorialCiclosPorMes(alumnoId, { activo = true } = {}) {
+  const [seleccion, setSeleccion] = useState(null);
+  // El backend exige mes y anio: sin selección se parte del mes actual.
+  // La selección pertenece a un alumno: si cambia el alumno vuelve al mes actual.
+  const hoy = new Date();
+  const mes = seleccion?.alumnoId === alumnoId ? seleccion.mes : hoy.getMonth() + 1;
+  const anio = seleccion?.alumnoId === alumnoId ? seleccion.anio : hoy.getFullYear();
+  const clave = claveMes(alumnoId, mes, anio);
+
+  // Último resultado asentado de una petición (éxito o error). Lo que ya está en
+  // caché se lee directo en el render, así no hay setState síncrono en el efecto.
+  const [ultimo, setUltimo] = useState(null);
+  const [intento, setIntento] = useState(0);
+
+  useEffect(() => {
+    if (!activo || !alumnoId || cachePorMes.has(clave)) return;
+    let vivo = true;
+
+    pedirPorMes(alumnoId, mes, anio)
+      .then((datos) => { if (vivo) setUltimo({ alumnoId, clave, datos, error: null }); })
+      .catch((err) => {
+        if (vivo) setUltimo((prev) => ({ alumnoId, clave, datos: prev?.alumnoId === alumnoId ? prev.datos : null, error: err }));
+      });
+
+    return () => { vivo = false; };
+  }, [alumnoId, mes, anio, clave, activo, intento]);
+
+  const enCache = cachePorMes.has(clave);
+  const previo = ultimo?.alumnoId === alumnoId ? ultimo : null;
+  // Mientras carga otro mes se conserva el anterior para que el selector no desaparezca.
+  const historial = (enCache ? cachePorMes.get(clave) : null) ?? previo?.datos ?? null;
+  const error = previo?.clave === clave ? previo.error : null;
+  const loading = activo && !!alumnoId && !enCache && !error;
+
+  const seleccionarMes = useCallback((nuevoMes, nuevoAnio) => {
+    setSeleccion({ alumnoId, mes: nuevoMes, anio: nuevoAnio });
+  }, [alumnoId]);
+
+  const refetch = useCallback(() => {
+    invalidarHistorialCiclos(alumnoId);
+    setUltimo((prev) => prev && { ...prev, clave: null, error: null });
+    setIntento((n) => n + 1);
+  }, [alumnoId]);
+
+  return { historial, loading, error, seleccionarMes, refetch };
 }

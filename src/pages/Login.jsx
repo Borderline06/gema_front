@@ -83,7 +83,7 @@ function Login() {
       <div className="relative z-10 w-full max-w-4xl max-h-full md:max-h-[90vh] bg-brand-surface rounded-[1.5rem] md:rounded-[2rem] shadow-2xl overflow-hidden flex flex-col md:flex-row border border-white/10">
 
         {/* LADO IZQUIERDO: Branding - Reducido en móvil para dar espacio al form */}
-        <div className="w-full md:w-1/2 bg-gradient-to-b from-blue-600 via-blue-800 to-indigo-950 p-6 md:p-10 text-white flex flex-col justify-between relative min-h-[140px] md:min-h-[500px]">
+        <div className="w-full md:w-1/2 bg-gradient-to-b from-login-grad-start via-login-grad-mid to-login-grad-end p-6 md:p-10 text-white flex flex-col justify-between relative min-h-[140px] md:min-h-[500px]">
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
             <div className="absolute -top-10 -left-10 w-32 h-32 bg-brand-surface rounded-full"></div>
           </div>
@@ -98,8 +98,8 @@ function Login() {
 
           <div className="z-10 flex flex-col items-center mt-2">
             <div className="bg-transparent border border-brand-accent/40 backdrop-blur-md px-3 py-2 md:px-6 md:py-4 rounded-xl w-full max-w-sm text-center">
-              <div className="text-[10px] md:text-sm font-bold text-blue-200">Ecosistema Deportivo Digital</div>
-              <div className="text-[7px] md:text-[9px] text-blue-400 uppercase tracking-widest font-black hidden md:block">
+              <div className="text-[10px] md:text-sm font-bold text-login-highlight">Ecosistema Deportivo Digital</div>
+              <div className="text-[7px] md:text-[9px] text-login-slogan uppercase tracking-widest font-black hidden md:block">
                 Constancia · Disciplina · Comunidad
               </div>
             </div>
@@ -156,7 +156,7 @@ function Login() {
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white font-bold py-3.5 md:py-4 rounded-xl shadow-lg hover:bg-blue-700 active:scale-[0.98] transition-all text-xs md:text-sm uppercase tracking-widest"
+              className="w-full bg-login-btn text-white font-bold py-3.5 md:py-4 rounded-xl shadow-lg hover:bg-login-btn-hover active:scale-[0.98] transition-all text-xs md:text-sm uppercase tracking-widest"
             >
               Iniciar Sesión
             </button>

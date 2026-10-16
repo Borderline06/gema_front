@@ -39,6 +39,16 @@ export const getEstadoPagoBadge = (estado) => {
     }
 };
 
+// BADGE PARA CADA CLASE DEL DESGLOSE MENSUAL (BL-012)
+export const getEstadoClaseBadge = (estado) => {
+    switch (estado?.toUpperCase()) {
+        case 'PRESENTE': return STATUS_SUCCESS;
+        case 'FALTA': return 'text-red-600 bg-red-50 border-red-100';
+        case 'PROGRAMADA': return 'text-blue-600 bg-blue-50 border-blue-100';
+        default: return 'text-brand-muted bg-brand-bg border-brand-border-soft';
+    }
+};
+
 // BADGE PARA LA(S) INSCRIPCIÓN(ES) — puede haber más de un estado dentro
 // de la misma tarjeta si el paquete agrupa varias inscripciones.
 export const getEstadoInscripcionBadge = (estado) => {

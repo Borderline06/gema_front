@@ -42,6 +42,31 @@ export const BRAND_COLORS = {
   muted: '#94a3b8',          // = slate-400  · secundario, placeholders
 };
 
+
+// ─────────────────────────────────────────────────────────────────────────
+// COLORES EXCLUSIVOS DEL LOGIN
+// ─────────────────────────────────────────────────────────────────────────
+export const LOGIN_COLORS = {
+  // Gradiente del panel izquierdo
+  'grad-start': '#2563eb', // = blue-600
+  'grad-mid': '#1e40af',   // = blue-800
+  'grad-end': '#1e1b4b',   // = indigo-950
+
+  // Textos decorativos del branding
+  'highlight': '#bfdbfe',  // = blue-200
+  'slogan': '#60a5fa',     // = blue-400
+
+  // Botón principal
+  'btn': '#2563eb',        // = blue-600
+  'btn-hover': '#1d4ed8',  // = blue-700
+};
+
+
+
+
+
+
+
 /**
  * Convierte un HEX de la paleta en rgba() con la opacidad dada.
  * alpha('#f97316', 0.4) -> 'rgba(249,115,22,0.4)'

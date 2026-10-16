@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useMemo, useDeferredValue } from 'react';
-import { ChevronRight, ArrowLeft, Plus } from 'lucide-react';
+import { ChevronRight, ArrowLeft, Plus, FileSpreadsheet } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { exportAlumnosExcel } from '../../utils/exportAlumnosExcel';
 
 import alumnoService from '../../services/alumno.service';
 import { useFetch } from '../../hooks/useFetch';
@@ -27,6 +28,7 @@ const AdminStudentsManager = () => {
     // /sedes?activo=true por su cuenta, igual que otras cinco pantallas.
     const { sedes } = useCatalogos(['sedes']);
     const [modalInscripciones, setModalInscripciones] = useState({ isOpen: false, data: null });
+    const [isExporting, setIsExporting] = useState(false);
 
     // 🔥 MOVIDO desde StudentTable: filtros avanzados, texto y orden ahora
     // viven aquí, porque deben aplicarse sobre la lista COMPLETA de alumnos
@@ -67,6 +69,25 @@ const AdminStudentsManager = () => {
     // reordenar los cientos de alumnos en cada pulsacion.
     const searchTermDiferido = useDeferredValue(searchTerm);
     const textFilterDiferido = useDeferredValue(textFilter);
+
+    // BL-013: el backend arma las filas; el front solo las vuelca al Excel.
+    const handleExportAlumnos = async () => {
+        try {
+            setIsExporting(true);
+            const rows = await alumnoService.getReporteExportacion();
+            if (rows.length === 0) {
+                toast.error('No hay datos para exportar');
+                return;
+            }
+            await exportAlumnosExcel(rows);
+            toast.success('Excel exportado exitosamente');
+        } catch (e) {
+            console.error('Error al exportar alumnos:', e);
+            toast.error(e.message || 'Error al generar el archivo');
+        } finally {
+            setIsExporting(false);
+        }
+    };
 
     const handleStatusHistory = async (estado) => {
         try {
@@ -217,9 +238,14 @@ const AdminStudentsManager = () => {
                     <h1 className="text-3xl font-black text-brand-heading uppercase italic tracking-tighter leading-none">Gestión de <span className="text-brand-primary">Alumnos</span></h1>
                     <p className="text-brand-muted text-[10px] font-bold uppercase tracking-[0.2em] mt-2">Control Maestro de la Academia</p>
                 </div>
-                <button onClick={() => setView('create')} className="bg-brand-primary text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all hover:bg-brand-accent shadow-lg">
-                    <Plus size={20} /> Registrar Alumno
-                </button>
+                <div className="flex flex-wrap gap-3">
+                    <button onClick={handleExportAlumnos} disabled={isExporting} className="bg-emerald-600 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-colors hover:bg-emerald-700 disabled:opacity-50 shadow-lg">
+                        <FileSpreadsheet size={20} /> {isExporting ? 'Generando...' : 'Exportar Excel'}
+                    </button>
+                    <button onClick={() => setView('create')} className="bg-brand-primary text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all hover:bg-brand-accent shadow-lg">
+                        <Plus size={20} /> Registrar Alumno
+                    </button>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-[1fr_220px] gap-4">

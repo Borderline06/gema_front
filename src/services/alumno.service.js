@@ -11,6 +11,14 @@ const alumnoService = {
     return result.data || [];
   },
 
+  // BL-013: filas listas para exportar; sus llaves (con espacios y tildes) son los
+  // encabezados del Excel, asi que no se renombran ni se filtran aqui.
+  getReporteExportacion: async () => {
+    const response = await apiFetch.get(API_ROUTES.HISTORIAL_ACADEMICO.EXPORTAR_ALUMNOS);
+    const result = await parseJsonResponse(response, 'Error al generar el reporte de alumnos');
+    return result.data || [];
+  },
+
   getById: async (id) => {
     const response = await apiFetch.get(API_ROUTES.USUARIOS.ALUMNO_BY_ID(id));
     const result = await parseJsonResponse(response, "Error al obtener alumno");

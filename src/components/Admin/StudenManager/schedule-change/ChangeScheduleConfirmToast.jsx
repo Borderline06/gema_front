@@ -1,8 +1,14 @@
 import React from 'react';
 import toast from 'react-hot-toast';
+import { format, parseISO } from 'date-fns';
+import { es } from 'date-fns/locale';
 import { diasSemana } from './scheduleLabels';
+import { esClaseUnica, fechaClaseUnica } from './scheduleChangeUtils';
 
-const ChangeScheduleConfirmToast = ({ t, selectedHorarioActual, selectedHorarioNuevo, onConfirm }) => (
+const formatFecha = (fecha) => format(parseISO(fecha), "dd 'de' MMMM yyyy", { locale: es });
+
+// `fechaDestino` solo viene en un cambio de clase única ('YYYY-MM-DD').
+const ChangeScheduleConfirmToast = ({ t, selectedHorarioActual, selectedHorarioNuevo, fechaDestino, onConfirm }) => (
     <div className="flex flex-col gap-4 p-2 w-full">
         <div className="text-center pb-2 border-b border-brand-border-soft">
             <span className="text-xs font-black uppercase tracking-widest text-slate-500">Confirmar Cambio de Horario</span>
@@ -27,6 +33,9 @@ const ChangeScheduleConfirmToast = ({ t, selectedHorarioActual, selectedHorarioN
                             {diasSemana(selectedHorarioActual.horarios_clases?.dia_semana)} <br />
                             <span className="font-normal text-slate-800">{selectedHorarioActual.horarios_clases?.hora_inicio.slice(11, 16)} - {selectedHorarioActual.horarios_clases?.hora_fin.slice(11, 16)}</span>
                         </span>
+                        {esClaseUnica(selectedHorarioActual) && fechaClaseUnica(selectedHorarioActual) && (
+                            <span className="font-normal text-slate-800">{formatFecha(fechaClaseUnica(selectedHorarioActual))}</span>
+                        )}
                     </p>
                 </div>
             </div>
@@ -48,6 +57,9 @@ const ChangeScheduleConfirmToast = ({ t, selectedHorarioActual, selectedHorarioN
                             {diasSemana(selectedHorarioNuevo.dia_semana)} <br />
                             <span className="font-normal text-slate-800">{selectedHorarioNuevo.hora_inicio} - {selectedHorarioNuevo.hora_fin}</span>
                         </span>
+                        {fechaDestino && (
+                            <span className="font-normal text-slate-800">{formatFecha(fechaDestino)}</span>
+                        )}
                     </p>
                 </div>
             </div>
