@@ -14,10 +14,7 @@ const RenovarPlanHistoricoModal = ({ plan, alumnoId, onClose, onSuccess }) => {
   const original = plan.horarios || [];
   const alternativos = plan.horarios_alternativos || [];
   const [seleccion, setSeleccion] = useState(original.map(h => h.id));
-  const [fechaInicio, setFechaInicio] = useState('');
   const [saving, setSaving] = useState(false);
-
-  const hoy = new Date().toLocaleDateString('sv-SE', { timeZone: 'America/Lima' });
 
   const opcionesOrdenadas = useMemo(
     () => [...alternativos].sort((a, b) => Number(!!b.mismo_dia) - Number(!!a.mismo_dia)),
@@ -27,8 +24,7 @@ const RenovarPlanHistoricoModal = ({ plan, alumnoId, onClose, onSuccess }) => {
   const duplicados = new Set(seleccion).size !== seleccion.length;
   const cambiado = seleccion.some((id, i) => id !== original[i]?.id);
   const sinVigente = !plan.concepto_vigente;
-  const fechaInvalida = fechaInicio && fechaInicio < hoy;
-  const puedeConfirmar = !sinVigente && !duplicados && seleccion.length === original.length && !fechaInvalida && !saving;
+  const puedeConfirmar = !sinVigente && !duplicados && seleccion.length === original.length && !saving;
 
   const cambiarSlot = (idx, nuevoId) => {
     setSeleccion(prev => prev.map((id, i) => (i === idx ? Number(nuevoId) : id)));
@@ -39,7 +35,6 @@ const RenovarPlanHistoricoModal = ({ plan, alumnoId, onClose, onSuccess }) => {
     try {
       const body = {};
       if (cambiado) body.horario_ids = seleccion;
-      if (fechaInicio) body.fecha_inicio = fechaInicio;
       const res = await apiFetch.post(API_ROUTES.INSCRIPCIONES.RENOVAR_HISTORICO(alumnoId, plan.cuenta_id), body);
       const json = await res.json();
       if (res.ok) {
@@ -119,17 +114,6 @@ const RenovarPlanHistoricoModal = ({ plan, alumnoId, onClose, onSuccess }) => {
           {seleccion.some(id => original.find(h => h.id === id)?.disponible === false) && (
             <p className="text-[10px] font-bold text-red-600">Reemplaza los horarios no disponibles para continuar.</p>
           )}
-        </div>
-
-        <div className="space-y-1">
-          <label className="text-[9px] font-black text-brand-muted uppercase ml-2 tracking-widest">Fecha de inicio (opcional)</label>
-          <input
-            type="date"
-            min={hoy}
-            value={fechaInicio}
-            onChange={(e) => setFechaInicio(e.target.value)}
-            className="w-full bg-brand-bg border-2 border-brand-border-soft rounded-2xl px-4 py-3 font-black text-brand-primary outline-none focus:border-brand-accent"
-          />
         </div>
 
         <div className="grid grid-cols-2 gap-3">
