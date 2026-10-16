@@ -10,8 +10,11 @@ import { API_ROUTES } from '../../constants/apiRoutes';
 import toast from 'react-hot-toast';
 import ConfirmModal from '../../components/shared/ConfirmModal';
 import { useAuth } from '../../context/AuthContext';
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { parseDateOnly, toDateKey, esFechaValida, ultimaClaseProgramada } from '../../utils/enrollmentCycle';
+import { useFetch } from '../../hooks/useFetch';
+import { asistenciaService } from '../../services/asistencia.service';
 
 import PackageHeader from '../../components/student/PackageHeader';
 // COMPONENTES DE SEGURIDAD Y PAGO
@@ -24,6 +27,23 @@ const DIAS_NOMBRES = { 1: "LUNES", 2: "MARTES", 3: "MIÉRCOLES", 4: "JUEVES", 5:
 const esClaseUnica = (reg) => reg.tipo_inscripcion === 'INDIVIDUAL';
 // El link de deuda guarda la fecha exacta de la clase (inicio = fin); fecha_inscripcion es solo respaldo.
 const fechaClaseUnica = (reg) => reg.inscripciones_deudas_link?.[0]?.fecha_inicio_ciclo ?? reg.fecha_inscripcion;
+
+// Ciclo más reciente (mayor fecha_inicio_ciclo) entre los links de deuda de un paquete mensual.
+const cicloActual = (items) => items
+  .flatMap(i => i.inscripciones_deudas_link ?? [])
+  .filter(l => l.fecha_inicio_ciclo)
+  .reduce((best, l) => (!best || toDateKey(l.fecha_inicio_ciclo) > toDateKey(best.fecha_inicio_ciclo) ? l : best), null);
+
+// Id de la inscripción a la que pertenece un registro de asistencia.
+const inscripcionDeRegistro = (r) => r.inscripcion_id ?? r.id_inscripcion ?? r.inscripciones?.id;
+
+// Orden descendente: fecha más reciente/futura primero; a igual fecha, ACTIVO antes que el resto.
+const porRecientes = (fechaDe) => (a, b) => {
+  const fa = fechaDe(a) ? toDateKey(fechaDe(a)) : '';
+  const fb = fechaDe(b) ? toDateKey(fechaDe(b)) : '';
+  if (fa !== fb) return fb.localeCompare(fa);
+  return Number(b.estado === 'ACTIVO') - Number(a.estado === 'ACTIVO');
+};
 
 // --- MODAL DE RENOVACIÓN ---
 const RenovacionModal = ({ isOpen, onClose, onConfirm, fechasSugeridas }) => {
@@ -47,8 +67,8 @@ const RenovacionModal = ({ isOpen, onClose, onConfirm, fechasSugeridas }) => {
               <div className="text-left">
                 <p className={`text-[11px] font-black uppercase italic ${etiquetas[idx]?.iconColor}`}>{etiquetas[idx]?.label}</p>
                 <div className="mt-2 flex items-center gap-2">
-                  <div className="bg-brand-primary-dark text-white px-3 py-1 rounded-lg text-[10px] font-black italic uppercase">{format(parseISO(fecha), 'EEEE dd', { locale: es })}</div>
-                  <span className="text-[10px] font-bold text-brand-body uppercase">{format(parseISO(fecha), 'MMMM', { locale: es })}</span>
+                  <div className="bg-brand-primary-dark text-white px-3 py-1 rounded-lg text-[10px] font-black italic uppercase">{format(parseDateOnly(fecha), 'EEEE dd', { locale: es })}</div>
+                  <span className="text-[10px] font-bold text-brand-body uppercase">{format(parseDateOnly(fecha), 'MMMM', { locale: es })}</span>
                 </div>
               </div>
               <ArrowIcon size={18} className="text-slate-300 group-hover:translate-x-1" />
@@ -72,6 +92,17 @@ const MyRegistrations = () => {
   const [selectedDebtForPay, setSelectedDebtForPay] = useState(null);
   const [renovacionModal, setRenovacionModal] = useState({ open: false, pkgId: null, fechasSugeridas: null });
   const [actionTarget, setActionTarget] = useState(null); // reg pendiente de confirmar borrado/finalización
+
+  // Clases programadas del alumno: respaldo para el "Fin" del ciclo cuando fecha_fin_ciclo no llega.
+  // Si falla, la tarjeta simplemente muestra "Por confirmar" (no es crítico para la vista).
+  const { data: asistencias, loading: loadingAsistencias, refetch: refetchAsistencias } = useFetch(
+    async () => {
+      if (!userId) return [];
+      try { return await asistenciaService.getHistorialAlumno(userId); } catch { return []; }
+    },
+    [userId],
+    { initialData: [] }
+  );
 
   const formatTimeSafe = useCallback((timeStr) => {
     if (!timeStr) return "--:--";
@@ -128,7 +159,7 @@ const MyRegistrations = () => {
     const toastId = toast.loading("Sincronizando renovación...");
     try {
       const res = await apiFetch.post(API_ROUTES.CUENTAS_POR_COBRAR.GENERAR_ADELANTADO(pkgId), { fecha_inicio: fechaInicio });
-      if (res.ok) { toast.success("¡Renovado! Paga para activar."); fetchInitialData(); }
+      if (res.ok) { toast.success("¡Renovado! Paga para activar."); fetchInitialData(); refetchAsistencias(); }
       else { const r = await res.json(); toast.error(r.error || "Error"); }
     } catch (error) {
         console.error('Error en confirmarRenovacionMasiva:', error);
@@ -146,7 +177,7 @@ const MyRegistrations = () => {
     try {
       const endpoint = isPending ? `/inscripciones/${reg.id}/cancelar-reserva` : `/inscripciones/${reg.id}/separar-finalizar`;
       const res = await apiFetch.patch(endpoint);
-      if (res.ok) { toast.success("Actualizado"); fetchInitialData(); }
+      if (res.ok) { toast.success("Actualizado"); fetchInitialData(); refetchAsistencias(); }
     } catch (error) {
         console.error('Error en executeAction:', error);
         toast.error("Error"); }
@@ -162,7 +193,7 @@ const MyRegistrations = () => {
       // (una tarjeta por clase) con la fecha exacta del link de deuda.
       if (esClaseUnica(reg)) {
         const id = `unica-${reg.id}`;
-        packages[id] = { id, tipo: 'INDIVIDUAL', fecha_clase: fechaClaseUnica(reg), items: [reg] };
+        packages[id] = { id, tipo: 'INDIVIDUAL', estado: reg.estado, fecha_clase: fechaClaseUnica(reg), items: [reg] };
         return;
       }
 
@@ -171,11 +202,33 @@ const MyRegistrations = () => {
       if (!packages[gid]) packages[gid] = { id: gid, tipo: 'MENSUAL', fecha_inicio: reg.fecha_inscripcion, items: [] };
       packages[gid].items.push(reg);
     });
-    return { currentPackages: Object.values(packages), historyItems: history };
-  }, [registrations]);
+
+    // BL-011: el rango del ciclo mensual sale del link de deuda. Si fecha_fin_ciclo es nulo o
+    // inválido, el fin es la fecha de la última clase programada; sin clases => null ("Por confirmar").
+    Object.values(packages).forEach(pkg => {
+      if (pkg.tipo !== 'MENSUAL') return;
+      const ciclo = cicloActual(pkg.items);
+      if (ciclo) pkg.fecha_inicio = ciclo.fecha_inicio_ciclo;
+      if (esFechaValida(ciclo?.fecha_fin_ciclo)) {
+        pkg.fecha_fin = ciclo.fecha_fin_ciclo;
+      } else {
+        const ids = new Set(pkg.items.map(i => i.id));
+        const clasesDelPaquete = (asistencias ?? []).filter(r => ids.has(inscripcionDeRegistro(r)));
+        pkg.fecha_fin = ultimaClaseProgramada(clasesDelPaquete, pkg.fecha_inicio);
+      }
+      pkg.estado = pkg.items.some(i => i.estado === 'ACTIVO') ? 'ACTIVO' : pkg.items[0]?.estado;
+    });
+
+    const fechaPaquete = (pkg) => (pkg.tipo === 'INDIVIDUAL' ? pkg.fecha_clase : pkg.fecha_inicio);
+    const fechaHistorial = (reg) => (esClaseUnica(reg) ? fechaClaseUnica(reg) : reg.fecha_inscripcion);
+    return {
+      currentPackages: Object.values(packages).sort(porRecientes(fechaPaquete)),
+      historyItems: history.sort(porRecientes(fechaHistorial)),
+    };
+  }, [registrations, asistencias]);
 
   // 🚀 ESTADO DE CARGA MEJORADO
-  if (loading) return (
+  if (loading || loadingAsistencias) return (
     <div className="flex flex-col h-screen items-center justify-center bg-brand-bg gap-4">
       <Loader2 className="animate-spin text-brand-accent" size={48} />
       <p className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-primary animate-pulse">Sincronizando tus clases...</p>
@@ -323,7 +376,7 @@ const MyRegistrations = () => {
                     </div>
                     <span className="text-[9px] font-black text-brand-muted border-brand-border-soft px-4 py-2 rounded-xl uppercase italic transition-colors">
                       {esClaseUnica(item)
-                        ? `CLASE ÚNICA · ${format(parseISO(fechaClaseUnica(item)), 'dd MMM yyyy', { locale: es })}`
+                        ? `CLASE ÚNICA · ${format(parseDateOnly(fechaClaseUnica(item)),'dd MMM yyyy', { locale: es })}`
                         : item.tipo_inscripcion}
                     </span>
                     <span className="text-[9px] font-black text-brand-muted border-2 border-brand-border-soft px-4 py-2 rounded-xl group-hover:border-slate-700 group-hover:text-slate-300 uppercase italic transition-colors">
