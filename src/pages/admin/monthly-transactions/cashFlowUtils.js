@@ -1,3 +1,5 @@
+import { porcentaje, fechaCorta, etiquetaConcepto, tieneDesglose } from '../../../utils/desgloseIngresos';
+
 // ORDEN FIJO DE NIVELES: ajusta/agrega aquí si tienes más niveles.
 // Cualquier nivel que NO esté en esta lista se ubicará al final (antes de PLAN INDIVIDUAL),
 // ordenado alfabéticamente, para que nunca "desaparezca" un nivel nuevo silenciosamente.
@@ -238,3 +240,74 @@ export const construirFilasExcel = (datosPorMes, filtroAnio, meses) => {
 
     return dataToExport;
 };
+
+const enCentimos = (v) => Math.round(Number(v || 0) * 100);
+
+// Meses (1-12) del desglose que la plataforma muestra, en orden. Misma regla que la tarjeta:
+// un mes sin cobros ni filas no aparece.
+const mesesConDesglose = (desglosePorMes) =>
+    Object.keys(desglosePorMes)
+        .map(Number)
+        .sort((a, b) => a - b)
+        .filter((mes) => tieneDesglose(desglosePorMes[mes]));
+
+/**
+ * Hoja "Merch vs Matrícula": una fila por mes con las MISMAS cifras de la tarjeta de la
+ * plataforma (matrícula, merch, total cobrado y porcentajes) más un TOTAL AÑO. Va en una hoja
+ * aparte del resumen por ciclo porque se mide por fecha de pago: mezclarlas en una columna de
+ * montos duplicaría ingresos al sumar.
+ */
+export const construirFilasDesgloseExcel = (desglosePorMes, filtroAnio, meses) => {
+    const filas = [];
+    let totalMatricula = 0;
+    let totalMerch = 0;
+    let totalCobrado = 0;
+
+    for (const mes of mesesConDesglose(desglosePorMes)) {
+        const d = desglosePorMes[mes];
+        const pctMerch = porcentaje(d.ingresos_merch, d.total_cobrado);
+        filas.push({
+            "AÑO": filtroAnio,
+            "MES": meses[mes - 1],
+            "INGRESOS POR MATRÍCULA (S/)": d.ingresos_matricula,
+            "INGRESOS POR MERCH (S/)": d.ingresos_merch,
+            "TOTAL COBRADO (S/)": d.total_cobrado,
+            "% MATRÍCULA": 100 - pctMerch,
+            "% MERCH": pctMerch,
+        });
+        totalMatricula += enCentimos(d.ingresos_matricula);
+        totalMerch += enCentimos(d.ingresos_merch);
+        totalCobrado += enCentimos(d.total_cobrado);
+    }
+
+    if (filas.length > 0) {
+        const pctMerch = porcentaje(totalMerch, totalCobrado);
+        filas.push({
+            "AÑO": filtroAnio,
+            "MES": "TOTAL AÑO",
+            "INGRESOS POR MATRÍCULA (S/)": totalMatricula / 100,
+            "INGRESOS POR MERCH (S/)": totalMerch / 100,
+            "TOTAL COBRADO (S/)": totalCobrado / 100,
+            "% MATRÍCULA": 100 - pctMerch,
+            "% MERCH": pctMerch,
+        });
+    }
+    return filas;
+};
+
+/**
+ * Hoja "Auditoría Merch": cada fila automática de caja (fecha, alumno, concepto, pago de
+ * origen y monto), igual que el detalle desplegable de la plataforma.
+ */
+export const construirFilasAuditoriaExcel = (desglosePorMes, filtroAnio, meses) =>
+    mesesConDesglose(desglosePorMes).flatMap((mes) =>
+        (desglosePorMes[mes].movimientos ?? []).map((m) => ({
+            "AÑO": filtroAnio,
+            "MES": meses[mes - 1],
+            "FECHA": fechaCorta(m.fecha),
+            "ALUMNO": m.alumno,
+            "CONCEPTO": etiquetaConcepto(m.concepto),
+            "N° PAGO": m.pago_id,
+            "MONTO (S/)": m.monto,
+        }))
+    );

@@ -11,6 +11,14 @@ const cajaService = {
         return result.data;
     },
 
+    // Merch vs Matrícula de lo cobrado en el mes + filas de auditoría. Endpoint aparte
+    // del resumen (cuya forma es un mapa por sede y no admite llaves extra).
+    obtenerDesgloseIngresos: async (mes, anio) => {
+        const response = await apiFetch.get(`${API_ROUTES.CAJA.DESGLOSE_INGRESOS}?mes=${mes}&anio=${anio}`);
+        const result = await parseJsonResponse(response, `Error al cargar el desglose del mes ${mes}`);
+        return result.data;
+    },
+
     // Agregados de los 12 meses (totalIngresos / egresos / balance por mes).
     // Alimenta las cabeceras de los acordeones sin tener que pedir el detalle
     // de cada mes: una peticion en vez de doce.

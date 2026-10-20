@@ -2,9 +2,10 @@ import React, { memo, useMemo } from 'react';
 import { ChevronUp, ChevronDown, TrendingUp, TrendingDown, Activity, Loader2 } from 'lucide-react';
 import { IncomeTable } from './IncomeTable';
 import { ExpenseTable } from './ExpenseTable';
+import { MerchRevenueBreakdown } from './MerchRevenueBreakdown';
 
 const MonthAccordionBase = ({
-    mesNum, mesNombre, isOpen, isLoading, toggleMes, datosMes, totalesMes,
+    mesNum, mesNombre, isOpen, isLoading, toggleMes, datosMes, desgloseMes, totalesMes,
     acciones, submitting, inlineEditId, inlineData, addingType, newData
 }) => {
 
@@ -74,6 +75,11 @@ const MonthAccordionBase = ({
             {/* --- CONTENIDO DESPLEGABLE (TABLAS) --- */}
             {isOpen && !isLoading && (
                 <div className="mt-3 grid grid-cols-1 xl:grid-cols-2 gap-6 pl-4 pr-2 pb-4 border-l-2 border-orange-200 ml-4">
+                    {desgloseMes && (
+                        <div className="xl:col-span-2">
+                            <MerchRevenueBreakdown desglose={desgloseMes} />
+                        </div>
+                    )}
                     <IncomeTable
                         mesNum={mesNum}
                         ingresosConsolidados={ingresosConsolidados}

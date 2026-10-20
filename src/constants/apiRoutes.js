@@ -182,6 +182,7 @@ export const API_ROUTES = {
     BASE: "/caja",
     RESUMEN: "/caja/resumen",
     RESUMEN_ANUAL: "/caja/resumen-anual",
+    DESGLOSE_INGRESOS: "/caja/desglose-ingresos",
     BY_ID: (id) => `/caja/${id}`,
   },
       HISTORIAL_ACADEMICO: {

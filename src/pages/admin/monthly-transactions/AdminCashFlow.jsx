@@ -7,7 +7,10 @@ import { useCatalogos } from '../../../hooks/useCatalogos';
 import { MonthAccordion } from '../../../components/Admin/Components-monthly-transactions/MonthAccordion';
 import ConfirmModal from '../../../components/shared/ConfirmModal';
 import PageTitle from '../../../components/shared/PageTitle';
-import { formatLocalToUTC, formatUTCtoLocalInput, consolidarDatosMes, construirFilasExcel } from './cashFlowUtils';
+import {
+    formatLocalToUTC, formatUTCtoLocalInput, consolidarDatosMes,
+    construirFilasExcel, construirFilasDesgloseExcel, construirFilasAuditoriaExcel,
+} from './cashFlowUtils';
 
 const currentYear = new Date().getFullYear();
 const MESES = [
@@ -22,6 +25,9 @@ const FORM_VACIO = { concepto: '', monto: '', fecha: '', sede_id: '' };
 const AdminCashFlow = () => {
     // Detalle por mes, rellenado SOLO para los meses que el usuario abre.
     const [datosPorMes, setDatosPorMes] = useState({});
+    // Merch vs Matrícula de cada mes abierto (endpoint aparte del detalle; si falla, el mes
+    // se muestra igual, sin la tarjeta).
+    const [desglosePorMes, setDesglosePorMes] = useState({});
     // Agregados de los 12 meses (1 peticion) para las cabeceras de los acordeones.
     const [resumenAnual, setResumenAnual] = useState([]);
     const [loadingMeses, setLoadingMeses] = useState({});
@@ -65,10 +71,14 @@ const AdminCashFlow = () => {
     const fetchMes = useCallback(async (mesNum, anio, mostrarError = true) => {
         try {
             setLoadingMeses(prev => ({ ...prev, [mesNum]: true }));
-            const data = await cajaService.obtenerResumenMes(mesNum, anio);
+            const [data, desglose] = await Promise.all([
+                cajaService.obtenerResumenMes(mesNum, anio),
+                cajaService.obtenerDesgloseIngresos(mesNum, anio).catch(() => null),
+            ]);
             if (data) {
                 setDatosPorMes(prev => ({ ...prev, [mesNum]: consolidarDatosMes(data) }));
             }
+            setDesglosePorMes(prev => ({ ...prev, [mesNum]: desglose }));
             return data;
         } catch (error) {
             if (mostrarError) toast.error(error.message || `Error al cargar el mes ${mesNum}`);
@@ -85,6 +95,7 @@ const AdminCashFlow = () => {
 
         const cargarAnio = async () => {
             setDatosPorMes({});
+            setDesglosePorMes({});
             mesesPedidos.current = new Set();
             const mesActual = new Date().getMonth() + 1;
             setMesesAbiertos([mesActual]);
@@ -241,6 +252,27 @@ const AdminCashFlow = () => {
                 setDatosPorMes(completo);
             }
 
+            // Desglose Merch vs Matrícula: mismo criterio. Un mes con `null` es un desglose que
+            // falló al cargarse; se reintenta y, si sigue fallando, NO se genera el Excel: para
+            // contabilidad es peor un reporte con huecos que ningún reporte.
+            const sinDesglose = MESES
+                .map((_, i) => i + 1)
+                .filter(mes => !desglosePorMes[mes]);
+
+            let desgloseCompleto = desglosePorMes;
+            if (sinDesglose.length > 0) {
+                const cargados = await Promise.all(
+                    sinDesglose.map(async (mes) => [mes, await cajaService.obtenerDesgloseIngresos(mes, filtroAnio).catch(() => null)])
+                );
+                const fallidos = cargados.filter(([, d]) => !d).map(([mes]) => MESES[mes - 1]);
+                if (fallidos.length > 0) {
+                    return toast.error(`No se pudo cargar el desglose Merch/Matrícula de: ${fallidos.join(', ')}. Intenta de nuevo.`);
+                }
+                desgloseCompleto = { ...desglosePorMes };
+                for (const [mes, d] of cargados) desgloseCompleto[mes] = d;
+                setDesglosePorMes(desgloseCompleto);
+            }
+
             const dataToExport = construirFilasExcel(completo, filtroAnio, MESES);
             if (dataToExport.length === 0) return toast.error("No hay datos para exportar.");
 
@@ -251,6 +283,22 @@ const AdminCashFlow = () => {
             const worksheet = XLSX.utils.json_to_sheet(dataToExport);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, `Resumen ${filtroAnio}`);
+
+            // Hojas extra con lo mismo que muestra la plataforma (por fecha de pago). Van aparte
+            // del resumen por ciclo para que sumar la columna MONTO de esa hoja no los duplique.
+            const filasDesglose = construirFilasDesgloseExcel(desgloseCompleto, filtroAnio, MESES);
+            if (filasDesglose.length > 0) {
+                const hojaDesglose = XLSX.utils.json_to_sheet(filasDesglose);
+                hojaDesglose['!cols'] = [{ wch: 6 }, { wch: 14 }, { wch: 28 }, { wch: 24 }, { wch: 20 }, { wch: 13 }, { wch: 10 }];
+                XLSX.utils.book_append_sheet(workbook, hojaDesglose, `Merch vs Matrícula ${filtroAnio}`);
+            }
+            const filasAuditoria = construirFilasAuditoriaExcel(desgloseCompleto, filtroAnio, MESES);
+            if (filasAuditoria.length > 0) {
+                const hojaAuditoria = XLSX.utils.json_to_sheet(filasAuditoria);
+                hojaAuditoria['!cols'] = [{ wch: 6 }, { wch: 14 }, { wch: 12 }, { wch: 32 }, { wch: 12 }, { wch: 9 }, { wch: 12 }];
+                XLSX.utils.book_append_sheet(workbook, hojaAuditoria, `Auditoría Merch ${filtroAnio}`);
+            }
+
             XLSX.writeFile(workbook, `Resumen_Financiero_${filtroAnio}.xlsx`);
         } catch {
             // La carga diferida del chunk puede fallar sin red; sin este catch
@@ -259,7 +307,7 @@ const AdminCashFlow = () => {
         } finally {
             setIsExporting(false);
         }
-    }, [datosPorMes, filtroAnio]);
+    }, [datosPorMes, desglosePorMes, filtroAnio]);
 
     // Acciones y datos estables: identidad constante entre renders, para que
     // React.memo(MonthAccordion) pueda descartar los meses no afectados.
@@ -333,6 +381,7 @@ const AdminCashFlow = () => {
                             isLoading={!!loadingMeses[mesNum]}
                             toggleMes={toggleMes}
                             datosMes={datosPorMes[mesNum]}
+                            desgloseMes={desglosePorMes[mesNum]}
                             totalesMes={totalesPorMes[mesNum]}
                             acciones={acciones}
                             submitting={submitting}
