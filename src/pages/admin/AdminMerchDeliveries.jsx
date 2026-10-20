@@ -10,7 +10,7 @@ import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import EmptyState from '../../components/shared/EmptyState';
 import ConfirmModal from '../../components/shared/ConfirmModal';
 import MerchImage from '../../components/merch/MerchImage';
-import { uniqueById } from '../../utils/uniqueById';
+import { uniqueSedes } from '../../utils/uniqueById';
 
 const SEDE_KEY = 'merch_entregas_sede';
 const MIN_BUSQUEDA = 2;
@@ -110,7 +110,7 @@ const AdminMerchDeliveries = () => {
                         className="w-full appearance-none bg-brand-bg rounded-xl pl-11 pr-9 py-2.5 text-[10px] font-black uppercase text-slate-600 outline-none cursor-pointer focus:ring-2 focus:ring-blue-500/20"
                     >
                         <option value="">Todas las sedes</option>
-                        {uniqueById(sedes).map(s => <option key={s.id} value={s.id}>{s.nombre}</option>)}
+                        {uniqueSedes(sedes).map(s => <option key={s.id} value={s.id}>{s.nombre}</option>)}
                     </select>
                     <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-muted pointer-events-none" />
                 </div>

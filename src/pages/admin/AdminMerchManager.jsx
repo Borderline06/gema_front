@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Plus, Edit3, PackageX, PackageCheck, Gift } from 'lucide-react';
+import { Plus, Edit3, PackageX, PackageCheck, Gift, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useFetch } from '../../hooks/useFetch';
 import { merchService } from '../../services/merch.service';
@@ -20,6 +20,8 @@ const AdminMerchManager = () => {
     const [formTarget, setFormTarget] = useState(null);
     // Producto pendiente de baja/reactivación.
     const [toggleTarget, setToggleTarget] = useState(null);
+    // Producto pendiente de eliminación definitiva (borra también su imagen en la nube).
+    const [deleteTarget, setDeleteTarget] = useState(null);
 
     const { data: productos, loading, refetch } = useFetch(
         () => merchService.getCatalogoCompleto(),
@@ -54,6 +56,19 @@ const AdminMerchManager = () => {
             await refetch();
         } catch (error) {
             toast.error(error.message || 'No se pudo cambiar el estado');
+        }
+    };
+
+    const confirmarEliminacion = async () => {
+        try {
+            await merchService.eliminar(deleteTarget.id);
+            toast.success('Producto eliminado');
+            setDeleteTarget(null);
+            await refetch();
+        } catch (error) {
+            // Con ventas el backend responde 409 y sugiere darlo de baja.
+            toast.error(error.message || 'No se pudo eliminar el producto');
+            setDeleteTarget(null);
         }
     };
 
@@ -142,6 +157,9 @@ const AdminMerchManager = () => {
                                                 >
                                                     {inactivo ? <PackageCheck size={16} /> : <PackageX size={16} />}
                                                 </button>
+                                                <button type="button" title="Eliminar" onClick={() => setDeleteTarget(p)} className="p-2 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors">
+                                                    <Trash2 size={16} />
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -170,6 +188,16 @@ const AdminMerchManager = () => {
                     ? `"${toggleTarget?.nombre}" volverá a mostrarse en la tienda.`
                     : `"${toggleTarget?.nombre}" dejará de mostrarse en la tienda. Los alumnos que ya lo tienen lo conservan.`}
                 confirmText={reactivando ? 'Reactivar' : 'Dar de baja'}
+            />
+
+            <ConfirmModal
+                isOpen={Boolean(deleteTarget)}
+                onClose={() => setDeleteTarget(null)}
+                onConfirm={confirmarEliminacion}
+                iconType="danger"
+                title="¿Eliminar producto?"
+                message={`"${deleteTarget?.nombre}" y su imagen se borrarán definitivamente. Si ya se vendió, no se podrá eliminar: dalo de baja en su lugar.`}
+                confirmText="Eliminar"
             />
         </div>
     );

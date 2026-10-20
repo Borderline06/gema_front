@@ -111,8 +111,8 @@ const MobileNavbar = () => {
                   )}
                 </NavLink>
 
-                <NavLink to="/dashboard/student/merch" onClick={toggleMenu} className="flex items-center gap-4 text-blue-100/70 border border-brand-gold/25 hover:border-brand-gold/60 hover:text-white py-2.5 px-3 rounded-xl hover:bg-white/5 transition-colors font-bold text-[13px] uppercase tracking-wide">
-                  <Star size={18} className="text-brand-gold"/> Club Merch
+                <NavLink to="/dashboard/student/merch" onClick={toggleMenu} className="flex items-center gap-4 bg-gold-premium text-brand-primary-dark border border-gold-premium-end shadow-gold-glow hover:shadow-gold-glow-hover hover:brightness-110 py-2.5 px-3 rounded-xl transition-all font-black text-[13px] uppercase tracking-wide">
+                  <Star size={18} className="text-brand-primary-dark"/> Club Merch
                 </NavLink>
               </div>
 

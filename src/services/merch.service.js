@@ -142,14 +142,21 @@ export const merchService = {
         return result.data || [];
     },
 
+    /** `producto` es un FormData (multipart) cuando lleva imagen: apiFetch deja el Content-Type al navegador. */
     crear: async (producto) => {
         const response = await apiFetch.post(API_ROUTES.MERCH.CATALOGO, producto);
         return parseJsonResponse(response, 'Error al crear el producto');
     },
 
-    /** Actualiza solo los campos enviados (precio, stock, estado, etc.). */
+    /** Actualiza solo los campos enviados (precio, stock, estado, etc.). Acepta FormData (con imagen) u objeto JSON. */
     actualizar: async (id, cambios) => {
         const response = await apiFetch.put(API_ROUTES.MERCH.BY_ID(id), cambios);
         return parseJsonResponse(response, 'Error al actualizar el producto');
+    },
+
+    /** Borra el producto y su imagen en la nube. El backend responde 409 si ya tiene ventas. */
+    eliminar: async (id) => {
+        const response = await apiFetch.delete(API_ROUTES.MERCH.BY_ID(id));
+        return parseJsonResponse(response, 'Error al eliminar el producto');
     },
 };

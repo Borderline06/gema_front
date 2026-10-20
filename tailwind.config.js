@@ -1,4 +1,4 @@
-import { BRAND_COLORS,LOGIN_COLORS, alpha } from './src/config/themeColors.js';
+import { BRAND_COLORS, GOLD_PREMIUM, LOGIN_COLORS, alpha } from './src/config/themeColors.js';
 
 /** @type {import('tailwindcss').Config} */
 
@@ -17,6 +17,12 @@ export default {
       colors: {
         brand: BRAND_COLORS,
         login: LOGIN_COLORS,
+        'gold-premium': GOLD_PREMIUM, // border-gold-premium-end, etc.
+      },
+
+      // Dorado metálico del Club Merch: reflejo claro al centro, sombra en los extremos.
+      backgroundImage: {
+        'gold-premium': `linear-gradient(135deg, ${GOLD_PREMIUM.start} 0%, ${GOLD_PREMIUM.mid} 50%, ${GOLD_PREMIUM.end} 100%)`,
       },
 
       // ───────────────────────────────────────────────────────────────────
@@ -38,6 +44,8 @@ export default {
         'accent-dot-sm': `0 0 8px ${alpha(ACCENT, 0.6)}`,        // punto de aviso en lista
         'accent-bar': `0 0 15px ${alpha(ACCENT, 0.4)}`,          // barra decorativa
         'accent-bar-sm': `0 0 8px ${alpha(ACCENT, 0.5)}`,        // barra decorativa fina
+        'gold-glow': `0 0 14px ${alpha(GOLD_PREMIUM.start, 0.35)}`,        // botón Club Merch
+        'gold-glow-hover': `0 0 26px ${alpha(GOLD_PREMIUM.start, 0.65)}`,  // hover de ese botón
       },
 
       // ───────────────────────────────────────────────────────────────────

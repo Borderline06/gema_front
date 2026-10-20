@@ -49,6 +49,18 @@ export const BRAND_COLORS = {
 
 
 // ─────────────────────────────────────────────────────────────────────────
+// DORADO PREMIUM — botón metálico del Club Merch
+// Tres paradas del gradiente (sombra → brillo → sombra). tailwind.config.js arma
+// con ellas bg-gold-premium y las sombras shadow-gold-glow*.
+// ─────────────────────────────────────────────────────────────────────────
+export const GOLD_PREMIUM = {
+  start: '#BF953F', // bronce dorado
+  mid: '#FCF6BA',   // reflejo claro del metal
+  end: '#B38728',   // dorado profundo
+};
+
+
+// ─────────────────────────────────────────────────────────────────────────
 // COLORES EXCLUSIVOS DEL LOGIN
 // ─────────────────────────────────────────────────────────────────────────
 export const LOGIN_COLORS = {

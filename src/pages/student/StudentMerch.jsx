@@ -7,7 +7,7 @@ import { useCatalogos } from '../../hooks/useCatalogos';
 import { merchService } from '../../services/merch.service';
 import { ESTADO_COLECCION, groupCollection } from '../../config/merch';
 import { formatSoles } from '../../utils/formatSoles';
-import { uniqueById } from '../../utils/uniqueById';
+import { uniqueSedes } from '../../utils/uniqueById';
 import { cartCount, cartLines, cartTotal, qtyMapToIds, withQty } from '../../utils/merchCart';
 import SearchInput from '../../components/shared/SearchInput';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
@@ -28,7 +28,7 @@ const StudentMerch = () => {
     const [debt, setDebt] = useState(null);     // deuda generada → ReportPaymentModal
     const [sedeElegida, setSedeElegida] = useState(null);
     const { sedes: sedesRaw } = useCatalogos(['sedes']);
-    const sedes = useMemo(() => uniqueById(sedesRaw), [sedesRaw]);
+    const sedes = useMemo(() => uniqueSedes(sedesRaw), [sedesRaw]);
     // Con una sola sede no hay nada que elegir.
     const sedeId = sedeElegida ?? (sedes.length === 1 ? sedes[0].id : null);
 

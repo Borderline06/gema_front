@@ -139,17 +139,16 @@ const StudentSidebar = () => {
               {group.type === 'link' ? (
                 <Link
                   to={group.path}
-                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all group/link ${location.pathname === group.path
-                    ? (group.gold
-                      ? 'bg-brand-gold/10 text-white shadow-inner border border-brand-gold/60'
-                      : 'bg-blue-500/20 text-white shadow-inner border border-blue-400/20')
-                    : (group.gold
-                      ? 'text-blue-100/70 border border-brand-gold/25 hover:border-brand-gold/60 hover:bg-white/5 hover:text-white'
-                      : 'text-blue-100/60 hover:bg-white/5 hover:text-white')
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all group/link ${group.gold
+                    // Club Merch: dorado metálico; la ruta activa suma un anillo blanco.
+                    ? `bg-gold-premium text-brand-primary-dark border border-gold-premium-end shadow-gold-glow hover:shadow-gold-glow-hover hover:brightness-110 ${location.pathname === group.path ? 'ring-2 ring-white/70' : ''}`
+                    : location.pathname === group.path
+                      ? 'bg-blue-500/20 text-white shadow-inner border border-blue-400/20'
+                      : 'text-blue-100/60 hover:bg-white/5 hover:text-white'
                     }`}
                 >
                   <div className="flex items-center gap-3">
-                    <group.icon size={18} className={group.gold ? 'text-brand-gold' : location.pathname === group.path ? 'text-blue-400' : 'group-hover/link:text-orange-400 transition-colors'} />
+                    <group.icon size={18} className={group.gold ? 'text-brand-primary-dark' : location.pathname === group.path ? 'text-blue-400' : 'group-hover/link:text-orange-400 transition-colors'} />
                     <span className="text-[12px] font-bold uppercase tracking-wider">{group.title}</span>
                   </div>
 
