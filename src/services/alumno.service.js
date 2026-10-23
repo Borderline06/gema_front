@@ -1,13 +1,14 @@
 import apiFetch from "../interceptors/api";
 import { API_ROUTES } from "../constants/apiRoutes";
 import { parseJsonResponse } from "./httpHelpers";
+import { COMPANY_NAME } from '../config/branding';
 
 const alumnoService = {
   // Resumen para la tabla de gestion: el backend ya calcula sede/nivel vigente,
   // deuda pendiente y el flag de plan individual.
   getResumenTabla: async (sedeId) => {
     const response = await apiFetch.get(API_ROUTES.HISTORIAL_ACADEMICO.RESUMEN_TABLA(sedeId));
-    const result = await parseJsonResponse(response, 'Error al sincronizar Base Gema');
+    const result = await parseJsonResponse(response, `Error al sincronizar Base ${COMPANY_NAME}`);
     return result.data || [];
   },
 

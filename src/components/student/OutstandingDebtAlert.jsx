@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { apiFetch } from '../../interceptors/api';
 import toast from 'react-hot-toast';
 import ConfirmModal from '../shared/ConfirmModal';
+import { COMPANY_NAME } from '../../config/branding';
+import { formatBrandingText } from '../../utils/formatBrandingText';
 
 const OutstandingDebtAlert = ({ pendingPayment, onRefresh, onPay }) => {
   const navigate = useNavigate();
@@ -89,11 +91,11 @@ const OutstandingDebtAlert = ({ pendingPayment, onRefresh, onPay }) => {
                <div className="flex items-center justify-center md:justify-start gap-3 opacity-80">
                  <AlertCircle size={16} />
                  <span className="font-black uppercase text-[11px] tracking-[0.2em] italic">
-                   {stats.esParcial ? 'Sincronización de Saldo Gema' : 'Aviso: Pago Obligatorio'}
+                   {stats.esParcial ? `Sincronización de Saldo ${COMPANY_NAME}` : 'Aviso: Pago Obligatorio'}
                  </span>
                </div>
                <h2 className="text-3xl md:text-5xl font-black uppercase italic tracking-tighter leading-none">
-                 {pendingPayment.catalogo_conceptos?.nombre || 'Plan Gema'}
+                 {formatBrandingText(pendingPayment.catalogo_conceptos?.nombre || `Plan ${COMPANY_NAME}`)}
                </h2>
             </div>
 

@@ -4,11 +4,12 @@ import toast from 'react-hot-toast';
 import apiFetch from '../../interceptors/api';
 import { API_ROUTES } from '../../constants/apiRoutes';
 import Modal from '../shared/Modal';
+import { formatBrandingText } from '../../utils/formatBrandingText';
 
 const DIAS = { 1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes', 6: 'Sábado', 7: 'Domingo' };
 
 const etiqueta = (h) =>
-  `${DIAS[h.dia_semana] || '?'} ${String(h.hora_inicio).slice(0, 5)}-${String(h.hora_fin).slice(0, 5)} · ${h.cancha?.sede?.nombre || ''}`;
+  `${DIAS[h.dia_semana] || '?'} ${String(h.hora_inicio).slice(0, 5)}-${String(h.hora_fin).slice(0, 5)} · ${formatBrandingText(h.cancha?.sede?.nombre || '')}`;
 
 const RenovarPlanHistoricoModal = ({ plan, alumnoId, onClose, onSuccess }) => {
   const original = plan.horarios || [];
@@ -105,7 +106,7 @@ const RenovarPlanHistoricoModal = ({ plan, alumnoId, onClose, onSuccess }) => {
                   </>
                 )}
                 {!noDisp && h.cancha?.sede?.nombre && (
-                  <p className="text-[10px] font-bold text-brand-muted mt-1 flex items-center gap-1"><MapPin size={10} /> {h.cancha.sede.nombre}</p>
+                  <p className="text-[10px] font-bold text-brand-muted mt-1 flex items-center gap-1"><MapPin size={10} /> {formatBrandingText(h.cancha.sede.nombre)}</p>
                 )}
               </div>
             );

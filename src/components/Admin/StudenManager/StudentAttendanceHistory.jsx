@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { asistenciaService } from '../../../services/asistencia.service';
 import LoadingSpinner from '../../..//components/shared/LoadingSpinner';
 import { STATUS_SUCCESS } from '../../../config/statusColors';
+import { formatBrandingText } from '../../../utils/formatBrandingText';
 
 const StudentAttendanceHistory = ({ alumno, onBack }) => {
     const [asistencias, setAsistencias] = useState([]);
@@ -152,7 +153,7 @@ const StudentAttendanceHistory = ({ alumno, onBack }) => {
                                                 <div className="flex flex-col">
                                                     <span className="text-xs font-black text-brand-primary uppercase tracking-wide flex items-center gap-1">
                                                         <MapPin size={12} className="text-brand-muted" />
-                                                        Sede {hc.canchas?.sedes?.nombre || 'S/D'}
+                                                        Sede {formatBrandingText(hc.canchas?.sedes?.nombre || 'S/D')}
                                                     </span>
                                                     <span className="text-[10px] font-black text-brand-accent uppercase tracking-widest mt-1 pl-4">
                                                         {hc.niveles_entrenamiento?.nombre || 'SIN NIVEL'}

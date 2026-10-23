@@ -3,6 +3,7 @@ import { CalendarClock, Loader2, Layers, MapPin, User, DollarSign, Info } from '
 import ClaseSueltaButton from '../ciclos/ClaseSueltaButton';
 import { obtenerRangoCiclo, formatearFecha, getEstadoPagoBadge, getEstadoInscripcionBadge, getEstadoClaseBadge } from '../ciclos/cicloHelpers';
 import EmptyState from '../../../shared/EmptyState';
+import { formatBrandingText } from '../../../../utils/formatBrandingText';
 
 // ClaseSueltaButton y ClaseSueltaDetailModal (compartidos con InscriptionsModal) leen
 // el shape del historial académico; se les entrega un objeto equivalente con las
@@ -122,7 +123,7 @@ const CicloHistoryPanel = ({ historial, loadingCiclos, onSelectMes, onSelectIndi
 
                                             <div className="text-[9px] font-bold text-slate-500 flex items-center gap-1.5 mt-2 min-w-0">
                                                 <MapPin size={10} className="text-brand-accent shrink-0" />
-                                                <span className="truncate">{ciclo.sede || 'S/D'}</span>
+                                                <span className="truncate">{formatBrandingText(ciclo.sede || 'S/D')}</span>
                                             </div>
                                             <div className="text-[9px] font-bold text-brand-muted flex items-center gap-1.5 mt-1 min-w-0">
                                                 <User size={10} className="text-brand-muted shrink-0" />

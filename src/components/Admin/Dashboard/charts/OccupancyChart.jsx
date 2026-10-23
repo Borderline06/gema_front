@@ -3,6 +3,7 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import InfoTip from '../../../shared/InfoTip';
 import { CHART_COLORS } from './chartColors';
 import ChartHeader from '../../../shared/ChartHeader';
+import { formatBrandingText } from '../../../../utils/formatBrandingText';
 
 const OccupancyChart = ({ sedes, totalAlumnos, alumnosMultiSede }) => (
     <div className="lg:col-span-1 bg-brand-surface rounded-[2.5rem] border border-brand-border-soft shadow-[0_20px_60px_rgba(0,0,0,0.03)] p-5 md:p-8 flex flex-col">
@@ -20,7 +21,7 @@ const OccupancyChart = ({ sedes, totalAlumnos, alumnosMultiSede }) => (
         <div style={{ width: '100%', height: 200, position: 'relative' }}>
             <ResponsiveContainer width="100%" height="100%" minWidth={1}>
                 <PieChart>
-                    <Pie data={sedes} cx="50%" cy="50%" innerRadius={65} outerRadius={85} paddingAngle={5} dataKey="valor" nameKey="nombre" stroke="none">
+                    <Pie data={sedes.map((s) => ({ ...s, nombre: formatBrandingText(s.nombre) }))} cx="50%" cy="50%" innerRadius={65} outerRadius={85} paddingAngle={5} dataKey="valor" nameKey="nombre" stroke="none">
                         {sedes.map((entry, idx) => (<Cell key={idx} fill={CHART_COLORS[idx % CHART_COLORS.length]} />))}
                     </Pie>
                     <Tooltip
@@ -49,7 +50,7 @@ const OccupancyChart = ({ sedes, totalAlumnos, alumnosMultiSede }) => (
                 <div key={idx} className="flex justify-between items-center text-xs">
                     <div className="flex items-center gap-2">
                         <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: CHART_COLORS[idx % CHART_COLORS.length] }}></div>
-                        <span className="text-slate-600 font-bold uppercase tracking-tight truncate max-w-[120px]">{sede.nombre}</span>
+                        <span className="text-slate-600 font-bold uppercase tracking-tight truncate max-w-[120px]">{formatBrandingText(sede.nombre)}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="text-[10px] font-bold text-brand-muted">({sede.fte} FTE)</span>

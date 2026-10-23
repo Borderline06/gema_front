@@ -16,6 +16,7 @@ import NextClassHero from "../components/student/dashboard/NextClassHero";
 import UpcomingAgenda from "../components/student/dashboard/UpcomingAgenda";
 import FinanceAlertBanner from "../components/student/dashboard/FinanceAlertBanner";
 import FinanceSummaryStrip from "../components/student/dashboard/FinanceSummaryStrip";
+import { COMPANY_NAME, COMPANY_FOUNDED_YEAR } from '../config/branding';
 
 // Orden de lectura: qué sigue -> qué viene -> cómo me fue -> (al final) pagos.
 // La lógica de fechas y estados vive en hooks/utils; esta página solo compone.
@@ -49,7 +50,7 @@ const DashboardEstudiante = () => {
       size={48}
       className="min-h-screen flex flex-col items-center justify-center bg-brand-surface-alt"
       colorClassName="text-brand-accent mb-4"
-      label="Sincronizando Club Gema..."
+      label={`Sincronizando ${COMPANY_NAME}...`}
       labelClassName="font-black text-brand-primary uppercase italic text-[10px] tracking-widest text-center animate-pulse"
     />
   );
@@ -110,7 +111,7 @@ const DashboardEstudiante = () => {
         </div>
 
         <p className="mt-12 text-center text-[8px] text-slate-300 font-black uppercase tracking-[0.4em] opacity-60 italic">
-          CLUB GEMA | DESDE 2023
+          {COMPANY_NAME} | DESDE {COMPANY_FOUNDED_YEAR}
         </p>
       </div>
     </div>

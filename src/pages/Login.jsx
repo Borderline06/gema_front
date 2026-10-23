@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { Eye, EyeOff, ArrowLeft, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { THEME_ASSETS } from "../config/themeAssets.js";
+import { COMPANY_NAME, COMPANY_FOUNDED_YEAR } from '../config/branding';
 
 function Login() {
   const [identifier, setIdentifier] = useState('');
@@ -91,7 +92,7 @@ function Login() {
           <div className="z-10 flex flex-col items-center text-center mt-2 md:mt-10">
             <img
               src={THEME_ASSETS.logoPublic}
-              alt="Logo Club Gema"
+              alt={`Logo ${COMPANY_NAME}`}
               className="w-20 md:w-72 h-auto rounded-full filter drop-shadow-lg"
             />
           </div>
@@ -180,7 +181,7 @@ function Login() {
           </div>
 
           <p className="mt-6 md:mt-12 text-center text-[9px] md:text-[10px] text-slate-300 font-black uppercase tracking-[0.3em] pb-4">
-            Club Gema | Desde 2023
+            {COMPANY_NAME} | Desde {COMPANY_FOUNDED_YEAR}
           </p>
         </div>
       </div>

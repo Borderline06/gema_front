@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { MapPin, Clock, CalendarPlus, Sparkles, RefreshCw } from 'lucide-react';
 import EmptyState from '../../shared/EmptyState';
 import { getMomento, getTiempoRestante } from '../../../utils/studentAgenda';
+import { formatBrandingText } from '../../../utils/formatBrandingText';
 
 const diaLargo = (date) => new Intl.DateTimeFormat('es-PE', { weekday: 'long' }).format(date);
 const fechaLarga = (date) => new Intl.DateTimeFormat('es-PE', { day: 'numeric', month: 'long' }).format(date);
@@ -68,7 +69,7 @@ const NextClassHero = ({ nextClass, now }) => {
         <h2 className="text-2xl md:text-4xl font-black italic uppercase tracking-tighter leading-tight">
           {prefijo} <span className="text-brand-accent">{destacado}</span>
           {' '}a las <span className="text-brand-accent">{nextClass.horaInicio || '--:--'}</span>
-          <span className="block md:inline"> en {nextClass.sede}</span>
+          <span className="block md:inline"> en {formatBrandingText(nextClass.sede)}</span>
         </h2>
 
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[10px] md:text-xs font-bold uppercase tracking-widest text-white/80">
@@ -77,7 +78,7 @@ const NextClassHero = ({ nextClass, now }) => {
             {fechaLarga(nextClass.inicio)} · {nextClass.horaInicio || '--:--'} - {nextClass.horaFin || '--:--'}
           </span>
           <span className="inline-flex items-center gap-1.5">
-            <MapPin size={14} className="text-brand-accent" /> {nextClass.sede}
+            <MapPin size={14} className="text-brand-accent" /> {formatBrandingText(nextClass.sede)}
           </span>
         </div>
       </div>

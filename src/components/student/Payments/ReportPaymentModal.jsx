@@ -3,6 +3,7 @@ import { X, Send, Loader2, Banknote, Upload, Coins, Copy, CheckCircle2, Landmark
 import apiFetch from "../../../interceptors/api.js";
 import toast from "react-hot-toast";
 import { API_ROUTES } from "../../../constants/apiRoutes.js";
+import { COMPANY_NAME } from '../../../config/branding';
 
 // `monto` (opcional) fija el importe a pagar. Sin él se usa el saldo restante o el
 // monto final de la deuda. Si hay un importe válido el campo es de solo lectura
@@ -91,7 +92,7 @@ const ReportPaymentModal = ({ isOpen, onClose, debt, monto, onSuccess }) => {
           <div className="bg-brand-primary p-5 md:p-8 text-white relative">
             <button onClick={onClose} className="absolute top-5 right-6 md:hidden text-white/50 hover:text-white"><X size={24} /></button>
             <h3 className="font-black uppercase italic text-lg md:text-2xl tracking-tighter leading-none">Reportar <span className="text-brand-accent">Pago</span></h3>
-            <p className="text-[9px] font-black opacity-50 uppercase tracking-[0.2em] mt-1 italic">Gema Student Elite</p>
+            <p className="text-[9px] font-black opacity-50 uppercase tracking-[0.2em] mt-1 italic">{COMPANY_NAME} Student Elite</p>
           </div>
 
           <form onSubmit={handleSubmit} className="p-5 md:p-8 space-y-4 md:space-y-6 flex-1 md:overflow-y-auto custom-scrollbar">
@@ -166,7 +167,7 @@ const ReportPaymentModal = ({ isOpen, onClose, debt, monto, onSuccess }) => {
             <div className="text-center space-y-4 w-full max-w-[260px] pb-10 md:pb-0">
               
               <div className="bg-brand-surface p-2.5 rounded-[2rem] shadow-lg border-2 border-white">
-                <img src="/QrYapeGema.PNG" alt="QR Gema" className="w-36 md:w-44 mx-auto h-auto rounded-[1.5rem] mb-2" />
+                <img src="/QrYapeGema.PNG" alt={`QR ${COMPANY_NAME}`} className="w-36 md:w-44 mx-auto h-auto rounded-[1.5rem] mb-2" />
                 <div className="bg-brand-primary/5 py-1 rounded-lg"><p className="text-[8px] font-black text-brand-primary uppercase italic">Yape / Plin</p></div>
               </div>
 

@@ -4,6 +4,7 @@ import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { diasSemana } from './scheduleLabels';
 import { esClaseUnica, fechaClaseUnica } from './scheduleChangeUtils';
+import { formatBrandingText } from '../../../../utils/formatBrandingText';
 
 const CurrentScheduleCard = ({ horario, isSelected, onSelect }) => {
     const unica = esClaseUnica(horario);
@@ -36,7 +37,7 @@ const CurrentScheduleCard = ({ horario, isSelected, onSelect }) => {
                     </span>
                     <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-md ${isSelected ? 'bg-orange-200 text-orange-800' : 'bg-brand-surface-alt text-slate-500'
                         }`}>
-                        {horario.horarios_clases.canchas.sedes.nombre || 'Sin Sede'}
+                        {formatBrandingText(horario.horarios_clases.canchas.sedes.nombre || 'Sin Sede')}
                     </span>
                     {horario.estado === 'PENDIENTE_PAGO' && (
                         <span className="text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-md text-amber-600 bg-amber-50 border border-amber-100">

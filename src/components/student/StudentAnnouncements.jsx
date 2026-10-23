@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronRight, ChevronLeft, Trophy, RefreshCcw, Users, Gift, HeartPulse, Sparkles } from 'lucide-react';
+import { COMPANY_NAME } from '../../config/branding';
 
 const StudentAnnouncements = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -34,7 +35,7 @@ const StudentAnnouncements = () => {
     },
     {
       id: 4,
-      tipo: 'DISCIPLINA GEMA',
+      tipo: `DISCIPLINA ${COMPANY_NAME}`,
       titulo: 'Bonos por Rendimiento',
       descripcion: 'Premiamos tu esfuerzo constante en la cancha con beneficios y merchandising exclusivo del Club.',
       icon: <Trophy size={32} />,
@@ -62,7 +63,7 @@ const StudentAnnouncements = () => {
             <Gift size={16} className="text-white" />
           </div>
           <h2 className="font-black uppercase tracking-[0.2em] text-[11px] italic text-brand-primary">
-            Beneficios Exclusivos <span className="text-brand-accent">Gema</span>
+            Beneficios Exclusivos <span className="text-brand-accent">{COMPANY_NAME}</span>
           </h2>
         </div>
       </div>

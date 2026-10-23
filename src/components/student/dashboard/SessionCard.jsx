@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { Clock, MapPin, User, Star, ArrowRight, Sparkles, History, RefreshCw } from 'lucide-react';
 import { getSessionVisual, getSessionVisualKey } from '../../../config/sessionStatus';
 import { getDiaCorto } from '../../../utils/studentAgenda';
+import { formatBrandingText } from '../../../utils/formatBrandingText';
 
 // 'YYYY-MM-DD' -> fecha local legible, sin pasar por Date(iso) (evita el desfase de un día).
 const formatFechaCorta = (fecha) => {
@@ -73,7 +74,7 @@ const SessionCard = ({ sesion, now }) => {
             <p className="text-[7px] md:text-[8px] font-black text-brand-muted uppercase tracking-widest">Sede</p>
             <div className="flex items-start gap-1 text-[9px] md:text-[10px] font-bold text-slate-600 uppercase italic">
               <MapPin size={10} className="text-blue-500 shrink-0 mt-0.5" />
-              <span className="whitespace-normal leading-tight">{sesion.sede}</span>
+              <span className="whitespace-normal leading-tight">{formatBrandingText(sesion.sede)}</span>
             </div>
           </div>
 

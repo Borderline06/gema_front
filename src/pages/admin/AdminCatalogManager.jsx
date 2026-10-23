@@ -7,6 +7,7 @@ import { catalogoService } from '../../services/catalogo.service';
 import SearchInput from '../../components/shared/SearchInput';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import EmptyState from '../../components/shared/EmptyState';
+import { formatBrandingText } from '../../utils/formatBrandingText';
 
 const AdminCatalogManager = () => {
     const [view, setView] = useState('list');
@@ -123,7 +124,7 @@ const AdminCatalogManager = () => {
                                         )}
                                     </div>
                                     <h3 className="font-black text-slate-800 text-sm uppercase italic leading-tight min-h-[2.5rem] flex items-center">
-                                        {item.nombre}
+                                        {formatBrandingText(item.nombre)}
                                     </h3>
                                     <p className="text-[9px] text-brand-muted font-medium line-clamp-2 leading-relaxed italic">
                                         Lógica interna vinculada a {item.cantidad_clases_semanal} clases por semana.

@@ -1,10 +1,11 @@
 import React from 'react';
 import { Copy, ShieldCheck } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { COMPANY_NAME, PAYMENT_PHONE, PAYMENT_OWNER } from "../../../config/branding";
 import { THEME_ASSETS } from "../../../config/themeAssets.js";
 import { BRAND_COLORS } from "../../../config/themeColors.js";
 
-const PaymentMethodCard = ({ phoneNumber = "902585995", owner = "Club Gema S.A.C." }) => {
+const PaymentMethodCard = ({ phoneNumber = PAYMENT_PHONE, owner = PAYMENT_OWNER }) => {
   
   const copyToClipboard = () => {
     navigator.clipboard.writeText(phoneNumber);
@@ -26,13 +27,13 @@ const PaymentMethodCard = ({ phoneNumber = "902585995", owner = "Club Gema S.A.C
           <div className="overflow-hidden rounded-[2rem]">
             <img 
               src="/QrYapeGema.PNG" 
-              alt="QR Oficial Club Gema" 
+              alt={`QR Oficial ${COMPANY_NAME}`} 
               className="w-40 h-40 object-cover group-hover:scale-110 transition-transform duration-500" 
             />
           </div>
           <div className="mt-3 text-center">
             <p className="text-[7px] font-black text-brand-muted uppercase tracking-[0.3em] leading-none mb-1">
-              QR Oficial Gema
+              QR Oficial {COMPANY_NAME}
             </p>
             <div className="bg-brand-primary-soft py-1 px-2 rounded-full inline-block">
               <span className="text-[6px] font-black text-brand-primary uppercase italic">Yape / Plin</span>

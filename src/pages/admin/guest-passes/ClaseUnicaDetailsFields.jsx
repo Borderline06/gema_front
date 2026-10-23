@@ -1,5 +1,6 @@
 import React from 'react';
 import { Calendar, CreditCard, DollarSign } from 'lucide-react';
+import { formatBrandingText } from '../../../utils/formatBrandingText';
 
 const ClaseUnicaDetailsFields = ({
     fecha, onFechaChange,
@@ -32,7 +33,7 @@ const ClaseUnicaDetailsFields = ({
             >
                 <option value="">SELECCIONAR MÉTODO</option>
                 {metodosPago.map(m => (
-                    <option key={m.id} value={m.id}>{m.nombre}</option>
+                    <option key={m.id} value={m.id}>{formatBrandingText(m.nombre)}</option>
                 ))}
             </select>
         </div>

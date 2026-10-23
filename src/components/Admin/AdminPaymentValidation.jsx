@@ -10,6 +10,7 @@ import { API_ROUTES } from '../../constants/apiRoutes';
 import { STATUS_SUCCESS_SOLID } from '../../config/statusColors';
 import AjusteFechaInicioModal from './AjusteFechaInicioModal';
 import PaymentConcept from './PaymentConcept';
+import { formatBrandingText } from '../../utils/formatBrandingText';
 
 const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
     const { userId } = useAuth();
@@ -264,7 +265,7 @@ const AdminPaymentValidation = ({ onBack, paymentData, onSuccess }) => {
                                                 <div className="flex items-start gap-2">
                                                     <MapPin size={14} className="text-blue-500 mt-0.5" />
                                                     <div>
-                                                        <p className="text-[10px] font-black text-slate-800 uppercase leading-none">{h?.canchas?.sedes?.nombre}</p>
+                                                        <p className="text-[10px] font-black text-slate-800 uppercase leading-none">{formatBrandingText(h?.canchas?.sedes?.nombre)}</p>
                                                         <p className="text-[9px] font-bold text-brand-muted uppercase">{h?.canchas?.nombre}</p>
                                                     </div>
                                                 </div>

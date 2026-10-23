@@ -10,6 +10,8 @@ import SearchInput from '../../components/shared/SearchInput';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import recuperacionService from '../../services/recuperacion.service';
 import { STATUS_SUCCESS } from '../../config/statusColors';
+import { COMPANY_NAME } from '../../config/branding';
+import { formatBrandingText } from '../../utils/formatBrandingText';
 
 const AdminDeleteMakeups = () => {
     const [recuperaciones, setRecuperaciones] = useState([]);
@@ -99,7 +101,7 @@ const AdminDeleteMakeups = () => {
                     </div>
                     <div>
                         <h1 className="text-xl font-black text-white uppercase italic tracking-tighter leading-none">Depuración Maestra</h1>
-                        <p className="text-[9px] text-brand-muted font-bold uppercase tracking-widest mt-1">Gema Academy • Control de Registros</p>
+                        <p className="text-[9px] text-brand-muted font-bold uppercase tracking-widest mt-1">{COMPANY_NAME} • Control de Registros</p>
                     </div>
                 </div>
                 <SearchInput
@@ -123,7 +125,7 @@ const AdminDeleteMakeups = () => {
                         >
                             <div className="flex items-center gap-3">
                                 <MapPin size={18} className={sede.includes("NO PROGRAMADAS") ? 'text-red-400' : 'text-brand-accent'} />
-                                <h2 className="text-sm font-black text-brand-body uppercase italic">{sede}</h2>
+                                <h2 className="text-sm font-black text-brand-body uppercase italic">{formatBrandingText(sede)}</h2>
                                 <span className="text-[10px] font-bold px-2 py-0.5 bg-brand-surface-alt text-slate-500 rounded-lg">
                                     {Object.keys(alumnosGroup).length} alumnos
                                 </span>

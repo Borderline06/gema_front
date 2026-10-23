@@ -4,6 +4,7 @@ import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { diasSemana } from './scheduleLabels';
 import { esClaseUnica, fechaClaseUnica } from './scheduleChangeUtils';
+import { formatBrandingText } from '../../../../utils/formatBrandingText';
 
 const formatFecha = (fecha) => format(parseISO(fecha), "dd 'de' MMMM yyyy", { locale: es });
 
@@ -21,7 +22,7 @@ const ChangeScheduleConfirmToast = ({ t, selectedHorarioActual, selectedHorarioN
                 <div className="flex flex-col gap-1.5 text-xs">
                     <p className="flex flex-col">
                         <span className="text-[9px] text-brand-primary uppercase">Sede</span>
-                        <span className="font-bold text-brand-body">{selectedHorarioActual.horarios_clases?.canchas?.sedes?.nombre}</span>
+                        <span className="font-bold text-brand-body">{formatBrandingText(selectedHorarioActual.horarios_clases?.canchas?.sedes?.nombre)}</span>
                     </p>
                     <p className="flex flex-col">
                         <span className="text-[9px] text-brand-primary uppercase">Nivel</span>
@@ -45,7 +46,7 @@ const ChangeScheduleConfirmToast = ({ t, selectedHorarioActual, selectedHorarioN
                 <div className="flex flex-col gap-1.5 text-xs">
                     <p className="flex flex-col">
                         <span className="text-[9px] text-brand-accent-dark uppercase">Sede</span>
-                        <span className="font-bold text-slate-800">{selectedHorarioNuevo.cancha?.sede?.nombre}</span>
+                        <span className="font-bold text-slate-800">{formatBrandingText(selectedHorarioNuevo.cancha?.sede?.nombre)}</span>
                     </p>
                     <p className="flex flex-col">
                         <span className="text-[9px] text-brand-accent-dark uppercase">Nivel</span>

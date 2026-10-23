@@ -3,6 +3,7 @@ import { Loader2, ShoppingBag } from 'lucide-react';
 import { formatSoles } from '../../utils/formatSoles';
 import Modal from '../shared/Modal';
 import PickupSedeSelect from './PickupSedeSelect';
+import { formatBrandingText } from '../../utils/formatBrandingText';
 
 // Resumen del pedido antes de generar la deuda. `lines` = [{ item, qty, subtotal }].
 const MerchOrderModal = ({ lines, total, sedes, sedeId, onSedeChange, submitting, onClose, onConfirm }) => (
@@ -22,7 +23,7 @@ const MerchOrderModal = ({ lines, total, sedes, sedeId, onSedeChange, submitting
       <ul className="space-y-2 max-h-56 overflow-y-auto">
         {lines.map(({ item, qty, subtotal }) => (
           <li key={item.id} className="flex items-center justify-between gap-3 text-xs font-bold text-brand-body">
-            <span className="uppercase italic">{item.nombre} <span className="text-brand-muted">× {qty}</span></span>
+            <span className="uppercase italic">{formatBrandingText(item.nombre)} <span className="text-brand-muted">× {qty}</span></span>
             <span className="font-black text-brand-primary">{formatSoles(subtotal)}</span>
           </li>
         ))}

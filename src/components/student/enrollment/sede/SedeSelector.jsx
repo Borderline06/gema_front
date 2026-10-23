@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { Building2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { formatBrandingText } from '../../../../utils/formatBrandingText';
 
 // Extraído tal cual del selector de sedes de enrollment.jsx (mismas clases).
 const SedeSelector = ({ sedes, active, onSelect }) => {
@@ -17,7 +18,7 @@ const SedeSelector = ({ sedes, active, onSelect }) => {
       <div ref={scrollRef} className="flex gap-3 overflow-x-auto scrollbar-hide py-4 px-2 scroll-smooth">
         {sedes.map(sede => (
           <button key={sede} type="button" onClick={() => onSelect(sede)} className={`px-8 py-4 rounded-[2rem] font-black text-[10px] uppercase italic transition-all duration-500 border-2 flex-shrink-0 ${active === sede ? 'bg-brand-primary border-brand-primary text-white shadow-lg' : 'bg-brand-surface border-brand-border-soft text-brand-muted'}`}>
-            <Building2 size={16} /> {sede}
+            <Building2 size={16} /> {formatBrandingText(sede)}
           </button>
         ))}
       </div>

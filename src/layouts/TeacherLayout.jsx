@@ -6,6 +6,7 @@ import TeacherSidebar from '../components/teacher/TeacherSidebar';
 import MobileNavbarTeacher from '../components/MobileNavbarTeacher';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
 import { THEME_ASSETS } from "../config/themeAssets.js";
+import { COMPANY_NAME } from '../config/branding';
 
 const TeacherLayout = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -16,7 +17,7 @@ const TeacherLayout = () => {
 
     const displayName = userData?.nombres
         ? `${userData.nombres} ${userData.apellidos}`
-        : 'Coordinador Gema';
+        : `Coordinador ${COMPANY_NAME}`;
 
     const initial = userData?.nombres
         ? userData.nombres.charAt(0).toUpperCase()

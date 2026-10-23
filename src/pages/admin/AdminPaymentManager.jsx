@@ -14,6 +14,7 @@ import { API_ROUTES } from '../../constants/apiRoutes';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import SearchInput from '../../components/shared/SearchInput';
 import { STATUS_SUCCESS } from '../../config/statusColors';
+import { COMPANY_NAME } from '../../config/branding';
 
 const AdminPaymentManager = () => {
     const [view, setView] = useState('list');
@@ -154,7 +155,7 @@ const AdminPaymentManager = () => {
         <div className="space-y-6 animate-fade-in-up p-1 pb-20">
             <header className="flex justify-between items-center">
                 <div>
-                    <PageTitle title="Gestión de" accent="Ingresos" subtitle="Monitor de pagos - Club Gema" />
+                    <PageTitle title="Gestión de" accent="Ingresos" subtitle={`Monitor de pagos - ${COMPANY_NAME}`} />
                 </div>
 
                 <div className="flex bg-brand-surface p-1 rounded-xl border border-brand-border shadow-sm">

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Zap } from 'lucide-react';
 import { formatearFecha, getEstadoPagoBadge } from './cicloHelpers';
+import { formatBrandingText } from '../../../../utils/formatBrandingText';
 
 const ClaseSueltaButton = ({ ciclo, onSelect }) => (
     <button
@@ -14,7 +15,7 @@ const ClaseSueltaButton = ({ ciclo, onSelect }) => (
             <div className="min-w-0">
                 <p className="text-[9px] font-black text-purple-600 uppercase tracking-widest">Clase Suelta</p>
                 <p className="text-[11px] font-bold text-slate-600 truncate">
-                    {formatearFecha(ciclo.fecha_inicio_real)} · {ciclo.inscripciones?.[0]?.sede || 'S/D'}
+                    {formatearFecha(ciclo.fecha_inicio_real)} · {formatBrandingText(ciclo.inscripciones?.[0]?.sede || 'S/D')}
                 </p>
             </div>
         </div>

@@ -18,6 +18,8 @@ import InscriptionsModal from '../../components/Admin/StudenManager/Inscriptions
 import StudentTable from '../../components/Admin/StudenManager/StudentTable.jsx';
 import AdminStudents from '../../components/Admin/AdminStudents.jsx';
 import StudentAttendanceHistory from '../../components/Admin/StudenManager/StudentAttendanceHistory.jsx';
+import { COMPANY_NAME } from '../../config/branding';
+import { formatBrandingText } from '../../utils/formatBrandingText';
 
 const AdminStudentsManager = () => {
     const [view, setView] = useState('list'); // 'list' | 'details' | 'cambio_nivel'
@@ -60,7 +62,7 @@ const AdminStudentsManager = () => {
             }));
         },
         [selectedSede],
-        { initialData: [], errorMessage: 'Error al sincronizar Base Gema' }
+        { initialData: [], errorMessage: `Error al sincronizar Base ${COMPANY_NAME}` }
     );
 
     // El pipeline de filtrado corre sobre la lista completa, asi que se usa el
@@ -260,7 +262,7 @@ const AdminStudentsManager = () => {
                 />
                 <select value={selectedSede} onChange={(e) => cambiarSede(e.target.value)} className="bg-brand-surface border border-brand-border rounded-xl px-4 py-3 text-[10px] font-black uppercase shadow-sm outline-none cursor-pointer focus:ring-2 focus:ring-blue-500">
                     <option value="">TODAS LAS SEDES</option>
-                    {sedes.map(s => <option key={s.id} value={s.id}>SEDE {s.nombre}</option>)}
+                    {sedes.map(s => <option key={s.id} value={s.id}>SEDE {formatBrandingText(s.nombre)}</option>)}
                 </select>
             </div>
 

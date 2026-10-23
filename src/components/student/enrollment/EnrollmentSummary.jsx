@@ -3,6 +3,7 @@ import { MapPin, Trophy, CalendarDays, Clock } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { MODALIDAD } from '../../../hooks/useEnrollmentWizard';
+import { formatBrandingText } from '../../../utils/formatBrandingText';
 
 const DIAS_CORTOS = ['', 'LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SAB', 'DOM'];
 const soles = (n) => `S/ ${Number(n).toFixed(2)}`;
@@ -31,7 +32,7 @@ const EnrollmentSummary = ({ modalidad, sede, nivelNombre, horarios, fechaInicio
       </span>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <Row icon={MapPin} label="Sede">{sede}</Row>
+        <Row icon={MapPin} label="Sede">{formatBrandingText(sede)}</Row>
         <Row icon={Trophy} label="Nivel">{nivelNombre}</Row>
         {esMensual ? (
           <>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Ghost } from 'lucide-react';
+import { COMPANY_NAME } from '../config/branding';
 
 const NotFound = () => {
     return (
@@ -51,7 +52,7 @@ const NotFound = () => {
                 <div className="mt-16 flex items-center justify-center gap-3 opacity-30">
                     <div className="h-px w-12 bg-slate-500"></div>
                     <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em]">
-                        Gema Performance Systems
+                        {COMPANY_NAME} Performance Systems
                     </span>
                     <div className="h-px w-12 bg-slate-500"></div>
                 </div>

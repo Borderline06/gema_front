@@ -1,5 +1,6 @@
 import React from 'react';
 import { MapPin, Layers, Clock } from 'lucide-react';
+import { formatBrandingText } from '../../../utils/formatBrandingText';
 
 const HorarioFilters = ({
     sedes, sedeSelect, onSedeChange,
@@ -19,7 +20,7 @@ const HorarioFilters = ({
             >
                 <option value="">SELECCIONAR SEDE</option>
                 {sedes.map((s) => (
-                    <option key={s.id} value={s.id}>{s.nombre}</option>
+                    <option key={s.id} value={s.id}>{formatBrandingText(s.nombre)}</option>
                 ))}
             </select>
         </div>

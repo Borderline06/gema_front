@@ -1,5 +1,6 @@
 import React from 'react';
 import { Loader2, Send, X, Clock, Layers, MapPin, Calendar, ShoppingBag } from 'lucide-react';
+import { formatBrandingText } from '../../../utils/formatBrandingText';
 
 const ResumenClasesSidebar = ({ formDataList, alumnos, horarios, metodosPago, onRemoveItem, submitting }) => (
     <div className="bg-brand-primary-dark text-white p-6 rounded-[2.5rem] shadow-2xl border-4 border-slate-800 flex flex-col max-h-[80vh]">
@@ -46,7 +47,7 @@ const ResumenClasesSidebar = ({ formDataList, alumnos, horarios, metodosPago, on
                                 </p>
                                 <p className="flex items-center gap-1.5 truncate">
                                     <MapPin size={10} className="text-slate-500" />
-                                    {horario ? `${horario.sede?.nombre}` : "Sede no encontrada"}
+                                    {horario ? `${formatBrandingText(horario.sede?.nombre)}` : "Sede no encontrada"}
                                 </p>
                                 <p className="flex items-center gap-1.5 text-brand-muted text-[10px]">
                                     <Calendar size={10} className="text-slate-500" />

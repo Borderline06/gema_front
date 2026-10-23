@@ -7,6 +7,8 @@ import Hero from '../components/Home/Hero';
 import horarioService from '../services/horario.service';
 import { apiFetch } from '../interceptors/api';
 import { API_ROUTES } from '../constants/apiRoutes';
+import { formatBrandingText } from '../utils/formatBrandingText';
+import { COMPANY_NAME } from '../config/branding';
 
 function Home() {
   // Inicializamos en 1 (Lunes) o según el día actual ajustado a tu escala 1-7
@@ -68,8 +70,8 @@ function Home() {
           title: h.nivel?.nombre || "Entrenamiento Voleibol",
           category: h.nivel?.nombre || "General",
           time: `${formatTime(h.hora_inicio)} - ${formatTime(h.hora_fin)}`,
-          location: h.cancha?.sede?.nombre || h.cancha?.nombre || "Sede Gema",
-          coordinator: h.coordinador?.nombre_completo || "Staff Gema",
+          location: formatBrandingText(h.cancha?.sede?.nombre || h.cancha?.nombre || `Sede ${COMPANY_NAME}`),
+          coordinator: h.coordinador?.nombre_completo || `Staff ${COMPANY_NAME}`,
           spots: h.capacidad_max || 0,
           price: h.precio || 0,
           image: h.imagen_url || "https://images.unsplash.com/photo-1592656094267-764a45160876?w=800&q=80",

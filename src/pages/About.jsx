@@ -1,6 +1,7 @@
 import React from 'react';
 import { Target, Award, Shield, Zap, TrendingUp, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { COMPANY_NAME } from '../config/branding';
 
 const About = () => {
   return (
@@ -24,7 +25,7 @@ const About = () => {
             Nuestra <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-brand-accent-dark">Esencia</span>
           </h1>
           <p className="mt-8 text-brand-muted max-w-2xl mx-auto text-lg font-medium leading-relaxed">
-            Formamos atletas integrales. En Gema, la técnica se encuentra con la mentalidad ganadora para crear la próxima generación de campeones.
+            Formamos atletas integrales. En {COMPANY_NAME}, la técnica se encuentra con la mentalidad ganadora para crear la próxima generación de campeones.
           </p>
         </div>
       </section>
@@ -113,7 +114,7 @@ const About = () => {
               to="/register"
               className="inline-block bg-brand-accent hover:bg-brand-accent-dark text-white font-black uppercase tracking-[0.2em] px-10 py-5 rounded-2xl text-sm shadow-xl shadow-brand-accent/20 transition-all hover:-translate-y-1 active:scale-95 text-center"
             >
-              Únete al Club Gema
+              Únete a {COMPANY_NAME}
             </Link>
           </div>
         </div>

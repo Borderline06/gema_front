@@ -1,6 +1,7 @@
 import React from 'react';
 import { MapPin } from 'lucide-react';
 import MerchImage from './MerchImage';
+import { formatBrandingText } from '../../utils/formatBrandingText';
 
 // Una tarjeta por producto (ver groupCollection): `group` trae las cantidades.
 // "Posees: N" cuenta las unidades no perdidas; si todas se perdieron la tarjeta se apaga.
@@ -15,7 +16,7 @@ const CollectionCard = ({ group }) => {
         </span>
       </div>
       <div className="p-5 flex flex-col gap-2 flex-1">
-        <h3 className="text-sm font-black text-brand-heading uppercase italic leading-tight">{group.nombre}</h3>
+        <h3 className="text-sm font-black text-brand-heading uppercase italic leading-tight">{formatBrandingText(group.nombre)}</h3>
 
         {group.porEntregar > 0 && (
           <p className="flex items-start gap-1.5 text-[10px] font-black uppercase tracking-wide text-brand-accent-dark">

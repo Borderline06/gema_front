@@ -11,6 +11,7 @@ import EmptyState from '../../components/shared/EmptyState';
 import ConfirmModal from '../../components/shared/ConfirmModal';
 import MerchImage from '../../components/merch/MerchImage';
 import { uniqueSedes } from '../../utils/uniqueById';
+import { formatBrandingText } from '../../utils/formatBrandingText';
 
 const SEDE_KEY = 'merch_entregas_sede';
 const MIN_BUSQUEDA = 2;
@@ -66,7 +67,7 @@ const AdminMerchDeliveries = () => {
         setEntregandoId(item.id);
         try {
             await merchService.entregarItem(item.id);
-            toast.success(`Entregado: ${item.nombre}`);
+            toast.success(`Entregado: ${formatBrandingText(item.nombre)}`);
             setPorConfirmar(null);
             setRecientes(prev => [item, ...prev.filter(r => r.id !== item.id)]);
             await refetch();
@@ -81,7 +82,7 @@ const AdminMerchDeliveries = () => {
         setRevirtiendoId(item.id);
         try {
             await merchService.revertirEntrega(item.id);
-            toast.success(`Entrega revertida: ${item.nombre}`);
+            toast.success(`Entrega revertida: ${formatBrandingText(item.nombre)}`);
             setRecientes(prev => prev.filter(r => r.id !== item.id));
             await refetch();
         } catch (error) {
@@ -110,7 +111,7 @@ const AdminMerchDeliveries = () => {
                         className="w-full appearance-none bg-brand-bg rounded-xl pl-11 pr-9 py-2.5 text-[10px] font-black uppercase text-slate-600 outline-none cursor-pointer focus:ring-2 focus:ring-blue-500/20"
                     >
                         <option value="">Todas las sedes</option>
-                        {uniqueSedes(sedes).map(s => <option key={s.id} value={s.id}>{s.nombre}</option>)}
+                        {uniqueSedes(sedes).map(s => <option key={s.id} value={s.id}>{formatBrandingText(s.nombre)}</option>)}
                     </select>
                     <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-muted pointer-events-none" />
                 </div>
@@ -150,10 +151,10 @@ const AdminMerchDeliveries = () => {
                                     <li key={item.id} className="flex items-center gap-4 px-6 py-4">
                                         <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0"><MerchImage item={item} iconSize={22} /></div>
                                         <div className="min-w-0 flex-1">
-                                            <p className="text-sm font-black text-brand-heading uppercase italic leading-tight">{item.nombre}</p>
+                                            <p className="text-sm font-black text-brand-heading uppercase italic leading-tight">{formatBrandingText(item.nombre)}</p>
                                             {item.sede && (
                                                 <p className="flex items-center gap-1 text-[10px] font-bold text-brand-muted uppercase mt-0.5">
-                                                    <MapPin size={11} /> {item.sede}
+                                                    <MapPin size={11} /> {formatBrandingText(item.sede)}
                                                 </p>
                                             )}
                                         </div>
@@ -183,7 +184,7 @@ const AdminMerchDeliveries = () => {
                         {recientes.map(item => (
                             <li key={item.id} className="flex items-center gap-4 px-6 py-3">
                                 <div className="min-w-0 flex-1">
-                                    <p className="text-xs font-black text-brand-heading uppercase italic truncate">{item.nombre}</p>
+                                    <p className="text-xs font-black text-brand-heading uppercase italic truncate">{formatBrandingText(item.nombre)}</p>
                                     <p className="text-[10px] font-bold text-brand-muted uppercase truncate">{item.nombres} {item.apellidos} · DNI {item.documento || 'S/N'}</p>
                                 </div>
                                 <button
@@ -207,7 +208,7 @@ const AdminMerchDeliveries = () => {
                 onConfirm={entregar}
                 title="¿Confirmar entrega?"
                 message={porConfirmar
-                    ? `Vas a entregar "${porConfirmar.nombre}" a ${porConfirmar.nombres} ${porConfirmar.apellidos} (DNI ${porConfirmar.documento || 'S/N'}). Verifica que sea la persona correcta.`
+                    ? `Vas a entregar "${formatBrandingText(porConfirmar.nombre)}" a ${porConfirmar.nombres} ${porConfirmar.apellidos} (DNI ${porConfirmar.documento || 'S/N'}). Verifica que sea la persona correcta.`
                     : ''}
                 confirmText={entregandoId ? 'Registrando...' : 'Sí, entregar'}
             />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Clock, CheckCircle2 } from 'lucide-react';
 import { diasSemana } from './scheduleLabels';
+import { formatBrandingText } from '../../../../utils/formatBrandingText';
 
 const AvailableScheduleCard = ({ horario, isSelected, onSelect }) => (
     <div
@@ -23,7 +24,7 @@ const AvailableScheduleCard = ({ horario, isSelected, onSelect }) => (
                 </span>
                 <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-md ${isSelected ? 'bg-blue-200 text-brand-primary' : 'bg-brand-surface-alt text-slate-500'
                     }`}>
-                    {horario.cancha.sede.nombre || 'Sin Sede'}
+                    {formatBrandingText(horario.cancha.sede.nombre || 'Sin Sede')}
                 </span>
             </div>
             <div>

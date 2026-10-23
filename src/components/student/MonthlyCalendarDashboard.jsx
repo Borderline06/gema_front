@@ -2,6 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { CalendarDays, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
 import { SESSION_VISUAL, CALENDAR_LEGEND_KEYS, getSessionVisual } from '../../config/sessionStatus';
 import SessionDetailModal from './dashboard/SessionDetailModal';
+import { COMPANY_NAME } from '../../config/branding';
+import { formatBrandingText } from '../../utils/formatBrandingText';
 
 const toKey = (date) =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -43,7 +45,7 @@ const MonthlyCalendarDashboard = ({ sesiones = [], now = new Date() }) => {
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-3">
         <div>
           <h2 className="flex items-center gap-1.5 text-sm md:text-lg font-black italic uppercase tracking-widest text-brand-accent">
-            <CalendarDays className="w-4 h-4" /> GEMA PLANNER
+            <CalendarDays className="w-4 h-4" /> {COMPANY_NAME} PLANNER
           </h2>
           <p className="text-[8px] md:text-[9px] font-bold text-brand-muted uppercase tracking-widest mt-0.5 italic">
             Mes de {new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(new Date(anioActual, mesActual))} {anioActual}
@@ -106,8 +108,8 @@ const MonthlyCalendarDashboard = ({ sesiones = [], now = new Date() }) => {
                         type="button"
                         key={clase.key}
                         onClick={() => setSesionSeleccionada(clase)}
-                        title={`${label} · ${clase.horaInicio || ''} · ${clase.sede}`}
-                        aria-label={`${label}, ${clase.horaInicio || ''}, ${clase.sede}. Ver detalle`}
+                        title={`${label} · ${clase.horaInicio || ''} · ${formatBrandingText(clase.sede)}`}
+                        aria-label={`${label}, ${clase.horaInicio || ''}, ${formatBrandingText(clase.sede)}. Ver detalle`}
                         className={`w-full text-left border-l-2 shadow-sm px-1 py-0.5 md:p-1.5 rounded-r cursor-pointer hover:brightness-95 hover:shadow-md active:scale-95 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent ${cell}`}
                       >
                         {/* Móvil: ícono + hora + sede (recortada) */}
@@ -117,7 +119,7 @@ const MonthlyCalendarDashboard = ({ sesiones = [], now = new Date() }) => {
                             {clase.horaInicio || '--:--'}
                           </span>
                           <span className="block text-[6px] font-black uppercase text-center leading-none mt-0.5 truncate opacity-80">
-                            {clase.sede}
+                            {formatBrandingText(clase.sede)}
                           </span>
                         </span>
                         {/* Escritorio: ícono + nivel + hora + sede (recortada) */}
@@ -131,7 +133,7 @@ const MonthlyCalendarDashboard = ({ sesiones = [], now = new Date() }) => {
                           </span>
                           <span className="flex items-center gap-0.5 text-[7px] font-bold uppercase opacity-80 mt-0.5 truncate">
                             <MapPin size={8} className="shrink-0" />
-                            <span className="truncate">{clase.sede}</span>
+                            <span className="truncate">{formatBrandingText(clase.sede)}</span>
                           </span>
                         </span>
                       </button>

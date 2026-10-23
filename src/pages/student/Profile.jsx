@@ -8,6 +8,7 @@ import EditProfileModal from '../../components/student/DataUsuario/EditProfileMo
 import ChangePasswordModal from '../../components/shared/ChangePasswordModal.jsx';
 import { KeyRound } from 'lucide-react';
 import { THEME_ASSETS } from "../../config/themeAssets.js";
+import { COMPANY_NAME } from '../../config/branding';
 
 const Profile = () => {
   const { updateUserData } = useAuth();
@@ -62,7 +63,7 @@ const Profile = () => {
   const alumnosData = user.alumnos || {};
   const direccionesData = alumnosData.direcciones || {};
 
-  const fullName = `${user.nombres || ''} ${user.apellidos || ''}`.trim() || 'Atleta Gema';
+  const fullName = `${user.nombres || ''} ${user.apellidos || ''}`.trim() || `Atleta ${COMPANY_NAME}`;
   const userInitial = user.nombres?.charAt(0).toUpperCase() || 'G';
 
   const userBirth = user.fecha_nacimiento
@@ -107,7 +108,7 @@ const Profile = () => {
             <div className="flex-1 text-center md:text-left w-full">
               <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-6">
                 <div className="space-y-2">
-                  <p className="text-brand-accent font-black uppercase tracking-[0.4em] text-[10px] italic">Expediente Oficial Gema</p>
+                  <p className="text-brand-accent font-black uppercase tracking-[0.4em] text-[10px] italic">Expediente Oficial {COMPANY_NAME}</p>
                   <h1 className="text-xl sm:text-2xl md:text-3xl font-black uppercase italic tracking-tighter leading-tight break-words">
                     {fullName}
                   </h1>

@@ -3,6 +3,7 @@ import { Save, Tag, DollarSign, Hash, CalendarDays, ArrowLeft, Package, RefreshC
 import { apiFetch } from '../../interceptors/api';
 import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../constants/apiRoutes';
+import { COMPANY_NAME } from '../../config/branding';
 
 const AdminCatalog = ({ onBack, editData }) => {
     const [loading, setLoading] = useState(false);
@@ -82,7 +83,7 @@ const AdminCatalog = ({ onBack, editData }) => {
                             </h1>
                         </div>
                         <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest ml-3 italic">
-                            Lógica interna de precios - Club Gema
+                            Lógica interna de precios - {COMPANY_NAME}
                         </p>
                     </div>
                 </div>

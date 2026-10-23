@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { apiFetch } from '../interceptors/api';
 import { API_ROUTES } from '../constants/apiRoutes';
 import { THEME_ASSETS } from "../config/themeAssets.js";
+import { COMPANY_NAME } from '../config/branding';
 
 
 const Blog = () => {
@@ -46,7 +47,7 @@ const Blog = () => {
   if (loading) return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-brand-primary-dark">
       <Loader2 className="animate-spin text-brand-accent mb-4" size={48} />
-      <p className="font-black text-white uppercase italic text-xs tracking-widest">ADN GEMA CARGANDO...</p>
+      <p className="font-black text-white uppercase italic text-xs tracking-widest">ADN {COMPANY_NAME} CARGANDO...</p>
     </div>
   );
 
@@ -67,7 +68,7 @@ const Blog = () => {
           </div>
 
           <h1 className="text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter leading-[0.85]">
-            ADN <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-brand-accent-dark">GEMA</span>
+            ADN <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-brand-accent-dark">{COMPANY_NAME}</span>
           </h1>
           <p className="mt-8 text-brand-muted max-w-2xl mx-auto text-lg font-medium italic">
             "Donde el talento se encuentra con la disciplina para crear leyendas."
@@ -103,9 +104,9 @@ const Blog = () => {
                 <div className="flex items-center gap-3 text-brand-primary">
                   {/* LOGO MÁS GRANDE CON FONDO BLANCO */}
                   <div className="w-12 h-12 bg-brand-surface border-2 border-brand-border-soft rounded-2xl p-1.5 shadow-md">
-                    <img src={THEME_ASSETS.logoFramed} alt="Gema" className="w-full h-full object-contain" />
+                    <img src={THEME_ASSETS.logoFramed} alt={COMPANY_NAME} className="w-full h-full object-contain" />
                   </div>
-                  <span className="font-black italic text-sm">Club Gema Oficial</span>
+                  <span className="font-black italic text-sm">{COMPANY_NAME} Oficial</span>
                 </div>
               </div>
             </div>
@@ -142,9 +143,9 @@ const Blog = () => {
                   {/* LOGO EN CARDS: MÁS GRANDE Y FONDO BLANCO */}
                   <div className="absolute top-6 left-6 bg-brand-surface px-4 py-2 rounded-2xl flex items-center gap-3 shadow-2xl border border-brand-border-soft">
                     <div className="w-8 h-8 bg-brand-surface rounded-lg p-0.5">
-                      <img src={THEME_ASSETS.logoFramed} alt="Gema" className="w-full h-full object-contain" />
+                      <img src={THEME_ASSETS.logoFramed} alt={COMPANY_NAME} className="w-full h-full object-contain" />
                     </div>
-                    <span className="text-[10px] font-black uppercase text-brand-primary italic tracking-widest">Gema News</span>
+                    <span className="text-[10px] font-black uppercase text-brand-primary italic tracking-widest">{COMPANY_NAME} News</span>
                   </div>
                 </div>
 

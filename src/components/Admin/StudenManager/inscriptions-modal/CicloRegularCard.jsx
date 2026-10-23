@@ -1,6 +1,7 @@
 import React from 'react';
 import { Clock, User, DollarSign, Info, Layers } from 'lucide-react';
 import { formatearFecha, obtenerRangoCiclo, getEstadoPagoBadge, getEstadoInscripcionBadge } from '../ciclos/cicloHelpers';
+import { formatBrandingText } from '../../../../utils/formatBrandingText';
 
 const CicloRegularCard = ({ ciclo }) => {
     const estadosInscripcion = [...new Set((ciclo.inscripciones || []).map(i => i.estado))];
@@ -21,7 +22,7 @@ const CicloRegularCard = ({ ciclo }) => {
                     </div>
 
                     <p className="text-sm font-black text-brand-body uppercase italic mt-2">
-                        SEDE {ciclo.inscripciones?.[0]?.sede || 'S/D'}
+                        SEDE {formatBrandingText(ciclo.inscripciones?.[0]?.sede || 'S/D')}
                     </p>
 
                     <div className="text-[10px] font-bold text-brand-muted flex items-center gap-1.5 mt-1 min-w-0">

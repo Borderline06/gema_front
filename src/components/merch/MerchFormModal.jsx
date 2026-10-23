@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import Modal from '../shared/Modal';
 import MerchImage from './MerchImage';
 import { validateImageFile } from '../../utils/imageUpload';
+import { COMPANY_NAME } from '../../config/branding';
 
 const EMPTY = { nombre: '', descripcion: '', precio: '', stock: '0', estado: 'ACTIVO' };
 
@@ -95,7 +96,7 @@ const MerchFormModal = ({ producto = null, onClose, onSubmit }) => {
 
         <div>
           <label className={labelClass}>Nombre</label>
-          <input required minLength={2} maxLength={150} value={form.nombre} onChange={set('nombre')} className={inputClass} placeholder="Polo oficial GEMA" />
+          <input required minLength={2} maxLength={150} value={form.nombre} onChange={set('nombre')} className={inputClass} placeholder={`Polo oficial ${COMPANY_NAME}`} />
         </div>
 
         <div>

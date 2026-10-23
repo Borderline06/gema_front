@@ -10,6 +10,7 @@ import { API_ROUTES } from '../../constants/apiRoutes';
 import ConfirmModal from '../../components/shared/ConfirmModal';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import EmptyState from '../../components/shared/EmptyState';
+import { COMPANY_NAME } from '../../config/branding';
 
 const AdminPublications = () => {
     const { userId } = useAuth(); // ID del administrador logueado
@@ -131,7 +132,7 @@ const AdminPublications = () => {
                             <h1 className="text-2xl font-black italic uppercase tracking-tight text-brand-heading">
                                 Nueva <span className="text-brand-primary">Publicación</span>
                             </h1>
-                            <p className="text-[10px] font-black text-brand-muted uppercase tracking-widest italic">Anuncio para la comunidad Gema</p>
+                            <p className="text-[10px] font-black text-brand-muted uppercase tracking-widest italic">Anuncio para la comunidad {COMPANY_NAME}</p>
                         </div>
                     </div>
                 </div>

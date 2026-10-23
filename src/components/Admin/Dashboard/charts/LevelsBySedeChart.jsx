@@ -4,6 +4,7 @@ import InfoTip from '../../../shared/InfoTip';
 import { CHART_COLORS } from './chartColors';
 import { BRAND_COLORS } from "../../../../config/themeColors.js";
 import ChartHeader from '../../../shared/ChartHeader';
+import { formatBrandingText } from '../../../../utils/formatBrandingText';
 
 const LevelsBySedeChart = ({ vigentesPorSedeNivel }) => {
     const [sedeSeleccionada, setSedeSeleccionada] = useState([]);
@@ -86,7 +87,7 @@ const LevelsBySedeChart = ({ vigentesPorSedeNivel }) => {
                                         className={`flex items-center gap-1.5 cursor-pointer px-2.5 py-1.5 rounded-lg text-xs font-bold transition-colors select-none ${isSelected ? 'bg-teal-50 border-teal-200 text-teal-800' : 'bg-brand-surface border-brand-border text-brand-muted hover:bg-brand-bg'} border`}
                                     >
                                         <input type="checkbox" checked={isSelected} onChange={() => toggleSede(item.sede)} className="hidden" />
-                                        {item.sede}
+                                        {formatBrandingText(item.sede)}
                                     </label>
                                 );
                             })}

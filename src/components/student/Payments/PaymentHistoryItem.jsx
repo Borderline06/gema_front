@@ -1,5 +1,7 @@
 import React from 'react';
 import { CheckCircle, Clock, XCircle, ExternalLink, MessageCircleWarning } from 'lucide-react';
+import { COMPANY_NAME } from '../../../config/branding';
+import { formatBrandingText } from '../../../utils/formatBrandingText';
 
 const PaymentHistoryItem = ({ payment }) => {
   const statusConfig = {
@@ -25,7 +27,7 @@ const PaymentHistoryItem = ({ payment }) => {
           <div>
             <div className="flex items-center gap-3">
               <h4 className="font-black text-brand-body text-sm uppercase italic leading-none tracking-tight">
-                {payment.cuentas_por_cobrar?.detalle_adicional || 'CUOTA CLUB GEMA'}
+                {formatBrandingText(payment.cuentas_por_cobrar?.detalle_adicional || `CUOTA ${COMPANY_NAME}`)}
               </h4>
               {esAbono && (
                 <span className="bg-brand-primary text-white text-[8px] px-2 py-0.5 rounded-full font-black uppercase italic tracking-widest">

@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import { API_ROUTES } from '../../constants/apiRoutes';
 import { THEME_ASSETS } from "../../config/themeAssets.js";
+import { COMPANY_NAME } from '../../config/branding';
 
 const StudentNews = () => {
     const [publicaciones, setPublicaciones] = useState([]);
@@ -44,7 +45,7 @@ const StudentNews = () => {
     if (loading) return (
         <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
             <Loader2 className="animate-spin text-brand-accent" size={48} />
-            <p className="font-black text-brand-primary uppercase italic text-xs tracking-widest">Cargando Muro Gema...</p>
+            <p className="font-black text-brand-primary uppercase italic text-xs tracking-widest">Cargando Muro {COMPANY_NAME}...</p>
         </div>
     );
 
@@ -58,7 +59,7 @@ const StudentNews = () => {
                         <span className="text-[10px] font-black uppercase tracking-[0.4em] italic">Novedades del Club</span>
                     </div>
                     <h1 className="text-6xl font-black text-brand-primary uppercase tracking-tighter italic leading-none">
-                        MURO <span className="text-brand-accent">GEMA</span>
+                        MURO <span className="text-brand-accent">{COMPANY_NAME}</span>
                     </h1>
                 </div>
                 <div className="bg-brand-primary text-white px-8 py-4 rounded-[2rem] shadow-xl flex items-center gap-4 border-b-4 border-brand-accent">
@@ -107,10 +108,10 @@ const StudentNews = () => {
                                     <div className="flex items-center gap-3 mb-8">
                                         {/* LOGO CON FONDO BLANCO Y BORDE */}
                                         <div className="w-12 h-12 bg-brand-surface rounded-2xl flex items-center justify-center p-1.5 shadow-md border border-brand-border-soft">
-                                            <img src={THEME_ASSETS.logoFramed} alt="Gema" className="w-full h-full object-contain" />
+                                            <img src={THEME_ASSETS.logoFramed} alt={COMPANY_NAME} className="w-full h-full object-contain" />
                                         </div>
                                         <div className="flex flex-col">
-                                            <span className="text-sm font-black text-brand-primary uppercase italic leading-none tracking-tight">Club Gema Oficial</span>
+                                            <span className="text-sm font-black text-brand-primary uppercase italic leading-none tracking-tight">{COMPANY_NAME} Oficial</span>
                                             <span className="text-[9px] font-bold text-brand-muted uppercase tracking-widest mt-1 italic">Sede Lima Norte</span>
                                         </div>
                                     </div>
@@ -141,7 +142,7 @@ const StudentNews = () => {
             </div>
 
             <p className="mt-20 text-center text-[10px] text-slate-300 font-black uppercase tracking-[0.5em] italic opacity-50">
-                CLUB GEMA | COMUNIDAD
+                {COMPANY_NAME} | COMUNIDAD
             </p>
         </div>
     );

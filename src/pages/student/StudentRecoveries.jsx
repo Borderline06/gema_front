@@ -18,6 +18,7 @@ import RecoveryStatsCards from './recoveries/RecoveryStatsCards';
 import RecoveryTabs from './recoveries/RecoveryTabs';
 import RecoveryConfirmToast from './recoveries/RecoveryConfirmToast';
 import { BRAND_COLORS } from "../../config/themeColors.js";
+import { formatBrandingText } from '../../utils/formatBrandingText';
 
 const StudentRecoveries = () => {
     const { userId } = useAuth();
@@ -238,7 +239,7 @@ const StudentRecoveries = () => {
                                         >
                                             <option value="">TODAS LAS SEDES</option>
                                             {sedesUnicas.map((sede, idx) => (
-                                                <option key={idx} value={sede}>{sede}</option>
+                                                <option key={idx} value={sede}>{formatBrandingText(sede)}</option>
                                             ))}
                                         </select>
                                     </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Clock, MapPin, User, Star, CalendarPlus, Search } from 'lucide-react';
+import { COMPANY_NAME } from '../../../config/branding';
 
 const AvailableSlotsGrid = ({ slots, onSlotClick, loading }) => {
     const diasSemana = ["DOMINGO", "LUNES", "MARTES", "MIÉRCOLES", "JUEVES", "VIERNES", "SÁBADO"];
@@ -27,7 +28,7 @@ const AvailableSlotsGrid = ({ slots, onSlotClick, loading }) => {
             {slots.map((slot) => {
                 const horario = slot.horarioData;
                 const fechaObj = new Date(slot.fecha);
-                const coordinatorName = horario.coordinador?.nombre_completo || "Coach Gema";
+                const coordinatorName = horario.coordinador?.nombre_completo || `Coach ${COMPANY_NAME}`;
 
                 // Formateamos ambas horas: inicio y fin
                 const horaInicio = horario.hora_inicio.substring(0, 5);

@@ -9,6 +9,7 @@ import SearchInput from '../../components/shared/SearchInput';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import EmptyState from '../../components/shared/EmptyState';
 import { usePagination } from '../../hooks/usePagination';
+import { formatBrandingText } from '../../utils/formatBrandingText';
 
 const AdminSchedulesManager = () => {
     const [view, setView] = useState('list');
@@ -145,7 +146,7 @@ const AdminSchedulesManager = () => {
                     onChange={(e) => { setFilterSede(e.target.value); setCurrentPage(1); }}
                 >
                     <option value="">Todas las Sedes</option>
-                    {uniqueSedes.map(s => <option key={s} value={s}>{s}</option>)}
+                    {uniqueSedes.map(s => <option key={s} value={s}>{formatBrandingText(s)}</option>)}
                 </select>
                 <select
                     className="bg-brand-bg border-none rounded-2xl px-4 py-2 text-xs font-bold outline-none"
@@ -211,8 +212,8 @@ const AdminSchedulesManager = () => {
                                         </div>
                                         <div className="flex items-center gap-2 text-slate-500">
                                             <MapPin size={14} className="shrink-0 text-brand-accent" />
-                                            <span className="text-[11px] font-bold uppercase truncate" title={`${h.cancha.nombre} (${h.cancha.sede.nombre})`}>
-                                                {h.cancha.nombre} <span className="text-[10px] text-brand-muted font-medium">({h.cancha.sede.nombre})</span>
+                                            <span className="text-[11px] font-bold uppercase truncate" title={`${h.cancha.nombre} (${formatBrandingText(h.cancha.sede.nombre)})`}>
+                                                {h.cancha.nombre} <span className="text-[10px] text-brand-muted font-medium">({formatBrandingText(h.cancha.sede.nombre)})</span>
                                             </span>
                                         </div>
                                     </div>

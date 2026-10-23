@@ -2,6 +2,7 @@ import React from 'react';
 import { Zap, X, MapPin, User, Clock, DollarSign, Info } from 'lucide-react';
 import { formatearFecha, obtenerRangoCiclo, getEstadoPagoBadge, getEstadoInscripcionBadge } from './cicloHelpers';
 import Modal from '../../../shared/Modal';
+import { formatBrandingText } from '../../../../utils/formatBrandingText';
 
 // title es configurable porque InscriptionsModal y StudentDetails lo usan con
 // textos ligeramente distintos ("Detalle" vs "Resumen") pero el mismo layout.
@@ -37,7 +38,7 @@ const ClaseSueltaDetailModal = ({ ciclo, onClose, title = 'Detalle de Clase Suel
                 <div className="space-y-3">
                     <div className="flex items-center gap-2 text-[10px] font-bold text-slate-500">
                         <MapPin size={12} className="text-brand-accent shrink-0" />
-                        {ciclo.inscripciones?.[0]?.sede || 'S/D'}
+                        {formatBrandingText(ciclo.inscripciones?.[0]?.sede || 'S/D')}
                     </div>
                     <div className="flex items-center gap-2 text-[10px] font-bold text-slate-500">
                         <User size={12} className="text-brand-muted shrink-0" />

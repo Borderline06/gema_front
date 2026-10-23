@@ -1,5 +1,6 @@
 import React from 'react';
 import { TrendingUp, MapPin, Lock, Edit2, Loader2, Check, X, Trash2 } from 'lucide-react';
+import { formatBrandingText } from '../../../utils/formatBrandingText';
 
 export const IncomeTable = ({
     ingresosConsolidados, ingresosManuales, mesNum,
@@ -36,7 +37,7 @@ export const IncomeTable = ({
                                 <tr key={m.id} className="hover:bg-brand-bg bg-brand-bg/30 transition-colors">
                                     <td className="p-3 text-slate-500 font-bold uppercase text-[9px] italic align-middle">Consolidado</td>
                                     <td className="p-3 text-brand-accent font-bold text-[9px] uppercase align-middle">
-                                        <div className="flex items-center gap-1 mt-0.5"><MapPin size={10} className="shrink-0" /> <span className="leading-tight">{m.sede}</span></div>
+                                        <div className="flex items-center gap-1 mt-0.5"><MapPin size={10} className="shrink-0" /> <span className="leading-tight">{formatBrandingText(m.sede)}</span></div>
                                     </td>
 
                                     <td className="p-3 align-middle">
@@ -104,7 +105,7 @@ export const IncomeTable = ({
                                     <td className="p-2">
                                         <select value={inlineData.sede_id} onChange={e => setInlineData({ ...inlineData, sede_id: e.target.value })} className="w-full text-[9px] bg-brand-surface border border-green-300 p-2 rounded-lg outline-none font-bold uppercase text-[#16a34a]">
                                             <option value="">General</option>
-                                            {sedes.map(s => <option key={s.id} value={s.id}>{s.nombre}</option>)}
+                                            {sedes.map(s => <option key={s.id} value={s.id}>{formatBrandingText(s.nombre)}</option>)}
                                         </select>
                                     </td>
                                     <td className="p-2">
@@ -124,7 +125,7 @@ export const IncomeTable = ({
                                 <tr key={m.id} className="hover:bg-brand-bg transition-colors group">
                                     <td className="p-3 text-slate-500 font-bold align-top">{new Date(m.fecha).toLocaleDateString()}</td>
                                     <td className="p-3 text-brand-accent font-bold text-[9px] uppercase align-top">
-                                        <div className="flex items-center gap-1 mt-0.5"><MapPin size={10} /> {m.sede}</div>
+                                        <div className="flex items-center gap-1 mt-0.5"><MapPin size={10} /> {formatBrandingText(m.sede)}</div>
                                     </td>
                                     <td className="p-3 text-brand-heading font-black uppercase align-top">
                                         {m.concepto} <span className="text-[9px] bg-brand-surface-alt text-brand-muted px-1.5 py-0.5 rounded ml-1 font-bold">{m.registrado_por}</span>
@@ -152,7 +153,7 @@ export const IncomeTable = ({
                                     <td className="p-2">
                                         <select value={newData.sede_id} onChange={e => setNewData({ ...newData, sede_id: e.target.value })} className="w-full text-[9px] bg-brand-surface border border-green-400 p-2 rounded-lg outline-none font-bold uppercase text-[#16a34a]">
                                             <option value="">General</option>
-                                            {sedes.map(s => <option key={s.id} value={s.id}>{s.nombre}</option>)}
+                                            {sedes.map(s => <option key={s.id} value={s.id}>{formatBrandingText(s.nombre)}</option>)}
                                         </select>
                                     </td>
                                     <td className="p-2">

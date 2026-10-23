@@ -3,6 +3,7 @@ import {
   Sparkles, ChevronRight, ChevronLeft, RefreshCcw,
   Users, Gift, HeartPulse, Zap, Star, Trophy,
 } from 'lucide-react';
+import { COMPANY_NAME } from '../../../config/branding';
 
 // Convierte el nombre de icono guardado en la DB en el componente visual.
 const IconMap = {
@@ -36,7 +37,7 @@ const BenefitsCarousel = ({ anuncios = [] }) => {
     <div className="w-full mb-8">
       <div className="flex items-center gap-2 mb-3 px-1">
         <Gift size={16} className="text-brand-accent" />
-        <h2 className="font-black uppercase tracking-widest text-[9px] italic text-slate-500">Beneficios Exclusivos Gema</h2>
+        <h2 className="font-black uppercase tracking-widest text-[9px] italic text-slate-500">Beneficios Exclusivos {COMPANY_NAME}</h2>
       </div>
 
       <div

@@ -3,6 +3,7 @@ import { Bell, Menu, X, UserCircle, ChevronRight } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { THEME_ASSETS } from "../config/themeAssets.js";
+import { COMPANY_NAME } from '../config/branding';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,7 +60,7 @@ const Navbar = () => {
 
             <div className="flex flex-col">
               <span className="text-2xl font-black text-brand-primary tracking-tighter uppercase italic leading-none">
-                Club<span className="text-brand-accent">Gema</span>
+                {COMPANY_NAME}
               </span>
             </div>
           </Link>

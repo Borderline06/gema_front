@@ -12,6 +12,7 @@ import { apiFetch } from '../../interceptors/api';
 import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../constants/apiRoutes';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import { COMPANY_NAME } from '../../config/branding';
 
 const AdminTeachersManager = () => {
     const [view, setView] = useState('list');
@@ -97,7 +98,7 @@ const AdminTeachersManager = () => {
                             <PageTitle
                                 title="Expediente"
                                 accent="Profesional"
-                                subtitle="Staff Técnico Gema"
+                                subtitle={`Staff Técnico ${COMPANY_NAME}`}
                                 showBar={false}
                                 wrapperClassName=""
                                 subtitleClassName="text-[10px] font-black text-brand-accent uppercase tracking-[0.2em] ml-1"

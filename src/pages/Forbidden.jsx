@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ShieldAlert, ArrowLeft, Home } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { COMPANY_NAME } from '../config/branding';
 
 const Forbidden = () => {
     const { user } = useAuth();
@@ -59,7 +60,7 @@ const Forbidden = () => {
             </div>
 
             <p className="mt-8 text-[10px] text-brand-muted font-black uppercase tracking-[0.3em] opacity-50">
-                CLUB GEMA | SEGURIDAD
+                {COMPANY_NAME} | SEGURIDAD
             </p>
         </div>
     );

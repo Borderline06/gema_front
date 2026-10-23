@@ -21,6 +21,8 @@ import PackageHeader from '../../components/student/PackageHeader';
 import OutstandingDebtAlert from '../../components/student/OutstandingDebtAlert';
 import ReportPaymentModal from "../../components/student/Payments/ReportPaymentModal";
 import RenovarPlanHistoricoModal from '../../components/student/RenovarPlanHistoricoModal';
+import { COMPANY_NAME } from '../../config/branding';
+import { formatBrandingText } from '../../utils/formatBrandingText';
 
 
 const DIAS_NOMBRES = { 1: "LUNES", 2: "MARTES", 3: "MIÉRCOLES", 4: "JUEVES", 5: "VIERNES", 6: "SÁBADO", 7: "DOMINGO", 0: "DOMINGO" };
@@ -60,7 +62,7 @@ const RenovacionModal = ({ isOpen, onClose, onConfirm, fechasSugeridas }) => {
       <div className="bg-brand-surface w-full max-w-[420px] rounded-[3.5rem] relative shadow-2xl border-4 border-white overflow-hidden animate-in zoom-in-95 duration-300">
         <div className="p-8 text-center bg-brand-bg/80 border-b border-brand-border-soft">
           <div className="bg-brand-primary text-white w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl"><Zap size={24} fill="white" /></div>
-          <h2 className="text-2xl font-black text-brand-primary uppercase italic tracking-tighter leading-none">Renovación Gema</h2>
+          <h2 className="text-2xl font-black text-brand-primary uppercase italic tracking-tighter leading-none">Renovación {COMPANY_NAME}</h2>
         </div>
         <div className="p-6 space-y-4 max-h-[50vh] overflow-y-auto scrollbar-hide">
           {fechasSugeridas.map((fecha, idx) => (
@@ -330,7 +332,7 @@ const MyRegistrations = () => {
                     <div className="flex flex-col gap-3 pt-4 border-t border-brand-border/60 relative z-10">
                       <div className="flex items-center gap-2 text-slate-500 bg-brand-surface px-3 py-2 rounded-xl border border-brand-border-soft">
                         <MapPin size={14} className="text-brand-accent shrink-0" />
-                        <span className="text-[10px] font-black uppercase italic truncate">{reg.horarios_clases?.canchas?.sedes?.nombre}</span>
+                        <span className="text-[10px] font-black uppercase italic truncate">{formatBrandingText(reg.horarios_clases?.canchas?.sedes?.nombre)}</span>
                       </div>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2 bg-brand-surface px-3 py-2 rounded-xl border border-brand-border-soft shadow-sm">
@@ -397,7 +399,7 @@ const MyRegistrations = () => {
                     <div className="flex flex-wrap gap-2">
                       {(plan.horarios || []).map(h => (
                         <span key={h.id} className="text-[10px] font-bold text-slate-600 bg-brand-bg border border-brand-border-soft px-3 py-1.5 rounded-lg uppercase">
-                          {DIAS_NOMBRES[h.dia_semana]} {formatTimeSafe(h.hora_inicio)}-{formatTimeSafe(h.hora_fin)} · {h.cancha?.sede?.nombre}
+                          {DIAS_NOMBRES[h.dia_semana]} {formatTimeSafe(h.hora_inicio)}-{formatTimeSafe(h.hora_fin)} · {formatBrandingText(h.cancha?.sede?.nombre)}
                         </span>
                       ))}
                     </div>

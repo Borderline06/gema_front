@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import apiFetch from '../interceptors/api';
 import toast from 'react-hot-toast';
 import { API_ROUTES } from '../constants/apiRoutes';
+import { COMPANY_NAME } from '../config/branding';
 
 export const ResetPassword = () => {
     const [searchParams] = useSearchParams();
@@ -47,7 +48,7 @@ export const ResetPassword = () => {
                         <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/5 rounded-full"></div>
 
                         <h1 className="text-3xl font-black text-white tracking-tight uppercase italic relative z-10">
-                            GEMA<span className="text-brand-accent not-italic">CLUB</span>
+                            {COMPANY_NAME}
                         </h1>
                         <div className="h-1.5 w-14 bg-brand-accent mx-auto mt-3 rounded-full relative z-10"></div>
                         <p className="text-blue-100 mt-5 text-sm font-semibold tracking-wide relative z-10 uppercase">
@@ -125,7 +126,7 @@ export const ResetPassword = () => {
 
                 {/* Footer Decorativo */}
                 <p className="text-center text-slate-500 text-[10px] mt-10 font-bold uppercase tracking-[0.2em] opacity-60">
-                    Club Gema © 2026 · Sports Management System
+                    {COMPANY_NAME} © 2026 · Sports Management System
                 </p>
             </div>
         </div>

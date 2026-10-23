@@ -6,6 +6,7 @@ import Sidebar from '../components/Sidebar';
 import MobileNavbarAdmin from '../components/MobileNavbarAdmin'; // ✅ Importamos la nueva barra
 import LoadingSpinner from '../components/shared/LoadingSpinner';
 import { THEME_ASSETS } from "../config/themeAssets.js";
+import { COMPANY_NAME } from '../config/branding';
 
 const DashboardLayout = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -15,7 +16,7 @@ const DashboardLayout = () => {
     
     const displayName = userData?.nombres 
         ? `${userData.nombres} ${userData.apellidos}` 
-        : 'Usuario Gema';
+        : `Usuario ${COMPANY_NAME}`;
 
     const initial = userData?.nombres 
         ? userData.nombres.charAt(0).toUpperCase() 
@@ -46,7 +47,7 @@ const DashboardLayout = () => {
                     <div className="md:hidden flex items-center">
                         <img
                             src={THEME_ASSETS.logo}
-                            alt="Gema Logo"
+                            alt={`${COMPANY_NAME} Logo`}
                             className="h-10 w-auto filter drop-shadow-[0_0_3px_rgba(255,255,255,1)]"
                         />
                     </div>

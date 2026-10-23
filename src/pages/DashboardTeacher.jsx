@@ -4,6 +4,7 @@ import AttendanceModal from '../components/teacher/AttendanceModal';
 import { useAuth } from '../context/AuthContext';
 import { asistenciaService } from '../services/asistencia.service';
 import toast from 'react-hot-toast';
+import { COMPANY_NAME } from '../config/branding';
 
 const instruccionesSistema = [
   {
@@ -47,7 +48,7 @@ const DashboardTeacher = () => {
   const { user } = useAuth();
   const hoyRef = useRef(null);
 
-  const coordinatorFullName = user?.user ? `${user.user.nombres} ${user.user.apellidos}` : 'Coordinador Gema';
+  const coordinatorFullName = user?.user ? `${user.user.nombres} ${user.user.apellidos}` : `Coordinador ${COMPANY_NAME}`;
 
   const fetchAgenda = useCallback(async () => {
     try {
@@ -152,7 +153,7 @@ const DashboardTeacher = () => {
   if (loading) return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
       <Loader2 className="animate-spin text-brand-primary" size={48} />
-      <p className="font-black text-brand-primary uppercase italic text-xs tracking-widest text-center">Sincronizando Sistema Gema...</p>
+      <p className="font-black text-brand-primary uppercase italic text-xs tracking-widest text-center">Sincronizando Sistema {COMPANY_NAME}...</p>
     </div>
   );
 

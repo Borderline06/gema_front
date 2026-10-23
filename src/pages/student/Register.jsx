@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import StudentRegistration from '../components/StudentRegistration';
+import { COMPANY_NAME } from '../../config/branding';
 
 /**
  * Page: Register
@@ -25,7 +26,7 @@ const Register = () => {
             */}
             <div className="pb-8 text-center">
                 <p className="text-blue-200/40 text-[10px] uppercase font-black tracking-[0.3em]">
-                    © 2026 Club Gema • Sistema de Gestión Deportiva
+                    © 2026 {COMPANY_NAME} • Sistema de Gestión Deportiva
                 </p>
             </div>
         </main>

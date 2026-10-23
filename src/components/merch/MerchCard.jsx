@@ -4,6 +4,7 @@ import { formatSoles } from '../../utils/formatSoles';
 import { maxQty } from '../../utils/merchCart';
 import MerchImage from './MerchImage';
 import QuantitySelector from './QuantitySelector';
+import { formatBrandingText } from '../../utils/formatBrandingText';
 
 const ULTIMAS_UNIDADES = 5;
 
@@ -40,7 +41,7 @@ const MerchCard = ({ item, ownedCount = 0, qty = 0, onQtyChange }) => {
           <p className="mb-1 flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-brand-gold">
             <Sparkles size={11} className="shrink-0" /> Edición limitada
           </p>
-          <h3 className="text-sm font-black uppercase italic leading-tight text-white">{item.nombre}</h3>
+          <h3 className="text-sm font-black uppercase italic leading-tight text-white">{formatBrandingText(item.nombre)}</h3>
           {item.descripcion && (
             <p className="mt-1 line-clamp-2 text-[11px] font-bold text-blue-100/60">{item.descripcion}</p>
           )}
@@ -48,7 +49,7 @@ const MerchCard = ({ item, ownedCount = 0, qty = 0, onQtyChange }) => {
         <div className="flex items-center justify-between gap-3">
           <span className="text-xl font-black italic text-brand-gold">{formatSoles(item.precio)}</span>
           {onQtyChange && !agotado && (
-            <QuantitySelector tone="dark" value={qty} max={maxQty(item)} onChange={(n) => onQtyChange(item.id, n)} label={`Cantidad de ${item.nombre}`} />
+            <QuantitySelector tone="dark" value={qty} max={maxQty(item)} onChange={(n) => onQtyChange(item.id, n)} label={`Cantidad de ${formatBrandingText(item.nombre)}`} />
           )}
         </div>
       </div>

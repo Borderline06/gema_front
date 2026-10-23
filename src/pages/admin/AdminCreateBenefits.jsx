@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { apiFetch } from '../../interceptors/api';
 import { API_ROUTES } from '../../constants/apiRoutes';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import { COMPANY_NAME } from '../../config/branding';
 
 const AdminCreateBenefits = () => {
     const [beneficios, setBeneficios] = useState([]);
@@ -93,7 +94,7 @@ const AdminCreateBenefits = () => {
     if (loading) return (
         <LoadingSpinner
             className="flex flex-col items-center justify-center h-64 text-slate-500 gap-3"
-            label="Sincronizando Catálogo Gema..."
+            label={`Sincronizando Catálogo ${COMPANY_NAME}...`}
             labelClassName="font-black italic animate-pulse tracking-widest uppercase"
         />
     );

@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Home } from 'lucide-react';
+import { COMPANY_NAME } from '../../../config/branding';
 
 const DashboardHeader = () => {
     return (
         <div className="mb-10 pt-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
                 <div className="flex items-center gap-2 mb-2">
-                    <span className="bg-brand-primary text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Gema Performance</span>
+                    <span className="bg-brand-primary text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">{COMPANY_NAME} Performance</span>
                     <div className="h-[1px] w-12 bg-slate-200"></div>
                 </div>
                 <h1 className="text-5xl md:text-6xl font-black text-brand-primary tracking-tight uppercase italic leading-[0.9]">

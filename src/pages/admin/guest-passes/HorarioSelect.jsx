@@ -1,5 +1,6 @@
 import React from 'react';
 import { Clock } from 'lucide-react';
+import { formatBrandingText } from '../../../utils/formatBrandingText';
 
 const HorarioSelect = ({ horariosFiltrados, idHorario, onChange }) => (
     <div>
@@ -27,7 +28,7 @@ const HorarioSelect = ({ horariosFiltrados, idHorario, onChange }) => (
             <option value="">SELECCIONAR HORARIO</option>
             {horariosFiltrados.map((hf) => (
                 <option key={hf.id} value={hf.id}>
-                    [{hf.dia?.nombre}] {hf.hora} | {hf.nivel?.nombre} | {hf.sede?.nombre}
+                    [{hf.dia?.nombre}] {hf.hora} | {hf.nivel?.nombre} | {formatBrandingText(hf.sede?.nombre)}
                 </option>
             ))}
         </select>

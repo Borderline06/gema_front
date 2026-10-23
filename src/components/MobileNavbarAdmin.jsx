@@ -10,6 +10,7 @@ import {
 import { logoutService } from '../services/auth.service';
 import toast from 'react-hot-toast';
 import { THEME_ASSETS } from "../config/themeAssets.js";
+import { COMPANY_NAME } from '../config/branding';
 
 const MobileNavbarAdmin = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -51,11 +52,11 @@ const MobileNavbarAdmin = () => {
                             </button>
                             <div className="relative z-10 w-[100px] aspect-square bg-brand-surface rounded-full p-2 shadow-2xl flex items-center justify-center border-[4px] border-white/10 overflow-hidden mb-3">
                                 <Link to="/" onClick={toggleMenu}>
-                                    <img src={THEME_ASSETS.logoFramed} alt="Logo Club Gema" className="w-full h-full object-cover" />
+                                    <img src={THEME_ASSETS.logoFramed} alt={`Logo ${COMPANY_NAME}`} className="w-full h-full object-cover" />
                                 </Link>
                             </div>
                             <span className="font-black text-lg tracking-tighter uppercase italic text-white">
-                                Gema<span className="text-brand-accent">Admin</span>
+                                {COMPANY_NAME} <span className="text-brand-accent">Admin</span>
                             </span>
                         </div>
 

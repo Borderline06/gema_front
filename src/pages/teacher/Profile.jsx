@@ -7,6 +7,7 @@ import { API_ROUTES } from '../../constants/apiRoutes.js';
 import ChangePasswordModal from '../../components/shared/ChangePasswordModal.jsx';
 import EditTeacherProfileModal from '../../components/teacher/EditTeacherProfileModal.jsx';
 import { THEME_ASSETS } from "../../config/themeAssets.js";
+import { COMPANY_NAME } from '../../config/branding';
 
 const TeacherProfile = () => {
   const { updateUserData, user: authUser } = useAuth();
@@ -39,7 +40,7 @@ const TeacherProfile = () => {
   const user = profileData?.user || profileData || {};
   const coordinadorData = user.coordinadores || {};
 
-  const coordinatorFullName = authUser?.user ? `${authUser.user.nombres} ${authUser.user.apellidos}` : 'Coordinador Gema';
+  const coordinatorFullName = authUser?.user ? `${authUser.user.nombres} ${authUser.user.apellidos}` : `Coordinador ${COMPANY_NAME}`;
   const userInitial = authUser?.user?.nombres?.charAt(0).toUpperCase() || 'G';
 
   const handleProfileUpdate = (newData) => {
@@ -79,7 +80,7 @@ const TeacherProfile = () => {
             <div className="flex-1 text-center md:text-left w-full">
               <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-6">
                 <div className="space-y-2">
-                  <p className="text-brand-accent font-black uppercase tracking-[0.4em] text-[10px] italic">Perfil Administrativo Gema</p>
+                  <p className="text-brand-accent font-black uppercase tracking-[0.4em] text-[10px] italic">Perfil Administrativo {COMPANY_NAME}</p>
                   <h1 className="text-xl sm:text-2xl md:text-3xl font-black uppercase italic tracking-tighter leading-tight break-words">
                     {coordinatorFullName}
                   </h1>

@@ -9,6 +9,7 @@ import { apiFetch } from "../../interceptors/api";
 import Cookies from "js-cookie";
 import { API_ROUTES } from "../../constants/apiRoutes";
 import { THEME_ASSETS } from "../../config/themeAssets.js";
+import { COMPANY_NAME } from '../../config/branding';
 
 const StudentSidebar = () => {
   const location = useLocation();
@@ -104,12 +105,12 @@ const StudentSidebar = () => {
           {/* 🌟 LOGO AHORA ES TOTALMENTE CIRCULAR */}
           <div className="relative z-10 w-[160px] aspect-square bg-brand-surface rounded-full p-3 shadow-2xl flex items-center justify-center border-[6px] border-white/10 overflow-hidden mb-4 hover:border-brand-accent/20 transition-colors">
             <Link to="/" className="relative z-10 hover:scale-105 transition-transform duration-300">
-              <img src={THEME_ASSETS.logoFramed} alt="Logo Club Gema" className="w-full h-full object-cover" />
+              <img src={THEME_ASSETS.logoFramed} alt={`Logo ${COMPANY_NAME}`} className="w-full h-full object-cover" />
             </Link>
           </div>
           <div className="text-center">
             <span className="block font-black text-xl tracking-tighter uppercase italic text-white leading-none">
-              Gema<span className="text-brand-accent">Student</span>
+              {COMPANY_NAME} <span className="text-brand-accent">Student</span>
             </span>
           </div>
         </div>

@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { ClipboardList, LogOut, User } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { THEME_ASSETS } from "../../config/themeAssets.js";
+import { COMPANY_NAME } from '../../config/branding';
 
 const TeacherSidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
@@ -40,12 +41,12 @@ const TeacherSidebar = ({ isOpen, onClose }) => {
         <div className="flex-none py-8 px-6 flex flex-col items-center border-b border-white/10">
           <div className="relative z-10 w-[180px] aspect-square bg-brand-surface rounded-full p-2 shadow-2xl flex items-center justify-center border-4 border-white/20 overflow-hidden">
             <Link to="/" className="relative z-10">
-              <img src={THEME_ASSETS.logoFramed} alt="Logo Club Gema" className="w-full h-full object-cover" />
+              <img src={THEME_ASSETS.logoFramed} alt={`Logo ${COMPANY_NAME}`} className="w-full h-full object-cover" />
             </Link>
           </div>
           <div className="text-center mt-4">
             <span className="block font-black text-xl tracking-tighter uppercase italic text-white leading-none">
-              Gema<span className="text-brand-accent font-black">Coordinador</span>
+              {COMPANY_NAME} <span className="text-brand-accent font-black">Coordinador</span>
             </span>
             <div className="h-1 w-8 bg-brand-accent mx-auto mt-2 rounded-full shadow-accent-bar-sm"></div>
           </div>

@@ -8,6 +8,7 @@ import { enrollmentService } from '../../services/enrollment.service';
 import EnrollmentStepper from '../../components/student/enrollment/EnrollmentStepper';
 import OutstandingDebtAlert from '../../components/student/OutstandingDebtAlert';
 import ReportPaymentModal from "../../components/student/Payments/ReportPaymentModal";
+import { COMPANY_NAME } from '../../config/branding';
 
 const Enrollment = () => {
   const { userId } = useAuth();
@@ -20,7 +21,7 @@ const Enrollment = () => {
   const { data: pendingPayment, refetch: refetchDeuda } = useFetch(
     () => (userId ? enrollmentService.deudaPendiente(userId) : null),
     [userId],
-    { errorMessage: 'Error de sincronización Gema' }
+    { errorMessage: `Error de sincronización ${COMPANY_NAME}` }
   );
 
   const handleOpenPayment = (debt) => {
@@ -63,7 +64,7 @@ const Enrollment = () => {
               <ArrowLeft size={12} /> Dashboard
             </Link>
             <h1 className="text-4xl md:text-6xl font-black text-brand-primary italic uppercase tracking-tighter leading-none">
-              Matrícula <span className="text-brand-accent">Gema</span>
+              Matrícula <span className="text-brand-accent">{COMPANY_NAME}</span>
             </h1>
           </header>
 

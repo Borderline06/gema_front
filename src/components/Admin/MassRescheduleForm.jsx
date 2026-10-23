@@ -12,6 +12,7 @@ import ConfirmModal from '../shared/ConfirmModal.jsx';
 import HorarioFilterBar from './mass-reschedule/HorarioFilterBar';
 import HorarioSelectionList from './mass-reschedule/HorarioSelectionList';
 import FechaOrigenPicker from './mass-reschedule/FechaOrigenPicker';
+import { COMPANY_NAME } from '../../config/branding';
 
 const DIAS_SEMANA = { 1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes', 6: 'Sábado', 7: 'Domingo' };
 
@@ -208,7 +209,7 @@ const MassRescheduleForm = ({ onSuccess }) => {
                     </div>
                     <div>
                         <h2 className="text-2xl font-black text-slate-800 tracking-tight uppercase italic">REPROGRAMACIÓN MASIVA</h2>
-                        <p className="text-slate-500 text-sm font-medium">Club Gema - Control de Contingencias</p>
+                        <p className="text-slate-500 text-sm font-medium">{COMPANY_NAME} - Control de Contingencias</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 bg-brand-bg rounded-xl border border-brand-border-soft">
@@ -262,7 +263,7 @@ const MassRescheduleForm = ({ onSuccess }) => {
                         />
 
                         <div className="bg-indigo-50 p-6 rounded-3xl border border-indigo-100 flex flex-col justify-center text-center">
-                            <h4 className="text-[10px] font-black text-indigo-800 uppercase italic mb-1">Algoritmo Gema V2</h4>
+                            <h4 className="text-[10px] font-black text-indigo-800 uppercase italic mb-1">Algoritmo {COMPANY_NAME} V2</h4>
                             <p className="text-[10px] text-indigo-600 font-bold uppercase">Reposición Individual x Próximo Día</p>
                         </div>
 

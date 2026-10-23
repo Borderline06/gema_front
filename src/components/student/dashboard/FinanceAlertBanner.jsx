@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { XCircle, AlertCircle, ArrowRight } from 'lucide-react';
+import { formatBrandingText } from '../../../utils/formatBrandingText';
 
 /**
  * Único caso en que las finanzas interrumpen el dashboard: un pago rechazado
@@ -13,8 +14,8 @@ const FinanceAlertBanner = ({ debt, rejected }) => {
   const esRechazo = Boolean(rejected);
   const Icon = esRechazo ? XCircle : AlertCircle;
   const concepto = esRechazo
-    ? rejected.cuentas_por_cobrar?.catalogo_conceptos?.nombre
-    : debt.catalogo_conceptos?.nombre;
+    ? formatBrandingText(rejected.cuentas_por_cobrar?.catalogo_conceptos?.nombre)
+    : formatBrandingText(debt.catalogo_conceptos?.nombre);
 
   return (
     <div role="alert" className="mb-6 bg-red-50/50 border border-red-200 border-l-4 border-l-red-500 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between shadow-sm">

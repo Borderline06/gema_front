@@ -1,5 +1,6 @@
 import React from 'react';
 import { CalendarX2, CheckCircle, Clock, AlertTriangle, XCircle, MapPin, Trash2, Info } from 'lucide-react';
+import { formatBrandingText } from '../../../utils/formatBrandingText';
 
 const RecoveryHistoryList = ({ historial, onCancel }) => {
     const formatTime = (timeString) => {
@@ -92,7 +93,7 @@ const RecoveryHistoryList = ({ historial, onCancel }) => {
                                                     <Clock size={14} /> {formatTime(ticket.horarios_clases.hora_inicio)} - {formatTime(ticket.horarios_clases.hora_fin)}
                                                 </p>
                                                 <p className="text-sm font-medium text-slate-500 group-hover:text-blue-200 flex items-center gap-1">
-                                                    <MapPin size={14} /> {ticket.horarios_clases.canchas?.sedes?.nombre} (Cancha {ticket.horarios_clases.canchas?.numero})
+                                                    <MapPin size={14} /> {formatBrandingText(ticket.horarios_clases.canchas?.sedes?.nombre)} (Cancha {ticket.horarios_clases.canchas?.numero})
                                                 </p>
                                             </div>
                                         </div>

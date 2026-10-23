@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { COMPANY_NAME } from './src/config/branding.js';
 
 const contentSecurityPolicy = [
   "default-src 'self'",
@@ -17,7 +18,14 @@ const contentSecurityPolicy = [
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    // Inyecta el nombre de marca en index.html (fuente única: src/config/branding.js)
+    {
+      name: 'inject-company-name',
+      transformIndexHtml: (html) => html.replace(/%COMPANY_NAME%/g, COMPANY_NAME),
+    },
+  ],
   // NO configurar build.rollupOptions.output.manualChunks aqui.
   // Medido en este proyecto (Vite 7 / Rollup 4): cualquier entrada en
   // manualChunks convierte ese chunk en import estatico del entry, aunque solo

@@ -4,6 +4,7 @@ import { feriadoService } from '../../services/feriado.service';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import ConfirmModal from '../shared/ConfirmModal';
+import { COMPANY_NAME } from '../../config/branding';
 
 const FeriadoHistory = ({ onClose }) => {
     const [feriados, setFeriados] = useState([]);
@@ -84,7 +85,7 @@ const FeriadoHistory = ({ onClose }) => {
                             <CalendarIcon size={20} />
                         </div>
                         <h2 className="font-black text-slate-800 uppercase tracking-tighter text-xl italic">
-                            Feriados <span className="text-brand-accent">GEMA</span>
+                            Feriados <span className="text-brand-accent">{COMPANY_NAME}</span>
                         </h2>
                     </div>
                     <button onClick={onClose} className="p-2 hover:bg-slate-200 rounded-full transition-colors text-brand-muted">

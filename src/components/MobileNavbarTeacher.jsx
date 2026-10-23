@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { logoutService } from '../services/auth.service';
 import toast from 'react-hot-toast';
+import { COMPANY_NAME } from '../config/branding';
 
 const MobileNavbarTeacher = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -36,7 +37,7 @@ const MobileNavbarTeacher = () => {
                     <div className="flex flex-col h-full border-l border-white/10">
                         <div className="p-6 flex justify-between items-center border-b border-white/10 bg-white/5">
                             <span className="font-black text-sm tracking-widest uppercase italic text-white flex gap-1">
-                                Gema<span className="text-brand-accent">Coordinador</span>
+                                {COMPANY_NAME} <span className="text-brand-accent">Coordinador</span>
                             </span>
                             <button onClick={toggleMenu} className="p-2 bg-white/5 rounded-lg text-white/50">
                                 <X size={20} />

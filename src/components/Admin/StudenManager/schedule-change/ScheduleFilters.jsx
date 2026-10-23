@@ -1,5 +1,6 @@
 import React from 'react';
 import { Filter } from 'lucide-react';
+import { formatBrandingText } from '../../../../utils/formatBrandingText';
 
 const ScheduleFilters = ({ filtroSede, setFiltroSede, sedesUnicas, filtroNivel, setFiltroNivel, nivelesUnicos }) => (
     <div className="flex flex-col sm:flex-row gap-3 mb-4 bg-brand-bg p-3 rounded-2xl border border-brand-border-soft">
@@ -13,7 +14,7 @@ const ScheduleFilters = ({ filtroSede, setFiltroSede, sedesUnicas, filtroNivel, 
         >
             <option value="">Todas las Sedes</option>
             {sedesUnicas.map((sede, idx) => (
-                <option key={idx} value={sede}>{sede}</option>
+                <option key={idx} value={sede}>{formatBrandingText(sede)}</option>
             ))}
         </select>
         <select

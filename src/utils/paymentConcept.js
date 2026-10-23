@@ -1,3 +1,4 @@
+import { formatBrandingText } from './formatBrandingText';
 const TIPOS_MERCH = ['MERCH', 'MIXTO'];
 const PREFIJO_MERCH = /^Merch:/i;
 
@@ -19,10 +20,10 @@ export const getPaymentConcept = (pago) => {
   const sinPlanRegular = !plan && sinInscripciones;
 
   return {
-    detalle,
+    detalle: formatBrandingText(detalle),
     // "Merch: Polo GEMA x1" → "Orden Merch: Polo GEMA x1". Una cuenta mixta ("… | Merch: …") va tal cual.
-    titulo: detalle && PREFIJO_MERCH.test(detalle) ? `Orden ${detalle}` : detalle,
-    plan,
+    titulo: formatBrandingText(detalle && PREFIJO_MERCH.test(detalle) ? `Orden ${detalle}` : detalle),
+    plan: formatBrandingText(plan),
     esMerch,
     sinInscripciones,
     requiereDetalle: esMerch || sinPlanRegular,

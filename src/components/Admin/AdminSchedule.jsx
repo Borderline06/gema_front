@@ -4,6 +4,7 @@ import { apiFetch } from '../../interceptors/api';
 import toast from 'react-hot-toast';
 import { API_ROUTES } from '../../constants/apiRoutes';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import { formatBrandingText } from '../../utils/formatBrandingText';
 
 const AdminSchedule = ({ onBack, initialData }) => {
     const isEdit = !!initialData;
@@ -170,7 +171,7 @@ const AdminSchedule = ({ onBack, initialData }) => {
                                     className="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                                 >
                                     <option value="">Seleccione Sede</option>
-                                    {sedes.map(s => <option key={s.id} value={s.id.toString()}>{s.nombre}</option>)}
+                                    {sedes.map(s => <option key={s.id} value={s.id.toString()}>{formatBrandingText(s.nombre)}</option>)}
                                 </select>
                             </div>
                             <div className="space-y-1">

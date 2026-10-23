@@ -1,3 +1,4 @@
+import { COMPANY_NAME } from '../config/branding';
 // Lógica pura de la agenda del alumno (sin React ni red).
 //
 // El Dashboard recibe dos listas con formas distintas: asistencias (una fila por
@@ -50,7 +51,7 @@ const construirFecha = (fecha, hora, fallback) => {
 
 const nombreCoordinador = (horario) => {
   const u = horario?.coordinadores?.usuarios;
-  return u ? `${u.nombres.trim()} ${u.apellidos.trim()}` : 'COORDINADOR GEMA';
+  return u ? `${u.nombres.trim()} ${u.apellidos.trim()}` : `COORDINADOR ${COMPANY_NAME}`;
 };
 
 const construirSesion = ({ key, tipo, estado, fecha, horaInicio, horaFin, horario, fechaOriginal, raw }) => ({

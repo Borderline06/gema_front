@@ -5,6 +5,7 @@ import { API_ROUTES } from "../../constants/apiRoutes";
 import { format, isPast, isToday } from 'date-fns';
 import { es } from 'date-fns/locale';
 import toast from 'react-hot-toast';
+import { formatBrandingText } from '../../utils/formatBrandingText';
 
 const DiaCorte = () => {
     const [alumnos, setAlumnos] = useState([]);
@@ -157,7 +158,7 @@ const DiaCorte = () => {
                                         <td className="px-8 py-6">
                                             <div className="flex flex-col items-center gap-1">
                                                 <span className="text-[10px] font-black text-slate-600 uppercase">
-                                                    {principal?.sede || 'Sin Sede'}
+                                                    {formatBrandingText(principal?.sede || 'Sin Sede')}
                                                 </span>
                                                 {alumno.contratos && alumno.contratos.length > 0 ? (
                                                     alumno.contratos

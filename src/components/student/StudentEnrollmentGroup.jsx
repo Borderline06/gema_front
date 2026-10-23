@@ -1,5 +1,7 @@
 import React from 'react';
 import { MapPin, CheckCircle2, Zap, AlertTriangle } from 'lucide-react';
+import { COMPANY_NAME } from '../../config/branding';
+import { formatBrandingText } from '../../utils/formatBrandingText';
 
 const StudentEnrollmentGroup = ({ group, selectedIds, onToggle }) => {
   const daysShort = ["", "LUN", "MAR", "MIE", "JUE", "VIE", "SAB", "DOM"];
@@ -25,7 +27,7 @@ const StudentEnrollmentGroup = ({ group, selectedIds, onToggle }) => {
 
       {/* Nivel Badge */}
       <div className="flex flex-col items-center justify-center md:border-r md:border-brand-border-soft md:pr-8 min-w-[120px]">
-        <span className="text-[7px] font-black text-slate-300 uppercase tracking-[0.3em] mb-1 italic">Nivel Gema</span>
+        <span className="text-[7px] font-black text-slate-300 uppercase tracking-[0.3em] mb-1 italic">Nivel {COMPANY_NAME}</span>
         <div className={`px-4 py-1.5 rounded-xl transition-all duration-500 ${todoSeleccionado ? 'bg-green-500' : 'bg-brand-primary'} text-white`}>
           <span className="font-black uppercase italic text-[10px] tracking-tighter">
             {group.nivel}
@@ -37,7 +39,7 @@ const StudentEnrollmentGroup = ({ group, selectedIds, onToggle }) => {
       <div className="flex-1 text-center md:text-left w-full">
         <div className="flex items-center justify-center md:justify-start gap-2 mb-1">
           <MapPin size={12} className={todoSeleccionado ? "text-green-500" : "text-brand-accent"} />
-          <span className="text-[10px] font-black text-brand-primary uppercase italic">{group.sede}</span>
+          <span className="text-[10px] font-black text-brand-primary uppercase italic">{formatBrandingText(group.sede)}</span>
         </div>
         <h3 className="text-3xl font-black text-brand-primary tracking-tighter italic leading-none">
           {group.hora}

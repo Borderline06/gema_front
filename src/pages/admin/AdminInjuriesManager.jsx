@@ -3,6 +3,7 @@ import { Eye, X, Activity, RefreshCw, ClipboardCheck, User, Calendar, FileText, 
 import toast from 'react-hot-toast';
 import lesionService from '../../services/lesion.service';
 import InjuryEvaluationModal from '../../components/Admin/Injuries/InjuryEvaluationModal';
+import { COMPANY_NAME } from '../../config/branding';
 
 const AdminInjuriesManager = () => {
     const [solicitudes, setSolicitudes] = useState([]);
@@ -52,7 +53,7 @@ const AdminInjuriesManager = () => {
                             Control de <span className="text-brand-accent">Lesiones</span>
                         </h1>
                         <p className="text-[9px] md:text-[10px] font-black text-brand-muted uppercase tracking-[0.2em] mt-1 ml-1">
-                            Staff Gema • Gestión Administrativa
+                            Staff {COMPANY_NAME} • Gestión Administrativa
                         </p>
                     </div>
                 </div>

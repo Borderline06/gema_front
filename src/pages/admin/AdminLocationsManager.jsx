@@ -7,6 +7,7 @@ import ConfirmModal from '../../components/shared/ConfirmModal';
 import SearchInput from '../../components/shared/SearchInput';
 import toast from 'react-hot-toast';
 import { STATUS_SUCCESS } from '../../config/statusColors';
+import { formatBrandingText } from '../../utils/formatBrandingText';
 
 const AdminLocationsManager = () => {
     const [view, setView] = useState('list');
@@ -122,7 +123,7 @@ const AdminLocationsManager = () => {
 
                         <div className="relative z-10">
                             <h3 className="font-black text-slate-800 text-lg uppercase italic leading-tight mb-1 group-hover:text-brand-primary transition-colors">
-                                {sede.nombre}
+                                {formatBrandingText(sede.nombre)}
                             </h3>
                             <p className="text-brand-muted text-[11px] font-bold uppercase tracking-wider flex items-center gap-1">
                                 <MapPin size={12} className="text-brand-accent" />

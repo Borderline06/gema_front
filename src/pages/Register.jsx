@@ -7,9 +7,10 @@ import {
 import { registerService } from '../services/auth.service';
 import toast from 'react-hot-toast';
 import { THEME_ASSETS } from "../config/themeAssets.js";
+import { COMPANY_NAME } from '../config/branding';
 
 const TERMINOS_Y_CONDICIONES = [
-    { title: "Uso de Imagen", desc: "Autorizo el uso de mi imagen y voz para materiales promocionales del Club Gema en medios digitales." },
+    { title: "Uso de Imagen", desc: `Autorizo el uso de mi imagen y voz para materiales promocionales de ${COMPANY_NAME} en medios digitales.` },
     { title: "Salud y Riesgo", desc: "Declaro conocer mis condiciones físicas y de salud y deslindo al Club de cualquier complicación médica, lesión o accidente derivado de mi propia condición o negligencia." },
     { title: "Bienes Personales", desc: "El Club no se responsabiliza por pérdida, hurto o deterioro de objetos personales dentro de las sedes." },
     { title: "Uso de equipos e infraestructura", desc: "Me comprometo al uso correcto de los equipos e infraestructura, asumiendo cualquier daño ocasionado por uso indebido. " },
@@ -143,9 +144,9 @@ function Register() {
                 <div className="w-full md:w-1/3 bg-gradient-to-b from-blue-600 via-blue-800 to-indigo-950 p-6 md:p-10 text-white flex flex-col justify-center items-center relative overflow-hidden shrink-0">
                     <div className="z-10 text-center">
                         <img src={THEME_ASSETS.logoPublic} alt="Logo" className="rounded-full w-24 h-24 md:w-40 md:h-40 mx-auto mb-4 md:mb-6 shadow-2xl border-4 border-white/10" />
-                        <h2 className="text-2xl md:text-3xl font-black uppercase italic tracking-tighter leading-none">Club Gema</h2>
+                        <h2 className="text-2xl md:text-3xl font-black uppercase italic tracking-tighter leading-none">{COMPANY_NAME}</h2>
                         <div className="h-1 w-8 md:w-12 bg-brand-accent mx-auto my-3 md:my-4 rounded-full"></div>
-                        <p className="text-blue-100 text-[10px] md:text-sm font-medium opacity-80">Portal Oficial Club Gema</p>
+                        <p className="text-blue-100 text-[10px] md:text-sm font-medium opacity-80">Portal Oficial {COMPANY_NAME}</p>
                     </div>
                 </div>
 
@@ -280,7 +281,7 @@ function Register() {
                     <div className="bg-brand-surface w-full max-w-xl rounded-[2rem] md:rounded-[3rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] border border-white/10">
                         <div className="relative p-6 md:p-10 bg-brand-primary text-white shrink-0">
                             <div className="relative z-10 text-left">
-                                <p className="text-orange-400 text-[8px] md:text-[10px] font-black uppercase tracking-widest mb-1 md:mb-2">Club Gema</p>
+                                <p className="text-orange-400 text-[8px] md:text-[10px] font-black uppercase tracking-widest mb-1 md:mb-2">{COMPANY_NAME}</p>
                                 <h4 className="text-xl md:text-3xl font-black uppercase italic tracking-tighter leading-tight md:leading-none">Compromiso de<br />Participación</h4>
                             </div>
                         </div>

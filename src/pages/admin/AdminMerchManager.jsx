@@ -11,6 +11,7 @@ import EmptyState from '../../components/shared/EmptyState';
 import ConfirmModal from '../../components/shared/ConfirmModal';
 import MerchImage from '../../components/merch/MerchImage';
 import MerchFormModal from '../../components/merch/MerchFormModal';
+import { formatBrandingText } from '../../utils/formatBrandingText';
 
 const STOCK_BAJO = 5;
 
@@ -130,7 +131,7 @@ const AdminMerchManager = () => {
                                             </div>
                                         </td>
                                         <td className="px-5 py-3">
-                                            <p className="text-sm font-black text-brand-heading uppercase italic leading-tight">{p.nombre}</p>
+                                            <p className="text-sm font-black text-brand-heading uppercase italic leading-tight">{formatBrandingText(p.nombre)}</p>
                                             {p.descripcion && <p className="text-[10px] font-bold text-brand-muted line-clamp-1 max-w-xs">{p.descripcion}</p>}
                                         </td>
                                         <td className="px-5 py-3 text-sm font-black text-green-600 italic">{formatSoles(p.precio)}</td>
