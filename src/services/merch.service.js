@@ -11,8 +11,17 @@ const ESTADOS_VISIBLES = ['posee', 'por_entregar', 'entregado', 'perdido'];
 
 const normalizarColeccion = (data) => {
     const grupos = Array.isArray(data) ? { posee: data } : (data || {});
+    // Un ítem ENTREGADO viene en DOS grupos (`entregado` y su alias `posee`, que el backend
+    // conserva por compatibilidad). Sin deduplicar por id, al entregarlo la colección lo
+    // contaba dos veces ("Posees: 2" tras comprar 1). Cada fila de alumno_merch = 1 unidad.
+    const vistos = new Set();
     return ESTADOS_VISIBLES.flatMap((estado) =>
-        (grupos[estado] ?? grupos[estado.toUpperCase()] ?? []).map((item) => ({
+        (grupos[estado] ?? grupos[estado.toUpperCase()] ?? []).filter((item) => {
+            if (item.id == null) return true;
+            if (vistos.has(item.id)) return false;
+            vistos.add(item.id);
+            return true;
+        }).map((item) => ({
             id: item.id,
             merch_id: item.merch_id ?? item.merch?.id,
             nombre: item.merch?.nombre ?? item.nombre,
