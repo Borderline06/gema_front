@@ -48,11 +48,12 @@ export const enrollmentService = {
         return parseJsonResponse(response, 'Error al procesar la matrícula');
     },
 
-    inscribirUnica: async ({ alumnoId, horarioId, fecha }) => {
+    inscribirUnica: async ({ alumnoId, horarioId, fecha, extras }) => {
         const response = await apiFetch.post(API_ROUTES.INSCRIPCIONES.INDIVIDUAL, {
             alumno_id: alumnoId,
             idHorario: horarioId,
             fecha_inicio_electiva: fecha,
+            ...extrasToPayload(extras),
         });
         return parseJsonResponse(response, 'Error al procesar la clase única');
     },

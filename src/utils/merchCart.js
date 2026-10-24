@@ -20,6 +20,13 @@ export const cartCount = (qtyMap = {}) => Object.values(qtyMap).reduce((acc, q) 
 /** Tope de unidades por ítem: el stock del catálogo (o 99 si no se conoce). */
 export const maxQty = (item) => (item.stock != null ? Math.max(0, Number(item.stock)) : 99);
 
+/**
+ * ¿Hay al menos un producto que ofrecer? (activo —el endpoint ya filtra— y stock > 0).
+ * Con false (catálogo vacío, sin stock o que no cargó) la inscripción oculta todo lo de merch.
+ */
+export const hayMerchDisponible = (catalogo = []) =>
+  Array.isArray(catalogo) && catalogo.some(item => Number(item.stock) > 0);
+
 /** Devuelve un nuevo mapa con la cantidad fijada (0 elimina la entrada). */
 export const withQty = (qtyMap, id, qty) => {
   const { [id]: _omit, ...rest } = qtyMap;

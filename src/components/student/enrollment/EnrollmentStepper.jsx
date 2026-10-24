@@ -8,8 +8,8 @@ import { catalogoService } from '../../../services/catalogo.service';
 import { feriadoService } from '../../../services/feriado.service';
 import { enrollmentService } from '../../../services/enrollment.service';
 import { merchService } from '../../../services/merch.service';
-import { ESTADO_COLECCION } from '../../../config/merch';
-import { qtyMapToIds } from '../../../utils/merchCart';
+import { CODIGO_MERCH_AGOTADO, ESTADO_COLECCION } from '../../../config/merch';
+import { hayMerchDisponible, maxQty, qtyMapToIds } from '../../../utils/merchCart';
 import { precioClaseUnica, precioMensual } from '../../../utils/enrollmentPricing';
 import LoadingSpinner from '../../shared/LoadingSpinner';
 import StepIndicator from './StepIndicator';
@@ -25,10 +25,13 @@ const EnrollmentStepper = ({ userId, onSuccess }) => {
 
   // Extras (merch elegido en "Añade a tu plan"): estado propio, FUERA del wizard,
   // para que el módulo de Merch evolucione sin tocar la matrícula.
+  // quiereMerch = respuesta al opt-in (null = sin responder, equivale a "no") ·
   // merchQty = { [merchId]: cantidad } · sedeId = sede de recojo elegida (null = la de la matrícula).
-  const [extras, setExtras] = useState({ merchQty: {}, sedeId: null });
+  const [extras, setExtras] = useState({ quiereMerch: null, merchQty: {}, sedeId: null });
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+  // El stock se agotó entre que el alumno eligió merch y confirmó (la matrícula se revirtió entera).
+  const [merchAgotado, setMerchAgotado] = useState(false);
 
   const { data: feriados } = useFetch(
     async () => ((await feriadoService.listarTodos()).data || []).map(f => f.fecha),
@@ -42,7 +45,7 @@ const EnrollmentStepper = ({ userId, onSuccess }) => {
   );
 
   // Si el merch falla al cargar, la matrícula sigue funcionando sin el slider.
-  const { data: catalogoMerch } = useFetch(
+  const { data: catalogoMerch, refetch: refetchCatalogoMerch } = useFetch(
     () => merchService.getCatalogo(),
     [],
     { initialData: [], errorMessage: 'No se pudo cargar el catálogo de merch' }
@@ -59,12 +62,16 @@ const EnrollmentStepper = ({ userId, onSuccess }) => {
     [coleccionMerch]
   );
 
+  // Zero-state: sin ningún producto con stock no existe nada de merch en el flujo.
+  const merchDisponible = hayMerchDisponible(catalogoMerch);
+  const quiereMerch = merchDisponible && extras.quiereMerch === true;
+
   // Sede de recojo: la elegida o, por defecto, la sede donde se matricula.
   const sedeRecojoId = extras.sedeId
     ?? sedes.find(s => s.nombre === state.sede)?.id
     ?? null;
-  const hayMerch = qtyMapToIds(extras.merchQty).length > 0;
-  const faltaSedeRecojo = state.modalidad === MODALIDAD.MENSUAL && hayMerch && !sedeRecojoId;
+  const hayMerch = quiereMerch && qtyMapToIds(extras.merchQty).length > 0;
+  const faltaSedeRecojo = hayMerch && !sedeRecojoId;
 
   const precioBase = state.modalidad === MODALIDAD.MENSUAL
     ? precioMensual(planes, derived.horariosElegidos.length)
@@ -75,33 +82,45 @@ const EnrollmentStepper = ({ userId, onSuccess }) => {
     // (no antes, porque el resumen del checkout todavía la muestra).
     if (submitError && state.modalidad === MODALIDAD.UNICA) actions.setFechaUnica(null, null);
     setSubmitError(null);
+    setMerchAgotado(false);
     actions.back();
   };
 
-  const confirmar = async () => {
+  // `sinMerch` fuerza el envío sin merch (reintento tras agotarse el stock).
+  const confirmar = async ({ sinMerch = false } = {}) => {
     setSubmitting(true);
     setSubmitError(null);
+    setMerchAgotado(false);
     const esMensual = state.modalidad === MODALIDAD.MENSUAL;
+    const extrasAEnviar = quiereMerch && !sinMerch
+      ? { merchQty: extras.merchQty, sedeId: sedeRecojoId }
+      : { merchQty: {}, sedeId: null };
     try {
       if (esMensual) {
         await enrollmentService.inscribirMensual({
           alumnoId: userId,
           horarioIds: state.mensual.horarioIds,
           fechaInicio: state.mensual.fechaInicio,
-          extras: { ...extras, sedeId: sedeRecojoId },
+          extras: extrasAEnviar,
         });
       } else {
         await enrollmentService.inscribirUnica({
           alumnoId: userId,
           horarioId: state.unica.horarioId,
           fecha: state.unica.fecha,
+          extras: extrasAEnviar,
         });
       }
       toast.success('¡Reserva generada!');
       onSuccess?.();
     } catch (error) {
       console.error('Error en confirmar matrícula:', error);
-      if (error.status === 400) {
+      if (error.code === CODIGO_MERCH_AGOTADO) {
+        // No es un rechazo de la matrícula: solo el merch ya no está. Se refresca el catálogo
+        // para que el alumno vea qué queda y se le deja seguir sin merch.
+        setMerchAgotado(true);
+        refetchCatalogoMerch();
+      } else if (error.status === 400) {
         // Rechazo de negocio: típicamente el cupo se llenó entre que el alumno
         // vio el calendario y confirmó. Se explica en el checkout, no solo en un toast.
         setSubmitError(esMensual
@@ -115,6 +134,29 @@ const EnrollmentStepper = ({ userId, onSuccess }) => {
     }
   };
 
+  const continuarSinMerch = () => {
+    setExtras({ quiereMerch: false, merchQty: {}, sedeId: null });
+    confirmar({ sinMerch: true });
+  };
+
+  // Vuelve a leer el stock y recorta lo elegido a lo que realmente queda.
+  const revisarMerch = async () => {
+    setMerchAgotado(false);
+    const catalogo = await refetchCatalogoMerch();
+    if (!catalogo) return;
+    setExtras(prev => ({
+      ...prev,
+      merchQty: Object.fromEntries(
+        Object.entries(prev.merchQty)
+          .map(([id, qty]) => {
+            const item = catalogo.find(i => String(i.id) === String(id));
+            return [id, item ? Math.min(qty, maxQty(item)) : 0];
+          })
+          .filter(([, qty]) => qty > 0)
+      ),
+    }));
+  };
+
   if (loadingHorarios) return <LoadingSpinner size={48} />;
 
   return (
@@ -123,7 +165,7 @@ const EnrollmentStepper = ({ userId, onSuccess }) => {
 
       {state.step === 1 && <StepModalidadSede state={state} derived={derived} actions={actions} />}
       {state.step === 2 && <StepHorarioFechas state={state} derived={derived} actions={actions} userId={userId} feriados={feriados} />}
-      {state.step === 3 && <StepCheckout state={state} derived={derived} extras={extras} onExtrasChange={setExtras} catalogoMerch={catalogoMerch} ownedMerchCounts={ownedMerchCounts} sedes={sedes} sedeRecojoId={sedeRecojoId} precioBase={precioBase} submitError={submitError} onBack={volver} />}
+      {state.step === 3 && <StepCheckout state={state} derived={derived} extras={extras} onExtrasChange={setExtras} catalogoMerch={catalogoMerch} merchDisponible={merchDisponible} ownedMerchCounts={ownedMerchCounts} sedes={sedes} sedeRecojoId={sedeRecojoId} precioBase={precioBase} submitError={submitError} onBack={volver} merchAgotado={merchAgotado} submitting={submitting} onContinuarSinMerch={continuarSinMerch} onRevisarMerch={revisarMerch} />}
 
       <div className="fixed bottom-10 inset-x-0 flex justify-center gap-3 z-[150] px-4 pointer-events-none">
         {state.step > 1 && (
@@ -151,7 +193,7 @@ const EnrollmentStepper = ({ userId, onSuccess }) => {
         ) : (
           <button
             type="button"
-            onClick={confirmar}
+            onClick={() => confirmar()}
             disabled={submitting || faltaSedeRecojo}
             className="pointer-events-auto flex items-center justify-center gap-4 px-12 py-5 rounded-full font-black uppercase italic transition-all duration-500 shadow-2xl bg-brand-accent text-white hover:scale-105 active:scale-95 border-4 border-white w-full max-w-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           >

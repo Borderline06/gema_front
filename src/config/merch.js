@@ -21,6 +21,10 @@ export const ESTADO_COLECCION = {
   PERDIDO: 'PERDIDO',
 };
 
+// Código que envía el backend cuando un producto elegido se agotó, se desactivó o se borró
+// entre que el alumno lo eligió y confirmó (la inscripción completa se revierte).
+export const CODIGO_MERCH_AGOTADO = 'MERCH_STOCK_AGOTADO';
+
 /**
  * Agrupa la colección plana por producto: una entrada por merch_id con sus cantidades.
  * `poseidas` = unidades no perdidas (las que cuentan para "Posees: N").
