@@ -10,6 +10,7 @@ const AdminLevels = ({ onBack, initialData }) => {
 
     const [formData, setFormData] = useState({
         nombre: initialData?.nombre || '',
+        descripcion: initialData?.descripcion || '',
         // Mantenemos el precio en el estado interno pero no lo mostramos en el UI
         precio_referencial: initialData?.precio_referencial || 0
     });
@@ -21,6 +22,7 @@ const AdminLevels = ({ onBack, initialData }) => {
         setLoading(true);
         const payload = {
             nombre: formData.nombre.trim().toUpperCase(),
+            descripcion: formData.descripcion.trim() || null,
             // Se envía el precio que ya tenía o 0 por defecto para evitar errores en el Backend
             precio_referencial: parseFloat(formData.precio_referencial) || 0
         };
@@ -75,7 +77,7 @@ const AdminLevels = ({ onBack, initialData }) => {
                     <Trophy className="text-brand-primary" size={20} />
                     <span className="font-black text-slate-800 text-xs uppercase">Configuración de Nivel</span>
                 </div>
-                <div className="p-8">
+                <div className="p-8 space-y-5">
                     <div className="space-y-1">
                         <label className="text-[10px] font-black text-brand-muted uppercase">Nombre del Nivel</label>
                         <input
@@ -84,7 +86,19 @@ const AdminLevels = ({ onBack, initialData }) => {
                             className="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500/20"
                             placeholder="Ej: ALTA COMPETENCIA"
                         />
-                        <p className="text-[9px] text-brand-muted italic mt-2">
+                    </div>
+
+                    <div className="space-y-1">
+                        <label className="text-[10px] font-black text-brand-muted uppercase">Descripción / Qué incluye este nivel</label>
+                        <textarea
+                            rows={3}
+                            maxLength={500}
+                            value={formData.descripcion}
+                            onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
+                            className="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-sm font-medium outline-none focus:ring-2 focus:ring-blue-500/20 resize-none"
+                            placeholder="Ej: Se aprenden los fundamentos del vóley, como voleo, antebrazo, saques, entre otros."
+                        />
+                        <p className="text-[9px] text-brand-muted italic mt-1">
                             * El precio de este nivel se gestiona automáticamente desde el Catálogo de Servicios.
                         </p>
                     </div>
